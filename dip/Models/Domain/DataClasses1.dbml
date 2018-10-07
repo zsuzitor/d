@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SOFI" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SOFI.mdf;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="OldDb" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ActionPros" Member="ActionPros">
+    <Type Name="ActionPro">
+      <Column Name="actionId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="prosId" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Action_ActionPro" Member="Action" ThisKey="actionId" OtherKey="id" Type="Action" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Pro_ActionPro" Member="Pro" ThisKey="prosId" OtherKey="id" Type="Pro" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Actions" Member="Actions">
+    <Type Name="Action">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="actionId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="actionType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Action_ActionPro" Member="ActionPros" ThisKey="id" OtherKey="actionId" Type="ActionPro" />
+      <Association Name="Action_ActionSpec" Member="ActionSpecs" ThisKey="id" OtherKey="actionId" Type="ActionSpec" />
+      <Association Name="Action_ActionVrem" Member="ActionVrems" ThisKey="id" OtherKey="actionId" Type="ActionVrem" />
+      <Association Name="ActionType_Action" Member="ActionType1" ThisKey="actionType" OtherKey="id" Type="ActionType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="AllAction_Action" Member="AllAction" ThisKey="actionId" OtherKey="id" Type="AllAction" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="FizVel_Action" Member="FizVel" ThisKey="fizVelId" OtherKey="id" Type="FizVel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ActionSpec" Member="ActionSpecs">
+    <Type Name="ActionSpec">
+      <Column Name="actionId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="specId" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Action_ActionSpec" Member="Action" ThisKey="actionId" OtherKey="id" Type="Action" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Spec_ActionSpec" Member="Spec" ThisKey="specId" OtherKey="id" Type="Spec" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ActionTypes" Member="ActionTypes">
+    <Type Name="ActionType">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80)" CanBeNull="true" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="ActionType_Action" Member="Actions" ThisKey="id" OtherKey="actionType" Type="Action" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ActionVrem" Member="ActionVrems">
+    <Type Name="ActionVrem">
+      <Column Name="actionId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vremId" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Action_ActionVrem" Member="Action" ThisKey="actionId" OtherKey="id" Type="Action" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Vrem_ActionVrem" Member="Vrem" ThisKey="vremId" OtherKey="id" Type="Vrem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AllActions" Member="AllActions">
+    <Type Name="AllAction">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80)" CanBeNull="true" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="AllAction_Action" Member="Actions" ThisKey="id" OtherKey="actionId" Type="Action" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FEAction" Member="FEActions">
+    <Type Name="FEAction">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idfe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="input" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelSection" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelChange" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelLeftBorder" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="fizVelRightBorder" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="pros" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="spec" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="vrem" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FEIndex" Member="FEIndexes">
+    <Type Name="FEIndex">
+      <Column Name="IDFE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="[Index]" Member="Index" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FEObject" Member="FEObjects">
+    <Type Name="FEObject">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idfe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[begin]" Member="begin" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="phaseState" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="composition" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="magneticStructure" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="conductivity" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="mechanicalState" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="opticalState" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="special" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FEText" Member="FETexts">
+    <Type Name="FEText">
+      <Column Name="IDFE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="textInp" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="textOut" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="textObj" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="textApp" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="textLit" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FizVels" Member="FizVels">
+    <Type Name="FizVel">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80)" CanBeNull="true" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="FizVel_Action" Member="Actions" ThisKey="id" OtherKey="fizVelId" Type="Action" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NewFEIndex" Member="NewFEIndexes">
+    <Type Name="NewFEIndex">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idfe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="input" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="output" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="beginObjectState" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="endObjectState" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="beginPhase" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="endPhase" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NeZakon" Member="NeZakons">
+    <Type Name="NeZakon">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FizVel1" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FizVel2" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pros" Member="Pros">
+    <Type Name="Pro">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80) NOT NULL" CanBeNull="false" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Pro_ActionPro" Member="ActionPros" ThisKey="id" OtherKey="prosId" Type="ActionPro" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Spec" Member="Specs">
+    <Type Name="Spec">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80) NOT NULL" CanBeNull="false" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Spec_ActionSpec" Member="ActionSpecs" ThisKey="id" OtherKey="specId" Type="ActionSpec" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Thes" Member="Thes">
+    <Type Name="The">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80)" CanBeNull="true" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="compatible" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="path" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ThesChild" Member="ThesChilds">
+    <Type Name="ThesChild">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nodeID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="childID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="[order]" Member="order" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vrem" Member="Vrems">
+    <Type Name="Vrem">
+      <Column Name="id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(80) NOT NULL" CanBeNull="false" />
+      <Column Name="parent" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Vrem_ActionVrem" Member="ActionVrems" ThisKey="id" OtherKey="vremId" Type="ActionVrem" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Chains" Member="Chains">
+    <Type Name="Chain">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="chain" Member="chain1" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="notClosedInput" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fail" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[end]" Member="end" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="length" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="reverseChainsIds" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="task" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReverseChains" Member="ReverseChains">
+    <Type Name="ReverseChain">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="chain" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="fail" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TasksToSynthesys" Member="TasksToSynthesies">
+    <Type Name="TasksToSynthesy">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="actionId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="actionId2" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>
