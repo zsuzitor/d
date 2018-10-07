@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using dip.Models.Domain;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace dip.Models
 {
@@ -14,9 +16,67 @@ namespace dip.Models
 
         public string Name { get; set; }
         public string Surname { get; set; }
-        public DateTime Birthday { get; set; }
-        
-            
+        public DateTime? Birthday { get; set; }
+        public DateTime Dateregistration { get; set; }
+
+
+        //1--many
+        public ICollection<Log> UserLogs { get; set; }
+
+
+
+
+        public ApplicationUser() : base()
+        {
+            UserLogs = new List<Log>();
+            Name = null;
+            Surname = null;
+            Birthday = null;
+                Dateregistration = DateTime.Now;
+
+        }
+
+
+
+
+
+        public static string GetUserId()
+        {
+            return System.Web.HttpContext.Current.User.Identity.GetUserId();
+        }
+
+        public static ApplicationUser GetUser(string id)
+        {
+            //string check_id = ApplicationUser.GetUserId();
+            ApplicationUser res = null;
+            //if (string.IsNullOrWhiteSpace(id))
+            //    return res;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                res = ApplicationUser.GetUser(id, db);
+            }
+
+            return res;
+        }
+        public static ApplicationUser GetUser(string id, ApplicationDbContext db)
+        {
+            //string check_id = ApplicationUser.GetUserId();
+            ApplicationUser res = null;
+            if (string.IsNullOrWhiteSpace(id))
+                return res;
+            res = db.Users.FirstOrDefault(x1 => x1.Id == id);
+
+            return res;
+        }
+
+
+
+
+
+
+
+
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -52,9 +112,12 @@ namespace dip.Models
 
 
         //--------------------------------------------------------------
+        public DbSet<Log> Logs{ get; set; }
 
 
 
+
+        //--------------------------------------------------------------
         //public DbSet<Team> Teams { get; set; }
 
 

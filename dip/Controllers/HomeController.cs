@@ -41,23 +41,6 @@ namespace dip.Controllers
             //}
 
 
-
-
-                return View();
-        }
-
-
-
-
-
-
-
-        public ActionResult SomeMethod()
-        {
-           
-
-
-
             try
             {
                 string lastname = null;
@@ -79,11 +62,23 @@ namespace dip.Controllers
 
 
 
-            
-
             return View();
         }
 
+
+
+        public ActionResult DecriptSearch()
+        {
+            //TODO
+            return View();
+        }
+
+
+        public ActionResult TextSearch()
+        {
+            //TODO
+            return View();
+        }
 
 
 

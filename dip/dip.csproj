@@ -177,8 +177,12 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DataBase\AppDbInitializer.cs" />
     <Compile Include="Models\DataBase\OldDbContext.cs" />
-    <Compile Include="Models\Domain\ActionPros.cs" />
+    <Compile Include="Models\Domain\ActionPro.cs" />
     <Compile Include="Models\Domain\Actions.cs" />
+    <Compile Include="Models\Domain\ActionSpec.cs" />
+    <Compile Include="Models\Domain\ActionType.cs" />
+    <Compile Include="Models\Domain\ActionVrem.cs" />
+    <Compile Include="Models\Domain\AllAction.cs" />
     <Compile Include="Models\Domain\DataClasses1.cs">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
@@ -187,8 +191,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Domain\FEAction.cs" />
+    <Compile Include="Models\Domain\FEIndex.cs" />
+    <Compile Include="Models\Domain\FEObject.cs" />
+    <Compile Include="Models\Domain\FEText.cs" />
+    <Compile Include="Models\Domain\FizVel.cs" />
     <Compile Include="Models\Domain\Log.cs" />
+    <Compile Include="Models\Domain\NewFEIndex.cs" />
+    <Compile Include="Models\Domain\NeZakon.cs" />
+    <Compile Include="Models\Domain\Pro.cs" />
+    <Compile Include="Models\Domain\Spec.cs" />
     <Compile Include="Models\Domain\test_cs.cs" />
+    <Compile Include="Models\Domain\The.cs" />
+    <Compile Include="Models\Domain\ThesChild.cs" />
+    <Compile Include="Models\Domain\Vrem.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

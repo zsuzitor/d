@@ -8,15 +8,25 @@ using System.Web;
 namespace dip.Models.Domain
 {
     [Table("Actions")]
-    public class Actions_
+    public class Action_
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         public string actionId { get; set; }
         public string actionType { get; set; }
         public string fizVelId { get; set; }
-       
-        public Actions_()
+
+
+
+
+        public ICollection<ActionPro> ActionPros { get; set; }
+        public ICollection<ActionSpec> ActionSpecs { get; set; }
+        public ICollection<ActionVrem> ActionVrems { get; set; }
+        public ICollection<ActionType> ActionType1 { get; set; }
+        public ICollection<AllAction> AllAction { get; set; }
+        public ICollection<FizVel> FizVel { get; set; }
+
+        public Action_()
         {
 
         }
