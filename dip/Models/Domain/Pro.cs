@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Pro_
+    public class Pro
     {
 
         public string Id { get; set; }
@@ -16,7 +16,7 @@ namespace dip.Models.Domain
 
         public ICollection<ActionPro> ActionPros;
 
-        public Pro_()
+        public Pro()
         {
 
         }

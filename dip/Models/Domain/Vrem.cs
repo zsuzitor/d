@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Vrem_
+    public class Vrem
     {
         public string Id { get; set; }
 
@@ -15,7 +15,7 @@ namespace dip.Models.Domain
 
         public ICollection<ActionVrem> ActionVrems { get; set; }
 
-        public Vrem_()
+        public Vrem()
         {
 
 

@@ -39,7 +39,7 @@ namespace dip.Models.Domain
         {
             using (var db=new ApplicationDbContext())
             {
-                db.Logs.Add();
+                db.Logs.Add(new Log());
 
 
             }

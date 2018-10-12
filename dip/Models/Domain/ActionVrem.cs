@@ -6,7 +6,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class ActionVrem_
+    public class ActionVrem
     {
         [Key]
         public int ActionId { get; set; }
@@ -18,7 +18,7 @@ namespace dip.Models.Domain
 
 
 
-        public ActionVrem_()
+        public ActionVrem()
         {
 
 

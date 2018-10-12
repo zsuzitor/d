@@ -8,7 +8,7 @@ using System.Web;
 namespace dip.Models.Domain
 {
     [Table("Actions")]
-    public class Action_
+    public class Action
     {
         [Key]
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace dip.Models.Domain
         public ICollection<AllAction> AllAction { get; set; }
         public ICollection<FizVel> FizVel { get; set; }
 
-        public Action_()
+        public Action()
         {
 
         }

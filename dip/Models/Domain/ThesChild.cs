@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class ThesChild_
+    public class ThesChild
     {
 
         public int Id { get; set; }
@@ -14,7 +14,7 @@ namespace dip.Models.Domain
         public int? Order { get; set; }
 
 
-        public ThesChild_()
+        public ThesChild()
         {
 
         }

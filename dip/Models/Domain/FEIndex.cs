@@ -6,14 +6,14 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FEIndex_
+    public class FEIndex
     {
         [Key]
         public int IDFE { get; set; }
 
         public string Index { get; set; }
 
-        public FEIndex_()
+        public FEIndex()
         {
 
         }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class NewFEIndex_
+    public class NewFEIndex
     {
 
         public int Id { get; set; }
@@ -17,7 +17,7 @@ namespace dip.Models.Domain
         public string BeginPhase { get; set; }
         public string EndPhase { get; set; }
 
-        public NewFEIndex_()
+        public NewFEIndex()
         {
 
 

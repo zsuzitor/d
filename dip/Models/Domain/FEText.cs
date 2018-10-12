@@ -6,7 +6,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FEText_
+    public class FEText
     {
         [Key]
         public int IDFE { get; set; }
@@ -19,7 +19,7 @@ namespace dip.Models.Domain
         public string TextLit { get; set; }
 
 
-        public FEText_()
+        public FEText()
         {
 
         }

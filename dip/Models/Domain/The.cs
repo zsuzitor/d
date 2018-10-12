@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class The_
+    public class The
     {
 
         public string Id { get; set; }
@@ -18,7 +18,7 @@ namespace dip.Models.Domain
 
         public string Path { get; set; }
 
-        public The_()
+        public The()
         {
 
         }

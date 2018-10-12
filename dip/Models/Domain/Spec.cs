@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Spec_
+    public class Spec
     {
         public string Id { get; set; }
 
@@ -16,7 +16,7 @@ namespace dip.Models.Domain
         public ICollection<ActionSpec> ActionSpecs { get; set; }
 
 
-        public Spec_()
+        public Spec()
         {
 
 

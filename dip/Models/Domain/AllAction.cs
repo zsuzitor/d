@@ -5,8 +5,8 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class AllAction_
-    {
+    public class AllAction
+    { 
         public string Id { get; set; }
         public string Name { get; set; }
         public string Parent { get; set; }
@@ -14,7 +14,7 @@ namespace dip.Models.Domain
 
         public ICollection<Action> Actions { get; set; }
 
-        public AllAction_()
+        public AllAction()
         {
 
 

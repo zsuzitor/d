@@ -31,39 +31,39 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ReadDbOld()
-        {
-            //using (OldDbContext db=new OldDbContext())
-            //{
-            //    //var comps = db.Database.ExecuteSqlCommand("SELECT * FROM Companies");
-            //    var t=db.ActionPros.Select(x1=>x1).ToList();
-            //    int f = 10;
-            //}
+        //public ActionResult ReadDbOld()
+        //{
+        //    //using (OldDbContext db=new OldDbContext())
+        //    //{
+        //    //    //var comps = db.Database.ExecuteSqlCommand("SELECT * FROM Companies");
+        //    //    var t=db.ActionPros.Select(x1=>x1).ToList();
+        //    //    int f = 10;
+        //    //}
 
 
-            try
-            {
-                string lastname = null;
-                string firstname = null;
-                string age = null;
+        //    try
+        //    {
+        //        string lastname = null;
+        //        string firstname = null;
+        //        string age = null;
 
-                OldData db = new OldData();
+        //        OldData db = new OldData();
 
-                bool status = db.GetUsersData(ref lastname, ref firstname, ref age);
-                if (status)
-                {
-                    var f = 10;
-                }
-            }
-            catch
-            {
+        //        bool status = db.GetUsersData(ref lastname, ref firstname, ref age);
+        //        if (status)
+        //        {
+        //            var f = 10;
+        //        }
+        //    }
+        //    catch
+        //    {
 
-            }
+        //    }
 
 
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
 

@@ -8,7 +8,7 @@ using System.Web;
 namespace dip.Models.Domain
 {
     [Table("ActionPros")]
-    public class ActionPro_
+    public class ActionPro
     {
         [Key]
         public int ActionId { get; set; }
@@ -18,7 +18,7 @@ namespace dip.Models.Domain
         public Pro Pro { get; set; }
 
 
-        public ActionPro_()
+        public ActionPro()
         {
 
         }

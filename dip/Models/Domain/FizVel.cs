@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FizVel_
+    public class FizVel
     {
 
         public string Id { get; set; }
@@ -14,7 +14,7 @@ namespace dip.Models.Domain
 
         public ICollection< Action >Actions { get; set; }
 
-        public FizVel_()
+        public FizVel()
         {
 
 

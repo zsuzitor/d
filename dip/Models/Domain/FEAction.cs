@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FEAction_
+    public class FEAction
     {
         public int Id { get; set; }
         public int Idfe { get; set; }
@@ -22,7 +22,7 @@ namespace dip.Models.Domain
         public string Vrem { get; set; }
 
 
-        public FEAction_()
+        public FEAction()
         {
 
         }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FEObject_
+    public class FEObject
     {
 
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace dip.Models.Domain
         public string OpticalState { get; set; }
         public string Special { get; set; }
 
-        public FEObject_()
+        public FEObject()
         {
 
 

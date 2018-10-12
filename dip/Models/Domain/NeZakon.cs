@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class NeZakon_
+    public class NeZakon
     {
 
         public int Id { get; set; }
@@ -14,7 +14,7 @@ namespace dip.Models.Domain
 
         public string FizVel2 { get; set; }
 
-        public NeZakon_()
+        public NeZakon()
         {
 
         }
