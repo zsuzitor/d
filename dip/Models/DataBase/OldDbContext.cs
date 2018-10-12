@@ -51,8 +51,8 @@ namespace dip.Models.DataBase
 
     class OldData
     {
-        SqlConnection connection;
-        SqlCommand command;
+        static SqlConnection connection;
+        static SqlCommand command;
 
         public OldData()
         {
@@ -63,8 +63,9 @@ namespace dip.Models.DataBase
             command.CommandType = CommandType.Text;
         } // constructor
 
-        public bool GetUsersData(ref string lastname, ref string firstname, ref string age)
+        public static bool ReloadDataBase()
         {
+            
             bool returnvalue = false;
             try
             {

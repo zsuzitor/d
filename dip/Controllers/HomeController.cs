@@ -84,5 +84,20 @@ namespace dip.Controllers
 
 
 
+
+
+        [Authorize(Roles = "admin")]
+        public ActionResult ReloadDataBase()
+        {
+            OldData.ReloadDataBase();
+
+
+
+
+            return View();
+        }
+
+
+
     }
 }
