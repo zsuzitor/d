@@ -13,7 +13,7 @@ namespace dip.Models.Domain
         public string Name { get; set; }
         public string Parent { get; set; }
 
-        public Action Actions { get; set; }
+       // public Action Actions { get; set; }
 
         public ActionType()
         {

@@ -89,8 +89,7 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult ReloadDataBase()
         {
-            OldData.ReloadDataBase();
-
+            //OldData.ReloadDataBase();
 
 
 
@@ -98,6 +97,24 @@ namespace dip.Controllers
         }
 
 
+
+
+        //TODO old method for check view
+        public ActionResult CreateInput()
+        {
+
+            //ViewBag.vrem   --- mass
+            //ViewBag.spec   --- mass
+            //ViewBag.pros   --- mass
+
+            //ViewBag.parametricFizVelId   ---mass
+
+
+            ///ViewBag.currentAction  --str
+            ///ViewBag.currentActionId  --- int
+
+            return View();
+        }
 
     }
 }

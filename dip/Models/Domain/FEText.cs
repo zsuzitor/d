@@ -18,6 +18,7 @@ namespace dip.Models.Domain
         public string TextApp { get; set; }
         public string TextLit { get; set; }
 
+        public ICollection<Image> Images { get; set; }
 
         public FEText()
         {

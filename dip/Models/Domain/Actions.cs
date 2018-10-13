@@ -19,12 +19,12 @@ namespace dip.Models.Domain
 
 
 
-        public ICollection<ActionPro> ActionPros { get; set; }
-        public ICollection<ActionSpec> ActionSpecs { get; set; }
-        public ICollection<ActionVrem> ActionVrems { get; set; }
-        public ICollection<ActionType> ActionType1 { get; set; }
-        public ICollection<AllAction> AllAction { get; set; }
-        public ICollection<FizVel> FizVel { get; set; }
+        //public ICollection<ActionPro> ActionPros { get; set; }
+        //public ICollection<ActionSpec> ActionSpecs { get; set; }
+        //public ICollection<ActionVrem> ActionVrems { get; set; }
+        //public ICollection<ActionType> ActionType1 { get; set; }
+        //public ICollection<AllAction> AllAction { get; set; }
+        //public ICollection<FizVel> FizVel { get; set; }
 
         public Action()
         {

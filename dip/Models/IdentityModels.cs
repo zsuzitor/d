@@ -114,7 +114,8 @@ namespace dip.Models
 
         //--------------------------------------------------------------
         public DbSet<Log> Logs{ get; set; }
-
+        public DbSet<Image> Images { get; set; }
+        
 
 
 

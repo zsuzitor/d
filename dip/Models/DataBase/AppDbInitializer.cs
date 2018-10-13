@@ -8,7 +8,7 @@ using System.Web;
 
 namespace dip.Models.DataBase
 {
-    public class AppDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
+    public class AppDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -46,7 +46,12 @@ namespace dip.Models.DataBase
                 //
                 userManager.AddToRole(Nadmin.Id, roleUser.Name);
             }
-            
+
+
+            //load old db 
+            OldData.ReloadDataBase();
+
+
             base.Seed(context);
         }
     }

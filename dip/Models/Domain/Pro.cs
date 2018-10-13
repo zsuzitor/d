@@ -14,7 +14,7 @@ namespace dip.Models.Domain
 
         public string Parent { get; set; }
 
-        public ICollection<ActionPro> ActionPros;
+        //public ICollection<ActionPro> ActionPros;
 
         public Pro()
         {

@@ -6,11 +6,24 @@
 поиск декср
 поиск текст
 редактирование записей
+@Html.AntiForgeryToken()
+
+
+@Scripts.Render("~/bundles/jqueryval")   in createInput    99% что такого бандла сейчас нет
 
 
 
 
 
 
+//db copy   error
 
+"доп строки в таблицах"  -в некоторых таблицах id прыгает  1 2 3 10 11 ...
+
+actionPros  actionId не копируется, и начинается с 1 а в старой бд с 208
+actions  id  - id с 1 а в old с 134
+actionspec actionId с 1 а в old 212
+actionvrem actionid 1         212
+feindexes    на 30 строк больше получилось хз откуда и почему
+fetext    на 30 строк больше
 

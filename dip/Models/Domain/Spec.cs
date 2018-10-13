@@ -13,7 +13,7 @@ namespace dip.Models.Domain
 
         public string Parent { get; set; }
 
-        public ICollection<ActionSpec> ActionSpecs { get; set; }
+        //public ICollection<ActionSpec> ActionSpecs { get; set; }
 
 
         public Spec()
