@@ -1,0 +1,51 @@
+﻿@model PagedList.IPagedList<dip.Models.Domain.FEText>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Найденные физические эффекты";
+}
+
+<h2>Найденные физические эффекты</h2>
+
+<p>
+    @Html.ActionLink("Выполнить новый запрос", "Create")
+</p>
+@{
+    if (ViewBag.ErrorMessage != string.Empty)
+    {
+        <h3>@ViewBag.ErrorMessage</h3>
+    }
+    else
+    {
+        <h3>@ViewBag.Query</h3>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Название эффекта")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayName(item.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Посмотреть подробную информацию", "Details", new { id = item.IDFE, techicalFunctionId = ViewBag.TechnicalFunctionId })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <br />
+
+        @Html.PagedListPager(Model, page => Url.Action("Results",
+            new { id = ViewBag.TechnicalFunctionId, page }))
+    }
+}

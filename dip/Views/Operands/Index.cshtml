@@ -1,0 +1,33 @@
+﻿@model IEnumerable<dip.Models.TechnicalFunctions.Operand>
+
+@{
+    ViewBag.Title = "Объекты технических функций";
+}
+
+<h2>Объекты технических функций</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Дескриптор")
+        </th>
+        <th>
+            @Html.DisplayName("Дескриптор группы объектов")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => item.Id)
+
+            </td>
+            <td>
+                @Html.DisplayFor(x => item.OperandGroup.Id)
+            </td>
+        </tr>
+    }
+
+</table>
