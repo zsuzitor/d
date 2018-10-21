@@ -1,4 +1,5 @@
-﻿using dip.Models.Domain;
+﻿//using dip.Models;
+using dip.Models.Domain;
 using PagedList;
 using PhysicalEffectsSearchEngine.Models;
 using System;
@@ -13,6 +14,8 @@ namespace dip.Controllers
     {
         private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
         private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly ApplicationDbContext PhysicalEffectsDb = new ApplicationDbContext();
+        
 
         private const string NotFoundFuncId = "FUNC_NOT_FOUND";
         private const string NotFoundErrorMessage = "Физических эффектов по такому запросy не найдено";
@@ -21,6 +24,7 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult Create()
         {
+            
             var operationEntities = _TechnicalFunctionsDb.Operation;
             var operandGroupEntities = _TechnicalFunctionsDb.OperandGroup;
             var operandEntities = _TechnicalFunctionsDb.Operand;

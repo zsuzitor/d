@@ -194,7 +194,7 @@
     <Compile Include="Models\DataBase\PhysicalEffectsSearchEngine.cs" />
     <Compile Include="Models\DataBase\TechnicalFunctionsEntities.cs" />
     <Compile Include="Models\Domain\ActionPro.cs" />
-    <Compile Include="Models\Domain\Actions.cs" />
+    <Compile Include="Models\Domain\Action.cs" />
     <Compile Include="Models\Domain\ActionSpec.cs" />
     <Compile Include="Models\Domain\ActionType.cs" />
     <Compile Include="Models\Domain\ActionVrem.cs" />
@@ -238,6 +238,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -245,6 +247,12 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_changeAction.js" />
+    <Content Include="Scripts\_changeParametricFizVel.js" />
+    <Content Include="Scripts\_changePros.js" />
+    <Content Include="Scripts\_changeRank.js" />
+    <Content Include="Scripts\_changeSpec.js" />
+    <Content Include="Scripts\_changeVrem.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

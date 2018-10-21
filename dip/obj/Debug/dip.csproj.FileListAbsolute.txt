@@ -67,3 +67,7 @@ E:\csharp\dip1\dip\dip\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\csharp\dip1\dip\dip\obj\Debug\dip.csprojResolveAssemblyReference.cache
 E:\csharp\dip1\dip\dip\obj\Debug\dip.dll
 E:\csharp\dip1\dip\dip\obj\Debug\dip.pdb
+E:\csharp\dip1\dip\dip\bin\PagedList.dll
+E:\csharp\dip1\dip\dip\bin\PagedList.Mvc.dll
+E:\csharp\dip1\dip\dip\bin\PagedList.xml
+E:\csharp\dip1\dip\dip\bin\PagedList.Mvc.xml

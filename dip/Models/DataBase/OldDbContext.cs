@@ -67,6 +67,56 @@ namespace dip.Models.DataBase
         {
             
             bool returnvalue = false;
+
+            //{
+
+            //    var connection1 = new SqlConnection();
+            //    connection1.ConnectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\PhysicalEffects.mdf;Integrated Security=True";
+            //    var command1 = new SqlCommand();
+            //    command1.Connection = connection1;
+            //    command1.CommandType = CommandType.Text;
+
+            //    connection1.Open();
+
+
+
+            //    try
+            //    {
+            //        command.CommandText = "select * from Thes";
+            //        using (SqlDataReader reader = command1.ExecuteReader())
+            //        {
+
+            //            //SqlDataReader reader = command.ExecuteReader();
+            //            if (reader.HasRows)
+            //            {
+            //                while (reader.Read())
+            //                {
+            //                    var obj = new Domain.The();
+
+
+            //                    obj.Id = reader["id"].ToString();
+            //                    obj.Name = reader["name"].ToString();
+            //                    obj.Parent = reader["parent"].ToString();
+
+            //                }
+            //            }
+
+            //        }
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        throw e;
+            //    }
+
+
+
+
+
+            //}
+
+
+
             //try
             {
                 connection.Open();
