@@ -16,9 +16,9 @@ download pdf
 
 @Scripts.Render("~/bundles/jqueryval")   in createInput    99% что такого бандла сейчас нет
 
-
-
-
+//слиты бд в 1
+//авторизация регистрация
+//слиты 3 проекта
 
 
 //db copy   error

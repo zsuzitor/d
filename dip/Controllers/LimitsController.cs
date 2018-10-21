@@ -1,5 +1,6 @@
-﻿using dip.Models.TechnicalFunctions;
-using PhysicalEffectsSearchEngine.Models;
+﻿using dip.Models;
+using dip.Models.TechnicalFunctions;
+//using PhysicalEffectsSearchEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace dip.Controllers
 {
     public class LimitsController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ConstOperationId = "CONST";
         private const string ChangeOperationId = "CHANGE";
@@ -40,7 +41,7 @@ namespace dip.Controllers
 
         private void IndexLimits(ref List<Limit> limitEntities, string operationId, string parent)
         {
-            var thesEntities = _PhysicalEffectsDb.Thes;
+            var thesEntities = db.Thes;
 
             var selectedTheses =
                 (from thes in thesEntities
@@ -107,15 +108,15 @@ namespace dip.Controllers
         // GET: Limits
         public ActionResult Index()
         {
-            var limitEntities = _TechnicalFunctionsDb.Limit;
-            var operationEntities = _TechnicalFunctionsDb.Operation;
+            var limitEntities = db.Limits;
+            var operationEntities = db.Operations;
 
             var allLimitEntities =
                 (from limit in limitEntities
                  select limit).ToList();
 
             limitEntities.RemoveRange(allLimitEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
             const string baseParent = "CHARACTER";
             var newLimitEntities = new List<Limit>();
@@ -137,16 +138,16 @@ namespace dip.Controllers
             }
 
             limitEntities.AddRange(newLimitEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
-            return View(_TechnicalFunctionsDb.Limit.ToList());
+            return View(db.Limits.ToList());
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

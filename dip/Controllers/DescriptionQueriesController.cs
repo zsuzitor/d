@@ -1,7 +1,8 @@
 ﻿//using dip.Models;
+using dip.Models;
 using dip.Models.Domain;
 using PagedList;
-using PhysicalEffectsSearchEngine.Models;
+//using PhysicalEffectsSearchEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace dip.Controllers
 {
     public class DescriptionQueriesController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
         //private readonly ApplicationDbContext PhysicalEffectsDb = new ApplicationDbContext();
         
 
@@ -25,10 +26,10 @@ namespace dip.Controllers
         public ActionResult Create()
         {
             
-            var operationEntities = _TechnicalFunctionsDb.Operation;
-            var operandGroupEntities = _TechnicalFunctionsDb.OperandGroup;
-            var operandEntities = _TechnicalFunctionsDb.Operand;
-            var limitEntities = _TechnicalFunctionsDb.Limit;
+            var operationEntities = db.Operations;
+            var operandGroupEntities = db.OperandGroups;
+            var operandEntities = db.Operands;
+            var limitEntities = db.Limits;
 
             var allOperations = new SelectList(operationEntities.OrderBy(operation => operation.Value), "Id", "Value");
             var operationId = allOperations.First().Value;
@@ -60,7 +61,7 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult GetLimits(string id)
         {
-            var limitEntities = _TechnicalFunctionsDb.Limit;
+            var limitEntities = db.Limits;
             var compatibleLimits =
                 new SelectList(limitEntities.Where(limit => limit.Id.Contains(id)).OrderBy(limit => limit.Value), "Id",
                     "Value");
@@ -74,7 +75,7 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult GetOperands(string id)
         {
-            var operandEntities = _TechnicalFunctionsDb.Operand;
+            var operandEntities = db.Operands;
             var compatibleOperands =
                 new SelectList(
                     operandEntities.Where(operand => operand.Id.Contains(id)).OrderBy(operand => operand.Value), "Id",
@@ -91,7 +92,7 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Create(string operationId, string operandId, string limitId)
         {
-            var indexEntities = _TechnicalFunctionsDb.Index;
+            var indexEntities = db.Indexs;
 
             var technicalFunction =
                 (from index in indexEntities
@@ -109,8 +110,8 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult Results(string id, int? page)
         {
-            var indexEntities = _TechnicalFunctionsDb.Index;
-            var textEffectEntities = _PhysicalEffectsDb.FEText;
+            var indexEntities = db.Indexs;
+            var textEffectEntities = db.FEText;
 
             var allEffects = new List<FEText>();
 
@@ -151,7 +152,7 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult Details(int id, string technicalFunctionId)
         {
-            var textEffectEntities = _PhysicalEffectsDb.FEText;
+            var textEffectEntities = db.FEText;
 
             var effect =
                 (from textEffect in textEffectEntities
@@ -168,7 +169,7 @@ namespace dip.Controllers
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -3,30 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PhysicalEffectsSearchEngine.Models;
+//using PhysicalEffectsSearchEngine.Models;
 using dip.Models.TechnicalFunctions;
 using System.Data.Entity;
+using dip.Models;
 
 namespace dip.Controllers
 {
     public class OperandsController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Operands
         public ActionResult Index()
         {
-            var operandEntities = _TechnicalFunctionsDb.Operand;
-            var operandGroupEntities = _TechnicalFunctionsDb.OperandGroup;
-            var fizVelsEntities = _PhysicalEffectsDb.FizVels;
+            var operandEntities = db.Operands;
+            var operandGroupEntities = db.OperandGroups;
+            var fizVelsEntities = db.FizVels;
 
             var allOperandEntities =
                 (from operand in operandEntities
                  select operand).ToList();
 
             operandEntities.RemoveRange(allOperandEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
             var newOperandEntities = new List<Operand>();
             foreach (var operandGroup in operandGroupEntities)
@@ -49,16 +50,16 @@ namespace dip.Controllers
             }
 
             operandEntities.AddRange(newOperandEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
-            return View(_TechnicalFunctionsDb.Operand.Include(o => o.OperandGroup).ToList());
+            return View(db.Operands.Include(o => o.OperandGroup).ToList());
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -111,6 +111,13 @@ namespace dip.Models
         public DbSet<ThesChild> ThesChilds { get; set; }
         public DbSet<Vrem> Vrems { get; set; }
 
+        //--------------------------------------------------------------
+
+        public DbSet<TechnicalFunctions.Index> Indexs { get; set; }
+        public DbSet<TechnicalFunctions.Limit> Limits { get; set; }
+        public DbSet<TechnicalFunctions.Operand> Operands { get; set; }
+        public DbSet<TechnicalFunctions.OperandGroup> OperandGroups { get; set; }
+        public DbSet<TechnicalFunctions.Operation> Operations { get; set; }
 
         //--------------------------------------------------------------
         public DbSet<Log> Logs{ get; set; }

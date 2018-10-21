@@ -1,19 +1,20 @@
 ﻿using dip.Models.Domain;
 using dip.Models.TechnicalFunctions;
-using PhysicalEffectsSearchEngine.Models;
+//using PhysicalEffectsSearchEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using dip.Models;
 
 namespace dip.Controllers
 {
     public class IndexesController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly db _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ChangeOperationId = "CHANGE";
         private const string ConstOperationId = "CONST";
@@ -31,7 +32,7 @@ namespace dip.Controllers
 
         private List<FEAction> GetActionsWithChange(string operandId, string fizVelChangeId)
         {
-            var fEActionEntities = _PhysicalEffectsDb.FEAction;
+            var fEActionEntities = db.FEActions;
 
             return
                 (from fEAction in fEActionEntities
@@ -43,7 +44,7 @@ namespace dip.Controllers
 
         private Operation GetOperationById(string id)
         {
-            var operationEntities = _TechnicalFunctionsDb.Operation;
+            var operationEntities = db.Operations;
 
             return
                 (from operation in operationEntities
@@ -53,7 +54,7 @@ namespace dip.Controllers
 
         private Limit GetLimitById(string id)
         {
-            var limitEntities = _TechnicalFunctionsDb.Limit;
+            var limitEntities = db.Limits;
 
             return
                 (from limit in limitEntities
@@ -281,15 +282,15 @@ namespace dip.Controllers
         [RequireHttps]
         public ActionResult Index()
         {
-            var indexEntities = _TechnicalFunctionsDb.Index;
-            var operandEntities = _TechnicalFunctionsDb.Operand;
+            var indexEntities = db.Indexs;
+            var operandEntities = db.Operands;
 
             var allIndexEntities =
                 (from index in indexEntities
                  select index).ToList();
 
             indexEntities.RemoveRange(allIndexEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
             var newIndexEntities = new List<Index>();
 
@@ -297,16 +298,16 @@ namespace dip.Controllers
                 newIndexEntities.AddRange(CombineQueries(operand));
 
             indexEntities.AddRange(newIndexEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
-            return View(_TechnicalFunctionsDb.Index.Include(f => f.Limit).Include(f => f.Operand).Include(f => f.Operation).ToList());
+            return View(db.Indexs.Include(f => f.Limit).Include(f => f.Operand).Include(f => f.Operation).ToList());
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -68,52 +68,226 @@ namespace dip.Models.DataBase
             
             bool returnvalue = false;
 
-            //{
 
-            //    var connection1 = new SqlConnection();
-            //    connection1.ConnectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\PhysicalEffects.mdf;Integrated Security=True";
-            //    var command1 = new SqlCommand();
-            //    command1.Connection = connection1;
-            //    command1.CommandType = CommandType.Text;
-
-            //    connection1.Open();
+            //выгрузка еще из 1 бд
+            {
 
 
 
-            //    try
-            //    {
-            //        command.CommandText = "select * from Thes";
-            //        using (SqlDataReader reader = command1.ExecuteReader())
-            //        {
+                //MSSQLSERVER
+                var connection1 = new SqlConnection();//(LocalDb)\MSSQLLocalDB
+                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
+                var command1 = new SqlCommand();
+                command1.Connection = connection1;
+                command1.CommandType = CommandType.Text;
 
-            //            //SqlDataReader reader = command.ExecuteReader();
-            //            if (reader.HasRows)
-            //            {
-            //                while (reader.Read())
-            //                {
-            //                    var obj = new Domain.The();
-
-
-            //                    obj.Id = reader["id"].ToString();
-            //                    obj.Name = reader["name"].ToString();
-            //                    obj.Parent = reader["parent"].ToString();
-
-            //                }
-            //            }
-
-            //        }
-
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        throw e;
-            //    }
+                connection1.Open();
 
 
 
 
+                //Limit
 
-            //}
+                try
+                {
+                    command1.CommandText = "select * from Limit";
+                    using (SqlDataReader reader = command1.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new TechnicalFunctions.Limit();
+
+
+                                obj.Id = reader["Id"].ToString();
+                                obj.Value = reader["Value"].ToString();
+                                obj.Parent = reader["Parent"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Limits.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+                //OperandGroup
+
+                try
+                {
+                    command1.CommandText = "select * from OperandGroup";
+                    using (SqlDataReader reader = command1.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new TechnicalFunctions.OperandGroup();
+
+
+                                obj.Id = reader["Id"].ToString();
+                                obj.Value = reader["Value"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.OperandGroups.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+                //Operation
+
+                try
+                {
+                    command1.CommandText = "select * from Operation";
+                    using (SqlDataReader reader = command1.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new TechnicalFunctions.Operation();
+
+
+                                obj.Id = reader["Id"].ToString();
+                                obj.Value = reader["Value"].ToString();
+                                obj.Parent = reader["Parent"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Operations.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+
+                //Operand
+
+                try
+                {
+                    command1.CommandText = "select * from Operand";
+                    using (SqlDataReader reader = command1.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new TechnicalFunctions.Operand();
+
+
+                                obj.Id = reader["Id"].ToString();
+                                obj.Value = reader["Value"].ToString();
+                                obj.OperandGroupId = reader["OperandGroupId"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Operands.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+                //Index
+                try
+                {
+                    command1.CommandText = "select * from [Index]";
+                    using (SqlDataReader reader = command1.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new TechnicalFunctions.Index();
+
+
+                                obj.Id = reader["Id"].ToString();
+                                obj.OperationId = reader["OperationId"].ToString();
+                                obj.OperandId = reader["OperandId"].ToString();
+                                obj.LimitId = reader["LimitId"].ToString();
+                                obj.EffectIds = reader["EffectIds"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Indexs.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+                
+
+
+                
+
+
+                
+
+                
+
+
+            }
 
 
 

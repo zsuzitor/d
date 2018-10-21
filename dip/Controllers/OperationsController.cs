@@ -1,5 +1,6 @@
-﻿using dip.Models.TechnicalFunctions;
-using PhysicalEffectsSearchEngine.Models;
+﻿using dip.Models;
+using dip.Models.TechnicalFunctions;
+//using PhysicalEffectsSearchEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace dip.Controllers
 {
     public class OperationsController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ConstOperationId = "CONST";
         private const string ChangeOperationId = "CHANGE";
@@ -23,15 +24,15 @@ namespace dip.Controllers
         // GET: Operations
         public ActionResult Index()
         {
-            var operationEntities = _TechnicalFunctionsDb.Operation;
-            var thesEntities = _PhysicalEffectsDb.Thes;
+            var operationEntities = db.Operations;
+            var thesEntities = db.Thes;
 
             var allOperationEntities =
                 (from operation in operationEntities
                  select operation).ToList();
 
             operationEntities.RemoveRange(allOperationEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
             var selectedTheses =
                 (from thes in thesEntities
@@ -70,16 +71,16 @@ namespace dip.Controllers
             }
 
             operationEntities.AddRange(newOperationEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
-            return View(_TechnicalFunctionsDb.Operation.ToList());
+            return View(db.Operations.ToList());
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

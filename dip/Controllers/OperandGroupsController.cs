@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PhysicalEffectsSearchEngine.Models;
+//using PhysicalEffectsSearchEngine.Models;
 using dip.Models.TechnicalFunctions;
+using dip.Models;
 
 namespace dip.Controllers
 {
     public class OperandGroupsController : Controller
     {
-        private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly PhysicalEffectsEntities _PhysicalEffectsDb = new PhysicalEffectsEntities();
+        //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: OperandGroups
         public ActionResult Index()
         {
-            var operandGroupEntities = _TechnicalFunctionsDb.OperandGroup;
-            var fizVelsTable = _PhysicalEffectsDb.FizVels;
+            var operandGroupEntities = db.OperandGroups;
+            var fizVelsTable = db.FizVels;
             const string parentValue = "VOZ11_FIZVEL";
 
             var allOperandGroupEntities =
@@ -25,7 +26,7 @@ namespace dip.Controllers
                  select operandGroup).ToList();
 
             operandGroupEntities.RemoveRange(allOperandGroupEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
             var selectedFizVelses =
                 (from fizVel in fizVelsTable
@@ -44,15 +45,15 @@ namespace dip.Controllers
             }
 
             operandGroupEntities.AddRange(newOperandGroupEntities);
-            _TechnicalFunctionsDb.SaveChanges();
+            db.SaveChanges();
 
-            return View(_TechnicalFunctionsDb.OperandGroup.ToList());
+            return View(db.OperandGroups.ToList());
         }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _TechnicalFunctionsDb.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }
