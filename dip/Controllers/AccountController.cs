@@ -13,6 +13,7 @@ using dip.Models;
 namespace dip.Controllers
 {
     [Authorize]
+    // [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

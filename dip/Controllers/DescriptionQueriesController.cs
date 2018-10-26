@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
+    //[RequireHttps]
     public class DescriptionQueriesController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
@@ -22,7 +23,7 @@ namespace dip.Controllers
         private const string NotFoundErrorMessage = "Физических эффектов по такому запросy не найдено";
 
         // GET: DecriptionQueries/Create
-        [RequireHttps]
+        
         public ActionResult Create()
         {
             
@@ -58,7 +59,7 @@ namespace dip.Controllers
             return View();
         }
 
-        [RequireHttps]
+        
         public ActionResult GetLimits(string id)
         {
             var limitEntities = db.Limits;
@@ -72,7 +73,7 @@ namespace dip.Controllers
             return PartialView();
         }
 
-        [RequireHttps]
+        
         public ActionResult GetOperands(string id)
         {
             var operandEntities = db.Operands;
@@ -88,7 +89,7 @@ namespace dip.Controllers
         }
 
         // POST: DecriptionQueries/Create
-        [RequireHttps]
+        
         [HttpPost]
         public ActionResult Create(string operationId, string operandId, string limitId)
         {
@@ -107,7 +108,7 @@ namespace dip.Controllers
             return RedirectToAction("Results", new { id = NotFoundFuncId });
         }
 
-        [RequireHttps]
+       
         public ActionResult Results(string id, int? page)
         {
             var indexEntities = db.Indexs;
@@ -149,7 +150,7 @@ namespace dip.Controllers
             return View(allEffects.ToPagedList(pageNumber, pageSize));
         }
 
-        [RequireHttps]
+        
         public ActionResult Details(int id, string technicalFunctionId)
         {
             var textEffectEntities = db.FEText;

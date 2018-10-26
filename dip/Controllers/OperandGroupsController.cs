@@ -9,6 +9,7 @@ using dip.Models;
 
 namespace dip.Controllers
 {
+    // [RequireHttps]
     public class OperandGroupsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();

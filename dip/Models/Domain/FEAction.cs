@@ -12,7 +12,7 @@ namespace dip.Models.Domain
         public int Input { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
-        public string FizVelId { get; set; }
+        
         public string FizVelSection { get; set; }
         public string FizVelChange { get; set; }
         public double FizVelLeftBorder { get; set; }
@@ -21,7 +21,9 @@ namespace dip.Models.Domain
         public string Spec { get; set; }
         public string Vrem { get; set; }
 
-
+        public string FizVelId { get; set; }
+        //? не сгенерировалось
+        public FizVel FizVel { get; set; }
         public FEAction()
         {
 

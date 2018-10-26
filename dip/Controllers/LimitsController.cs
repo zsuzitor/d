@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
+    // [RequireHttps]
     public class LimitsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();

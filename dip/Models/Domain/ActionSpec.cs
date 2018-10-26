@@ -10,10 +10,10 @@ namespace dip.Models.Domain
     {
         [Key]
         public int ActionId { get; set; }
-       // public Action Action { get; set; }
+        public Action Action { get; set; }
 
         public string SpecId { get; set; }
-       // public Spec Spec { get; set; }
+        public Spec Spec { get; set; }
 
 
         public ActionSpec()

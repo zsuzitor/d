@@ -11,6 +11,7 @@ using dip.Models;
 
 namespace dip.Controllers
 {
+    // [RequireHttps]
     public class IndexesController : Controller
     {
         //private readonly db _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
@@ -279,7 +280,7 @@ namespace dip.Controllers
         }
 
         // GET: FuncIndexes
-        [RequireHttps]
+       
         public ActionResult Index()
         {
             var indexEntities = db.Indexs;

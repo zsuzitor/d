@@ -15,7 +15,7 @@ namespace dip.Models.DataBase
     //    : base("OldDb")
     //{
 
-           
+
 
     //}
     //    public DbSet<Domain.ActionPro> ActionPros { get; set; }
@@ -38,7 +38,7 @@ namespace dip.Models.DataBase
     //    public DbSet<The> Thes { get; set; }
     //    public DbSet<ThesChild> ThesChilds { get; set; }
     //    public DbSet<Vrem> Vrems { get; set; }
-        
+
 
     //    // public DbSet<ActionPro> dat { get; set; }
 
@@ -54,7 +54,7 @@ namespace dip.Models.DataBase
         static SqlConnection connection;
         static SqlCommand command;
 
-         static OldData()
+        static OldData()
         {
             connection = new SqlConnection();
             connection.ConnectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SOFI.mdf;Integrated Security=True";
@@ -65,7 +65,7 @@ namespace dip.Models.DataBase
 
         public static bool ReloadDataBase()
         {
-            
+
             bool returnvalue = false;
 
 
@@ -75,8 +75,11 @@ namespace dip.Models.DataBase
 
 
                 //MSSQLSERVER
-                var connection1 = new SqlConnection();//(LocalDb)\MSSQLLocalDB
-                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
+                var connection1 = new SqlConnection();//(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
+                                                      // connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
+                                                      //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
+                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+
                 var command1 = new SqlCommand();
                 command1.Connection = connection1;
                 command1.CommandType = CommandType.Text;
@@ -276,15 +279,15 @@ namespace dip.Models.DataBase
 
 
 
-                
 
 
-                
 
 
-                
 
-                
+
+
+
+
 
 
             }
@@ -294,7 +297,7 @@ namespace dip.Models.DataBase
             //try
             {
                 connection.Open();
-                
+
 
 
                 //ActionPros
@@ -322,9 +325,9 @@ namespace dip.Models.DataBase
 
                         }
                     }
-                   // SqlDataReader reader = command.ExecuteReader();
-                    
-                    
+                    // SqlDataReader reader = command.ExecuteReader();
+
+
                 }
                 catch (Exception e)
                 {
@@ -352,9 +355,9 @@ namespace dip.Models.DataBase
                             {
                                 var obj = new Domain.Action();
                                 obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.actionId = reader["actionId"].ToString();
-                                obj.actionType = reader["actionType"].ToString();
-                                obj.fizVelId = reader["fizVelId"].ToString();
+                                obj.ActionId = reader["actionId"].ToString();
+                                obj.ActionType = reader["actionType"].ToString();
+                                obj.FizVelId = reader["fizVelId"].ToString();
                                 using (var db = new ApplicationDbContext())
                                 {
                                     db.Actions.Add(obj);
@@ -402,7 +405,7 @@ namespace dip.Models.DataBase
 
                         }
                     }
-                        
+
                 }
                 catch (Exception e)
                 {
@@ -419,30 +422,30 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from ActionTypes";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                    
-                    //SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var obj = new Domain.ActionType();
 
-                            obj.Id =reader["id"].ToString();
-                            obj.Name = reader["name"].ToString();
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.ActionType();
+
+                                obj.Id = reader["id"].ToString();
+                                obj.Name = reader["name"].ToString();
                                 if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
                                     obj.Parent = null;
                                 else
                                     obj.Parent = reader["parent"].ToString();
 
-                            using (var db = new ApplicationDbContext())
-                            {
-                                db.ActionTypes.Add(obj);
-                                db.SaveChanges();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.ActionTypes.Add(obj);
+                                    db.SaveChanges();
+                                }
+
                             }
 
                         }
-
-                    }
                     }
                 }
                 catch (Exception e)
@@ -738,7 +741,7 @@ namespace dip.Models.DataBase
                                 obj.Id = reader["id"].ToString();
 
                                 obj.Name = reader["name"].ToString();
-                                
+
 
                                 if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
                                     obj.Parent = null;
@@ -898,10 +901,10 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from Spec";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                    
-                    //SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
                             while (reader.Read())
                             {
                                 var obj = new Domain.Spec();
@@ -943,10 +946,10 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from Thes";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                   
-                    //SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
                             while (reader.Read())
                             {
                                 var obj = new Domain.The();
@@ -955,7 +958,7 @@ namespace dip.Models.DataBase
                                 obj.Id = reader["id"].ToString();
                                 obj.Name = reader["name"].ToString();
                                 obj.Parent = reader["parent"].ToString();
-                                
+
 
 
                                 if (string.IsNullOrWhiteSpace(reader["compatible"].ToString()))
@@ -998,10 +1001,10 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from ThesChild";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                    
-                    //SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
                             while (reader.Read())
                             {
                                 var obj = new Domain.ThesChild();
@@ -1044,10 +1047,10 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from Vrem";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                    
-                    //SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
                             while (reader.Read())
                             {
                                 var obj = new Domain.Vrem();
