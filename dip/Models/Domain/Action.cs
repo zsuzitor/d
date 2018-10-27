@@ -14,18 +14,18 @@ namespace dip.Models.Domain
         public int Id { get; set; }
 
 
-        public string ActionId { get; set; }
-        public Action Action_ { get; set; }
+        public string AllActionId { get; set; }
+        public AllAction AllAction { get; set; }
 
-        public string ActionType { get; set; }
+        public string ActionType_Id { get; set; }
         public ActionType ActionType_ { get; set; }
 
         public string FizVelId { get; set; }
         public FizVel FizVel { get; set; }
 
 
-
-        public AllAction AllAction { get; set; }
+        //судя по сгенеренным классам это поле к actionId
+        //public AllAction AllAction { get; set; }
 
 
 

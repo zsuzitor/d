@@ -75,10 +75,15 @@ namespace dip.Models.DataBase
 
 
                 //MSSQLSERVER
-                var connection1 = new SqlConnection();//(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
-                                                      // connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
-                                                      //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
-                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+                var connection1 = new SqlConnection();
+                //(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
+                // connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
+                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
+                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+
+
+                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
 
                 var command1 = new SqlCommand();
                 command1.Connection = connection1;
@@ -300,67 +305,32 @@ namespace dip.Models.DataBase
 
 
 
-                //ActionPros
+
+
+                //Pros
+
 
                 try
                 {
-                    command.CommandText = "select * from ActionPros";
-                    //SqlDataReader reader = command.ExecuteReader()
+                    command.CommandText = "select * from Pros";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
+
+                        //SqlDataReader reader = command.ExecuteReader();
                         if (reader.HasRows)
                         {
                             while (reader.Read())
                             {
-                                var obj = new ActionPro();
-                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                obj.ProId = reader["prosId"].ToString();
+                                var obj = new Domain.Pro();
+
+
+                                obj.Id = reader["id"].ToString();
+                                obj.Name = reader["name"].ToString();
+                                obj.Parent = reader["parent"].ToString();
+
                                 using (var db = new ApplicationDbContext())
                                 {
-                                    db.ActionPros.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-
-                        }
-                    }
-                    // SqlDataReader reader = command.ExecuteReader();
-
-
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-                //finally
-                //{
-                //    reader.Close();
-                //}
-
-
-
-                //Actions
-
-                try
-                {
-                    command.CommandText = "select * from Actions";
-
-                    //SqlDataReader reader = command.ExecuteReader();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Action();
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.ActionId = reader["actionId"].ToString();
-                                obj.ActionType = reader["actionType"].ToString();
-                                obj.FizVelId = reader["fizVelId"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Actions.Add(obj);
+                                    db.Pros.Add(obj);
                                     db.SaveChanges();
                                 }
 
@@ -374,43 +344,6 @@ namespace dip.Models.DataBase
                 }
 
 
-
-
-                //ActionSpec
-
-
-                try
-                {
-                    command.CommandText = "select * from ActionSpec";
-
-                    //SqlDataReader reader = command.ExecuteReader();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.ActionSpec();
-
-                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                obj.SpecId = reader["specId"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.ActionSpecs.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-
-                        }
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
 
 
                 //ActionTypes
@@ -453,6 +386,286 @@ namespace dip.Models.DataBase
                     throw e;
                 }
 
+
+
+
+                //FizVels
+
+
+                try
+                {
+                    command.CommandText = "select * from FizVels";
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.FizVel();
+
+                                obj.Id = reader["id"].ToString();
+
+                                obj.Name = reader["name"].ToString();
+
+
+                                if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
+                                    obj.Parent = null;
+                                else
+                                    obj.Parent = reader["parent"].ToString();
+
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.FizVels.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+                //AllActions
+
+                try
+                {
+                    command.CommandText = "select * from AllActions";
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.AllAction();
+
+                                obj.Id = reader["id"].ToString();
+                                obj.Name = reader["name"].ToString();
+                                obj.Parent = reader["parent"].ToString();
+
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.AllActions.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+
+                //Actions
+
+                try
+                {
+                    command.CommandText = "select * from Actions";
+
+                    //SqlDataReader reader = command.ExecuteReader();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.Action();
+                                obj.Id = Convert.ToInt32(reader["id"].ToString());
+                                obj.AllActionId = reader["actionId"].ToString();
+                                obj.ActionType_Id = reader["actionType"].ToString();
+                                obj.FizVelId = reader["fizVelId"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Actions.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+                //ActionPros
+
+                try
+                {
+                    //после action, pro
+                    command.CommandText = "select * from ActionPros";
+                    //SqlDataReader reader = command.ExecuteReader()
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new ActionPro();
+                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
+                                obj.ProId = reader["prosId"].ToString();
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.ActionPros.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+
+                        }
+                    }
+                    // SqlDataReader reader = command.ExecuteReader();
+
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                //finally
+                //{
+                //    reader.Close();
+                //}
+
+
+
+
+
+                //Spec
+
+
+
+                try
+                {
+                    command.CommandText = "select * from Spec";
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.Spec();
+
+
+                                obj.Id = reader["id"].ToString();
+                                obj.Name = reader["name"].ToString();
+                                obj.Parent = reader["parent"].ToString();
+
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Specs.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+                //ActionSpec
+
+
+                try
+                {
+                    command.CommandText = "select * from ActionSpec";
+
+                    //SqlDataReader reader = command.ExecuteReader();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.ActionSpec();
+
+                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
+                                obj.SpecId = reader["specId"].ToString();
+
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.ActionSpecs.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+
+                //Vrem
+
+
+
+                try
+                {
+                    command.CommandText = "select * from Vrem";
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+                        //SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var obj = new Domain.Vrem();
+
+
+                                obj.Id = reader["id"].ToString();
+                                obj.Name = reader["name"].ToString();
+                                obj.Parent = reader["parent"].ToString();
+
+
+                                using (var db = new ApplicationDbContext())
+                                {
+                                    db.Vrems.Add(obj);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
 
 
@@ -501,39 +714,7 @@ namespace dip.Models.DataBase
 
 
 
-                //AllActions
-
-                try
-                {
-                    command.CommandText = "select * from AllActions";
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.AllAction();
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.AllActions.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                
 
                 //---- Chains
 
@@ -722,46 +903,7 @@ namespace dip.Models.DataBase
 
 
 
-                //FizVels
-
-
-                try
-                {
-                    command.CommandText = "select * from FizVels";
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FizVel();
-
-                                obj.Id = reader["id"].ToString();
-
-                                obj.Name = reader["name"].ToString();
-
-
-                                if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
-                                    obj.Parent = null;
-                                else
-                                    obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FizVels.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                
 
 
 
@@ -849,41 +991,7 @@ namespace dip.Models.DataBase
 
 
 
-                //Pros
-
-
-                try
-                {
-                    command.CommandText = "select * from Pros";
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Pro();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Pros.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                
 
 
 
@@ -892,42 +1000,7 @@ namespace dip.Models.DataBase
 
 
 
-                //Spec
-
-
-
-                try
-                {
-                    command.CommandText = "select * from Spec";
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Spec();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Specs.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                
 
 
 
@@ -1038,43 +1111,7 @@ namespace dip.Models.DataBase
 
 
 
-                //Vrem
-
-
-
-                try
-                {
-                    command.CommandText = "select * from Vrem";
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Vrem();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Vrems.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                
 
 
 
