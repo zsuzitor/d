@@ -475,6 +475,22 @@ namespace dip.Models.DataBase
 
                 try
                 {
+
+                    //костль для восстановления id, для того что бы начиналось с 134
+                    for (var i = 0; i < 133; ++i)
+                    {
+                        using (var db = new ApplicationDbContext())
+                        {
+                            var obj = new Domain.Action();
+                            db.Actions.Add(obj);
+                            db.SaveChanges();
+                            db.Actions.Remove(obj);
+                            db.SaveChanges();
+                        }
+                    }
+
+
+
                     command.CommandText = "select * from Actions";
 
                     //SqlDataReader reader = command.ExecuteReader();
@@ -511,6 +527,21 @@ namespace dip.Models.DataBase
 
                 try
                 {
+                    //костль для восстановления id, для того что бы начиналось с 207, по идеи это не нужно, 
+                    //for (var i = 0; i < 207; ++i)
+                    //{
+                    //    using (var db = new ApplicationDbContext())
+                    //    {
+                    //        var obj = new Domain.ActionPro();
+                    //        db.ActionPros.Add(obj);
+                    //        db.SaveChanges();
+                    //        db.ActionPros.Remove(obj);
+                    //        db.SaveChanges();
+                    //    }
+                    //}
+
+
+
                     //после action, pro
                     command.CommandText = "select * from ActionPros";
                     //SqlDataReader reader = command.ExecuteReader()
@@ -594,6 +625,20 @@ namespace dip.Models.DataBase
 
                 try
                 {
+                    //костль для восстановления id, для того что бы начиналось с 212
+                    //for (var i = 0; i < 211; ++i)
+                    //{
+                    //    using (var db = new ApplicationDbContext())
+                    //    {
+                    //        var obj = new Domain.ActionSpec();
+                    //        db.ActionSpecs.Add(obj);
+                    //        db.SaveChanges();
+                    //        db.ActionSpecs.Remove(obj);
+                    //        db.SaveChanges();
+                    //    }
+                    //}
+
+
                     command.CommandText = "select * from ActionSpec";
 
                     //SqlDataReader reader = command.ExecuteReader();
@@ -679,6 +724,18 @@ namespace dip.Models.DataBase
 
                 try
                 {
+                    //костль для восстановления id, для того что бы начиналось с 212
+                    //for(var i = 0; i < 211; ++i)
+                    //{
+                    //    using (var db = new ApplicationDbContext())
+                    //    {
+                    //        var obj = new Domain.ActionVrem();
+                    //        db.ActionVrems.Add(obj);
+                    //        db.SaveChanges();
+                    //        db.ActionVrems.Remove(obj);
+                    //        db.SaveChanges();
+                    //    }
+                    //}
                     command.CommandText = "select * from ActionVrem";
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -1035,15 +1092,15 @@ namespace dip.Models.DataBase
 
 
                                 if (string.IsNullOrWhiteSpace(reader["compatible"].ToString()))
-                                    obj.Parent = null;
+                                    obj.Compatible = null;
                                 else
-                                    obj.Parent = reader["compatible"].ToString();
+                                    obj.Compatible = reader["compatible"].ToString();
 
 
                                 if (string.IsNullOrWhiteSpace(reader["path"].ToString()))
-                                    obj.Parent = null;
+                                    obj.Path = null;
                                 else
-                                    obj.Parent = reader["path"].ToString();
+                                    obj.Path = reader["path"].ToString();
 
 
                                 using (var db = new ApplicationDbContext())

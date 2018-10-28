@@ -18,32 +18,32 @@
         <hr />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.actionId, "Название воздействия", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = @ViewBag.currentActionId })
+            @Html.LabelFor(model => model.AllActionId, "Название воздействия", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = @ViewBag.currentActionId })
             <div class="col-md-10">
                 @Html.DropDownList("actionId", null, htmlAttributes: new { id = "action", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.actionId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.AllActionId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.actionType, "Тип входа", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ActionType_Id, "Тип входа", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("actionType", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.actionType, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ActionType_Id, "", new { @class = "text-danger" })
             </div>
         </div>
         <div id="fizVelGroup">
             <div class="form-group" id="fizVel">
                 @if (ViewBag.currentAction != "VOZ11")
                 {
-                    @Html.LabelFor(model => model.fizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
                 }
                 else
                 {
-                    @Html.LabelFor(model => model.fizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
                 }
                 <div class="col-md-10">
                     @Html.DropDownList("fizVelId", null, htmlAttributes: new { id = "fizVelId", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.fizVelId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

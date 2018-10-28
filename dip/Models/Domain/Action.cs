@@ -30,7 +30,11 @@ namespace dip.Models.Domain
 
 
         public ICollection<ActionPro> ActionPros { get; set; }
+
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionSpec",  ThisKey = "Id", OtherKey = "ActionId")]
         public ICollection<ActionSpec> ActionSpecs { get; set; }
+
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionVrem",  ThisKey = "Id", OtherKey = "ActionId")]
         public ICollection<ActionVrem> ActionVrems { get; set; }
         
        

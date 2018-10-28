@@ -11,6 +11,7 @@ namespace dip.Models.Domain
     public class ActionPro
     {
         [Key]
+        public int Id { get; set; }
         public int ActionId { get; set; }
         public Action Action { get; set; }
 
