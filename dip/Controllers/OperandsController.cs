@@ -14,55 +14,51 @@ namespace dip.Controllers
     public class OperandsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        //private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Operands
         public ActionResult Index()
         {
-            var operandEntities = db.Operands;
-            var operandGroupEntities = db.OperandGroups;
-            var fizVelsEntities = db.FizVels;
 
-            var allOperandEntities =
-                (from operand in operandEntities
-                 select operand).ToList();
+            //var operandGroupEntities = ;
+            //var fizVelsEntities = ;
 
-            operandEntities.RemoveRange(allOperandEntities);
-            db.SaveChanges();
-
-            var newOperandEntities = new List<Operand>();
-            foreach (var operandGroup in operandGroupEntities)
+            //var allOperandEntities =
+            //    (from operand in operandEntities
+            //     select operand).ToList();
+            List<Operand> res = new List<Operand>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var selectedFizVelses =
-                    (from fizVel in fizVelsEntities
-                     where fizVel.Parent == operandGroup.Id
-                     select fizVel).ToList();
+                db.Operands.RemoveRange(db.Operands.ToList());
+                db.SaveChanges();
 
-                foreach (var fizVel in selectedFizVelses)
+                var newOperandEntities = new List<Operand>();
+                foreach (var operandGroup in db.OperandGroups.ToList())
                 {
-                    var operandEntity = new Operand
+                    var selectedFizVelses =
+                        (from fizVel in db.FizVels
+                         where fizVel.Parent == operandGroup.Id
+                         select fizVel).ToList();
+
+                    foreach (var fizVel in selectedFizVelses)
                     {
-                        Id = fizVel.Id,
-                        Value = fizVel.Name,
-                        OperandGroup = operandGroup
-                    };
-                    newOperandEntities.Add(operandEntity);
+                        var operandEntity = new Operand
+                        {
+                            Id = fizVel.Id,
+                            Value = fizVel.Name,
+                            OperandGroup = operandGroup
+                        };
+                        newOperandEntities.Add(operandEntity);
+                    }
                 }
+
+                db.Operands.AddRange(newOperandEntities);
+                db.SaveChanges();
+                res = db.Operands.Include(o => o.OperandGroup).ToList();
             }
-
-            operandEntities.AddRange(newOperandEntities);
-            db.SaveChanges();
-
-            return View(db.Operands.Include(o => o.OperandGroup).ToList());
+            return View(res);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        
     }
 }

@@ -64,7 +64,7 @@
             $.ajax(
                 {
                     type: 'GET',
-                    url: '/DecriptionQueries/GetLimits/' + operationId,
+                    url: '/DescriptionQueries/GetLimits/' + operationId,
                     success: function (limit) {
                         $('#limit').replaceWith(limit);
                     }
@@ -79,7 +79,7 @@
             $.ajax(
                 {
                     type: 'GET',
-                    url: '/DecriptionQueries/GetOperands/' + operandGroupId,
+                    url: '/DescriptionQueries/GetOperands/' + operandGroupId,
                     success: function (operand) {
                         $('#operand').replaceWith(operand);
                     }

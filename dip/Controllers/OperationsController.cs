@@ -1,4 +1,5 @@
 ﻿using dip.Models;
+using dip.Models.Domain;
 using dip.Models.TechnicalFunctions;
 //using PhysicalEffectsSearchEngine.Models;
 using System;
@@ -13,7 +14,7 @@ namespace dip.Controllers
     public class OperationsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        //private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ConstOperationId = "CONST";
         private const string ChangeOperationId = "CHANGE";
@@ -25,22 +26,24 @@ namespace dip.Controllers
         // GET: Operations
         public ActionResult Index()
         {
-            var operationEntities = db.Operations;
-            var thesEntities = db.Thes;
+            //var operationEntities = ;
+            //var thesEntities = ;
 
-            var allOperationEntities =
-                (from operation in operationEntities
-                 select operation).ToList();
+            //var allOperationEntities =
+            //    (from operation in operationEntities
+            //     select operation).ToList();
+            List<The> selectedTheses = new List<The>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Operations.RemoveRange(db.Operations.ToList());
+                db.SaveChanges();
 
-            operationEntities.RemoveRange(allOperationEntities);
-            db.SaveChanges();
-
-            var selectedTheses =
-                (from thes in thesEntities
-                 where thes.Id == ConstOperationId || thes.Id == ChangeOperationId ||
-                       thes.Id == IncOperationId || thes.Id == DecOperationId
-                 select thes).ToList();
-
+                 selectedTheses =
+                    (from thes in db.Thes
+                     where thes.Id == ConstOperationId || thes.Id == ChangeOperationId ||
+                           thes.Id == IncOperationId || thes.Id == DecOperationId
+                     select thes).ToList();
+            }
             const string constOperationValue = "Стабилизация";
             var newOperationEntities = new List<Operation>();
 
@@ -70,20 +73,16 @@ namespace dip.Controllers
 
                 newOperationEntities.Add(operationEntity);
             }
-
-            operationEntities.AddRange(newOperationEntities);
-            db.SaveChanges();
-
-            return View(db.Operations.ToList());
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            List<Operation> res = new List<Operation>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Dispose();
+                db.Operations.AddRange(newOperationEntities);
+                db.SaveChanges();
+                res = db.Operations.ToList();
             }
-            base.Dispose(disposing);
+            return View(res);
         }
+
+        
     }
 }

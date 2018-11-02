@@ -11,6 +11,13 @@ using System.Configuration;
 using System.Data.SqlClient;
 using dip.Models.Domain;
 
+
+
+using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+
+            }
+
 namespace dip.Controllers
 {
     public class HomeController : Controller

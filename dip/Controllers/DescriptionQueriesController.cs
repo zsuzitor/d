@@ -1,6 +1,7 @@
 ﻿//using dip.Models;
 using dip.Models;
 using dip.Models.Domain;
+using dip.Models.TechnicalFunctions;
 using PagedList;
 //using PhysicalEffectsSearchEngine.Models;
 using System;
@@ -15,39 +16,54 @@ namespace dip.Controllers
     public class DescriptionQueriesController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        //private readonly ApplicationDbContext db = new ApplicationDbContext();
         //private readonly ApplicationDbContext PhysicalEffectsDb = new ApplicationDbContext();
-        
+
 
         private const string NotFoundFuncId = "FUNC_NOT_FOUND";
         private const string NotFoundErrorMessage = "Физических эффектов по такому запросy не найдено";
 
         // GET: DecriptionQueries/Create
-        
+
         public ActionResult Create()
         {
-            
-            var operationEntities = db.Operations;
-            var operandGroupEntities = db.OperandGroups;
-            var operandEntities = db.Operands;
-            var limitEntities = db.Limits;
+            List<Operation> operationEntities = new List<Models.TechnicalFunctions.Operation>();
+            List<Limit> limitEntities = new List<Models.TechnicalFunctions.Limit>();
+            List<Operand> operandEntities = new List<Models.TechnicalFunctions.Operand>();
+            List<OperandGroup> operandGroupEntities = new List<Models.TechnicalFunctions.OperandGroup>();
 
-            var allOperations = new SelectList(operationEntities.OrderBy(operation => operation.Value), "Id", "Value");
-            var operationId = allOperations.First().Value;
+            SelectList allOperations;
+            SelectList compatibleLimits;
+            SelectList allOperandGroups;
+            SelectList compatibleOperands;
 
-            var compatibleLimits =
-                new SelectList(
-                    limitEntities.Where(limit => limit.Id.Contains(operationId)).OrderBy(limit => limit.Value), "Id",
-                    "Value");
+            string operandGroupId;
+            string operationId;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                operationEntities = db.Operations.OrderBy(operation => operation.Value).ToList();
+                operandGroupEntities = db.OperandGroups.ToList();
+                allOperandGroups = new SelectList(operandGroupEntities, "Id", "Value");
+                operandGroupId = allOperandGroups.First().Value;
+                operandEntities = db.Operands.Where(operand => operand.Id.Contains(operandGroupId))
+                        .OrderBy(operand => operand.Value).ToList();
+                allOperations = new SelectList(operationEntities, "Id", "Value");
+                operationId = allOperations.First().Value;
+                limitEntities = db.Limits.Where(limit => limit.Id.Contains(operationId)).OrderBy(limit => limit.Value).ToList();
 
-            var allOperandGroups = new SelectList(operandGroupEntities, "Id", "Value");
-            var operandGroupId = allOperandGroups.First().Value;
 
-            var compatibleOperands =
-                new SelectList(
-                    operandEntities.Where(operand => operand.Id.Contains(operandGroupId))
-                        .OrderBy(operand => operand.Value), "Id", "Value");
 
+            }
+            compatibleLimits =
+               new SelectList(
+                   limitEntities, "Id",
+                   "Value");
+
+
+
+            compatibleOperands =
+               new SelectList(
+                   operandEntities, "Id", "Value");
             ViewBag.Operations = allOperations;
             ViewBag.Limits = compatibleLimits;
             ViewBag.OperandGroups = allOperandGroups;
@@ -59,88 +75,100 @@ namespace dip.Controllers
             return View();
         }
 
-        
+
         public ActionResult GetLimits(string id)
         {
-            var limitEntities = db.Limits;
-            var compatibleLimits =
-                new SelectList(limitEntities.Where(limit => limit.Id.Contains(id)).OrderBy(limit => limit.Value), "Id",
-                    "Value");
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var limitEntities = db.Limits.Where(limit => limit.Id.Contains(id)).OrderBy(limit => limit.Value);
+                var compatibleLimits =
+                    new SelectList(limitEntities, "Id",
+                        "Value");
 
-            ViewBag.Limits = compatibleLimits;
-            ViewBag.OperationId = id;
-
+                ViewBag.Limits = compatibleLimits;
+                ViewBag.OperationId = id;
+            }
             return PartialView();
         }
 
-        
+
         public ActionResult GetOperands(string id)
         {
-            var operandEntities = db.Operands;
-            var compatibleOperands =
-                new SelectList(
-                    operandEntities.Where(operand => operand.Id.Contains(id)).OrderBy(operand => operand.Value), "Id",
-                    "Value");
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var operandEntities = db.Operands.Where(operand => operand.Id.Contains(id)).OrderBy(operand => operand.Value).ToList();
+                var compatibleOperands =
+                    new SelectList(
+                        operandEntities, "Id",
+                        "Value");
 
-            ViewBag.Operands = compatibleOperands;
-            ViewBag.OperandGroupId = id;
-
+                ViewBag.Operands = compatibleOperands;
+                ViewBag.OperandGroupId = id;
+            }
             return PartialView();
         }
 
         // POST: DecriptionQueries/Create
-        
+
         [HttpPost]
         public ActionResult Create(string operationId, string operandId, string limitId)
         {
-            var indexEntities = db.Indexs;
+            List<Index> technicalFunction = new List<Index>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
 
-            var technicalFunction =
-                (from index in indexEntities
-                 where index.OperationId == operationId &&
-                       index.OperandId == operandId &&
-                       index.LimitId == limitId
-                 select index);
 
+                technicalFunction =
+                   (from index in db.Indexs
+                    where index.OperationId == operationId &&
+                          index.OperandId == operandId &&
+                          index.LimitId == limitId
+                    select index).ToList();
+            }
             if (technicalFunction.Count() != 0)
                 return RedirectToAction("Results", new { id = technicalFunction.First().Id });
 
             return RedirectToAction("Results", new { id = NotFoundFuncId });
         }
 
-       
+
         public ActionResult Results(string id, int? page)
         {
-            var indexEntities = db.Indexs;
-            var textEffectEntities = db.FEText;
-
-            var allEffects = new List<FEText>();
+            var pageNumber = (page ?? 1);
+            const int pageSize = 15;
+            List<FEText> allEffects = new List<FEText>();
 
             var notFoundErrorMessage = string.Empty;
 
-            if (id == NotFoundFuncId)
-                notFoundErrorMessage = NotFoundErrorMessage;
-            else
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var effectIds =
-                    (from index in indexEntities
-                     where index.Id == id
-                     select index.EffectIds).First().Split(' ');
 
-                foreach (var effectId in effectIds)
+                allEffects = new List<FEText>();
+
+
+
+                if (id == NotFoundFuncId)
+                    notFoundErrorMessage = NotFoundErrorMessage;
+                else
                 {
-                    var effectIdAsInt = int.Parse(effectId);
-                    var effects =
-                        (from effect in textEffectEntities
-                         where effect.IDFE == effectIdAsInt
-                         select effect).ToList();
+                    var effectIds =
+                        (from index in db.Indexs
+                         where index.Id == id
+                         select index.EffectIds).First().Split(' ');
 
-                    allEffects.AddRange(effects);
+                    foreach (var effectId in effectIds)
+                    {
+                        var effectIdAsInt = int.Parse(effectId);
+                        var effects =
+                            (from effect in db.FEText
+                             where effect.IDFE == effectIdAsInt
+                             select effect).ToList();
+
+                        allEffects.AddRange(effects);
+                    }
                 }
-            }
 
-            const int pageSize = 15;
-            var pageNumber = (page ?? 1);
+            }
 
             ViewBag.TechnicalFunctionId = id;
             ViewBag.Query = string.Join(": ", "Найдено эффектов", allEffects.Count);
@@ -150,29 +178,25 @@ namespace dip.Controllers
             return View(allEffects.ToPagedList(pageNumber, pageSize));
         }
 
-        
+
         public ActionResult Details(int id, string technicalFunctionId)
         {
-            var textEffectEntities = db.FEText;
-
-            var effect =
-                (from textEffect in textEffectEntities
-                 where textEffect.IDFE == id
-                 select textEffect).First();
-
-            ViewBag.EffectName = effect.Name;
-            ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
-
-            return View(effect);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            FEText effect;
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Dispose();
+               
+
+                 effect =
+                    (from textEffect in db.FEText
+                     where textEffect.IDFE == id
+                     select textEffect).First();
+
+                ViewBag.EffectName = effect.Name;
+                ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
             }
-            base.Dispose(disposing);
-        }
+                return View(effect);
+            }
+
+        
     }
-}
+    }

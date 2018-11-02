@@ -1,4 +1,5 @@
 ﻿using dip.Models;
+using dip.Models.Domain;
 using dip.Models.TechnicalFunctions;
 //using PhysicalEffectsSearchEngine.Models;
 using System;
@@ -13,7 +14,7 @@ namespace dip.Controllers
     public class LimitsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        //private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ConstOperationId = "CONST";
         private const string ChangeOperationId = "CHANGE";
@@ -42,115 +43,121 @@ namespace dip.Controllers
 
         private void IndexLimits(ref List<Limit> limitEntities, string operationId, string parent)
         {
-            var thesEntities = db.Thes;
+            List<The> selectedTheses = new List<The>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
 
-            var selectedTheses =
-                (from thes in thesEntities
+                 selectedTheses =
+                (from thes in db.Thes
                  where thes.Parent == parent
                  select thes).ToList();
-
-            foreach (var thes in selectedTheses)
-            {
-                var limitEntity = new Limit();
-                switch (operationId)
-                {
-                    case ChangeOperationId:
-                        limitEntity.Value = thes.Name;
-
-                        if (thes.Id.Contains(IncOperationId) &&
-                            (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
-                             thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix)))
-                        {
-                            limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(IncOperationId.Length));
-                            limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
-                            limitEntities.Add(limitEntity);
-                        }
-                        else if (thes.Id != ConstOperationId && thes.Id != ChangeOperationId &&
-                                 thes.Id != IncOperationId && !thes.Id.Contains(DecOperationId))
-                        {
-                            limitEntity.Id = CombineLimitProperty(operationId, thes.Id);
-                            limitEntity.Parent =
-                                parent == ChangeOperationId
-                                ? DefaultOperationParent
-                                : CombineLimitProperty(operationId, parent);
-                            limitEntities.Add(limitEntity);
-                        }
-                        break;
-
-                    case IncOperationId:
-                        if ((thes.Id.Contains(IncOperationId) &&
-                             (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
-                              thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix))))
-                        {
-                            limitEntity.Value = thes.Name;
-                            limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(IncOperationId.Length));
-                            limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
-                            limitEntities.Add(limitEntity);
-                        }
-                        break;
-
-                    case DecOperationId:
-                        if ((thes.Id.Contains(DecOperationId) &&
-                             (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
-                              thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix))))
-                        {
-                            limitEntity.Value = thes.Name;
-                            limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(DecOperationId.Length));
-                            limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
-                            limitEntities.Add(limitEntity);
-                        }
-                        break;
-                }
-
-                IndexLimits(ref limitEntities, operationId, thes.Id);
             }
+            foreach (var thes in selectedTheses)
+                {
+                    var limitEntity = new Limit();
+                    switch (operationId)
+                    {
+                        case ChangeOperationId:
+                            limitEntity.Value = thes.Name;
+
+                            if (thes.Id.Contains(IncOperationId) &&
+                                (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
+                                 thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix)))
+                            {
+                                limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(IncOperationId.Length));
+                                limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
+                                limitEntities.Add(limitEntity);
+                            }
+                            else if (thes.Id != ConstOperationId && thes.Id != ChangeOperationId &&
+                                     thes.Id != IncOperationId && !thes.Id.Contains(DecOperationId))
+                            {
+                                limitEntity.Id = CombineLimitProperty(operationId, thes.Id);
+                                limitEntity.Parent =
+                                    parent == ChangeOperationId
+                                    ? DefaultOperationParent
+                                    : CombineLimitProperty(operationId, parent);
+                                limitEntities.Add(limitEntity);
+                            }
+                            break;
+
+                        case IncOperationId:
+                            if ((thes.Id.Contains(IncOperationId) &&
+                                 (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
+                                  thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix))))
+                            {
+                                limitEntity.Value = thes.Name;
+                                limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(IncOperationId.Length));
+                                limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
+                                limitEntities.Add(limitEntity);
+                            }
+                            break;
+
+                        case DecOperationId:
+                            if ((thes.Id.Contains(DecOperationId) &&
+                                 (thes.Id.Contains(DegLimitIdSuffix) || thes.Id.Contains(LineLimitIdSuffix) ||
+                                  thes.Id.Contains(VipLimitIdSuffix) || thes.Id.Contains(VogLimitIdSuffix))))
+                            {
+                                limitEntity.Value = thes.Name;
+                                limitEntity.Id = CombineLimitProperty(operationId, thes.Id.Substring(DecOperationId.Length));
+                                limitEntity.Parent = CombineLimitProperty(operationId, IncOperationParent);
+                                limitEntities.Add(limitEntity);
+                            }
+                            break;
+                    }
+
+                    IndexLimits(ref limitEntities, operationId, thes.Id);
+                }
+            
         }
 
         // GET: Limits
         public ActionResult Index()
         {
-            var limitEntities = db.Limits;
-            var operationEntities = db.Operations;
+            //var limitEntities = db.Limits;
+            //var operationEntities = db.Operations;
 
-            var allLimitEntities =
-                (from limit in limitEntities
-                 select limit).ToList();
+            //var allLimitEntities =
+            //    (from limit in db.Limits
+            //     select limit).ToList();
+           
 
-            limitEntities.RemoveRange(allLimitEntities);
-            db.SaveChanges();
-
-            const string baseParent = "CHARACTER";
-            var newLimitEntities = new List<Limit>();
-            foreach (var operation in operationEntities)
+                const string baseParent = "CHARACTER";
+                var newLimitEntities = new List<Limit>();
+            List<Operation> operations_list = new List<Operation>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var noLimitEntity = new Limit
+                db.Limits.RemoveRange(db.Limits.ToList());
+                db.SaveChanges();
+
+                operations_list = db.Operations.ToList();
+            }
+                foreach (var operation in operations_list)
                 {
-                    Id = CombineLimitProperty(operation.Id, NoLimitIdSuffix),
-                    Value = NoLimitValue
-                };
+                    var noLimitEntity = new Limit
+                    {
+                        Id = CombineLimitProperty(operation.Id, NoLimitIdSuffix),
+                        Value = NoLimitValue
+                    };
 
-                if (operation.Id == IncOperationId || operation.Id == DecOperationId)
-                    noLimitEntity.Parent = CombineLimitProperty(ChangeOperationId, NoLimitIdSuffix);
-                else
-                    noLimitEntity.Parent = DefaultLimitParent;
+                    if (operation.Id == IncOperationId || operation.Id == DecOperationId)
+                        noLimitEntity.Parent = CombineLimitProperty(ChangeOperationId, NoLimitIdSuffix);
+                    else
+                        noLimitEntity.Parent = DefaultLimitParent;
 
-                newLimitEntities.Add(noLimitEntity);
-                IndexLimits(ref newLimitEntities, operation.Id, baseParent);
-            }
-
-            limitEntities.AddRange(newLimitEntities);
-            db.SaveChanges();
-
-            return View(db.Limits.ToList());
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+                    newLimitEntities.Add(noLimitEntity);
+                    IndexLimits(ref newLimitEntities, operation.Id, baseParent);
+                }
+            List<Limit> res = new List<Limit>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Dispose();
+                
+                db.Limits.AddRange(newLimitEntities);
+                db.SaveChanges();
+                res = db.Limits.ToList();
             }
-            base.Dispose(disposing);
+            return View(res);
         }
+
+        
     }
 }

@@ -15,7 +15,7 @@ namespace dip.Controllers
     public class IndexesController : Controller
     {
         //private readonly db _TechnicalFunctionsDb = new TechnicalFunctionsEntities();
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        //private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         private const string ChangeOperationId = "CHANGE";
         private const string ConstOperationId = "CONST";
@@ -33,34 +33,47 @@ namespace dip.Controllers
 
         private List<FEAction> GetActionsWithChange(string operandId, string fizVelChangeId)
         {
-            var fEActionEntities = db.FEActions;
+            List<FEAction> res = new List<FEAction>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                 res= (from fEAction in db.FEActions
+                          where fEAction.Input == 0 &&
+                                fEAction.FizVelId == operandId &&
+                                fEAction.FizVelChange == fizVelChangeId
+                          select fEAction).ToList();
 
-            return
-                (from fEAction in fEActionEntities
-                 where fEAction.Input == 0 &&
-                       fEAction.FizVelId == operandId &&
-                       fEAction.FizVelChange == fizVelChangeId
-                 select fEAction).ToList();
+
+            }
+            return res;
+
+
         }
 
         private Operation GetOperationById(string id)
         {
-            var operationEntities = db.Operations;
-
-            return
-                (from operation in operationEntities
-                 where operation.Id == id
-                 select operation).First();
+            Operation res;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                 res = (from operation in db.Operations
+                           where operation.Id == id
+                           select operation).First();
+            }
+            return res;
+                
         }
 
         private Limit GetLimitById(string id)
         {
-            var limitEntities = db.Limits;
+            Limit res;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                 res= (from limit in db.Limits
+                          where limit.Id == id
+                          select limit).First();
+            }
+            return res;
 
-            return
-                (from limit in limitEntities
-                 where limit.Id == id
-                 select limit).First();
+
         }
 
         private List<Index> CombineQueries(Operand operand)
@@ -283,34 +296,31 @@ namespace dip.Controllers
        
         public ActionResult Index()
         {
-            var indexEntities = db.Indexs;
-            var operandEntities = db.Operands;
-
-            var allIndexEntities =
-                (from index in indexEntities
-                 select index).ToList();
-
-            indexEntities.RemoveRange(allIndexEntities);
-            db.SaveChanges();
-
-            var newIndexEntities = new List<Index>();
-
-            foreach (var operand in operandEntities)
-                newIndexEntities.AddRange(CombineQueries(operand));
-
-            indexEntities.AddRange(newIndexEntities);
-            db.SaveChanges();
-
-            return View(db.Indexs.Include(f => f.Limit).Include(f => f.Operand).Include(f => f.Operation).ToList());
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            List<Index> res = new List<Models.TechnicalFunctions.Index>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Dispose();
+               
+                
+                
+                //var allIndexEntities =
+                //    (from index in db.Indexs
+                //     select index).ToList();
+
+                db.Indexs.RemoveRange(db.Indexs.ToList());
+                db.SaveChanges();
+
+                var newIndexEntities = new List<Index>();
+
+                foreach (var operand in db.Operands)
+                    newIndexEntities.AddRange(CombineQueries(operand));
+
+                db.Indexs.AddRange(newIndexEntities);
+                db.SaveChanges();
+                 res= db.Indexs.Include(f => f.Limit).Include(f => f.Operand).Include(f => f.Operation).ToList();
             }
-            base.Dispose(disposing);
+            return View(res);
         }
+
+        
     }
 }
