@@ -125,10 +125,11 @@ namespace dip.Controllers
                           index.LimitId == limitId
                     select index).ToList();
             }
+            string resId = NotFoundFuncId;
             if (technicalFunction.Count() != 0)
-                return RedirectToAction("Results", new { id = technicalFunction.First().Id });
+                resId= technicalFunction.First().Id ;
 
-            return RedirectToAction("Results", new { id = NotFoundFuncId });
+            return RedirectToAction("Results", new { id = resId });
         }
 
 
@@ -143,7 +144,7 @@ namespace dip.Controllers
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
 
-                allEffects = new List<FEText>();
+                //allEffects = new List<FEText>();
 
 
 

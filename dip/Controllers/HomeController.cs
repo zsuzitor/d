@@ -13,10 +13,7 @@ using dip.Models.Domain;
 
 
 
-using (ApplicationDbContext db = new ApplicationDbContext())
-            {
 
-            }
 
 namespace dip.Controllers
 {
