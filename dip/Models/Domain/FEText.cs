@@ -24,5 +24,27 @@ namespace dip.Models.Domain
         {
 
         }
+
+        public bool Equal (FEText a)
+        {
+            this.Name = a.Name;
+            this.Text = a.Text;
+            this.TextInp = a.TextInp;
+            this.TextOut = a.TextOut;
+            this.TextObj = a.TextObj;
+            this.TextApp = a.TextApp;
+            this.TextLit = a.TextLit;
+
+            
+            return true;
+        }
+
+        public bool EqualWithId(FEText a)
+        {
+            this.Equal(a);
+            this.IDFE = a.IDFE;
+
+            return true;
+        }
     }
 }

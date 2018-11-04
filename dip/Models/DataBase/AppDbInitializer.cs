@@ -43,6 +43,7 @@ namespace dip.Models.DataBase
                 // добавляем для пользователя роль
                 userManager.AddToRole(admin.Id, roleAdmin.Name);
                 userManager.AddToRole(admin.Id, roleUser.Name);
+                userManager.AddToRole(admin.Id, roleVip.Name);
                 //
                 userManager.AddToRole(Nadmin.Id, roleUser.Name);
             }

@@ -194,6 +194,10 @@ namespace dip.Controllers
 
                 ViewBag.EffectName = effect.Name;
                 ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
+
+                db.Entry(effect).Collection(x1=>x1.Images).Load();
+                
+
             }
                 return View(effect);
             }

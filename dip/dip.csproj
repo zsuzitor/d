@@ -185,6 +185,7 @@
     <Compile Include="Controllers\OperandGroupsController.cs" />
     <Compile Include="Controllers\OperandsController.cs" />
     <Compile Include="Controllers\OperationsController.cs" />
+    <Compile Include="Controllers\PhysicController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +215,7 @@
     <Compile Include="Models\Domain\The.cs" />
     <Compile Include="Models\Domain\ThesChild.cs" />
     <Compile Include="Models\Domain\Vrem.cs" />
+    <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TechnicalFunctions\Index.cs" />
@@ -298,6 +300,7 @@
     <Content Include="Views\OperandGroups\Index.cshtml" />
     <Content Include="Views\Operands\Index.cshtml" />
     <Content Include="Views\Operations\Index.cshtml" />
+    <Content Include="Views\Physic\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

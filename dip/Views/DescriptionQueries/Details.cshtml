@@ -60,6 +60,16 @@
             </dd>
 
         </dl>
+
+
+        @foreach (var i in Model.Images)
+        {
+            <div class="" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+            </div>
+
+        }
+
+
     </div>
     <p>
         @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
