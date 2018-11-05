@@ -9,6 +9,10 @@
 @{
     <div>
         <h4>@ViewBag.EffectName</h4>
+        @if (ViewBag.Admin == true)
+        {
+            @Html.ActionLink("Редактировать", "Create", "Physic",new {id=Model.IDFE },new { })
+        }
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -64,7 +68,7 @@
 
         @foreach (var i in Model.Images)
         {
-            <div class="" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+            <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
             </div>
 
         }

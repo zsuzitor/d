@@ -73,6 +73,17 @@
     </dl>
 
 
+    @foreach (var i in Model.Images)
+    {
+        <div>
+            <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+            </div>
+            <button>Удалить</button>
+        </div>
+    }
+
+
+    <div id="div_delete img_id"></div>
 
 
 

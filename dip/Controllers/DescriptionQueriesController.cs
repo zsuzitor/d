@@ -2,6 +2,8 @@
 using dip.Models;
 using dip.Models.Domain;
 using dip.Models.TechnicalFunctions;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 //using PhysicalEffectsSearchEngine.Models;
 using System;
@@ -183,6 +185,9 @@ namespace dip.Controllers
         public ActionResult Details(int id, string technicalFunctionId)
         {
             FEText effect;
+            string check_id = ApplicationUser.GetUserId();
+            
+
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                
@@ -199,7 +204,16 @@ namespace dip.Controllers
                 
 
             }
-                return View(effect);
+
+            ApplicationUserManager userManager = HttpContext.GetOwinContext()
+                                            .GetUserManager<ApplicationUserManager>();
+            IList<string> roles = userManager.GetRoles(check_id);
+
+            if (roles.Contains("admin"))
+                ViewBag.Admin = true;
+
+
+            return View(effect);
             }
 
         
