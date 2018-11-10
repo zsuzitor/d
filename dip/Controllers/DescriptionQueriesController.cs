@@ -201,7 +201,7 @@ namespace dip.Controllers
                 ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
 
                 db.Entry(effect).Collection(x1=>x1.Images).Load();
-                
+                //var g = db.Images.ToList();
 
             }
 

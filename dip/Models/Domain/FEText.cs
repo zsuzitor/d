@@ -22,7 +22,7 @@ namespace dip.Models.Domain
 
         public FEText()
         {
-
+            this.Images = new List<Image>();
         }
 
         public bool Equal (FEText a)

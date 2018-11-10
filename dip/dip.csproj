@@ -207,6 +207,7 @@
     <Compile Include="Models\Domain\FizVel.cs" />
     <Compile Include="Models\Domain\Image.cs" />
     <Compile Include="Models\Domain\Log.cs" />
+    <Compile Include="Models\Domain\LogParam.cs" />
     <Compile Include="Models\Domain\NewFEIndex.cs" />
     <Compile Include="Models\Domain\NeZakon.cs" />
     <Compile Include="Models\Domain\Pro.cs" />
