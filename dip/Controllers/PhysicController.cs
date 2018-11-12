@@ -20,10 +20,23 @@ namespace dip.Controllers
         }
 
 
-
+        [HttpPost]
         public ActionResult TextSearch(string str)
         {
             //TODO полнотекстовый поиск
+
+            using (var db=new ApplicationDbContext())
+            {
+                System.Data.SqlClient.SqlParameter param1 = new System.Data.SqlClient.SqlParameter("@searched_str", "Затухание");
+                System.Data.SqlClient.SqlParameter param2 = new System.Data.SqlClient.SqlParameter("@max_lev", 5);
+                var lst = db.Database.SqlQuery<test>("SELECT * FROM GetListLev (@searched_str,@max_lev)", param1, param2).ToList();
+                
+
+            }
+                
+
+
+
             return View();
         }
 

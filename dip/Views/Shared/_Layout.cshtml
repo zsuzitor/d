@@ -32,6 +32,11 @@
             </div>
             @Html.Partial("_LoginPartial")
         </div>
+        @using (Html.BeginForm("TextSearch", "Physic"))
+        {
+            <input name="str" type="text"/>
+            <input type="submit" value="поиск"/>
+        }
     </div>
     <div class="container body-content">
         @RenderBody()

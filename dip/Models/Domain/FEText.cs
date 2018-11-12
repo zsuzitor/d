@@ -10,13 +10,21 @@ namespace dip.Models.Domain
     {
         [Key]
         public int IDFE { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Name { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Text { get; set; }
+        [DataType(DataType.MultilineText)]
         public string TextInp { get; set; }
+        [DataType(DataType.MultilineText)]
         public string TextOut { get; set; }
+        [DataType(DataType.MultilineText)]
         public string TextObj { get; set; }
+        [DataType(DataType.MultilineText)]
         public string TextApp { get; set; }
+        [DataType(DataType.MultilineText)]
         public string TextLit { get; set; }
+
 
         public ICollection<Image> Images { get; set; }
 
