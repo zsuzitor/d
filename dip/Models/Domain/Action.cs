@@ -29,20 +29,22 @@ namespace dip.Models.Domain
 
 
 
-        public ICollection<ActionPro> ActionPros { get; set; }
+        public ICollection<Pro> Pros { get; set; }
 
-        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionSpec",  ThisKey = "Id", OtherKey = "ActionId")]
-        public ICollection<ActionSpec> ActionSpecs { get; set; }
+       // [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionSpec",  ThisKey = "Id", OtherKey = "ActionId")]
+        public ICollection<Spec> Specs { get; set; }
 
-        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionVrem",  ThisKey = "Id", OtherKey = "ActionId")]
-        public ICollection<ActionVrem> ActionVrems { get; set; }
+        //[global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Action_ActionVrem",  ThisKey = "Id", OtherKey = "ActionId")]
+        public ICollection<Vrem> Vrems { get; set; }
         
        
        
 
         public Action()
         {
-
+            Pros = new List<Pro>();
+            Specs = new List<Spec>();
+            Vrems = new List<Vrem>();
         }
     }
 }

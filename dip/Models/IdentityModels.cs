@@ -89,11 +89,11 @@ namespace dip.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         //---------------------------old part-----------------------------------------------------
-        public DbSet<Domain.ActionPro> ActionPros { get; set; }
+       // public DbSet<Domain.ActionPro> ActionPros { get; set; }
         public DbSet<Domain.Action> Actions { get; set; }
-        public DbSet<ActionSpec> ActionSpecs { get; set; }
+        //public DbSet<ActionSpec> ActionSpecs { get; set; }
         public DbSet<ActionType> ActionTypes { get; set; }
-        public DbSet<ActionVrem> ActionVrems { get; set; }
+        //public DbSet<ActionVrem> ActionVrems { get; set; }
         public DbSet<AllAction> AllActions { get; set; }
         //public DbSet<Chain> Chains { get; set; }
         public DbSet<FEAction> FEActions { get; set; }
@@ -141,5 +141,44 @@ namespace dip.Models
         {
             return new ApplicationDbContext();
         }
+
+
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Domain.Action>().HasMany(c => c.Pros)//1 класс и свойство который связываем
+                .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
+                .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
+                .MapRightKey("ProId")//id 2
+                .ToTable("ActionPros"));//название таблицы
+
+
+
+            modelBuilder.Entity<Domain.Action>().HasMany(c => c.Specs)//1 класс и свойство который связываем
+               .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
+               .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
+               .MapRightKey("SpecId")//id 2
+               .ToTable("ActionSpec"));//название таблицы
+
+
+            modelBuilder.Entity<Domain.Action>().HasMany(c => c.Vrems)//1 класс и свойство который связываем
+               .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
+               .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
+               .MapRightKey("VremId")//id 2
+               .ToTable("ActionVrem"));//название таблицы
+
+
+
+
+            base.OnModelCreating(modelBuilder);//инициализация что бы роли и все остальное добавилось нормально
+        }
+
+
+
+
+
+
+
     }
 }

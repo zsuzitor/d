@@ -14,11 +14,11 @@ namespace dip.Models.Domain
 
         public string Parent { get; set; }
 
-        public ICollection<ActionPro> ActionPros;
+        public ICollection<Action> Actions;
 
         public Pro()
         {
-
+            Actions = new List<Action>();
         }
     }
 }

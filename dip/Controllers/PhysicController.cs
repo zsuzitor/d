@@ -1,5 +1,6 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
+using dip.Models.ViewModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -117,6 +118,39 @@ namespace dip.Controllers
 
                 return View(@"~/Views/DescriptionQueries/Details.cshtml", oldObj);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
     }
 

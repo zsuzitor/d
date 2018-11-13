@@ -551,12 +551,13 @@ namespace dip.Models.DataBase
                         {
                             while (reader.Read())
                             {
-                                var obj = new ActionPro();
-                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                obj.ProId = reader["prosId"].ToString();
+                                
+                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
+                                var ProId = reader["prosId"].ToString();
                                 using (var db = new ApplicationDbContext())
                                 {
-                                    db.ActionPros.Add(obj);
+                                    var act=db.Actions.First(x1=>x1.Id==ActionId);
+                                    act.Pros.Add(db.Pros.First(x1=>x1.Id==ProId));
                                     db.SaveChanges();
                                 }
 
@@ -648,14 +649,15 @@ namespace dip.Models.DataBase
                         {
                             while (reader.Read())
                             {
-                                var obj = new Domain.ActionSpec();
+                                //var obj = new Domain.ActionSpec();
 
-                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                obj.SpecId = reader["specId"].ToString();
+                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
+                                var SpecId = reader["specId"].ToString();
 
                                 using (var db = new ApplicationDbContext())
                                 {
-                                    db.ActionSpecs.Add(obj);
+                                    var act = db.Actions.First(x1 => x1.Id == ActionId);
+                                    act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
                                     db.SaveChanges();
                                 }
 
@@ -745,15 +747,17 @@ namespace dip.Models.DataBase
                         {
                             while (reader.Read())
                             {
-                                var obj = new Domain.ActionVrem();
+                                //var obj = new Domain.ActionVrem();
 
-                                obj.ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                obj.VremId = reader["vremId"].ToString();
+                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
+                                var VremId = reader["vremId"].ToString();
 
 
                                 using (var db = new ApplicationDbContext())
                                 {
-                                    db.ActionVrems.Add(obj);
+                                    var act = db.Actions.First(x1 => x1.Id == ActionId);
+                                    act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
+
                                     db.SaveChanges();
                                 }
 

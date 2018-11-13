@@ -1,0 +1,759 @@
+
+        /// <summary>
+        /// приведение списка пространственных характеристик к типу List<SelectedItem>
+        /// </summary>
+        /// <param name="list"> список пространственных характеристик </param>
+        /// <returns> список пространственных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Pro> list)
+        {   
+            // Сортируем список характеристик       
+            list = list.OrderBy(pros => pros.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedPros = new List<SelectedItem>();
+
+            // Приводим List<Pros> к List<SelectedItem>
+            foreach (var pros in list)
+            {
+                var selectedPros = new SelectedItem(pros.Id, pros.Name, false);
+                listSelectedPros.Add(selectedPros);
+            }
+
+            return listSelectedPros;
+        }
+
+        /// <summary>
+        /// приведение списка специальных характеристик к типу List<SelectedItem>
+        /// </summary>
+        /// <param name="list"> список специальных характеристик </param>
+        /// <returns> список специальных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Spec> list)
+        {
+            // Сортируем список характеристик  
+            list = list.OrderBy(spec => spec.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedSpec = new List<SelectedItem>();
+
+            // Приводим List<Spec> к List<SelectedItem>
+            foreach (var spec in list)
+            {
+                var selectedSpec = new SelectedItem(spec.Id, spec.Name, false);
+                listSelectedSpec.Add(selectedSpec);
+            }
+
+            return listSelectedSpec;
+        }
+
+        /// <summary>
+        /// приведение списка временных характеристик к типу List<SelectedItem>
+        /// </summary>
+        /// <param name="list"> список временных характеристик </param>
+        /// <returns> список временных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Vrem> list)
+        {
+            // Сортируем список характеристик
+            list = list.OrderBy(vrem => vrem.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedVrem = new List<SelectedItem>();
+
+            // Приводим List<Vrem> к List<SelectedItem>
+            foreach (var vrem in list)
+            {
+                var selectedVrem = new SelectedItem(vrem.Id, vrem.Name, false);
+                listSelectedVrem.Add(selectedVrem);
+            }
+
+            return listSelectedVrem;
+        }
+
+        /// <summary>
+        /// приведение списка пространственных характеристик к типу List<SelectedItem> с учетом выбранного воздействия
+        /// </summary>
+        /// <param name="list"> список пространственных характеристик</param>
+        /// <param name="action"> воздействие </param>
+        /// <returns> список пространственных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Pro> list, Models.Domain.Action action)
+        {
+            // Сортируем список характеристик
+            list = list.OrderBy(pros => pros.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedPros = new List<SelectedItem>();
+
+            // Приводим List<Pros> к List<SelectedItem>
+            foreach (var pros in list)
+            {
+                // Проверяем, отмечена ли характеристика в воздействии
+                var isContains = action.Pros.Contains(pros);
+                var selectedPros = new SelectedItem(pros.Id, pros.Name, isContains);
+                listSelectedPros.Add(selectedPros);
+            }
+
+            return listSelectedPros;
+        }
+
+        /// <summary>
+        /// приведение списка специальных характеристик к типу List<SelectedItem> с учетом выбранного воздействия
+        /// </summary>
+        /// <param name="list"> список специальных характеристик</param>
+        /// <param name="action"> воздействие </param>
+        /// <returns> список специальных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Spec> list, Models.Domain.Action action)
+        {
+            // Сортируем список характеристик
+            list = list.OrderBy(pros => pros.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedSpec = new List<SelectedItem>();
+
+            // Приводим List<Spec> к List<SelectedItem>
+            foreach (var spec in list)
+            {
+                // Проверяем, отмечена ли характеристика в воздействии
+                var isContains = action.Spec.Contains(spec);
+                var selectedSpec = new SelectedItem(spec.Id, spec.Name, isContains);
+                listSelectedSpec.Add(selectedSpec);
+            }
+
+            return listSelectedSpec;
+        }
+
+        /// <summary>
+        /// приведение списка временных характеристик к типу List<SelectedItem> с учетом выбранного воздействия
+        /// </summary>
+        /// <param name="list"> список временных характеристик</param>
+        /// <param name="action"> воздействие </param>
+        /// <returns> список временных характеристик типа List<SelectedItem> </returns>
+        private List<SelectedItem> GetListSelectedItem(List<Vrem> list, Models.Domain.Action action)
+        {
+            // Сортируем список характеристик
+            list = list.OrderBy(pros => pros.Parent).ToList();
+
+            // Создаем список List<SelectedItem>
+            var listSelectedVrem = new List<SelectedItem>();
+
+            // Приводим List<Vrem> к List<SelectedItem>
+            foreach (var vrem in list)
+            {
+                // Проверяем, отмечена ли характеристика в воздействии
+                var isContains = action.Vrem.Contains(vrem);
+                var selectedVrem = new SelectedItem(vrem.Id, vrem.Name, isContains);
+                listSelectedVrem.Add(selectedVrem);
+            }
+
+            return listSelectedVrem;
+        }
+
+        /// <summary>
+        /// общий GET-метод для задания воздействий
+        /// </summary>
+        /// <returns> результат действия ActionResult </returns>
+        private ActionResult CreateGet()
+        {
+            // Передача в представление настроенного воздействия
+            return PrepareAction();
+        }
+
+        /// <summary>
+        /// общий POST-метод для задания воздействий
+        /// </summary>
+        /// <param name="actions"> воздействие </param>
+        /// <param name="parametricFizVelId"> дескриптор параметрической физической величины </param>
+        /// <param name="listSelectedPros"> список выбранных пространственных характеристик </param>
+        /// <param name="listSelectedSpec"> список выбранных специльаных характеристик </param>
+        /// <param name="listSelectedVrem"> список выбранных временных характеристик </param>
+        /// <param name="nameOfButton"> название нажатой в представлении кнопки </param>
+        /// <returns> результат действия ActionResult </returns>
+        private ActionResult CreatePost(Models.Domain.Action actions, string parametricFizVelId,
+            string[] listSelectedPros, string[] listSelectedSpec, string[] listSelectedVrem, string nameOfButton)
+        {
+            if (ModelState.IsValid) // все поля в представлении заполнены корректно
+            {
+                if (nameOfButton == "Далее" || nameOfButton == "Начать синтез") // нажата кпопка "Далее" или "Начать синтез"
+                {
+                    // Очистить все списки характеристик
+                    actions.Pros.Clear();
+                    actions.Spec.Clear();
+                    actions.Vrem.Clear();
+
+                    if (actions.actionId == "VOZ11") // задано параметрическое воздействие
+                        if (actions.FizVelId != "NO_FIZVEL") // выбрана физическая величина
+                            // Заменить раздел физики на физическую величину
+                            actions.FizVelId = parametricFizVelId;
+
+                    if (listSelectedPros != null) // выбраны пространственные характеристики
+                    {
+                        // Добавить все выбранные характеристики в воздействие
+                        foreach (var selectedPros in db.Pros.Where(pros => listSelectedPros.Contains(pros.id)))
+                            actions.Pros.Add(selectedPros);
+                    }
+
+                    if (listSelectedSpec != null) // выбраны специальные характеристики
+                    {
+                        // Добавить все выбранные характеристики в воздействие
+                        foreach (var selectedSpec in db.Spec.Where(spec => listSelectedSpec.Contains(spec.id)))
+                            actions.Spec.Add(selectedSpec);
+                    }
+
+                    if (listSelectedVrem != null) // выбраны временные характеристики
+                    {
+                        // Добавить все выбранные характеристики в воздействие
+                        foreach (var selectedVrem in db.Vrem.Where(vrem => listSelectedVrem.Contains(vrem.id)))
+                            actions.Vrem.Add(selectedVrem);
+                    }
+
+                    // Добавляем запись в таблицу и сохраняем изменения
+                    db.Actions.Add(actions);
+                    db.SaveChanges();
+                }
+
+                // Управление переадресацией
+                if (nameOfButton == "Отмена") // нажата кнопка "Отмена"
+                    // Возвращаемся на главную страницу приложения
+                    return RedirectToAction("Index", "Home");
+                else if (nameOfButton == "Далее") // нажата кнопка "Далее"
+                    // Переходим к заполению выходного воздействия
+                    return RedirectToAction("CreateOutput");
+                else if (nameOfButton == "Начать синтез") // нажата кнопка "Начать синтез"
+                    // Переходим к сохранению задания на синтез
+                    return RedirectToAction("Create", "TasksToSynthesys");
+                else if (nameOfButton == "Назад") // нажата кнопка "Назад"
+                {
+                    // Отредактировать входное воздействиe
+                    var id = db.Actions.ToList().Last().id;
+                    return RedirectToAction("Edit", new { id });
+                }
+            }
+
+            // Установка полей представления по умолчанию
+            ViewBag.actionId = new SelectList(db.AllActions, "id", "name", actions.actionId);
+
+            return View(actions);
+        }
+
+        /// <summary>
+        /// подготовка воздействия для передачи в представление
+        /// </summary>
+        /// <returns> результат действия ActionResult </returns> 
+        private ActionResult PrepareAction()
+        {
+            // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
+            var listOfActions = new SelectList(db.AllActions.OrderBy(action => action.id), "id", "name");
+            var actionId = listOfActions.First().Value;
+
+            // Получаем список типов воздействий     
+            var actionType = new SelectList(db.ActionTypes.OrderByDescending(type => type.name), "id", "name", "Не выбрано");
+
+            // Получаем список физических величин для выбранного воздействия
+            var listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.parent == actionId + "_FIZVEL") || 
+                                                                          (fizVel.id == "NO_FIZVEL"))
+                                                       .OrderBy(fizVel => fizVel.id), "id", "name");
+               
+            // Выбираем первый из списка раздел физики
+            var fizVelId = listOfFizVels.First().Value;
+
+            // Получаем список физических величин для параметрических воздействий
+            var listOfParametricFizVels = new SelectList(db.FizVels.Where(parametricFizVel => (parametricFizVel.parent == fizVelId))
+                                                                 .OrderBy(parametricFizVel => parametricFizVel.id),"id", "name")
+                                                                 .ToList();
+
+            // Получаем список пространственных характеристик для выбранного воздействия
+            var prosList = db.Pros.Where(pros => pros.parent == actionId + "_PROS").ToList();
+            var listSelectedPros = GetListSelectedItem(prosList);
+
+            // Получаем список специальных характеристик для выбранного воздействия
+            var specList = db.Spec.Where(spec => spec.parent == actionId + "_SPEC").ToList();
+            var listSelectedSpec = GetListSelectedItem(specList);
+
+            // Получаем список временных характеристик для выбранного воздействия
+            var vremList = db.Vrem.Where(vrem => vrem.parent == actionId + "_VREM").ToList();
+            var listSelectedVrem = GetListSelectedItem(vremList);
+
+            // Готовим данные для отправки в представление
+            ViewBag.actionId = listOfActions;
+            ViewBag.actionType = actionType;
+            ViewBag.fizVelId = listOfFizVels;
+            ViewBag.parametricFizVelId = listOfParametricFizVels;
+            ViewBag.pros = listSelectedPros;
+            ViewBag.spec = listSelectedSpec;
+            ViewBag.vrem = listSelectedVrem;
+            ViewBag.currentAction = actionId;
+            ViewBag.currentActionId = "-1";
+
+            return View();
+        }
+
+        /// <summary>
+        /// подготовка воздействия для передачи в представление с учетом выбранного воздействия
+        /// </summary>
+        /// <param name="votedAction"> выбранное воздействие </param>
+        /// <returns> результат действия ActionResult </returns> 
+        private ActionResult PrepareAction(Actions votedAction)
+        {
+            // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
+            var listOfActions = new SelectList(db.AllActions.OrderBy(action => action.id), "id", "name", votedAction.actionId);
+            var actionId = votedAction.actionId;
+
+            // Получаем список типов воздействий
+            var actionType = new SelectList(db.ActionTypes.OrderByDescending(type => type.name), "id", "name", 
+                                                                                                       votedAction.actionType);
+            var fizVelId = ""; // дескриптор физической величины
+            var listOfParametricFizVels = new List<SelectListItem>(); // список параметрических физических величин
+
+            if (actionId != "VOZ11" || votedAction.fizVelId == "NO_FIZVEL") // задано непараметрическое воздействие или
+                                                                            // воздействие не выбрано
+                fizVelId = votedAction.fizVelId;           
+            else
+            {
+                // Получаем раздел физики по параметрической физической величине
+                var parametricFizVelId = votedAction.fizVelId;        
+                fizVelId = "VOZ11_FIZVEL_R" + parametricFizVelId[14].ToString();
+
+                // Получаем список физических величин для параметрических воздействий
+                listOfParametricFizVels = new SelectList(db.FizVels.Where(parametricFizVel => (parametricFizVel.parent == fizVelId))
+                                                                 .OrderBy(parametricFizVel => parametricFizVel.id), "id", "name", 
+                                                                                                               parametricFizVelId)
+                                                                 .ToList();                     
+            }
+
+            // Получаем список физических величин для выбранного воздействия
+            var listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.parent == actionId + "_FIZVEL") ||
+                                                                          (fizVel.id == "NO_FIZVEL"))
+                                                       .OrderBy(fizVel => fizVel.id), "id", "name", fizVelId);
+
+            // Получаем список пространственных характеристик для выбранного воздействия
+            var prosList = db.Pros.Where(pros => pros.parent == actionId + "_PROS").ToList();
+
+            var listSelectedPros = GetListSelectedItem(prosList, votedAction);
+
+            // Получаем список специальных характеристик для выбранного воздействия
+            var specList = db.Spec.Where(spec => spec.parent == actionId + "_SPEC").ToList();
+            var listSelectedSpec = GetListSelectedItem(specList, votedAction);
+
+            // Получаем список временных характеристик для выбранного воздействия
+            var vremList = db.Vrem.Where(vrem => vrem.parent == actionId + "_VREM").ToList();
+            var listSelectedVrem = GetListSelectedItem(vremList, votedAction);
+
+            // Готовим данные для отправки в представление
+            ViewBag.actionId = listOfActions;
+            ViewBag.actionType = actionType;
+            ViewBag.fizVelId = listOfFizVels;
+            ViewBag.parametricFizVelId = listOfParametricFizVels;
+            ViewBag.pros = listSelectedPros;
+            ViewBag.spec = listSelectedSpec;
+            ViewBag.vrem = listSelectedVrem;
+            ViewBag.currentAction = actionId;
+            ViewBag.currentActionId = votedAction.id.ToString();
+
+            return View();
+        }
+
+        /// <summary>
+        /// GET-метод страницы задания входного воздействия
+        /// </summary>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult CreateInput()
+        {   
+            // Вызываем общий GET-метод для задания воздействий
+            return CreateGet();
+        }
+
+        /// <summary>
+        /// POST-метод страницы задания входного воздействия
+        /// </summary>
+        /// <param name="actions"> воздействие </param>
+        /// <param name="parametricFizVelId"> дескриптор параметрической физической величины </param>
+        /// <param name="listSelectedPros"> список выбранных пространственных характеристик </param>
+        /// <param name="listSelectedSpec"> список выбранных специальных характеристик </param>
+        /// <param name="listSelectedVrem"> список выбранных временных характеристик </param>
+        /// <param name="nameOfButton"> название нажатой в представлении кнопки </param>
+        /// <returns> результат действия ActionResult </returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateInput([Bind(Include = "id,actionId,actionType,fizVelId")] Actions actions,
+           string parametricFizVelId, string[] listSelectedPros, string[] listSelectedSpec,
+           string[] listSelectedVrem, string nameOfButton)
+        {
+            // Вызываем общий POST-метод для задания воздействий
+            return CreatePost(actions, parametricFizVelId, listSelectedPros, listSelectedSpec, listSelectedVrem, nameOfButton);
+        }
+
+        /// <summary>
+        /// GET-метод страницы задания выходного воздействия
+        /// </summary>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult CreateOutput()
+        {
+            // Вызываем общий GET-метод для задания воздействий
+            return CreateGet();
+        }
+
+        /// <summary>
+        /// POST-метод страницы задания выходного воздействия
+        /// </summary>
+        /// <param name="actions"> воздействие </param>
+        /// <param name="parametricFizVelId"> дескриптор параметрической физической величины </param>
+        /// <param name="listSelectedPros"> список выбранных пространственных характеристик </param>
+        /// <param name="listSelectedSpec"> список выбранных специальных характеристик </param>
+        /// <param name="listSelectedVrem"> список выбранных временных характеристик </param>
+        /// <param name="nameOfButton"> название нажатой в представлении кнопки </param>
+        /// <returns> результат действия ActionResult </returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateOutput([Bind(Include = "id,actionId,actionType,fizVelId")] Actions actions, 
+            string parametricFizVelId, string[] listSelectedPros, string[] listSelectedSpec,
+            string[] listSelectedVrem, string nameOfButton)
+        {
+            // Вызываем общий POST-метод для задания воздействий
+            return CreatePost(actions, parametricFizVelId, listSelectedPros, listSelectedSpec, listSelectedVrem, nameOfButton);
+        }
+
+        /// <summary>
+        /// GET-метод страницы редактирования воздействия
+        /// </summary>
+        /// <param name="id"> идентификатор воздействия в таблице Actions </param>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult Edit(int? id)
+        {
+            if (id == null) // не задан id в запросе
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // Выбираем воздействие из таблицы
+            Actions editAction = db.Actions.Find(id);
+
+            if (editAction == null) // воздействие не найдено
+            {
+                return HttpNotFound();
+            }
+
+            // Подготавливаем воздействие и отправляем его в представление
+            return PrepareAction(editAction);
+        }
+
+        /// <summary>
+        /// POST-метод страницы редактирования воздействия
+        /// </summary>
+        /// <param name="actions"> воздействие </param>
+        /// <param name="parametricFizVelId"> дескриптор параметрической физической величины </param>
+        /// <param name="listSelectedPros"> список выбранных пространственных характеристик </param>
+        /// <param name="listSelectedSpec"> список выбранных специальных характеристик </param>
+        /// <param name="listSelectedVrem"> список выбранных временных характеристик </param>
+        /// <param name="nameOfButton"> название нажатой в представлении кнопки </param>
+        /// <returns> результат действия ActionResult </returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "id,actionId,actionType,fizVelId")] Actions actions, string parametricFizVelId,
+            string[] listSelectedPros, string[] listSelectedSpec, string[] listSelectedVrem, string nameOfButton)
+        {
+            if (ModelState.IsValid) // все параметры в представлении заданы корректно
+            {                           
+                if (nameOfButton == "Далее") // нажата кнопка "Далее"
+                {
+                    // Создаем новую запись с полученными из представления параметрами
+                    Actions newAction = db.Actions.Find(actions.id);
+                    newAction.actionId = actions.actionId;
+                    newAction.actionType = actions.actionType;
+
+                    if (newAction.actionId != "VOZ11") // задано непараметрическое воздействие
+                        newAction.fizVelId = actions.fizVelId;
+                    else
+                        newAction.fizVelId = parametricFizVelId;
+     
+                    // Очищаем список пространственных характеристик
+                    foreach (var pros in db.Pros)
+                        db.Pros.Find(pros.id).Actions.Clear();
+
+                    // Очищаем список специальных характеристик
+                    foreach (var spec in db.Spec)
+                        db.Spec.Find(spec.id).Actions.Clear();
+
+                    // Очищаем список временных характеристик
+                    foreach (var vrem in db.Vrem)
+                        db.Vrem.Find(vrem.id).Actions.Clear();
+
+                    if (listSelectedPros != null) // пространственные характеристики заданы
+                    {
+                        // Добавляем выбранные характеристики в воздействие
+                        foreach (var pros in db.Pros)
+                            if (listSelectedPros.Contains(pros.id))
+                                db.Pros.Find(pros.id).Actions.Add(newAction);
+                    }
+
+                    if (listSelectedSpec != null) // специальные характеристики заданы
+                    {
+                        // Добавляем выбранные характеристики в воздействие
+                        foreach (var spec in db.Spec)
+                            if (listSelectedSpec.Contains(spec.id))
+                                db.Spec.Find(spec.id).Actions.Add(newAction);
+                    }
+
+                    if (listSelectedVrem != null) // временные характеристики заданы
+                    {
+                        // Добавляем выбранные характеристики в воздействие
+                        foreach (var vrem in db.Vrem)
+                            if (listSelectedVrem.Contains(vrem.id))
+                                db.Vrem.Find(vrem.id).Actions.Add(newAction);
+                    }
+
+                    // Переводим таблицу в состояние изменения
+                    db.Entry(newAction).State = EntityState.Modified;
+
+                    // Применяем сохранение к БД
+                    db.SaveChanges();
+                }
+
+                if (nameOfButton == "Далее") // нажата кнопка "Далее"
+                    // Переходим на страницу задания выходного воздействия
+                    return RedirectToAction("CreateOutput");
+                else if (nameOfButton == "Отмена") // нажата кнопка "Отмена"
+                    // Переходим на главную страницу приложения
+                    return RedirectToAction("Index", "Home");
+            }
+
+            // Установка полей представления по умолчанию
+            ViewBag.actionId = new SelectList(db.AllActions, "id", "name", actions.actionId);
+
+            return View(actions);
+        }
+
+        /// <summary>
+        /// GET-метод обновления физических величин
+        /// </summary>
+        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult GetFizVels (string id)
+        {
+            SelectList listOfFizVels;
+
+            if (id != "VOZ11") // непараметрическое воздействие
+                // Получаем обновленный список физических величин
+                listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.parent == id + "_FIZVEL") || 
+                                                                          (fizVel.id == "NO_FIZVEL"))
+                                                       .OrderBy(fizVel => fizVel.id), "id", "name");
+            else
+                // Получаем обновленный список физических величин
+                listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.parent == id + "_FIZVEL"))
+                                                       .OrderBy(fizVel => fizVel.id), "id", "name");
+
+            // Отправляем его в представление
+            ViewBag.fizVelId = listOfFizVels;
+            ViewBag.currentActionId = id;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод обновления параметрических физических величин
+        /// </summary>
+        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult GetParametricFizVels(string id)
+        {
+            // Получаем список физических величин для параметрических воздействий
+            var listOfParametricFizVels = db.FizVels.Where(parametricFizVel => (parametricFizVel.parent == id)).ToList();
+
+            if (listOfParametricFizVels.Count != 0)
+            {
+                listOfParametricFizVels.Add(db.FizVels.Where(parametricFizVel => parametricFizVel.id == "NO_FIZVEL").First());
+
+                var selectListOfParametricFizVels = new SelectList(listOfParametricFizVels
+                                                                 .OrderBy(parametricFizVel => parametricFizVel.id), "id", "name")
+                                                                 .ToList();
+
+                // Отправляем его в представление
+                ViewBag.parametricFizVelId = selectListOfParametricFizVels;
+            }
+            else
+                // Отправляем его в представление
+                ViewBag.parametricFizVelId = listOfParametricFizVels;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод обновления пространственных характеристик
+        /// </summary>
+        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult GetPros(string id)
+        {
+            // Получаем обновленный список пространственных характеристик
+            var prosList = db.Pros.Where(pros => pros.parent == id + "_PROS").ToList();
+            var listSelectedPros = GetListSelectedItem(prosList);
+
+            // Отправляем его в представление
+            ViewBag.pros = listSelectedPros;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод обновления специальных характеристик
+        /// </summary>
+        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns> 
+        public ActionResult GetSpec(string id)
+        {
+            // Получаем обновленный список специальных характеристик
+            var specList = db.Spec.Where(spec => spec.parent == id + "_SPEC").ToList();
+            var listSelectedSpec = GetListSelectedItem(specList);
+
+            // Отправляем его в представление
+            ViewBag.spec = listSelectedSpec;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод обновления временных характеристик
+        /// </summary>
+        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns> 
+        public ActionResult GetVrem(string id)
+        {
+            // Получаем обновленный список временных характеристик
+            var vremList = db.Vrem.Where(vrem => vrem.parent == id + "_VREM").ToList();
+            var listSelectedVrem = GetListSelectedItem(vremList);
+
+            // Отправляем его в представление
+            ViewBag.vrem = listSelectedVrem;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод добавления на представление дополнительных значений пространственной характеристики
+        /// </summary>
+        /// <param name="id"> дескриптор выбранной пространственной характеристики + идентификатор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns> 
+        public ActionResult GetProsChild(string id)
+        {
+            // Извлекаем дескриптор характеристики и идентификатор воздействия
+            var args = id.Split('@');
+            var prosId = args[0];
+            var actId = args[1];
+
+            // Получаем список значений, соответствующий данной характеристике
+            var prosList = db.Pros.Where(pros => pros.parent == prosId).ToList();
+
+            // Создаем новый список характеристик
+            var listSelectedPros = new List<SelectedItem>();
+
+            // Преобразуем идентификатор воздействия из строки в число
+            var actionId = int.Parse(actId);
+
+            if (actionId != -1) // значение идентификатора не равно -1
+            {
+                // Извлекаем воздействие из БД
+                var action = db.Actions.Find(actionId);
+
+                // Преобразуем список характеристик к нужному типу
+                listSelectedPros = GetListSelectedItem(prosList, action);
+            }
+            else
+                // Преобразуем список характеристик к нужному типу
+                listSelectedPros = GetListSelectedItem(prosList);
+
+            // Отправляем полученный список в представление
+            ViewBag.prosChild = listSelectedPros;
+            ViewBag.parent = prosId;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод добавления на представление дополнительных значений временной характеристики
+        /// </summary>
+        /// <param name="id"> дескриптор выбранной временной характеристики + идентификатор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns> 
+        public ActionResult GetVremChild(string id)
+        {
+            // Извлекаем дескриптор характеристики и идентификатор воздействия
+            var args = id.Split('@');
+            var vremId = args[0];
+            var actId = args[1];
+
+            // Получаем список значений, соответствующий данной характеристике
+            var vremList = db.Vrem.Where(vrem => vrem.parent == vremId).ToList();
+
+            // Создаем новый список характеристик
+            var listSelectedVrem = new List<SelectedItem>();
+
+            // Преобразуем идентификатор воздействия из строки в число
+            var actionId = int.Parse(actId); 
+
+            if (actionId != -1) // значение идентификатора не равно -1
+            {
+                // Извлекаем воздействие из БД
+                var action = db.Actions.Find(actionId);
+
+                // Преобразуем список характеристик к нужному типу
+                listSelectedVrem = GetListSelectedItem(vremList, action);
+            }
+            else
+                // Преобразуем список характеристик к нужному типу
+                listSelectedVrem = GetListSelectedItem(vremList);
+
+            // Отправляем полученный список в представление
+            ViewBag.vremChild = listSelectedVrem;
+            ViewBag.parent = vremId;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод добавления на представление дополнительных значений специальной характеристики
+        /// </summary>
+        /// <param name="id"> дескриптор выбранной специальной характеристики + идентификатор выбранного воздействия </param>
+        /// <returns> результат действия ActionResult </returns> 
+        public ActionResult GetSpecChild(string id)
+        {
+            // Извлекаем дескриптор характеристики и идентификатор воздействия
+            var args = id.Split('@');
+            var specId = args[0];
+            var actId = args[1];
+
+            // Получаем список значений, соответствующий данной характеристике
+            var specList = db.Spec.Where(spec => spec.parent == specId).ToList();
+
+            // Создаем новый список характеристик
+            var listSelectedSpec = new List<SelectedItem>();
+
+            // Преобразуем идентификатор воздействия из строки в число
+            var actionId = int.Parse(actId);
+
+            if (actionId != -1) // значение идентификатора не равно -1
+            {
+                // Извлекаем воздействие из БД
+                var action = db.Actions.Find(actionId);
+
+                // Преобразуем список характеристик к нужному типу
+                listSelectedSpec = GetListSelectedItem(specList, action);
+            }
+            else
+                // Преобразуем список характеристик к нужному типу
+                listSelectedSpec = GetListSelectedItem(specList);
+
+            // Отправляем полученный список в представление
+            ViewBag.specChild = listSelectedSpec;
+            ViewBag.parent = specId;
+
+            return PartialView();
+        }
+
+        /// <summary>
+        /// GET-метод удаления из представления дополнительных значений характеристики
+        /// </summary>
+        /// <param name="id"> дескриптор выбранной характеристики </param>
+        /// <returns> результат действия ActionResult </returns>
+        public ActionResult GetEmptyChild(string id)
+        {
+            // Передаем в представление дескриптор характеристики
+            ViewBag.parent = id;
+
+            return PartialView();
+        }

@@ -1,0 +1,23 @@
+﻿
+
+@model dip.Models.Domain.Action
+
+<div class="form-group" id="fizVel">
+    @if (ViewBag.currentActionId != "VOZ11")
+    {
+        @Html.LabelFor(model => model.fizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
+    }
+    else
+    {
+        @Html.LabelFor(model => model.fizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
+    }
+    <div class="col-md-10">
+        @Html.DropDownList("fizVelId", null, htmlAttributes: new { id = "fizVelId", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.fizVelId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,38 @@
+﻿
+
+
+
+@model dip.Models.Domain.Action
+
+
+<div class="form-group" id="pros">
+    @if (ViewBag.pros.Count != 0)
+    {
+        @Html.LabelFor(model => model.Pro, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                <tr>
+                    @{
+                        int cnt = 0;
+                        foreach (var pros in ViewBag.pros)
+                        {
+                            if (cnt++ % 3 == 0)
+                            {
+                                @:
+                            </tr>
+                            <tr>
+                            }
+                            @:
+                            <td>
+                                <input type="checkbox" name="listSelectedPros" value="@pros.id" /> @pros.name
+                                <div id="@pros.id" name="0"></div>
+                                @:
+                            </td>
+                        }
+                        @:
+                    </tr>
+                    }
+                </table>
+            </div>
+                        }
+</div>
