@@ -8,18 +8,18 @@ namespace dip.Models.ViewModel
     public class SelectedItem
     {
 
-        public string id { get; set; } // дескриптор
-        public string name { get; set; } // название
-        public bool isSelected { get; set; } // признак того, что характеристика выбрана
+        public string Id { get; set; } // дескриптор
+        public string Name { get; set; } // название
+        public bool IsSelected { get; set; } // признак того, что характеристика выбрана
 
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
         public SelectedItem()
         {
-            id = "-1";
-            name = "";
-            isSelected = false;
+            Id = "-1";
+            Name = "";
+            IsSelected = false;
         }
 
         /// <summary>
@@ -30,9 +30,9 @@ namespace dip.Models.ViewModel
         /// <param name="isSelected"> признак того, что характеристика выбрана </param>
         public SelectedItem(string id, string name, bool isSelected)
         {
-            this.id = id;
-            this.name = name;
-            this.isSelected = isSelected;
+            this.Id = id;
+            this.Name = name;
+            this.IsSelected = isSelected;
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace dip.Models.ViewModel
         /// <param name="name"> название характеристики </param>
         public SelectedItem(string id, string name)
         {
-            this.id = id;
-            this.name = name;
-            isSelected = false;
+            this.Id = id;
+            this.Name = name;
+            IsSelected = false;
         }
 
 

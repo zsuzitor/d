@@ -266,7 +266,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -306,6 +308,13 @@
     <Content Include="Views\Physic\Create.cshtml" />
     <Content Include="Views\Actions\GetFizVels.cshtml" />
     <Content Include="Views\Actions\GetPros.cshtml" />
+    <Content Include="Views\Actions\GetSpec.cshtml" />
+    <Content Include="Views\Actions\GetVrem.cshtml" />
+    <Content Include="Views\Actions\GetParametricFizVels.cshtml" />
+    <Content Include="Views\Actions\GetProsChild.cshtml" />
+    <Content Include="Views\Actions\GetEmptyChild.cshtml" />
+    <Content Include="Views\Actions\GetSpecChild.cshtml" />
+    <Content Include="Views\Actions\GetVremChild.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,18 +3,16 @@
 
 
 @model dip.Models.Domain.Action
-
-
-<div class="form-group" id="pros">
-    @if (ViewBag.pros.Count != 0)
+<div class="form-group" id="spec">
+    @if (ViewBag.spec.Count != 0)
     {
-        @Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <table>
                 <tr>
                     @{
                         int cnt = 0;
-                        foreach (var pros in ViewBag.pros)
+                        foreach (var spec in ViewBag.spec)
                         {
                             if (cnt++ % 3 == 0)
                             {
@@ -22,11 +20,11 @@
                             }
                             @:
                             <td>
-                                <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.name
-                                <div id="@pros.Id" name="0"></div>
+                                <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
+                                <div id="@spec.Id" name="0"></div>
                                 </td>
                         }
-                        @: </tr>
+                        @:</tr>
                     }
                 </table>
             </div>

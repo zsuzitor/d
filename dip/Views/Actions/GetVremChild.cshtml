@@ -1,0 +1,34 @@
+﻿
+
+
+@model dip.Models.Domain.Action
+@if (ViewBag.vremChild.Count != 0)
+{
+    <div id=@ViewBag.parent name="1">
+        <table>
+            <tr>
+                @{
+                    int cnt = 0;
+                    foreach (var vrem in ViewBag.vremChild)
+                    {
+                        if (cnt++ % 3 == 0)
+                        {
+                            @:</tr><tr>
+                    }
+                        @:<td>
+                        if (vrem.IsSelected == true)
+                        {
+                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" checked /> @vrem.Name
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
+                        }
+                        <div id=@vrem.Id name="0"></div>
+                        @:</td>
+                }
+                    @:</tr>
+                }
+            </table>
+        </div>
+                    }
