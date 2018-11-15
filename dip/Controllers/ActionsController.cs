@@ -18,7 +18,60 @@ namespace dip.Controllers
         }
 
 
+        public ActionResult DescriptionSearchInput()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
+                var listOfActions = new SelectList(db.AllActions.OrderBy(action => action.Id).ToList(), "id", "name");
+                var actionId = listOfActions.First().Value;
 
+                // Получаем список типов воздействий     
+                var actionType = new SelectList(db.ActionTypes.OrderByDescending(type => type.Name).ToList(), "id", "name", "Не выбрано");
+
+                // Получаем список физических величин для выбранного воздействия
+                var listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == actionId + "_FIZVEL") ||
+                                                                              (fizVel.Id == "NO_FIZVEL"))
+                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
+
+                // Выбираем первый из списка раздел физики
+                var fizVelId = listOfFizVels.First().Value;
+
+                // Получаем список физических величин для параметрических воздействий
+                var listOfParametricFizVels = new SelectList(db.FizVels.Where(parametricFizVel => (parametricFizVel.Parent == fizVelId))
+                                                                     .OrderBy(parametricFizVel => parametricFizVel.Id), "id", "name")
+                                                                     .ToList();
+
+                // Получаем список пространственных характеристик для выбранного воздействия
+                var prosList = db.Pros.Where(pros => pros.Parent == actionId + "_PROS").ToList();
+                //var listSelectedPros = GetListSelectedItem(prosList);
+
+                // Получаем список специальных характеристик для выбранного воздействия
+                var specList = db.Specs.Where(spec => spec.Parent == actionId + "_SPEC").ToList();
+               // var listSelectedSpec = GetListSelectedItem(specList);
+
+                // Получаем список временных характеристик для выбранного воздействия
+                var vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
+                //var listSelectedVrem = GetListSelectedItem(vremList);
+
+                // Готовим данные для отправки в представление
+                ViewBag.actionId = listOfActions;
+                ViewBag.actionType = actionType;
+                ViewBag.fizVelId = listOfFizVels;
+                ViewBag.parametricFizVelId = listOfParametricFizVels;
+                ViewBag.pros = prosList;// listSelectedPros;
+                ViewBag.spec = specList;//listSelectedSpec;
+                ViewBag.vrem = vremList;// listSelectedVrem;
+                ViewBag.currentAction = actionId;
+                ViewBag.currentActionId = "-1";
+            }
+               
+
+
+
+
+            return View();
+        }
 
 
 
@@ -41,11 +94,11 @@ namespace dip.Controllers
                                    // Получаем обновленный список физических величин
                     listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL") ||
                                                                               (fizVel.Id == "NO_FIZVEL"))
-                                                           .OrderBy(fizVel => fizVel.Id), "id", "name");
+                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
                 else
                     // Получаем обновленный список физических величин
                     listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL"))
-                                                           .OrderBy(fizVel => fizVel.Id), "id", "name");
+                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
 
             // Отправляем его в представление
             ViewBag.fizVelId = listOfFizVels;
@@ -186,21 +239,21 @@ namespace dip.Controllers
                 // Получаем список значений, соответствующий данной характеристике
                  prosList = db.Pros.Where(pros => pros.Parent == prosId).ToList();
 
-                
 
 
 
+                Models.Domain.Action action = null;
                 if (actionId != -1) // значение идентификатора не равно -1
-                {
+                //{
                     // Извлекаем воздействие из БД
-                    var action = db.Actions.Find(actionId);
+                     action = db.Actions.Find(actionId);
 
                     // Преобразуем список характеристик к нужному типу
-                    listSelectedPros = GetListSelectedItem(prosList, action,db);
-                }
-                else
-                    // Преобразуем список характеристик к нужному типу
-                    listSelectedPros = GetListSelectedItem(prosList,null,db);
+                    listSelectedPros = GetListSelectedItem(prosList, action,db,2);
+            //    }
+            //    else
+            //        // Преобразуем список характеристик к нужному типу
+            //        listSelectedPros = GetListSelectedItem(prosList,null,db);
             }
                 
 
@@ -262,18 +315,18 @@ namespace dip.Controllers
 
 
 
-
+                Models.Domain.Action action = null;
                 if (actionId != -1) // значение идентификатора не равно -1
-                {
+                
                     // Извлекаем воздействие из БД
-                    var action = db.Actions.Find(actionId);
+                     action = db.Actions.Find(actionId);
 
                     // Преобразуем список характеристик к нужному типу
-                    listSelectedSpec = GetListSelectedItem(specList, action,db);
-                }
-                else
-                    // Преобразуем список характеристик к нужному типу
-                    listSelectedSpec = GetListSelectedItem(specList,null,db);
+                    listSelectedSpec = GetListSelectedItem(specList, action,db,1);
+                //}
+                //else
+                //    // Преобразуем список характеристик к нужному типу
+                //    listSelectedSpec = GetListSelectedItem(specList,null,db);
             }
             // Отправляем полученный список в представление
             ViewBag.specChild = listSelectedSpec;
@@ -315,18 +368,18 @@ namespace dip.Controllers
                 var vremList = db.Vrems.Where(vrem => vrem.Parent == vremId).ToList();
 
 
-
+                Models.Domain.Action action = null;
                 if (actionId != -1) // значение идентификатора не равно -1
-                {
+               
                     // Извлекаем воздействие из БД
-                    var action = db.Actions.Find(actionId);
+                     action = db.Actions.Find(actionId);
 
                     // Преобразуем список характеристик к нужному типу
-                    listSelectedVrem = GetListSelectedItem(vremList, action,db);
-                }
-                else
-                    // Преобразуем список характеристик к нужному типу
-                    listSelectedVrem = GetListSelectedItem(vremList,null,db);
+                    listSelectedVrem = GetListSelectedItem(vremList, action,db,0);
+                //}
+                //else
+                //    // Преобразуем список характеристик к нужному типу
+                //    listSelectedVrem = GetListSelectedItem(vremList,null,db);
             }
             // Отправляем полученный список в представление
             ViewBag.vremChild = listSelectedVrem;
@@ -350,13 +403,10 @@ namespace dip.Controllers
 
 
 
-        /// <summary>
-        /// приведение списка пространственных характеристик к типу List<SelectedItem> с учетом выбранного воздействия
-        /// </summary>
-        /// <param name="list"> список пространственных характеристик</param>
-        /// <param name="action"> воздействие </param>
-        /// <returns> список пространственных характеристик типа List<SelectedItem> </returns>
-        private List<SelectedItem> GetListSelectedItem(List<Pro> list, Models.Domain.Action action,ApplicationDbContext db)
+     
+
+        //type : 0-Vrems   1-spec
+        private List<SelectedItem> GetListSelectedItem<T>(List<T> list, Models.Domain.Action action, ApplicationDbContext db,int type) where T : Item
         {
             // Сортируем список характеристик
             list = list.OrderBy(pros => pros.Parent).ToList();
@@ -364,76 +414,41 @@ namespace dip.Controllers
             // Создаем список List<SelectedItem>
             var listSelectedPros = new List<SelectedItem>();
 
-            // Приводим List<Pros> к List<SelectedItem>
-            foreach (var pros in list)
+            // Приводим List<T> к List<SelectedItem>
+            foreach (var item in list)
             {
                 // Проверяем, отмечена ли характеристика в воздействии
                 bool isContains = false;
                 if (action != null)
                 {
-                    if (!db.Entry(action).Collection(x1 => x1.Pros).IsLoaded)
-                        db.Entry(action).Collection(x1 => x1.Pros).Load();
-                    isContains = action.Pros.Contains(pros);
-                }
-                 
-                var selectedPros = new SelectedItem(pros.Id, pros.Name, isContains);
-                listSelectedPros.Add(selectedPros);
-            }
+                    if(db==null)
+                    {
+                        db = new ApplicationDbContext();
+                        db.Set<Models.Domain.Action>().Attach(action);
+                    }
+                    switch (type)
+                    {
+                        case 0:
+                            if (!db.Entry(action).Collection(x1 => x1.Vrems).IsLoaded)
+                                db.Entry(action).Collection(x1 => x1.Vrems).Load();
+                            isContains = (action.Vrems.FirstOrDefault(x1=>x1.Id== item.Id)==null?false:true);
+                            break;
+                        case 1:
+                            if (!db.Entry(action).Collection(x1 => x1.Specs).IsLoaded)
+                                db.Entry(action).Collection(x1 => x1.Specs).Load();
+                            isContains = (action.Specs.FirstOrDefault(x1 => x1.Id == item.Id) == null ? false : true);
+                            break;
+                        case 2:
+                            if (!db.Entry(action).Collection(x1 => x1.Pros).IsLoaded)
+                                db.Entry(action).Collection(x1 => x1.Pros).Load();
+                            isContains = (action.Pros.FirstOrDefault(x1 => x1.Id == item.Id) == null ? false : true);
+                            break;
+                    }
 
-            return listSelectedPros;
-        }
-
-        
-        private List<SelectedItem> GetListSelectedItem(List<Spec> list, Models.Domain.Action action, ApplicationDbContext db)
-        {
-            // Сортируем список характеристик
-            list = list.OrderBy(pros => pros.Parent).ToList();
-
-            // Создаем список List<SelectedItem>
-            var listSelectedPros = new List<SelectedItem>();
-
-            // Приводим List<Pros> к List<SelectedItem>
-            foreach (var pros in list)
-            {
-                // Проверяем, отмечена ли характеристика в воздействии
-                bool isContains = false;
-                if (action != null)
-                {
-                    if (!db.Entry(action).Collection(x1 => x1.Specs).IsLoaded)
-                        db.Entry(action).Collection(x1 => x1.Specs).Load();
-                    isContains = action.Specs.Contains(pros);
+                    
                 }
 
-                var selectedPros = new SelectedItem(pros.Id, pros.Name, isContains);
-                listSelectedPros.Add(selectedPros);
-            }
-
-            return listSelectedPros;
-        }
-
-
-
-        private List<SelectedItem> GetListSelectedItem(List<Vrem> list, Models.Domain.Action action, ApplicationDbContext db)
-        {
-            // Сортируем список характеристик
-            list = list.OrderBy(pros => pros.Parent).ToList();
-
-            // Создаем список List<SelectedItem>
-            var listSelectedPros = new List<SelectedItem>();
-
-            // Приводим List<Pros> к List<SelectedItem>
-            foreach (var pros in list)
-            {
-                // Проверяем, отмечена ли характеристика в воздействии
-                bool isContains = false;
-                if (action != null)
-                {
-                    if (!db.Entry(action).Collection(x1 => x1.Vrems).IsLoaded)
-                        db.Entry(action).Collection(x1 => x1.Vrems).Load();
-                    isContains = action.Vrems.Contains(pros);
-                }
-
-                var selectedPros = new SelectedItem(pros.Id, pros.Name, isContains);
+                var selectedPros = new SelectedItem(item.Id, item.Name, isContains);
                 listSelectedPros.Add(selectedPros);
             }
 

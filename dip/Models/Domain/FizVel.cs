@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class FizVel
+    public class FizVel: Item
     {
 
         public string Id { get; set; }

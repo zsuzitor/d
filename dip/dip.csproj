@@ -219,6 +219,7 @@
     <Compile Include="Models\Domain\Vrem.cs" />
     <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Interface.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TechnicalFunctions\Index.cs" />
     <Compile Include="Models\TechnicalFunctions\Limit.cs" />
@@ -315,6 +316,7 @@
     <Content Include="Views\Actions\GetEmptyChild.cshtml" />
     <Content Include="Views\Actions\GetSpecChild.cshtml" />
     <Content Include="Views\Actions\GetVremChild.cshtml" />
+    <Content Include="Views\Actions\DescriptionSearchInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
