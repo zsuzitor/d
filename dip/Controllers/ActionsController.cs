@@ -18,6 +18,21 @@ namespace dip.Controllers
         }
 
 
+        public ActionResult DescriptionSearch()
+        {
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DescriptionSearch(DescrSearchIInput inp, DescrSearchIOut outp)
+        {
+
+
+            return View();
+        }
+
         public ActionResult DescriptionSearchInput()
         {
             using (var db = new ApplicationDbContext())

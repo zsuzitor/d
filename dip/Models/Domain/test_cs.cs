@@ -31,4 +31,40 @@ namespace dip.Models.Domain
         }
     }
 
+
+    public class DescrSearchIInput
+    {
+        public string actionIdI { get; set; }
+        public string actionTypeI { get; set; }
+        public string FizVelIdI { get; set; }
+        public string parametricFizVelIdI { get; set; }
+        public string listSelectedProsI { get; set; }
+        public string listSelectedSpecI { get; set; }
+        public string listSelectedVremI { get; set; }
+        
+        public DescrSearchIInput()
+        {
+
+        }
+    }
+
+
+
+    public class DescrSearchIOut
+    {
+        public string actionIdO { get; set; }
+        public string actionTypeO { get; set; }
+        public string FizVelIdO { get; set; }
+        public string parametricFizVelIdO { get; set; }
+        public string listSelectedProsO { get; set; }
+        public string listSelectedSpecO { get; set; }
+        public string listSelectedVremO { get; set; }
+
+
+        public DescrSearchIOut()
+        {
+
+        }
+    }
+
 }

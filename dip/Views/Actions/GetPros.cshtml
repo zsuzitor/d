@@ -4,7 +4,7 @@
 
 @model dip.Models.Domain.Action
 
-
+@*@MyHelpers.selectList(ViewBag.pros, "Пространственные характеристики", "pros", "Pros")*@
 <div class="form-group" id="pros">
     @if (ViewBag.pros.Count != 0)
     {

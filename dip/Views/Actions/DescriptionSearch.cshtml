@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "DescriptionSearch";
+}
+
+<h2>DescriptionSearch</h2>
+
+
+<div>
+    <h4>Шаг 1. Задайте входное воздействие</h4>
+
+    @*@Html.Hidden(Url.Action("Actions"))*@
+    <div id="div_form_id">
+        @Html.Action("DescriptionSearchInput", "Actions")
+    </div>
+
+
+
+
+    <div>
+        <button onclick="Go_next_step()">Далее</button>
+        @Html.ActionLink("Назад на главную страницу", "Index", "Home")
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/_changeAction.js")
+    @Scripts.Render("~/Scripts/_changeParametricFizVel.js")
+    @Scripts.Render("~/Scripts/_changePros.js")
+    @Scripts.Render("~/Scripts/_changeSpec.js")
+    @Scripts.Render("~/Scripts/_changeVrem.js")
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            changeParams();
+        });
+
+     
+        var data_descr_search = {
+            have_input:null,
+            actionIdI: null,
+            actionTypeI: null,
+            FizVelIdI: null,
+            parametricFizVelIdI: null,
+            listSelectedProsI: null,
+            listSelectedSpecI: null,
+            listSelectedVremI: null,
+            actionIdO: null,
+            actionTypeO: null,
+            FizVelIdO: null,
+            parametricFizVelIdO: null,
+            listSelectedProsO: null,
+            listSelectedSpecO: null,
+            listSelectedVremO: null
+        
+        };
+        function Go_next_step() {
+            if (have_input === null) {
+                data_descr_search.actionIdI = $('#action').val();
+                data_descr_search.actionTypeI = $('#actionType').val();
+                data_descr_search.FizVelIdI = $('#fizVelId').val();
+                data_descr_search.parametricFizVelIdI = $('#parametricFizVelId').val();
+                data_descr_search.listSelectedProsI = $('#').val();//name listSelectedPros
+                data_descr_search.listSelectedSpecI = $('#').val();
+                data_descr_search.listSelectedVremI = $('#').val();
+                alert("выход парам");
+                have_input = true;
+            }
+            else {
+                data_descr_search.actionIdO = $('#action').val();
+                data_descr_search.actionTypeO = $('#actionType').val();
+                data_descr_search.FizVelIdO = $('#fizVelId').val();
+                data_descr_search.parametricFizVelIdO = $('#parametricFizVelId').val();
+                data_descr_search.listSelectedProsO = $('#').val();//name listSelectedPros
+                data_descr_search.listSelectedSpecO = $('#').val();
+                data_descr_search.listSelectedVremO = $('#').val();
+
+
+                //location.href = href;
+            }
+            
+            
+            //var xhr = new XMLHttpRequest();
+            //xhr.open("POST", "/Actions/DescriptionSearchInput");
+
+            //xhr.onreadystatechange = function () {
+            //    if (xhr.readyState == 4) {
+            //        if (xhr.status == 200) {
+            //            //при возврате actionresult и тд, вернет -"<html>"
+            //            document.getElementById('div_form_id').innerHTML= xhr.responseText;
+
+            //        }
+            //    }
+            //};
+
+            //xhr.send(formData);
+        }
+    </script>
+}

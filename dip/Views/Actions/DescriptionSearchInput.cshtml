@@ -1,20 +1,18 @@
 ﻿@model dip.Models.Domain.Action
 
-@{
+@*@{
     ViewBag.Title = "CreateInput";
+}*@
+
+@{
+    Layout = null;
 }
 
 
 
 
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-        <h4>Шаг 1. Задайте входное воздействие</h4>
+        
         <hr />
 
         <div class="form-group">
@@ -158,17 +156,14 @@
                                     }
             </div>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
                 <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
             </div>
-        </div>
+        </div>*@
     </div>
-                                    }
-<div>
-    @Html.ActionLink("Назад на главную страницу", "Index", "Home")
-</div>
+                                  
 
 
 
@@ -177,19 +172,6 @@
 
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/_changeAction.js")
-    @Scripts.Render("~/Scripts/_changeParametricFizVel.js")
-    @Scripts.Render("~/Scripts/_changePros.js")
-    @Scripts.Render("~/Scripts/_changeSpec.js")
-    @Scripts.Render("~/Scripts/_changeVrem.js")
-    <script type="text/javascript">
-        $(document).ready(function ()
-        {
-            changeParams();
-        });
-    </script>
-}
+
 
 
