@@ -1,0 +1,16 @@
+﻿@model IEnumerable<dip.Models.Domain.FEText>
+
+
+
+@foreach(var i in Model)
+{
+    <div>
+        <p>@Html.ActionLink(i.Name, "Details", "DescriptionQueries")</p>
+
+    </div>
+
+
+
+}
+
+

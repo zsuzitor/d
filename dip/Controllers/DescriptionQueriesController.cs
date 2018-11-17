@@ -182,7 +182,7 @@ namespace dip.Controllers
         }
 
 
-        public ActionResult Details(int id, string technicalFunctionId)
+        public ActionResult Details(int id)//, string technicalFunctionId
         {
             FEText effect;
             string check_id = ApplicationUser.GetUserId();

@@ -319,6 +319,7 @@
     <Content Include="Views\Actions\GetVremChild.cshtml" />
     <Content Include="Views\Actions\DescriptionSearchInput.cshtml" />
     <Content Include="Views\Actions\DescriptionSearch.cshtml" />
+    <Content Include="Views\Actions\ListFeText.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

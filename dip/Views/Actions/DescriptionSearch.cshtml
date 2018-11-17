@@ -9,13 +9,24 @@
 <div>
     <h4>Шаг 1. Задайте входное воздействие</h4>
 
-    @*@Html.Hidden(Url.Action("Actions"))*@
+    @Html.Hidden(" ",Url.Action("DescriptionSearch", "Actions"),new {id="descr_search_href_id" })
     <div id="div_form_id">
         @Html.Action("DescriptionSearchInput", "Actions")
     </div>
 
 
+    <div>
+        @if (ViewBag.search == true)
+        {
+            @Html.Action("ListFeText", "Actions", new {listId= ViewBag.listFeId })
 
+
+
+
+        }
+
+
+    </div>
 
     <div>
         <button onclick="Go_next_step()">Далее</button>
@@ -61,28 +72,47 @@
         
         };
         function Go_next_step() {
-            if (have_input === null) {
-                data_descr_search.actionIdI = $('#action').val();
-                data_descr_search.actionTypeI = $('#actionType').val();
-                data_descr_search.FizVelIdI = $('#fizVelId').val();
-                data_descr_search.parametricFizVelIdI = $('#parametricFizVelId').val();
-                data_descr_search.listSelectedProsI = $('#').val();//name listSelectedPros
-                data_descr_search.listSelectedSpecI = $('#').val();
-                data_descr_search.listSelectedVremI = $('#').val();
+            if (data_descr_search.have_input === null) {
+                data_descr_search.actionIdI = UndefinedToNull($('#action').val());
+                data_descr_search.actionTypeI = UndefinedToNull($('#actionType').val());
+                data_descr_search.FizVelIdI = UndefinedToNull($('#fizVelId').val());
+                data_descr_search.parametricFizVelIdI = UndefinedToNull($('#parametricFizVelId').val());
+                data_descr_search.listSelectedProsI = UndefinedToNull($('#').val());//name listSelectedPros
+                data_descr_search.listSelectedSpecI = UndefinedToNull($('#').val());
+                data_descr_search.listSelectedVremI = UndefinedToNull($('#').val());
                 alert("выход парам");
-                have_input = true;
+                data_descr_search.have_input = true;
             }
             else {
-                data_descr_search.actionIdO = $('#action').val();
-                data_descr_search.actionTypeO = $('#actionType').val();
-                data_descr_search.FizVelIdO = $('#fizVelId').val();
-                data_descr_search.parametricFizVelIdO = $('#parametricFizVelId').val();
-                data_descr_search.listSelectedProsO = $('#').val();//name listSelectedPros
-                data_descr_search.listSelectedSpecO = $('#').val();
-                data_descr_search.listSelectedVremO = $('#').val();
+                data_descr_search.actionIdO = UndefinedToNull($('#action').val());
+                data_descr_search.actionTypeO = UndefinedToNull($('#actionType').val());
+                data_descr_search.FizVelIdO = UndefinedToNull($('#fizVelId').val());
+                data_descr_search.parametricFizVelIdO = UndefinedToNull($('#parametricFizVelId').val());
+                data_descr_search.listSelectedProsO = UndefinedToNull($('#').val());//name listSelectedPros
+                data_descr_search.listSelectedSpecO = UndefinedToNull($('#').val());
+                data_descr_search.listSelectedVremO = UndefinedToNull($('#').val());
 
+                //location.href = "xuz";
+                location.href = document.getElementById("descr_search_href_id").value + "?" +
+                    "search=yes&" +
+                    "actionIdI=" + data_descr_search.actionIdI + "&" +
+                    "actionTypeI=" + data_descr_search.actionTypeI + "&" +
+                    "FizVelIdI=" + data_descr_search.FizVelIdI + "&" +
+                    "parametricFizVelIdI=" + data_descr_search.parametricFizVelIdI + "&" +
+                    "listSelectedProsI=" + data_descr_search.listSelectedProsI + "&" +
+                    "listSelectedSpecI=" + data_descr_search.listSelectedSpecI + "&" +
+                    "listSelectedVremI=" + data_descr_search.listSelectedVremI + "&" +
+                    "actionIdO=" + data_descr_search.actionIdO + "&" +
+                    "actionTypeO=" + data_descr_search.actionTypeO + "&" +
+                    "FizVelIdO=" + data_descr_search.FizVelIdO + "&" +
+                    "parametricFizVelIdO=" + data_descr_search.parametricFizVelIdO + "&" +
+                    "listSelectedProsO=" + data_descr_search.listSelectedProsO + "&" +
+                    "listSelectedSpecO=" + data_descr_search.listSelectedSpecO + "&" +
+                    "listSelectedVremO=" + data_descr_search.listSelectedVremO + "&";
+                
 
-                //location.href = href;
+                //TODO записсывать потом чистить, такое
+                data_descr_search.have_input = null;
             }
             
             
@@ -100,6 +130,13 @@
             //};
 
             //xhr.send(formData);
+        }
+
+
+
+        function UndefinedToNull(str) {
+            return str === undefined || str === "" || str === "undefined" ?
+            null : str;
         }
     </script>
 }

@@ -18,20 +18,66 @@ namespace dip.Controllers
         }
 
 
-        public ActionResult DescriptionSearch()
+        public ActionResult DescriptionSearch(string search=null,DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
+            if (search != null)
+            {
+                //поиск
+                using (var db=new ApplicationDbContext())
+                {
+                    //находим все записи которые подходят по входным параметрам
+                    var inp_query=db.FEActions.Where(x1 =>x1.Input==1&& 
+                    x1.Type == inp.actionTypeI && 
+                    x1.FizVelId == inp.FizVelIdI && 
+                    x1.Pros == inp.listSelectedProsI && 
+                    x1.Spec == inp.listSelectedSpecI && 
+                    x1.Vrem == inp.listSelectedVremI);
 
+                    //находим все записи которые подходят по выходным параметрам
+                    var out_query = db.FEActions.Where(x1 => x1.Input == 0 && 
+                    x1.Type == outp.actionTypeO && 
+                    x1.FizVelId == outp.FizVelIdO &&
+                    x1.Pros == outp.listSelectedProsO && 
+                    x1.Spec == outp.listSelectedSpecO && 
+                    x1.Vrem == outp.listSelectedVremO);
+
+                    //записи которые подходят по всем параметрам
+                    var list_id=inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToList();
+                    ViewBag.listFeId = list_id;
+                    ViewBag.search = true;
+                }
+
+
+
+            }
 
             return View();
         }
 
-        [HttpPost]
-        public ActionResult DescriptionSearch(DescrSearchIInput inp, DescrSearchIOut outp)
+
+        public ActionResult ListFeText(int[] listId)
         {
 
+            List<FEText> res = new List<FEText>();
+            using (var db = new ApplicationDbContext())
 
-            return View();
+                res = db.FEText.Join(listId, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
+
+
+
+            return PartialView(res);
         }
+
+
+        //[HttpPost]
+        //public ActionResult DescriptionSearch(DescrSearchIInput inp, DescrSearchIOut outp)
+        //{
+        ////    (string actionIdI, string actionTypeI, string FizVelIdI,
+        ////string parametricFizVelIdI, string listSelectedProsI, string listSelectedSpecI, string listSelectedVremI,
+        ////string actionTypeO, string FizVelIdO, string parametricFizVelIdO, string listSelectedProsO, string listSelectedSpecO, string listSelectedVremO)
+
+            //    return View();
+            //}
 
         public ActionResult DescriptionSearchInput()
         {
@@ -80,12 +126,12 @@ namespace dip.Controllers
                 ViewBag.currentAction = actionId;
                 ViewBag.currentActionId = "-1";
             }
-               
 
 
 
 
-            return View();
+
+            return PartialView();
         }
 
 
