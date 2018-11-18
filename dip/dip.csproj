@@ -226,6 +226,7 @@
     <Compile Include="Models\TechnicalFunctions\Operand.cs" />
     <Compile Include="Models\TechnicalFunctions\OperandGroup.cs" />
     <Compile Include="Models\TechnicalFunctions\Operation.cs" />
+    <Compile Include="Models\ViewModel\DescriptionForm.cs" />
     <Compile Include="Models\ViewModel\SelectedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

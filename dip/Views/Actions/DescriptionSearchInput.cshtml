@@ -1,4 +1,4 @@
-﻿@model dip.Models.Domain.Action
+﻿@model dip.Models.ViewModel.DescriptionForm
 
 @*@{
     ViewBag.Title = "CreateInput";
@@ -9,54 +9,56 @@
 }*@
 
 
+@*@model string*@
+
 
 
     <div class="form-horizontal">
         
         <hr />
-
+        @( +Model.Postfix)
         <div class="form-group">
-            @Html.LabelFor(model => model.AllActionId, "Название воздействия", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = @ViewBag.currentActionId })
+            @Html.LabelFor(model => model.Action.AllActionId, "Название воздействия", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = Model.currentActionId })
             <div class="col-md-10">
-                @Html.DropDownList("actionId", null, htmlAttributes: new { id = "action", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AllActionId, "", new { @class = "text-danger" })
+                @Html.DropDownList("actionId" + Model.Postfix, null, htmlAttributes: new { id = "action" + Model.Postfix, @class = "form-control" })
+                @*@Html.ValidationMessageFor(model => model.Action.AllActionId, "", new { @class = "text-danger" })*@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.ActionType_Id, "Тип входа", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Action.ActionType_Id, "Тип входа", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("actionType", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ActionType_Id, "", new { @class = "text-danger" })
+                @Html.DropDownList("actionType" + Model.Postfix, null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
             </div>
         </div>
-        <div id="fizVelGroup">
-            <div class="form-group" id="fizVel">
-                @if (ViewBag.currentAction != "VOZ11")
+        <div id=@("fizVelGroup"+Model.Postfix)>
+            <div class="form-group" id=@("fizVel"+Model.Postfix)>
+                @if (Model.currentAction != "VOZ11")
                 {
-                    @Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Action.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
                 }
                 else
                 {
-                    @Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Action.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
                 }
                 <div class="col-md-10">
-                    @Html.DropDownList("fizVelId", null, htmlAttributes: new { id = "fizVelId", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })
+                    @Html.DropDownList("fizVelId" + Model.Postfix, null, htmlAttributes: new { id = "fizVelId" + Model.Postfix, @class = "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.Action.FizVelId, "", new { @class = "text-danger" })*@
                 </div>
             </div>
         </div>
-        <div class="form-group" id="parametricFizVel">
-            @if (ViewBag.parametricFizVelId.Count != 0)
+        <div class="form-group" id=@("parametricFizVel"+Model.Postfix)>
+            @if (Model.parametricFizVelId.Count != 0)
             {
                 @Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("parametricFizVelId", ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("parametricFizVelId" + Model.Postfix, Model.parametricFizVelId , htmlAttributes: new { @class = "form-control" })
                 </div>
             }
         </div>
-        <div id="prosGroup">
-            <div class="form-group" id="pros">
-                @if (ViewBag.pros.Count != 0)
+        <div id=@("prosGroup"+Model.Postfix)>
+            <div class="form-group" id=@("pros"+Model.Postfix)>
+                @if (Model.pros.Count != 0)
                 {
                     @Html.Label("Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -65,7 +67,7 @@
                                 @{
 
                                     int cntPros = 0;
-                                    foreach (var pros in ViewBag.pros)
+                                    foreach (var pros in Model.pros)
                                     {
                                         if (cntPros++ % 3 == 0)
                                         {
@@ -76,6 +78,7 @@
                                         }
 
                                         <td>
+                                            @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
                                             <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
                                             <div id="@pros.Id" name="0"></div>
 
@@ -90,16 +93,16 @@
                                     }
             </div>
         </div>
-        <div id="specGroup">
-            <div class="form-group" id="spec">
-                @if (ViewBag.spec.Count != 0)
+        <div id=@("specGroup"+Model.Postfix)>
+            <div class="form-group" id=@("spec"+Model.Postfix)>
+                @if (Model.spec.Count != 0)
                 {
                     @Html.Label("Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <table>
                             <tr>
                                 @{int cntSpec = 0;
-                                    foreach (var spec in ViewBag.spec)
+                                    foreach (var spec in Model.spec)
                                     {
                                         if (cntSpec++ % 3 == 0)
                                         {
@@ -108,7 +111,7 @@
 
 
                                         }
-
+                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
                                         <td>
                                             <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
                                             <div id="@spec.Id" name="0"></div>
@@ -123,16 +126,16 @@
                                     }
             </div>
         </div>
-        <div id="vremGroup">
-            <div class="form-group" id="vrem">
-                @if (ViewBag.vrem.Count != 0)
+        <div id=@("vremGroup"+Model.Postfix)>
+            <div class="form-group" id=@("vrem"+Model.Postfix)>
+                @if (Model.vrem.Count != 0)
                 {
                     @Html.Label("Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <table>
                             <tr>
                                 @{int cntVrem = 0;
-                                    foreach (var vrem in ViewBag.vrem)
+                                    foreach (var vrem in Model.vrem)
                                     {
                                         if (cntVrem++ % 3 == 0)
                                         {
@@ -141,7 +144,7 @@
 
 
                                         }
-
+                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
                                         <td>
                                             <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
                                             <div id="@vrem.Id" name="0"></div>

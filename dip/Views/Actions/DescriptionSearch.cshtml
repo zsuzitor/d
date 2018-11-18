@@ -10,8 +10,13 @@
     <h4>Шаг 1. Задайте входное воздействие</h4>
 
     @Html.Hidden(" ",Url.Action("DescriptionSearch", "Actions"),new {id="descr_search_href_id" })
-    <div id="div_form_id">
-        @Html.Action("DescriptionSearchInput", "Actions")
+    <div id="">@*div_form_id*@
+        <div>
+            @Html.Action("DescriptionSearchInput", "Actions")
+        </div>
+        <div>
+            @Html.Action("DescriptionSearchInput", "Actions")
+        </div>
     </div>
 
 

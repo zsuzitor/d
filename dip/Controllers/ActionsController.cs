@@ -79,8 +79,12 @@ namespace dip.Controllers
             //    return View();
             //}
 
-        public ActionResult DescriptionSearchInput()
+        public ActionResult DescriptionSearchInput(string postfix="")
         {
+
+            DescriptionForm res = new DescriptionForm();
+
+
             using (var db = new ApplicationDbContext())
             {
                 // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
@@ -116,21 +120,21 @@ namespace dip.Controllers
                 //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление
-                ViewBag.actionId = listOfActions;
-                ViewBag.actionType = actionType;
-                ViewBag.fizVelId = listOfFizVels;
-                ViewBag.parametricFizVelId = listOfParametricFizVels;
-                ViewBag.pros = prosList;// listSelectedPros;
-                ViewBag.spec = specList;//listSelectedSpec;
-                ViewBag.vrem = vremList;// listSelectedVrem;
-                ViewBag.currentAction = actionId;
-                ViewBag.currentActionId = "-1";
+                res.actionId = listOfActions;
+                res.actionType = actionType;
+                res.fizVelId = listOfFizVels;
+                res.parametricFizVelId = listOfParametricFizVels;
+                res.pros = prosList;// listSelectedPros;
+                res.spec = specList;//listSelectedSpec;
+                res.vrem = vremList;// listSelectedVrem;
+                res.currentAction = actionId;
+                res.currentActionId = "-1";
             }
 
 
 
-
-
+            res.Postfix= postfix;
+            //ViewBag.postfix = postfix;
             return PartialView();
         }
 
