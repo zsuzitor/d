@@ -5,7 +5,7 @@
 @model dip.Models.Domain.Action
 @if (ViewBag.specChild.Count != 0)
 {
-    <div id=@ViewBag.parent name="1">
+    <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
         <table>
             <tr>
                 @{
@@ -19,13 +19,13 @@
                         @:<td>
                         if (spec.IsSelected == true)
                         {
-                            <input type="checkbox" name="listSelectedSpec" value="@spec.Id" checked /> @spec.name
+                            <input type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" checked /> @spec.name
                         }
                         else
                         {
-                            <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.name
+                            <input type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" /> @spec.name
                         }
-                        <div id=@spec.Id name="0"></div>
+                        <div id=@(spec.Id+((string)ViewBag.type)) name="0"></div>
                         @:</td>
                 }
                     @:</tr>

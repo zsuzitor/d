@@ -3,7 +3,7 @@
 
 
 @model dip.Models.Domain.Action
-<div class="form-group" id="spec">
+<div class="form-group" id=@("spec"+((string)ViewBag.type))>
     @if (ViewBag.spec.Count != 0)
     {
         @Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -20,8 +20,8 @@
                             }
                             @:
                             <td>
-                                <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
-                                <div id="@spec.Id" name="0"></div>
+                                <input type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" /> @spec.Name
+                                <div id="@(spec.Id+((string)ViewBag.type))" name="0"></div>
                                 </td>
                         }
                         @:</tr>

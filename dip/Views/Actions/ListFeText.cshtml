@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<dip.Models.Domain.FEText>
 
 
-
+@if (Model.Count() < 1)
+{
+    <p>по данному запросу ничего не найдено</p>
+}
 @foreach(var i in Model)
 {
     <div>

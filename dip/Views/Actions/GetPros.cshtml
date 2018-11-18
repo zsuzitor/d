@@ -5,7 +5,7 @@
 @model dip.Models.Domain.Action
 
 @*@MyHelpers.selectList(ViewBag.pros, "Пространственные характеристики", "pros", "Pros")*@
-<div class="form-group" id="pros">
+<div class="form-group" id=@("pros"+((string)ViewBag.type))>
     @if (ViewBag.pros.Count != 0)
     {
         @Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -22,8 +22,8 @@
                             }
                             @:
                             <td>
-                                <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
-                                <div id="@pros.Id" name="0"></div>
+                                <input type="checkbox" name=@("listSelectedPros"+((string)ViewBag.type)) value="@pros.Id" /> @pros.Name
+                                <div id="@(pros.Id+((string)ViewBag.type))" name="0"></div>
                                 </td>
                         }
                         @: </tr>

@@ -5,25 +5,26 @@ E-mail: ilyavayngolts@gmail.com
 */
 
 // Функция, обновляющая характеристики воздействия
-function changeParams()
+function changeParams(type)
 {
     var url = window.location.pathname.split('/');
     var prefix = '';
+    var postfix='?type='+type+'&';
     for (var i = 0; i < url.length - 1; i++)
         prefix += url[i] + '/';
 
     // Получаем дескриптор воздействия
-    var id = $('#action').val();
+    var id = $('#action'+type).val();
 
     // Формируем ajax-запрос
     $.ajax(
     {
         type: 'GET',
-        url: prefix + 'GetFizVels/' + id,
+        url: prefix + 'GetFizVels'+postfix+'id=' + id,
         success: function (fizVelId)
         {
             // Заменяем часть представления, отвечающего за выбор физической величины
-            $('#fizVel').replaceWith(fizVelId);
+            $('#fizVel'+type).replaceWith(fizVelId);
         }
     });
 
@@ -34,11 +35,12 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetPros/' + id,
+            url: prefix + 'GetPros'+postfix+'id=' + id,
+            
             success: function (pros)
             {
                 // Заменяем часть представления, отвечающего за выбор пространственных характеристик
-                $('#pros').replaceWith(pros);
+                $('#pros'+type).replaceWith(pros);
             }
         });
 
@@ -46,11 +48,12 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetSpec/' + id,
+            url: prefix + 'GetSpec'+postfix+'id=' + id,
+            
             success: function (spec)
             {
                 // Заменяем часть представления, отвечающего за выбор специальных характеристик
-                $('#spec').replaceWith(spec);
+                $('#spec'+type).replaceWith(spec);
             }
         });
 
@@ -58,11 +61,12 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetVrem/' + id,
+           
+			url: prefix + 'GetSpec'+postfix+'id=' + id,
             success: function (vrem)
             {
                 // Заменяем часть представления, отвечающего за выбор временных характеристик
-                $('#vrem').replaceWith(vrem);
+                $('#vrem'+type).replaceWith(vrem);
             }
         });
 
@@ -70,11 +74,13 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetParametricFizVels/' + 'NULL',
+            url: prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL',
+            
+
             success: function (parametricFizVel)
             {
                 // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel').replaceWith(parametricFizVel);
+                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
             }
         });
     }
@@ -84,11 +90,12 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetParametricFizVels/' + 'VOZ11_FIZVEL_R1',
+            url: prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1',
+            
             success: function (parametricFizVel)
             {
                 // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel').replaceWith(parametricFizVel);
+                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
             }
         });
 
@@ -96,11 +103,12 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetPros/' + 'NULL',
+            url: prefix + 'GetPros'+postfix+'id=' + 'NULL',
+           
             success: function (pros)
             {
                 // Заменяем часть представления, отвечающего за выбор пространственных характеристик
-                $('#pros').replaceWith(pros);
+                $('#pros'+type).replaceWith(pros);
             }
         });
 
@@ -108,11 +116,12 @@ function changeParams()
         $.ajax(
         {
                 type: 'GET',
-                url: prefix + 'GetSpec/' + 'NULL',
+                url: prefix + 'GetSpec'+postfix+'id=' + 'NULL',
+                
             success: function (spec)
             {
                 // Заменяем часть представления, отвечающего за выбор специальных характеристик
-                $('#spec').replaceWith(spec);
+                $('#spec'+type).replaceWith(spec);
             }
         });
 
@@ -120,18 +129,25 @@ function changeParams()
         $.ajax(
         {
             type: 'GET',
-            url: prefix + 'GetVrem/' + 'NULL',
+            url: prefix + 'GetVrem'+postfix+'id=' + 'NULL',
+            
             success: function (vrem)
             {
                 // Заменяем часть представления, отвечающего за выбор временных характеристик
-                $('#vrem').replaceWith(vrem);
+                $('#vrem'+type).replaceWith(vrem);
             }
         });
     }
 };
 
 // Назначение на событие change функции changeParams
-$('#action').on('change', function ()
+$('#actionI').on('change', function ()
 {
-    changeParams();
+    changeParams('I');
+
+});
+$('#actionO').on('change', function ()
+{
+
+    changeParams('O');
 });

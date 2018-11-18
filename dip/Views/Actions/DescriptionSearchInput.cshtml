@@ -11,168 +11,111 @@
 
 @*@model string*@
 
+<div>
+    <hr />
+    @*@Html.DropDownList("nn", @Model.actionId)*@
+    <hr />
+    <h1>Вход</h1>
+    @*@helpers_.PartFormDescrSearch(Html)*@
+    @*@Html.Label("1233")*@
+   
+    @helpers_.PartFormDescrSearch(  Model, "I")
+   
+    <hr />
+    <h1>Выход</h1>
+    @helpers_.PartFormDescrSearch( Model, "O")
+</div>
 
-
-    <div class="form-horizontal">
-        
-        <hr />
-        @( +Model.Postfix)
-        <div class="form-group">
-            @Html.LabelFor(model => model.Action.AllActionId, "Название воздействия", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = Model.currentActionId })
-            <div class="col-md-10">
-                @Html.DropDownList("actionId" + Model.Postfix, null, htmlAttributes: new { id = "action" + Model.Postfix, @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.Action.AllActionId, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Action.ActionType_Id, "Тип входа", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("actionType" + Model.Postfix, null, htmlAttributes: new { @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-        <div id=@("fizVelGroup"+Model.Postfix)>
-            <div class="form-group" id=@("fizVel"+Model.Postfix)>
-                @if (Model.currentAction != "VOZ11")
-                {
-                    @Html.LabelFor(model => model.Action.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
-                }
-                else
-                {
-                    @Html.LabelFor(model => model.Action.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
-                }
-                <div class="col-md-10">
-                    @Html.DropDownList("fizVelId" + Model.Postfix, null, htmlAttributes: new { id = "fizVelId" + Model.Postfix, @class = "form-control" })
-                    @*@Html.ValidationMessageFor(model => model.Action.FizVelId, "", new { @class = "text-danger" })*@
-                </div>
-            </div>
-        </div>
-        <div class="form-group" id=@("parametricFizVel"+Model.Postfix)>
-            @if (Model.parametricFizVelId.Count != 0)
-            {
-                @Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("parametricFizVelId" + Model.Postfix, Model.parametricFizVelId , htmlAttributes: new { @class = "form-control" })
-                </div>
-            }
-        </div>
-        <div id=@("prosGroup"+Model.Postfix)>
-            <div class="form-group" id=@("pros"+Model.Postfix)>
-                @if (Model.pros.Count != 0)
-                {
-                    @Html.Label("Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{
-
-                                    int cntPros = 0;
-                                    foreach (var pros in Model.pros)
-                                    {
-                                        if (cntPros++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-                                        }
-
-                                        <td>
-                                            @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                            <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
-                                            <div id="@pros.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-
-                                }
-                            </tr>
-                        </table>
-                    </div>
-                                    }
-            </div>
-        </div>
-        <div id=@("specGroup"+Model.Postfix)>
-            <div class="form-group" id=@("spec"+Model.Postfix)>
-                @if (Model.spec.Count != 0)
-                {
-                    @Html.Label("Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{int cntSpec = 0;
-                                    foreach (var spec in Model.spec)
-                                    {
-                                        if (cntSpec++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-                                        }
-                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                        <td>
-                                            <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
-                                            <div id="@spec.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-                        @:</tr>
-                                }
-                            </table>
-                        </div>
-                                    }
-            </div>
-        </div>
-        <div id=@("vremGroup"+Model.Postfix)>
-            <div class="form-group" id=@("vrem"+Model.Postfix)>
-                @if (Model.vrem.Count != 0)
-                {
-                    @Html.Label("Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{int cntVrem = 0;
-                                    foreach (var vrem in Model.vrem)
-                                    {
-                                        if (cntVrem++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-                                        }
-                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                        <td>
-                                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
-                                            <div id="@vrem.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-                       @: </tr>
-                                }
-                            </table>
-                        </div>
-                                    }
-            </div>
-        </div>
-        @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
-                <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
-            </div>
-        </div>*@
-    </div>
-                                  
+<div>
+    <button onclick="Go_next_step()">Далее</button>
+</div>
 
 
 
 
 
+@Scripts.Render("~/Scripts/_changeAction.js")
+@Scripts.Render("~/Scripts/_changeParametricFizVel.js")
+@Scripts.Render("~/Scripts/_changePros.js")
+@Scripts.Render("~/Scripts/_changeSpec.js")
+@Scripts.Render("~/Scripts/_changeVrem.js")
+<script type="text/javascript">
+        $(document).ready(function ()
+        {
+            changeParams('I');
+            changeParams('O');
+        });
 
+
+        var data_descr_search = {
+            //have_input:null,
+            actionIdI: null,
+            actionTypeI: null,
+            FizVelIdI: null,
+            parametricFizVelIdI: null,
+            listSelectedProsI: null,
+            listSelectedSpecI: null,
+            listSelectedVremI: null,
+            actionIdO: null,
+            actionTypeO: null,
+            FizVelIdO: null,
+            parametricFizVelIdO: null,
+            listSelectedProsO: null,
+            listSelectedSpecO: null,
+            listSelectedVremO: null,
+            function_trigger:null
+        };
+        function Go_next_step() {
+            
+                data_descr_search.actionIdI = UndefinedToNull($('#action').val());
+                data_descr_search.actionTypeI = UndefinedToNull($('#actionType').val());
+                data_descr_search.FizVelIdI = UndefinedToNull($('#fizVelId').val());
+                data_descr_search.parametricFizVelIdI = UndefinedToNull($('#parametricFizVelId').val());
+                data_descr_search.listSelectedProsI = UndefinedToNull($('#').val());//name listSelectedPros
+                data_descr_search.listSelectedSpecI = UndefinedToNull($('#').val());
+                data_descr_search.listSelectedVremI = UndefinedToNull($('#').val());
+                
+           
+                data_descr_search.actionIdO = UndefinedToNull($('#action').val());
+                data_descr_search.actionTypeO = UndefinedToNull($('#actionType').val());
+                data_descr_search.FizVelIdO = UndefinedToNull($('#fizVelId').val());
+                data_descr_search.parametricFizVelIdO = UndefinedToNull($('#parametricFizVelId').val());
+                data_descr_search.listSelectedProsO = UndefinedToNull($('#').val());//name listSelectedPros
+                data_descr_search.listSelectedSpecO = UndefinedToNull($('#').val());
+                data_descr_search.listSelectedVremO = UndefinedToNull($('#').val());
+
+                //location.href = "xuz";
+                if (data_descr_search.function_trigger!=null)
+                data_descr_search.function_trigger();
+
+
+               
+            
+
+
+            //var xhr = new XMLHttpRequest();
+            //xhr.open("POST", "/Actions/DescriptionSearchInput");
+
+            //xhr.onreadystatechange = function () {
+            //    if (xhr.readyState == 4) {
+            //        if (xhr.status == 200) {
+            //            //при возврате actionresult и тд, вернет -"<html>"
+            //            document.getElementById('div_form_id').innerHTML= xhr.responseText;
+
+            //        }
+            //    }
+            //};
+
+            //xhr.send(formData);
+        }
+
+
+
+        function UndefinedToNull(str) {
+            return str === undefined || str === "" || str === "undefined" ?
+            null : str;
+        }
+</script>
 
 
 

@@ -14,27 +14,28 @@
         <div>
             @Html.Action("DescriptionSearchInput", "Actions")
         </div>
-        <div>
-            @Html.Action("DescriptionSearchInput", "Actions")
-        </div>
+        
     </div>
+    <div id="search_content_div_id"></div>
 
-
-    <div>
+    @*<div>
         @if (ViewBag.search == true)
         {
             @Html.Action("ListFeText", "Actions", new {listId= ViewBag.listFeId })
 
-
+        
 
 
         }
 
 
-    </div>
+    </div>*@
+
+    @*@Html.Label( "Название воздействия!!!!!", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = "___+__" })*@
+
 
     <div>
-        <button onclick="Go_next_step()">Далее</button>
+        
         @Html.ActionLink("Назад на главную страницу", "Index", "Home")
     </div>
 </div>
@@ -43,62 +44,10 @@
 
 
 
-
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/_changeAction.js")
-    @Scripts.Render("~/Scripts/_changeParametricFizVel.js")
-    @Scripts.Render("~/Scripts/_changePros.js")
-    @Scripts.Render("~/Scripts/_changeSpec.js")
-    @Scripts.Render("~/Scripts/_changeVrem.js")
-    <script type="text/javascript">
-        $(document).ready(function ()
-        {
-            changeParams();
-        });
-
-     
-        var data_descr_search = {
-            have_input:null,
-            actionIdI: null,
-            actionTypeI: null,
-            FizVelIdI: null,
-            parametricFizVelIdI: null,
-            listSelectedProsI: null,
-            listSelectedSpecI: null,
-            listSelectedVremI: null,
-            actionIdO: null,
-            actionTypeO: null,
-            FizVelIdO: null,
-            parametricFizVelIdO: null,
-            listSelectedProsO: null,
-            listSelectedSpecO: null,
-            listSelectedVremO: null
-        
-        };
-        function Go_next_step() {
-            if (data_descr_search.have_input === null) {
-                data_descr_search.actionIdI = UndefinedToNull($('#action').val());
-                data_descr_search.actionTypeI = UndefinedToNull($('#actionType').val());
-                data_descr_search.FizVelIdI = UndefinedToNull($('#fizVelId').val());
-                data_descr_search.parametricFizVelIdI = UndefinedToNull($('#parametricFizVelId').val());
-                data_descr_search.listSelectedProsI = UndefinedToNull($('#').val());//name listSelectedPros
-                data_descr_search.listSelectedSpecI = UndefinedToNull($('#').val());
-                data_descr_search.listSelectedVremI = UndefinedToNull($('#').val());
-                alert("выход парам");
-                data_descr_search.have_input = true;
-            }
-            else {
-                data_descr_search.actionIdO = UndefinedToNull($('#action').val());
-                data_descr_search.actionTypeO = UndefinedToNull($('#actionType').val());
-                data_descr_search.FizVelIdO = UndefinedToNull($('#fizVelId').val());
-                data_descr_search.parametricFizVelIdO = UndefinedToNull($('#parametricFizVelId').val());
-                data_descr_search.listSelectedProsO = UndefinedToNull($('#').val());//name listSelectedPros
-                data_descr_search.listSelectedSpecO = UndefinedToNull($('#').val());
-                data_descr_search.listSelectedVremO = UndefinedToNull($('#').val());
-
-                //location.href = "xuz";
-                location.href = document.getElementById("descr_search_href_id").value + "?" +
+    <script>
+        function go() {
+            var url_= document.getElementById("descr_search_href_id").value + "?" +
                     "search=yes&" +
                     "actionIdI=" + data_descr_search.actionIdI + "&" +
                     "actionTypeI=" + data_descr_search.actionTypeI + "&" +
@@ -114,34 +63,28 @@
                     "listSelectedProsO=" + data_descr_search.listSelectedProsO + "&" +
                     "listSelectedSpecO=" + data_descr_search.listSelectedSpecO + "&" +
                     "listSelectedVremO=" + data_descr_search.listSelectedVremO + "&";
-                
+            history.pushState(null, null, url_);
 
-                //TODO записсывать потом чистить, такое
-                data_descr_search.have_input = null;
-            }
-            
-            
-            //var xhr = new XMLHttpRequest();
-            //xhr.open("POST", "/Actions/DescriptionSearchInput");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/Actions/DescriptionSearch");
 
-            //xhr.onreadystatechange = function () {
-            //    if (xhr.readyState == 4) {
-            //        if (xhr.status == 200) {
-            //            //при возврате actionresult и тд, вернет -"<html>"
-            //            document.getElementById('div_form_id').innerHTML= xhr.responseText;
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        //при возврате actionresult и тд, вернет -"<html>"
+                        document.getElementById('search_content_div_id').innerHTML = xhr.responseText;
 
-            //        }
-            //    }
-            //};
+                    }
+                }
+            };
 
-            //xhr.send(formData);
+            xhr.send(formData);
         }
 
 
-
-        function UndefinedToNull(str) {
-            return str === undefined || str === "" || str === "undefined" ?
-            null : str;
-        }
+        $(document).ready(function () {
+            data_descr_search.function_trigger = go;
+        });
+        
     </script>
 }

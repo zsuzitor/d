@@ -1,0 +1,296 @@
+﻿@using System.Web.Mvc;
+
+@*@functions
+{
+    private static new HtmlHelper<object> Html
+    {
+        get { return ((WebViewPage)CurrentPage).Html; }
+    }
+
+    private static UrlHelper Url
+    {
+        get { return ((WebViewPage)CurrentPage).Url; }
+    }
+}*@
+
+@helper HelperName(string name)
+{
+// your helper can contain code and/or markup, e.g.
+// var msg = "Hello " + name;
+// <p>@msg</p>
+// For more information, visit http://go.microsoft.com/fwlink/?LinkID=204658
+}
+
+
+@*@helper PrintAsRaw(string htmlString)
+{
+    @Html.Raw(htmlString)
+    
+}*@
+
+
+@*dynamic*@
+@*HtmlHelper*@
+@helper PartFormDescrSearch(dip.Models.ViewModel.DescriptionForm a=null, string type = "")
+{
+//using System.Web.Mvc ;
+    <div class="form-horizontal">
+
+        <hr />
+        @*@( +a.Postfix)*@
+        <div class="form-group">
+            <label id="actionLabel" class="control-label col-md-2" value="@a.currentActionId">Название воздействия</label>
+            @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
+
+           
+
+
+            <div class="col-md-10">
+
+                @*@Html.DropDownList("actionId" + type, null, htmlAttributes: new { id = "action" + type, @class = "form-control" })*@
+
+
+                <select name=@("actionId"+ type) class="form-control" id=@("action"+type)>
+                    
+                    @foreach (var i in a.actionId)
+                    {
+                        <option value="@i.Id">@i.Name</option>
+                    }
+                </select>
+
+
+                @*@Html.ValidationMessageFor(model => model.Action.AllActionId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="" class="control-label col-md-2">Тип входа</label>
+            @*@Html.Label("Тип входа", new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <select name=@("actionType"+ type) class="form-control" id=@("actionType"+type)>
+                    @foreach (var i in a.actionType)
+                    {
+                        <option value="@i.Id">@i.Name</option>
+                    }
+                </select>
+
+                @*@Html.DropDownList("actionType" + type, null, htmlAttributes: new { @class = "form-control" })*@
+                @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div id=@("fizVelGroup"+ type)>
+            <div class="form-group" id=@("fizVel"+ type)>
+                @if (a.currentAction != "VOZ11")
+                {
+                    <label id="" class="control-label col-md-2">Название физической величины</label>
+                    @*@Html.Label("Название физической величины", new { @class = "control-label col-md-2" })*@
+                }
+                else
+                {
+                    <label id="" class="control-label col-md-2">Раздел физики</label>
+                    @*@Html.Label("Раздел физики", new { @class = "control-label col-md-2" })*@
+                }
+                <div class="col-md-10">
+
+                    <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+type)>
+
+                        @foreach (var i in a.fizVelId)
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    </select>
+                    @*@Html.DropDownList("fizVelId" + type, null, htmlAttributes: new { id = "fizVelId" + type, @class = "form-control" })*@
+                    @*@Html.ValidationMessageFor(model => model.Action.FizVelId, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id=@("parametricFizVel"+ type)>
+            @if (a.parametricFizVelId.Count != 0)
+            {
+                <label id="" class="control-label col-md-2">Название физической величины</label>
+                @*@Html.Label("Название физической величины", new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+type)>
+                        <option value="NO_FIZVEL">Не выбрано</option>
+                        @foreach (var i in a.parametricFizVelId)
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+
+                    </select>
+                    @*@Html.DropDownList("parametricFizVelId" + type, null, htmlAttributes: new { @class = "form-control" })@*(IEnumerable<SelectListItem>)a.parametricFizVelId*@
+                </div>
+            }
+        </div>
+        <div id=@("prosGroup"+type)>
+            <div class="form-group" id=@("pros"+type)>
+                @if (a.pros.Count != 0)
+                {
+                    <label id="" class="control-label col-md-2">Пространственные характеристики</label>
+                    @*@Html.Label("Пространственные характеристики", new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        <table>
+                            <tr>
+                                @{
+
+                                    int cntPros = 0;
+                                    foreach (var pros in a.pros)
+                                    {
+                                        if (cntPros++ % 3 == 0)
+                                        {
+
+                                            @:</tr><tr>
+
+
+                            
+                                        }
+
+                                        <td>
+                                            @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
+                                            <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
+                                            <div id="@pros.Id" name="0"></div>
+
+                                        </td>
+                                    }
+
+
+                                }
+                            </tr>
+                        </table>
+                    </div>
+                                    }
+            </div>
+        </div>
+        <div id=@("specGroup"+type)>
+            <div class="form-group" id=@("spec"+type)>
+                @if (a.spec.Count != 0)
+                {
+                    <label id="" class="control-label col-md-2">Специальные характеристики</label>
+                    @*@Html.Label("Специальные характеристики", new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        <table>
+                            <tr>
+                                @{int cntSpec = 0;
+                                    foreach (var spec in a.spec)
+                                    {
+                                        if (cntSpec++ % 3 == 0)
+                                        {
+
+                                            @:</tr><tr>
+
+
+
+
+
+
+
+
+                                        }
+                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
+                                        <td>
+                                            <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
+                                            <div id="@spec.Id" name="0"></div>
+
+                                        </td>
+                                    }
+
+                                    @:</tr>
+                                }
+                            </table>
+                        </div>
+                                    }
+            </div>
+        </div>
+        <div id=@("vremGroup"+type)>
+            <div class="form-group" id=@("vrem"+type)>
+                @if (a.vrem.Count != 0)
+                {
+                    <label id="" class="control-label col-md-2">Временные характеристики</label>
+                    @*@Html.Label("Временные характеристики", new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        <table>
+                            <tr>
+                                @{int cntVrem = 0;
+                                    foreach (var vrem in a.vrem)
+                                    {
+                                        if (cntVrem++ % 3 == 0)
+                                        {
+
+                                            @:</tr><tr>
+
+
+
+
+
+
+
+
+                                        }
+                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
+                                        <td>
+                                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
+                                            <div id="@vrem.Id" name="0"></div>
+
+                                        </td>
+                                    }
+
+                                    @:</tr>
+                                }
+                            </table>
+                        </div>
+                                    }
+            </div>
+        </div>
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
+                    <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
+                </div>
+            </div>*@
+    </div>
+
+
+
+
+
+
+
+}
+
+
+
+
+
+@helper selectList(dynamic a, string label, string id, string name)
+{
+
+    <div class="form-group" id="@id">
+        @if (a.Count != 0)
+    {
+            <label id="" class="control-label col-md-2">@label</label>
+            @*@Html.Label(label, new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var item in a)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                            }
+                                
+                                <td>
+                                    <input type="checkbox" name=@("listSelected"+@name) value="@item.Id" /> @item.Name
+                                    <div id="@item.Id" name="0"></div>
+                                </td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+                            }
+    </div>
+
+
+}

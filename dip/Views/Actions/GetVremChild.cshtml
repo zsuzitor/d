@@ -4,7 +4,7 @@
 @model dip.Models.Domain.Action
 @if (ViewBag.vremChild.Count != 0)
 {
-    <div id=@ViewBag.parent name="1">
+    <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
         <table>
             <tr>
                 @{
@@ -18,13 +18,13 @@
                         @:<td>
                         if (vrem.IsSelected == true)
                         {
-                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" checked /> @vrem.Name
+                            <input type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" checked /> @vrem.Name
                         }
                         else
                         {
-                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
+                            <input type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name
                         }
-                        <div id=@vrem.Id name="0"></div>
+                        <div id=@(vrem.Id+((string)ViewBag.type)) name="0"></div>
                         @:</td>
                 }
                     @:</tr>

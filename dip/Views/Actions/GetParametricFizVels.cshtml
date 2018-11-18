@@ -3,12 +3,22 @@
 
 
 @model dip.Models.Domain.Action
-<div class="form-group" id="parametricFizVel">
+<div class="form-group" id=@("parametricFizVel"+((string)ViewBag.type))>
     @if (ViewBag.parametricFizVelId.Count != 0)
     {
         @Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("parametricFizVelId", ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })
+            @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
+        
+            <select name=@("parametricFizVelId"+ ((string)ViewBag.type)) class="form-control" id=@("parametricFizVelId"+ ((string)ViewBag.type))>
+
+                @foreach (var i in (List<dip.Models.Domain.FizVel>)ViewBag.parametricFizVelId)
+            {
+                <option value="@i.Id">@i.Name</option>
+            }
+
+            </select>
+        
         </div>
     }
 </div>

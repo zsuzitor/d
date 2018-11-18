@@ -5,7 +5,7 @@ E-mail: ilyavayngolts@gmail.com
 */
 
 // Функция, добавляющая на представление значения выбранной временной характеристики
-function setChildVrem()
+function setChildVrem(type)
 {
     var url = window.location.pathname.split('/');
     var prefix = '';
@@ -13,19 +13,19 @@ function setChildVrem()
         prefix += url[i] + '/';
 
     // Обходим все отмеченные checkbox'ы
-    $('#vrem input:checkbox:checked').each(function ()
+    $('#vrem'+type+' input:checkbox:checked').each(function ()
     {
         // Получаем дескриптор характеристики
         var id = $(this).val();
 
         // Получаем дескриптор воздействия
-        var actionId = $('#actionLabel').attr('value');
+        var actionId = $('#actionLabel'+type).attr('value');
 
         // Формируем строку для ajax-запроса
         var str = id + '@' + actionId;
 
         // Узнаем, загружены ли в представление характеристики значения
-        var hasChild = $('#' + id).attr('name');
+        var hasChild = $('#' + id+type).attr('name');
 
         if (hasChild == '0') // не загружены
         {
@@ -37,7 +37,7 @@ function setChildVrem()
                 success: function (vremChild)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
-                    $('#' + id).replaceWith(vremChild);
+                    $('#' + id+type).replaceWith(vremChild);
                 }
             });
         }
@@ -45,15 +45,16 @@ function setChildVrem()
 }
 
 // Функция, удаляющая из представления значения выбранной временной характеристики
-function delChildVrem()
+function delChildVrem(type)
 {
     var url = window.location.pathname.split('/');
     var prefix = '';
+    var postfix='?type='+type;
     for (var i = 0; i < url.length - 1; i++)
         prefix += url[i] + '/';
 
     // Обходим все checkbox'ы
-    $('#vrem input:checkbox').each(function ()
+    $('#vrem'+type+' input:checkbox').each(function ()
     {
         if ($(this).is(':checked') == false) // checkbox не отмечен
         {
@@ -61,7 +62,7 @@ function delChildVrem()
             var id = $(this).val();
 
             // Узнаем, загружены ли в представление характеристики значения
-            var hasChild = $('#' + id).attr('name');
+            var hasChild = $('#' + id+type).attr('name');
 
             if (hasChild == '1') // загружены
             {
@@ -69,11 +70,11 @@ function delChildVrem()
                 $.ajax(
                 {
                     type: 'GET',
-                    url: prefix + 'GetEmptyChild/' + id,
+                    url: prefix + 'GetEmptyChild/' + id+postfix,
                     success: function (emptyChild)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
-                        $('#' + id).replaceWith(emptyChild);
+                        $('#' + id+type).replaceWith(emptyChild);
                     }
                 });
             }
@@ -82,8 +83,13 @@ function delChildVrem()
 }
 
 // Назначение на событие change функций setChildVrem и delChildVrem
-$('#vremGroup').on('change', function ()
+$('#vremGroupI').on('change', function ()
 {
-    setChildVrem();
-    delChildVrem();
+    setChildVrem('I');
+    delChildVrem('I');
+});
+$('#vremGroupO').on('change', function ()
+{
+    setChildVrem('O');
+    delChildVrem('O');
 });

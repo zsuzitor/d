@@ -23,6 +23,7 @@ namespace dip.Controllers
             if (search != null)
             {
                 //поиск
+                List<int> list_id = new List<int>();
                 using (var db=new ApplicationDbContext())
                 {
                     //находим все записи которые подходят по входным параметрам
@@ -42,13 +43,13 @@ namespace dip.Controllers
                     x1.Vrem == outp.listSelectedVremO);
 
                     //записи которые подходят по всем параметрам
-                    var list_id=inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToList();
-                    ViewBag.listFeId = list_id;
-                    ViewBag.search = true;
+                     list_id=inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToList();
+                    //ViewBag.listFeId = list_id;
+                    
                 }
+                ViewBag.search = true;
 
-
-
+                return RedirectToAction("ListFeText", "Actions", list_id);
             }
 
             return View();
@@ -59,6 +60,7 @@ namespace dip.Controllers
         {
 
             List<FEText> res = new List<FEText>();
+            if(listId!=null)
             using (var db = new ApplicationDbContext())
 
                 res = db.FEText.Join(listId, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
@@ -79,7 +81,7 @@ namespace dip.Controllers
             //    return View();
             //}
 
-        public ActionResult DescriptionSearchInput(string postfix="")
+        public ActionResult DescriptionSearchInput()
         {
 
             DescriptionForm res = new DescriptionForm();
@@ -88,24 +90,23 @@ namespace dip.Controllers
             using (var db = new ApplicationDbContext())
             {
                 // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
-                var listOfActions = new SelectList(db.AllActions.OrderBy(action => action.Id).ToList(), "id", "name");
-                var actionId = listOfActions.First().Value;
+                var listOfActions = db.AllActions.OrderBy(action => action.Id).ToList();
+                var actionId = listOfActions.First().Id;
 
                 // Получаем список типов воздействий     
-                var actionType = new SelectList(db.ActionTypes.OrderByDescending(type => type.Name).ToList(), "id", "name", "Не выбрано");
+                var actionType = db.ActionTypes.OrderByDescending(type => type.Name).ToList();//, "id", "name", "Не выбрано")
 
                 // Получаем список физических величин для выбранного воздействия
-                var listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == actionId + "_FIZVEL") ||
+                var listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == actionId + "_FIZVEL") ||
                                                                               (fizVel.Id == "NO_FIZVEL"))
-                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
+                                                           .OrderBy(fizVel => fizVel.Id).ToList();
 
                 // Выбираем первый из списка раздел физики
-                var fizVelId = listOfFizVels.First().Value;
+                var fizVelId = listOfFizVels.First().Id;
 
                 // Получаем список физических величин для параметрических воздействий
-                var listOfParametricFizVels = new SelectList(db.FizVels.Where(parametricFizVel => (parametricFizVel.Parent == fizVelId))
-                                                                     .OrderBy(parametricFizVel => parametricFizVel.Id), "id", "name")
-                                                                     .ToList();
+                var listOfParametricFizVels = db.FizVels.Where(parametricFizVel => (parametricFizVel.Parent == fizVelId))
+                                                                     .OrderBy(parametricFizVel => parametricFizVel.Id).ToList();
 
                 // Получаем список пространственных характеристик для выбранного воздействия
                 var prosList = db.Pros.Where(pros => pros.Parent == actionId + "_PROS").ToList();
@@ -133,9 +134,9 @@ namespace dip.Controllers
 
 
 
-            res.Postfix= postfix;
+           
             //ViewBag.postfix = postfix;
-            return PartialView();
+            return PartialView(res);
         }
 
 
@@ -150,25 +151,25 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
-        public ActionResult GetFizVels(string id)
+        public ActionResult GetFizVels(string id,string type="")
         {
-            SelectList listOfFizVels;
+            List<FizVel> listOfFizVels;
 
             using (var db=new ApplicationDbContext())
                 if (id != "VOZ11") // непараметрическое воздействие
                                    // Получаем обновленный список физических величин
-                    listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL") ||
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL") ||
                                                                               (fizVel.Id == "NO_FIZVEL"))
-                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
+                                                           .OrderBy(fizVel => fizVel.Id).ToList();
                 else
                     // Получаем обновленный список физических величин
-                    listOfFizVels = new SelectList(db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL"))
-                                                           .OrderBy(fizVel => fizVel.Id).ToList(), "id", "name");
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL"))
+                                                           .OrderBy(fizVel => fizVel.Id).ToList();
 
             // Отправляем его в представление
             ViewBag.fizVelId = listOfFizVels;
             ViewBag.currentActionId = id;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -180,7 +181,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
-        public ActionResult GetPros(string id)
+        public ActionResult GetPros(string id, string type)
         {
             // Получаем обновленный список пространственных характеристик
 
@@ -191,7 +192,7 @@ namespace dip.Controllers
 
             // Отправляем его в представление
             ViewBag.pros = prosList;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -203,7 +204,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns> 
-        public ActionResult GetSpec(string id)
+        public ActionResult GetSpec(string id, string type)
         {
             // Получаем обновленный список специальных характеристик
             List<Spec> specList = new List<Spec>();
@@ -213,7 +214,7 @@ namespace dip.Controllers
 
             // Отправляем его в представление
             ViewBag.spec = specList;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -224,7 +225,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns> 
-        public ActionResult GetVrem(string id)
+        public ActionResult GetVrem(string id, string type)
         {
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
@@ -234,7 +235,7 @@ namespace dip.Controllers
 
             // Отправляем его в представление
             ViewBag.vrem = vremList;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -247,7 +248,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
-        public ActionResult GetParametricFizVels(string id)
+        public ActionResult GetParametricFizVels(string id, string type)
         {
             // Получаем список физических величин для параметрических воздействий
 
@@ -260,8 +261,8 @@ namespace dip.Controllers
                 {
                     listOfParametricFizVels.Add(db.FizVels.Where(parametricFizVel => parametricFizVel.Id == "NO_FIZVEL").First());
 
-                    var selectListOfParametricFizVels = new SelectList(listOfParametricFizVels
-                                                                     .OrderBy(parametricFizVel => parametricFizVel.Id), "id", "name")
+                    var selectListOfParametricFizVels = listOfParametricFizVels
+                                                                     .OrderBy(parametricFizVel => parametricFizVel.Id)
                                                                      .ToList();
 
                     // Отправляем его в представление
@@ -271,8 +272,8 @@ namespace dip.Controllers
                     // Отправляем его в представление
                     ViewBag.parametricFizVelId = listOfParametricFizVels;
             }
-                
 
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -285,7 +286,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранной пространственной характеристики + идентификатор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns> 
-        public ActionResult GetProsChild(string id)
+        public ActionResult GetProsChild(string id, string type)
         {
             // Извлекаем дескриптор характеристики и идентификатор воздействия
             var args = id.Split('@');
@@ -328,7 +329,7 @@ namespace dip.Controllers
             // Отправляем полученный список в представление
             ViewBag.prosChild = listSelectedPros;
             ViewBag.parent = prosId;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -341,11 +342,11 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранной характеристики </param>
         /// <returns> результат действия ActionResult </returns>
-        public ActionResult GetEmptyChild(string id)
+        public ActionResult GetEmptyChild(string id, string type)
         {
             // Передаем в представление дескриптор характеристики
             ViewBag.parent = id;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -359,7 +360,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранной специальной характеристики + идентификатор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns> 
-        public ActionResult GetSpecChild(string id)
+        public ActionResult GetSpecChild(string id, string type)
         {
             // Извлекаем дескриптор характеристики и идентификатор воздействия
             var args = id.Split('@');
@@ -396,7 +397,7 @@ namespace dip.Controllers
             // Отправляем полученный список в представление
             ViewBag.specChild = listSelectedSpec;
             ViewBag.parent = specId;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
@@ -414,7 +415,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"> дескриптор выбранной временной характеристики + идентификатор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns> 
-        public ActionResult GetVremChild(string id)
+        public ActionResult GetVremChild(string id, string type)
         {
             // Извлекаем дескриптор характеристики и идентификатор воздействия
             var args = id.Split('@');
@@ -449,7 +450,7 @@ namespace dip.Controllers
             // Отправляем полученный список в представление
             ViewBag.vremChild = listSelectedVrem;
             ViewBag.parent = vremId;
-
+            ViewBag.type = type;
             return PartialView();
         }
 
