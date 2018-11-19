@@ -46,9 +46,9 @@
 
 @section Scripts {
     <script>
-        function go() {
+        function go() {//formData
             var url_= document.getElementById("descr_search_href_id").value + "?" +
-                    "search=yes&" +
+                    //"search=yes&" +
                     "actionIdI=" + data_descr_search.actionIdI + "&" +
                     "actionTypeI=" + data_descr_search.actionTypeI + "&" +
                     "FizVelIdI=" + data_descr_search.FizVelIdI + "&" +
@@ -78,7 +78,7 @@
                 }
             };
 
-            xhr.send(formData);
+            xhr.send(data_descr_search);//formData
         }
 
 
