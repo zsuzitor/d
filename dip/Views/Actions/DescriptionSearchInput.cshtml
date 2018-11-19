@@ -36,15 +36,84 @@
 
 @Scripts.Render("~/Scripts/_changeAction.js")
 @Scripts.Render("~/Scripts/_changeParametricFizVel.js")
+@{
+    /*
 @Scripts.Render("~/Scripts/_changePros.js")
 @Scripts.Render("~/Scripts/_changeSpec.js")
-@Scripts.Render("~/Scripts/_changeVrem.js")
+@Scripts.Render("~/Scripts/_changeVrem.js")*/
+}
 <script type="text/javascript">
         $(document).ready(function ()
         {
             changeParams('I');
             changeParams('O');
+
+
+            //$(":checkbox").change(function () {
+            //    var t = this;
+            //    //if (this.checked) {
+            //    //    arr[i] = $(this).val();
+            //    //    i++;
+            //    //} else {
+            //    //    var val = $(this).val();
+            //    //    var index = arr.indexOf(val);
+            //    //    arr.splice(index, 1);
+            //    //    i--;
+            //    //}
+            //    //console.log(arr);
+            //});
         });
+        var dict = {};
+        $(document).on('change', ':checkbox', function () {
+
+            var name = this.name;
+            if (data_descr_search[name])
+                data_descr_search[name] ='';
+            var iter=1;
+            var stop=true;
+            do{
+                var bl = document.getElementById( name + iter);
+                if (bl) {
+                    if (bl.checked)//.prop('checked')
+                        data_descr_search[name]+=bl.value+' ';//val()
+                }
+                else
+                    stop = false;
+                ++iter;
+            } while (stop);
+
+            //if (this.checked) {
+            //    // checkbox is checked
+            //}
+            var tt = data_descr_search;
+        });
+       
+
+
+
+        //var dict = {};
+        //$(document).on('change', ':checkbox', function () {
+
+        //    var name = this.name;
+        //    if (!dict[name])
+        //        dict[name] = [];
+        //    var iter = 1;
+        //    var stop = true;
+        //    do {
+        //        var bl = document.getElementById(name + iter);
+        //        if (bl) {
+        //            if (bl.checked)//.prop('checked')
+        //                dict[name].push(bl.value);//val()
+        //        }
+        //        else
+        //            stop = false;
+        //        ++iter;
+        //    } while (stop);
+
+           
+        //});
+
+
 
 
         var data_descr_search = {
@@ -53,16 +122,16 @@
             actionTypeI: null,
             FizVelIdI: null,
             parametricFizVelIdI: null,
-            listSelectedProsI: null,
-            listSelectedSpecI: null,
-            listSelectedVremI: null,
+            listSelectedProsI: '',
+            listSelectedSpecI: '',
+            listSelectedVremI: '',
             actionIdO: null,
             actionTypeO: null,
             FizVelIdO: null,
             parametricFizVelIdO: null,
-            listSelectedProsO: null,
-            listSelectedSpecO: null,
-            listSelectedVremO: null,
+            listSelectedProsO: '',
+            listSelectedSpecO: '',
+            listSelectedVremO: '',
             function_trigger:null
         };
         function Go_next_step() {
@@ -91,28 +160,32 @@
 
                
             
+                data_descr_search = {
+                    //have_input:null,
+                    actionIdI: null,
+                    actionTypeI: null,
+                    FizVelIdI: null,
+                    parametricFizVelIdI: null,
+                    listSelectedProsI: '',
+                    listSelectedSpecI: '',
+                    listSelectedVremI: '',
+                    actionIdO: null,
+                    actionTypeO: null,
+                    FizVelIdO: null,
+                    parametricFizVelIdO: null,
+                    listSelectedProsO: '',
+                    listSelectedSpecO: '',
+                    listSelectedVremO: '',
+                    function_trigger: null
+                };
 
-
-            //var xhr = new XMLHttpRequest();
-            //xhr.open("POST", "/Actions/DescriptionSearchInput");
-
-            //xhr.onreadystatechange = function () {
-            //    if (xhr.readyState == 4) {
-            //        if (xhr.status == 200) {
-            //            //при возврате actionresult и тд, вернет -"<html>"
-            //            document.getElementById('div_form_id').innerHTML= xhr.responseText;
-
-            //        }
-            //    }
-            //};
-
-            //xhr.send(formData);
+           
         }
 
 
 
         function UndefinedToNull(str) {
-            return str === undefined || str === "" || str === "undefined" ?
+            return str === undefined || str === "undefined" ?//|| str === ""
             null : str;
         }
 </script>

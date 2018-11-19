@@ -322,6 +322,7 @@
     <Content Include="Views\Actions\DescriptionSearchInput.cshtml" />
     <Content Include="Views\Actions\DescriptionSearch.cshtml" />
     <Content Include="Views\Actions\ListFeText.cshtml" />
+    <Content Include="Views\Actions\ChangeAction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

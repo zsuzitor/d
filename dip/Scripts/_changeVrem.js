@@ -33,7 +33,8 @@ function setChildVrem(type)
             $.ajax(
                 {
                     type: 'GET',
-                    url: prefix + 'GetVremChild/' + str,
+                    url: prefix + 'GetVremChild'+postfix+'&id=' + str,
+                    //url: prefix + 'GetVremChild/' + str,
                 success: function (vremChild)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -70,7 +71,8 @@ function delChildVrem(type)
                 $.ajax(
                 {
                     type: 'GET',
-                    url: prefix + 'GetEmptyChild/' + id+postfix,
+                    url: prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+                    //url: prefix + 'GetEmptyChild/' + id+postfix,
                     success: function (emptyChild)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики

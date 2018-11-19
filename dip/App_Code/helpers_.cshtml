@@ -39,7 +39,7 @@
         <hr />
         @*@( +a.Postfix)*@
         <div class="form-group">
-            <label id="actionLabel" class="control-label col-md-2" value="@a.currentActionId">Название воздействия</label>
+            <label id=@("actionLabel"+type) class="control-label col-md-2" value="@a.currentActionId">Название воздействия</label>
             @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
 
            

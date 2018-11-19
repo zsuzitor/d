@@ -34,7 +34,7 @@ function setChildPros(type)
             $.ajax(
             {
                 type: 'GET',
-                url: prefix + 'GetProsChild/' + str+postfix,
+                url: prefix + 'GetProsChild'+postfix+'&id=' + str,
                 success: function (prosChild)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -71,7 +71,8 @@ function delChildPros(type)
                 $.ajax(
                 {
                     type: 'GET',
-                    url: prefix + 'GetEmptyChild/' + id+postfix,
+                    url: prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+                    //url: prefix + 'GetEmptyChild' + id+postfix,
                     success: function (emptyChild)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики

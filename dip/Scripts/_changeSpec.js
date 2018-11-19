@@ -34,7 +34,8 @@ function setChildSpec(type)
             $.ajax(
             {
                 type: 'GET',
-                url: prefix + 'GetSpecChild/' + str+postfix,
+                url: prefix + 'GetSpecChild'+postfix+'&id=' + str,
+                //url: prefix + 'GetSpecChild/' + str+postfix,
                 success: function (specChild)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -71,7 +72,8 @@ function delChildSpec(type)
                 $.ajax(
                 {
                     type: 'GET',
-                    url: prefix + 'GetEmptyChild/' + id+postfix,
+                    url: prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+                    //url: prefix + 'GetEmptyChild/' + id+postfix,
                     success: function (emptyChild)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики

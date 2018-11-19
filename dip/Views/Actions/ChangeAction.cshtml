@@ -1,0 +1,21 @@
+﻿
+
+@*это представление сплитится по <hr />   => не менять*@
+@((string)ViewBag.type)
+<hr />
+@Html.Action("GetFizVels","Actions",new {id=(string)ViewBag.fizVelId,type=(string)ViewBag.type })
+
+<hr />
+
+@Html.Action("GetPros", "Actions", new { id = (string)ViewBag.prosId, type = (string)ViewBag.type })
+
+<hr />
+
+@Html.Action("GetSpec", "Actions", new { id = (string)ViewBag.specId, type = (string)ViewBag.type })
+
+<hr />
+
+@Html.Action("GetVrem", "Actions", new { id = (string)ViewBag.vremId, type = (string)ViewBag.type })
+
+
+

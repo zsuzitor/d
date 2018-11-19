@@ -22,7 +22,7 @@
                             }
                             @:
                             <td>
-                                <input type="checkbox" name=@("listSelectedPros"+((string)ViewBag.type)) value="@pros.Id" /> @pros.Name
+                                <input id=@("listSelectedPros"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedPros"+((string)ViewBag.type)) value="@pros.Id" /> @pros.Name
                                 <div id="@(pros.Id+((string)ViewBag.type))" name="0"></div>
                                 </td>
                         }

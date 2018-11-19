@@ -47,6 +47,15 @@
 @section Scripts {
     <script>
         function go() {//formData
+
+
+            data_descr_search.listSelectedProsI=data_descr_search.listSelectedProsI.trim();
+            data_descr_search.listSelectedSpecI=data_descr_search.listSelectedSpecI.trim();
+            data_descr_search.listSelectedVremI=data_descr_search.listSelectedVremI.trim();
+            data_descr_search.listSelectedProsO=data_descr_search.listSelectedProsO.trim();
+            data_descr_search.listSelectedSpecO=data_descr_search.listSelectedSpecO.trim();
+            data_descr_search.listSelectedVremO=data_descr_search.listSelectedVremO.trim();
+
             var url_= document.getElementById("descr_search_href_id").value + "?" +
                     //"search=yes&" +
                     "actionIdI=" + data_descr_search.actionIdI + "&" +
@@ -78,6 +87,8 @@
                 }
             };
 
+
+           
             xhr.send(data_descr_search);//formData
         }
 
