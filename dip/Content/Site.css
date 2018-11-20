@@ -39,3 +39,9 @@ div.one_effect_img{
 body{
     padding-top:200px;
 }
+
+
+div.one_block_fetext_list{
+    height:200px;
+    border:2px solid black;
+}

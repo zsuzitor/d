@@ -8,6 +8,12 @@ namespace dip.Models
 {
     public class Functions
     {
+        public static string NullToEmpryStr(string str)
+        {
+            return str ?? "";
+        }
+
+
         public static List<byte[]> Get_photo_post(HttpPostedFileBase[] uploadImage)
         {
 

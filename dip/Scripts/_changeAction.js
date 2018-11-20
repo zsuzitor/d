@@ -1,8 +1,3 @@
-/* 
-Скрипт, отвечающий за обновление характеристик воздействия при изменении воздействия.
-Вайнгольц Илья Игоревич (WeiLTS) © 2016
-E-mail: ilyavayngolts@gmail.com
-*/
 
 // Функция, обновляющая характеристики воздействия
 function changeParams(type)
@@ -17,24 +12,25 @@ function changeParams(type)
     var id = $('#action'+type).val();
 
 
-data_descr_search = {
+//data_descr_search 
             //have_input:null,
-            actionIdI: null,
-            actionTypeI: null,
-            FizVelIdI: null,
-            parametricFizVelIdI: null,
-            listSelectedProsI: '',
-            listSelectedSpecI: '',
-            listSelectedVremI: '',
-            actionIdO: null,
-            actionTypeO: null,
-            FizVelIdO: null,
-            parametricFizVelIdO: null,
-            listSelectedProsO: '',
-            listSelectedSpecO: '',
-            listSelectedVremO: '',
-            function_trigger:null
-        };
+            data_descr_search.actionIdI= null;
+            data_descr_search.actionTypeI= null;
+            data_descr_search.FizVelIdI= null;
+            data_descr_search.parametricFizVelIdI= null;
+            data_descr_search.listSelectedProsI= '';
+            data_descr_search.listSelectedSpecI= '';
+            data_descr_search.listSelectedVremI= '';
+            data_descr_search.actionIdO= null;
+            data_descr_search.actionTypeO= null;
+            data_descr_search.FizVelIdO= null;
+            data_descr_search.parametricFizVelIdO= null;
+            data_descr_search.listSelectedProsO= '';
+            data_descr_search.listSelectedSpecO= '';
+            data_descr_search.listSelectedVremO= '';
+            data_descr_search.search= 'yes';
+            //function_trigger:null
+        
 
 
 

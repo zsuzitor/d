@@ -8,6 +8,7 @@ using System.Data.Linq.Mapping;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using static dip.Models.Functions;
 
 namespace dip.Models.Domain
 {
@@ -46,6 +47,24 @@ namespace dip.Models.Domain
         {
 
         }
+
+
+
+        public static bool Validation(DescrSearchIInput a)
+        {
+            if (a != null)
+            {
+                a.actionIdI = NullToEmpryStr(a.actionIdI);
+                a.actionTypeI = NullToEmpryStr(a.actionTypeI);
+                a.FizVelIdI = NullToEmpryStr(a.FizVelIdI);
+                a.parametricFizVelIdI = NullToEmpryStr(a.parametricFizVelIdI);
+                a.listSelectedProsI = NullToEmpryStr(a.listSelectedProsI);
+                a.listSelectedSpecI = NullToEmpryStr(a.listSelectedSpecI);
+                a.listSelectedVremI = NullToEmpryStr(a.listSelectedVremI);
+                return true;
+            }
+            return false;
+        }
     }
 
 
@@ -64,6 +83,24 @@ namespace dip.Models.Domain
         public DescrSearchIOut()
         {
 
+        }
+
+
+        public static bool Validation(DescrSearchIOut a)
+        {
+            
+            if (a != null)
+            {
+                a.actionIdO = NullToEmpryStr(a.actionIdO);
+                a.actionTypeO = NullToEmpryStr(a.actionTypeO);
+                a.FizVelIdO = NullToEmpryStr(a.FizVelIdO);
+                a.parametricFizVelIdO = NullToEmpryStr(a.parametricFizVelIdO);
+                a.listSelectedProsO = NullToEmpryStr(a.listSelectedProsO);
+                a.listSelectedSpecO = NullToEmpryStr(a.listSelectedSpecO);
+                a.listSelectedVremO = NullToEmpryStr(a.listSelectedVremO);
+                return true;
+            }
+            return false;
         }
     }
 

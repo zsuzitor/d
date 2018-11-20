@@ -1,14 +1,21 @@
 ﻿@model IEnumerable<dip.Models.Domain.FEText>
 
-
-@if (Model.Count() < 1)
+<hr />
+@{ 
+    int count = Model.Count();
+}
+@if (count < 1)
 {
     <p>по данному запросу ничего не найдено</p>
 }
+@if (count > 0)
+{
+    <h1>Всего найдено записей @count</h1>
+}
 @foreach(var i in Model)
 {
-    <div>
-        <p>@Html.ActionLink(i.Name, "Details", "DescriptionQueries")</p>
+    <div class="one_block_fetext_list">
+        <p>@Html.ActionLink(i.Name, "Details", "DescriptionQueries",new {id=i.IDFE },new { })</p>
 
     </div>
 

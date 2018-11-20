@@ -1,4 +1,8 @@
 ﻿
+
+@model IEnumerable<int>
+
+
 @{
     ViewBag.Title = "DescriptionSearch";
 }
@@ -7,7 +11,7 @@
 
 
 <div>
-    <h4>Шаг 1. Задайте входное воздействие</h4>
+    <h4>ФОРМА поиска</h4>
 
     @Html.Hidden(" ",Url.Action("DescriptionSearch", "Actions"),new {id="descr_search_href_id" })
     <div id="">@*div_form_id*@
@@ -16,7 +20,15 @@
         </div>
         
     </div>
-    <div id="search_content_div_id"></div>
+    @*<button onclick="Go_next_step()">Поиск</button>*@
+    <div id="search_content_div_id">
+
+        @if (Model != null)
+        {
+            @Html.Action("ListFeText", "Actions",new { listId = Model })
+        }
+
+    </div>
 
     @*<div>
         @if (ViewBag.search == true)
@@ -46,17 +58,20 @@
 
 @section Scripts {
     <script>
-        function go() {//formData
+        
 
 
-            data_descr_search.listSelectedProsI=data_descr_search.listSelectedProsI.trim();
-            data_descr_search.listSelectedSpecI=data_descr_search.listSelectedSpecI.trim();
-            data_descr_search.listSelectedVremI=data_descr_search.listSelectedVremI.trim();
-            data_descr_search.listSelectedProsO=data_descr_search.listSelectedProsO.trim();
-            data_descr_search.listSelectedSpecO=data_descr_search.listSelectedSpecO.trim();
-            data_descr_search.listSelectedVremO=data_descr_search.listSelectedVremO.trim();
+        function go1() {//formData
 
-            var url_= document.getElementById("descr_search_href_id").value + "?" +
+
+            data_descr_search.listSelectedProsI = data_descr_search.listSelectedProsI.trim();
+            data_descr_search.listSelectedSpecI = data_descr_search.listSelectedSpecI.trim();
+            data_descr_search.listSelectedVremI = data_descr_search.listSelectedVremI.trim();
+            data_descr_search.listSelectedProsO = data_descr_search.listSelectedProsO.trim();
+            data_descr_search.listSelectedSpecO = data_descr_search.listSelectedSpecO.trim();
+            data_descr_search.listSelectedVremO = data_descr_search.listSelectedVremO.trim();
+
+            var url_ = document.getElementById("descr_search_href_id").value + "?" +
                     //"search=yes&" +
                     "actionIdI=" + data_descr_search.actionIdI + "&" +
                     "actionTypeI=" + data_descr_search.actionTypeI + "&" +
@@ -74,28 +89,80 @@
                     "listSelectedVremO=" + data_descr_search.listSelectedVremO + "&";
             history.pushState(null, null, url_);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/Actions/DescriptionSearch");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        //при возврате actionresult и тд, вернет -"<html>"
-                        document.getElementById('search_content_div_id').innerHTML = xhr.responseText;
-
-                    }
-                }
-            };
 
 
-           
-            xhr.send(data_descr_search);//formData
+
+            //$.ajax({
+            //    url: "/Actions/DescriptionSearch",
+            //    data: data_descr_search,
+
+
+            //    complete: function (req) {
+
+            //        document.getElementById('search_content_div_id').innerHTML = req.responseText;
+
+            //    },
+            //    type: 'GET', dataType: 'html'//'html'
+            //});
+
+
+            data_descr_search.function_trigger = null;
+            $.ajax({
+                url: "/Actions/DescriptionSearch",
+                data: data_descr_search,
+                success: onAjaxSuccess//,
+                //dataType: dataType
+            });
+            function onAjaxSuccess(data) {
+                // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
+                //alert(data);
+                document.getElementById('search_content_div_id').innerHTML = data;
+                data_descr_search.function_trigger = go1;
+            }
+
+
+            //var xhr = new XMLHttpRequest();
+            //xhr.open("GET", "/Actions/DescriptionSearch");
+
+            //xhr.onreadystatechange = function () {
+            //    if (xhr.readyState == 4) {
+            //        if (xhr.status == 200) {
+            //            //при возврате actionresult и тд, вернет -"<html>"
+            //            document.getElementById('search_content_div_id').innerHTML = xhr.responseText;
+
+            //        }
+            //    }
+            //};
+
+            //xhr.send(data_descr_search);//formData
+
+
+            //var xhr = new XMLHttpRequest();
+            //xhr.open("GET", "/Actions/DescriptionSearch");
+
+            //xhr.onreadystatechange = function () {
+            //    if (xhr.readyState == 4) {
+            //        if (xhr.status == 200) {
+            //            //при возврате actionresult и тд, вернет -"<html>"
+            //            document.getElementById('search_content_div_id').innerHTML = xhr.responseText;
+
+            //        }
+            //    }
+            //};
+
+
+
+            //xhr.send(data_descr_search);//formData
         }
 
 
-        $(document).ready(function () {
-            data_descr_search.function_trigger = go;
-        });
         
+
+
+        $(document).ready(function () {
+           // ggg(go1);
+            data_descr_search.function_trigger = go1;
+        });
+
     </script>
 }
