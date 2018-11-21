@@ -1,6 +1,8 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,25 +23,60 @@ namespace dip.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult TextSearch(string str)
-        {
-            //TODO полнотекстовый поиск
+        
 
-            using (var db=new ApplicationDbContext())
+
+        public ActionResult Details(int id)//, string technicalFunctionId
+        {
+            FEText effect;
+            string check_id = ApplicationUser.GetUserId();
+
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                System.Data.SqlClient.SqlParameter param1 = new System.Data.SqlClient.SqlParameter("@searched_str", "Затухание");
-                System.Data.SqlClient.SqlParameter param2 = new System.Data.SqlClient.SqlParameter("@max_lev", 5);
-                var lst = db.Database.SqlQuery<test>("SELECT * FROM GetListLev (@searched_str,@max_lev)", param1, param2).ToList();
-                
+
+
+                effect =
+                   (from textEffect in db.FEText
+                    where textEffect.IDFE == id
+                    select textEffect).First();
+
+                ViewBag.EffectName = effect.Name;
+                ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
+
+                db.Entry(effect).Collection(x1 => x1.Images).Load();
+                //var g = db.Images.ToList();
 
             }
-                
+
+            ApplicationUserManager userManager = HttpContext.GetOwinContext()
+                                            .GetUserManager<ApplicationUserManager>();
+            IList<string> roles = userManager.GetRoles(check_id);
+
+            if (roles.Contains("admin"))
+                ViewBag.Admin = true;
 
 
-
-            return View();
+            return View(effect);
         }
+
+
+
+        public ActionResult ListFeText(int[] listId)
+        {
+
+            List<FEText> res = new List<FEText>();
+            if (listId != null)
+                using (var db = new ApplicationDbContext())
+
+                    res = db.FEText.Join(listId, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
+
+
+
+            return PartialView(res);
+        }
+
+
 
 
         [Authorize(Roles = "admin")]

@@ -7,10 +7,11 @@ E-mail: ilyavayngolts@gmail.com
 // Функция, обновляющая структуры ФПД в случае изменения ранга
 function loadChain()
 {
-	var url = window.location.pathname.split('/');
-    var prefix = '';
-    for (var i = 0; i < url.length - 2; i++)
-        prefix += url[i] + '/';
+	//var url = window.location.pathname.split('/');
+    //var prefix = '';
+    //for (var i = 0; i < url.length - 2; i++)
+        //prefix += url[i] + '/';
+        var prefix = '/Actions/';
 	
     // Извлечение идентификатора задания на синтез из строки браузера
     var str = window.location.href.split('/');

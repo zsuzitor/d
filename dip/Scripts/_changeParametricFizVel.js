@@ -2,11 +2,12 @@
 // Функция, обновляющий физические величины
 function changeFizVel(type)
 {
-    var url = window.location.pathname.split('/');
-    var prefix = '';
+    //var url = window.location.pathname.split('/');
+    var prefix = '/Actions/';
+    //var prefix = '';
     var postfix='?type='+type;
-    for (var i = 0; i < url.length - 1; i++)
-        prefix += url[i] + '/';
+    //for (var i = 0; i < url.length - 1; i++)
+        //prefix += url[i] + '/';
 
     // Получаем дескриптор раздела физики
     var id = $('#fizVelId'+type).val();

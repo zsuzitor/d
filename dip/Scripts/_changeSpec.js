@@ -3,11 +3,12 @@
 // ‘ункци€, добавл€юща€ на представление значени€ выбранной специальной характеристики
 function setChildSpec(type)
 {
-    var url = window.location.pathname.split('/');
-    var prefix = '';
+    //var url = window.location.pathname.split('/');
+    //var prefix = '';
     var postfix='?type='+type;
-    for (var i = 0; i < url.length - 1; i++)
-        prefix += url[i] + '/';
+    var prefix = '/Actions/';
+    //for (var i = 0; i < url.length - 1; i++)
+        //prefix += url[i] + '/';
 
     // ќбходим все отмеченные checkbox'ы
     $('#spec'+type+' input:checkbox:checked').each(function ()

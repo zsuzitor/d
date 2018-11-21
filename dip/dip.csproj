@@ -187,6 +187,7 @@
     <Compile Include="Controllers\OperandsController.cs" />
     <Compile Include="Controllers\OperationsController.cs" />
     <Compile Include="Controllers\PhysicController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -297,12 +298,10 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\CreateInput.cshtml" />
     <Content Include="Views\DescriptionQueries\Create.cshtml" />
     <Content Include="Views\DescriptionQueries\GetLimits.cshtml" />
     <Content Include="Views\DescriptionQueries\GetOperands.cshtml" />
     <Content Include="Views\DescriptionQueries\Results.cshtml" />
-    <Content Include="Views\DescriptionQueries\Details.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Indexes\Index.cshtml" />
     <Content Include="Views\Limits\Index.cshtml" />
@@ -319,12 +318,13 @@
     <Content Include="Views\Actions\GetEmptyChild.cshtml" />
     <Content Include="Views\Actions\GetSpecChild.cshtml" />
     <Content Include="Views\Actions\GetVremChild.cshtml" />
-    <Content Include="Views\Actions\DescriptionSearchInput.cshtml" />
-    <Content Include="Views\Actions\DescriptionSearch.cshtml" />
-    <Content Include="Views\Actions\ListFeText.cshtml" />
     <Content Include="Views\Actions\ChangeAction.cshtml" />
     <Content Include="Views\Home\MainHeader.cshtml" />
     <Content Include="Views\Home\MainFooter.cshtml" />
+    <Content Include="Views\Physic\ListFeText.cshtml" />
+    <Content Include="Views\Search\DescriptionSearch.cshtml" />
+    <Content Include="Views\Actions\DescriptionInput.cshtml" />
+    <Content Include="Views\Physic\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

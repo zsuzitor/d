@@ -3,10 +3,11 @@
 // Функция, добавляющая на представление значения выбранной временной характеристики
 function setChildVrem(type)
 {
-    var url = window.location.pathname.split('/');
-    var prefix = '';
-    for (var i = 0; i < url.length - 1; i++)
-        prefix += url[i] + '/';
+    //var url = window.location.pathname.split('/');
+    //var prefix = '';
+    //for (var i = 0; i < url.length - 1; i++)
+        //prefix += url[i] + '/';
+var prefix = '/Actions/';
 
     // Обходим все отмеченные checkbox'ы
     $('#vrem'+type+' input:checkbox:checked').each(function ()

@@ -83,9 +83,11 @@ div.Main_header_big {
     height: 500px;
     width: 96%;
     left: 2%;
-    background-image: url(/Content/images/main_header_back_big.jpg);
+    /*background-image: url(/Content/images/main_header_back_big.jpg);*/
     background-size: 100% 100%;
      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+     z-index:5;
+    
 }
 
 
@@ -112,8 +114,53 @@ div.main_footer{
     border:2px solid black;
 }
 
+  div.Main_preloader{
+        position:fixed;
+    width:100px;
+    height:100px;
+    left:50%;
+    margin-left:-50px;
+    border-radius:50%;
+    /*left:48%;
+    top:50px;*/
+    display:none;
+    /*background-image: url(/Content/images/preloader_cat.gif);*/
+    background-size: 100% 100%;
+    
+    z-index:10;
+    animation-name: preloader_animation;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+animation-direction: alternate;    /*анимация идет 0%->100%  100->0  0->100*/
+ background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 20px);
+    }
 
-
+  @keyframes preloader_animation {
+     0%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 20px);
+    }
+     15%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 21px);
+    }
+     30%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 22px);
+    }
+     45%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 23px);
+    }
+     60%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 24px);
+    }
+     75%{/*можно 0%*/
+         background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 25px);
+    }
+    90% {/*можно 100%*/
+       background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 26px);
+    }
+    100% {/*можно 100%*/
+       background: repeating-radial-gradient(circle, #B9ECFE, #B9ECFE 10px, #82DDFF 10px, #82DDFF 27px);
+    }
+}
 
 
 

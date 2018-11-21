@@ -182,39 +182,7 @@ namespace dip.Controllers
         }
 
 
-        public ActionResult Details(int id)//, string technicalFunctionId
-        {
-            FEText effect;
-            string check_id = ApplicationUser.GetUserId();
-            
-
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-               
-
-                 effect =
-                    (from textEffect in db.FEText
-                     where textEffect.IDFE == id
-                     select textEffect).First();
-
-                ViewBag.EffectName = effect.Name;
-                ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
-
-                db.Entry(effect).Collection(x1=>x1.Images).Load();
-                //var g = db.Images.ToList();
-
-            }
-
-            ApplicationUserManager userManager = HttpContext.GetOwinContext()
-                                            .GetUserManager<ApplicationUserManager>();
-            IList<string> roles = userManager.GetRoles(check_id);
-
-            if (roles.Contains("admin"))
-                ViewBag.Admin = true;
-
-
-            return View(effect);
-            }
+        
 
         
     }

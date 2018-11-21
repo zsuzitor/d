@@ -3,11 +3,12 @@
 // Функция, добавляющая на представление значения выбранной пространственной характеристики
 function setChildPros(type)
 {
-    var url = window.location.pathname.split('/');
-    var prefix = '';
+    //var url = window.location.pathname.split('/');
+    //var prefix = '';
+    var prefix = '/Actions/';
     var postfix='?type='+type;
-    for (var i = 0; i < url.length - 1; i++)
-        prefix += url[i] + '/';
+    //for (var i = 0; i < url.length - 1; i++)
+        //prefix += url[i] + '/';
 
     // Обходим все отмеченные checkbox'ы
     $('#pros'+type+' input:checkbox:checked').each(function ()
