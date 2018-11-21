@@ -15,39 +15,16 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @*Система поиска физических эффектов*@
-                @Html.ActionLink("MAIN LINK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-</div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Поиск физических эффектов", "Create", "DescriptionQueries")</li>
-                    <li>@Html.ActionLink("Индексация технических функций", "Index", "Indexes")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("descr", "DescriptionSearch", "Actions")</li>
-</ul>
-               
-            </div>
-            @Html.Partial("_LoginPartial")
-        </div>
-        @using (Html.BeginForm("TextSearch", "Physic"))
-        {
-            <input name="str" type="text"/>
-            <input type="submit" value="поиск"/>
-        }
-    </div>
+    @Html.Action("MainHeader", "Home", new { })
+    <div id="layout_active_panel_id" class="layout_active_panel"></div>
+    <div onclick="up()" class="Main_header_back_to_top" id="Main_header_back_to_top_id"></div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            @Html.Action("MainFooter", "Home", new { })
+            @*<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>*@
         </footer>
     </div>
 

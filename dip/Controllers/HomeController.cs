@@ -28,9 +28,17 @@ namespace dip.Controllers
             return View();
         }
 
+        public ActionResult MainHeader()
+        {
 
+            return PartialView();
+        }
 
+        public ActionResult MainFooter()
+        {
 
+            return PartialView();
+        }
 
         public ActionResult DecriptSearch()
         {

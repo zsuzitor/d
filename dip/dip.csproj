@@ -323,6 +323,8 @@
     <Content Include="Views\Actions\DescriptionSearch.cshtml" />
     <Content Include="Views\Actions\ListFeText.cshtml" />
     <Content Include="Views\Actions\ChangeAction.cshtml" />
+    <Content Include="Views\Home\MainHeader.cshtml" />
+    <Content Include="Views\Home\MainFooter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

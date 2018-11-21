@@ -1,0 +1,111 @@
+﻿
+
+<div id="Main_preloader_id" class="Main_preloader div_display_none"></div>
+@*<div class="navbar navbar-inverse navbar-fixed-top">*@
+
+    <div class="Main_header_big navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*Система поиска физических эффектов*@
+                @Html.ActionLink("MAIN LINK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Поиск физических эффектов", "Create", "DescriptionQueries")</li>
+                    <li>@Html.ActionLink("Индексация технических функций", "Index", "Indexes")</li>
+                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
+                    <li>@Html.ActionLink("descr", "DescriptionSearch", "Actions")</li>
+                </ul>
+
+            </div>
+            @Html.Partial("_LoginPartial")
+        </div>
+        @using (Html.BeginForm("TextSearch", "Physic"))
+        {
+            <input name="str" type="text" />
+            <input type="submit" value="поиск" />
+        }
+    </div>
+    <div id="Main_header_check_small_or_big_header">
+    </div>
+    <div class="Main_header_small" id="Main_header_small_id">
+        @Html.Partial("_LoginPartial")
+    </div>
+    @*</div>*@
+
+
+
+
+<script>
+
+    var time_for_page_up;// for up()
+
+    ///--------------------------------------------------------------------------------------
+
+    function up() {
+        var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+        if (top > 0) {
+            window.scrollBy(0, -100);
+            time_for_page_up = setTimeout('up()', 20);
+        } else clearTimeout(time_for_page_up);
+        return false;
+    }
+
+
+    function isVisible(tag) {
+        var t = $(tag);
+        var w = $(window);
+        var top_window = w.scrollTop();
+        var bot_window = top_window + document.documentElement.clientHeight;
+        var top_tag = t.offset().top;
+        var bot_tag = top_tag + t.height();
+        //alert(bot_tag);
+        //alert(top_window);
+        return ((bot_tag >= top_window && bot_tag <= bot_window) || (top_tag >= top_window && top_tag <= bot_window) || (bot_tag >= bot_window && top_tag <= top_window));
+    }
+
+
+    $(function () {
+        $(window).scroll(function () {
+            Change_main_header();
+            //Check_drop_footer();
+        });
+    });
+
+
+    //------------------------------------------------------------
+    function Change_main_header() {
+        var b = $("#Main_header_check_small_or_big_header");
+        if (!b.prop("shown") && !isVisible(b)) {
+            b.prop("shown", true);
+            var o = document.getElementById("Main_header_small_id")
+            var o1 = document.getElementById("Main_header_back_to_top_id")
+            o1.style.display = 'block';
+
+            o.style.display = 'block';
+
+        }
+        else {
+            if (b.prop("shown") && isVisible(b)) {
+                b.prop("shown", false);
+                var o = document.getElementById("Main_header_small_id")
+                var o1 = document.getElementById("Main_header_back_to_top_id")
+                o1.style.display = 'none';
+                o.style.display = 'none';
+            }
+        }
+
+    }
+
+
+
+
+</script>
+
+
+
