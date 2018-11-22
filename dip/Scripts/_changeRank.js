@@ -5,6 +5,7 @@ E-mail: ilyavayngolts@gmail.com
 */
 
 // Функция, обновляющая структуры ФПД в случае изменения ранга
+/*
 function loadChain()
 {
 	//var url = window.location.pathname.split('/');
@@ -37,4 +38,4 @@ function loadChain()
 $('#rank').on('change', function ()
 {
     loadChain();
-});
+});*/

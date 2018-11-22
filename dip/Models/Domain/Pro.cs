@@ -21,5 +21,18 @@ namespace dip.Models.Domain
         {
             Actions = new List<Action>();
         }
+
+
+
+
+        public static List<Pro> GetChild(string id)
+        {
+            // Получаем список значений, соответствующий данной характеристике
+            List<Pro> res = new List<Pro>();
+            using (var db = new ApplicationDbContext())
+                res = db.Pros.Where(pros => pros.Parent == id).ToList();
+            return res;
+
+        }
     }
 }

@@ -27,6 +27,21 @@ function setChildSpec(type)
 
         if (hasChild == '0') // не загружены
         {
+
+
+
+goAjaxRequest({url:prefix + 'GetSpecChild'+postfix+'&id=' + str,
+ func_success: function (specChild)
+                {
+                    // Заменяем часть представления, отвечающего за отображение значений характеристики
+                    $('#' + id+type).replaceWith(specChild);
+                }});
+
+
+
+
+
+/*
             // Формируем ajax-запрос
             $.ajax(
             {
@@ -38,7 +53,7 @@ function setChildSpec(type)
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
                     $('#' + id+type).replaceWith(specChild);
                 }
-            });
+            });*/
         }
     });
 }
@@ -65,6 +80,17 @@ function delChildSpec(type)
 
             if (hasChild == '1') // загружены
             {
+
+
+goAjaxRequest({url:prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+ func_success: function (emptyChild)
+                    {
+                        // Заменяем часть представления, отвечающего за отображение значений характеристики
+                        $('#' + id+type).replaceWith(emptyChild);
+                    }});
+
+
+/*
                 // Формируем ajax-запрос
                 $.ajax(
                 {
@@ -76,7 +102,7 @@ function delChildSpec(type)
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
                         $('#' + id+type).replaceWith(emptyChild);
                     }
-                });
+                });*/
             }
         }
     });

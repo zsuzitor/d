@@ -28,6 +28,18 @@ function setChildPros(type)
         if (hasChild == '0') // не загружены
         {
             // Формируем ajax-запрос
+
+goAjaxRequest({url:prefix + 'GetProsChild'+postfix+'&id=' + str,
+ func_success: function (prosChild)
+                {
+                    // Заменяем часть представления, отвечающего за отображение значений характеристики
+                    $('#' + id+type).replaceWith(prosChild);
+                }});
+
+
+
+
+/*
             $.ajax(
             {
                 type: 'GET',
@@ -37,7 +49,7 @@ function setChildPros(type)
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
                     $('#' + id+type).replaceWith(prosChild);
                 }
-            });
+            });*/
         }
     });
 }
@@ -65,6 +77,18 @@ function delChildPros(type)
             if (hasChild == '1') // загружены
             {
                 // Формируем ajax-запрос
+
+
+
+goAjaxRequest({url:prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+ func_success:  function (emptyChild)
+                    {
+                        // Заменяем часть представления, отвечающего за отображение значений характеристики
+                        $('#' + id+type).replaceWith(emptyChild);
+                    }});
+
+
+/*
                 $.ajax(
                 {
                     type: 'GET',
@@ -75,7 +99,7 @@ function delChildPros(type)
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
                         $('#' + id+type).replaceWith(emptyChild);
                     }
-                });
+                });*/
             }
         }
     });

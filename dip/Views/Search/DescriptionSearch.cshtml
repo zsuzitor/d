@@ -108,18 +108,27 @@
 
 
             data_descr_search.function_trigger = null;
-            $.ajax({
+
+
+            goAjaxRequest({
                 url: "/Search/DescriptionSearch",
                 data: data_descr_search,
-                success: onAjaxSuccess//,
-                //dataType: dataType
+                func_success: function (data) {
+
+                    //alert(data);
+                    document.getElementById('search_content_div_id').innerHTML = data;
+                    data_descr_search.function_trigger = go1;
+                }
             });
-            function onAjaxSuccess(data) {
-                // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
-                //alert(data);
-                document.getElementById('search_content_div_id').innerHTML = data;
-                data_descr_search.function_trigger = go1;
-            }
+
+
+            //$.ajax({
+            //    url: "/Search/DescriptionSearch",
+            //    data: data_descr_search,
+            //    success: onAjaxSuccess//,
+            //    //dataType: dataType
+            //});
+            
 
 
             //var xhr = new XMLHttpRequest();

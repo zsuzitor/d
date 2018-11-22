@@ -51,6 +51,23 @@ formData.prosId=id;
 formData.specId=id;
 formData.vremId=id;
 
+
+goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL&type='+type,
+func_success:function (parametricFizVel)
+            {
+                // Заменяем часть представления, отвечающего за выбор физической величины
+                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+            }
+});
+/*
+goAjaxRequest(prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL&type='+type,
+ null, function (parametricFizVel)
+            {
+                // Заменяем часть представления, отвечающего за выбор физической величины
+                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+            });
+*/
+/*
 // Формируем холостой ajax-запрос
         $.ajax(
         {
@@ -64,7 +81,7 @@ formData.vremId=id;
                 $('#parametricFizVel'+type).replaceWith(parametricFizVel);
             }
         });
-
+*/
 
     }
     else{
@@ -74,6 +91,7 @@ formData.specId='NULL';
 formData.vremId='NULL';
 
 // Формируем ajax-запрос
+/*
         $.ajax(
         {
             type: 'GET',
@@ -82,17 +100,31 @@ formData.vremId='NULL';
             success: function (parametricFizVel)
             {
                 // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+                
             }
         });
-
-
+*/
+goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,
+ func_success: function(a){
+$('#parametricFizVel'+type).replaceWith(a);
+ }});
 
 
     }
 
+goAjaxRequest({url:prefix+"ChangeAction",
+ data:formData,func_success: function (req) { 
+var data = req.split('<hr />');//.responseText
+                            var type = data[0].trim();
+$('#fizVel'+type).replaceWith(data[1]);
+$('#pros'+type).replaceWith(data[2]);
+$('#spec'+type).replaceWith(data[3]);
+                     $('#vrem'+type).replaceWith(data[4]); 
+                	
+                	 },type:'POST'});
 
 
+/*
             $.ajax({
                 url: prefix+"ChangeAction",
                 data:formData,
@@ -114,7 +146,7 @@ $('#spec'+type).replaceWith(data[3]);
                 type: 'POST', dataType: 'html'//'html'
             });
 
-
+*/
 
 
 

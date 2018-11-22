@@ -46,5 +46,17 @@ namespace dip.Models.Domain
             Specs = new List<Spec>();
             Vrems = new List<Vrem>();
         }
+
+
+
+        public static Action GetAction(int id)
+        {
+            Action res=null;
+            if (id > 0)
+                using (var db = new ApplicationDbContext())
+                    res = db.Actions.FirstOrDefault(x1 => x1.Id == id);
+            return res;
+        }
+
     }
 }

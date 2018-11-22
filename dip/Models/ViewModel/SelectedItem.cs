@@ -102,5 +102,19 @@ namespace dip.Models.ViewModel
         }
 
 
+        //type : 0-Vrems   1-spec
+        public static List<SelectedItem> GetListSelectedItem<T>
+            (List<T> list, Models.Domain.Action action, int type)
+            where T : Item
+        {
+            List<SelectedItem> res = new List<SelectedItem>();
+            using (var db=new ApplicationDbContext())
+            {
+                res = GetListSelectedItem(list,action,db,type);
+            }
+            return res;
+        }
+
+
     }
 }

@@ -22,5 +22,18 @@ namespace dip.Models.Domain
             Actions = new List<Action>();
 
         }
+
+
+
+        public static List<Vrem> GetChild(string id)
+        {
+            // Получаем список значений, соответствующий данной характеристике
+            List<Vrem> res = new List<Vrem>();
+            using (var db = new ApplicationDbContext())
+                res = db.Vrems.Where(spec => spec.Parent == id).ToList();
+            return res;
+
+        }
+
     }
 }

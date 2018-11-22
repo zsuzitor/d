@@ -13,6 +13,65 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
+
+    <script>
+
+        function PreloaderShowChange(on) {
+            var pr = document.getElementById('Main_preloader_id');
+            if (on) {
+                pr.style.display = 'block';
+            }
+            else {
+                pr.style.display = 'none';
+            }
+        }
+
+        //url, data, func_success,func_complete, func_error, func_beforeSend, type,dataType
+        function goAjaxRequest(obj) {
+            if (!obj.type)
+                obj.type = 'GET';
+            if (!obj.dataType)
+                obj.dataType = 'html';
+            $.ajax(
+        {
+            type: obj.type,
+            data: obj.data,
+            url: obj.url,
+
+            success: function (data) {
+                if (obj.func_success)
+                    obj.func_success(data);
+            },
+            error: function () {
+                alert("ошибка загрузки");
+                if (obj.func_error)
+                    obj.func_error();
+            },
+            // shows the loader element before sending.
+            beforeSend: function () {
+                if (obj.func_beforeSend)
+                    obj.func_beforeSend();
+                PreloaderShowChange(true);
+            },
+            // hides the loader after completion of request, whether successfull or failor.             
+            complete: function () {
+
+                if (obj.func_complete)
+                    obj.func_complete();
+                PreloaderShowChange(false);
+            },
+            dataType: obj.dataType//'html'
+        });
+
+
+
+        }
+
+
+
+    </script>
+
+
 </head>
 <body>
     @Html.Action("MainHeader", "Home", new { })

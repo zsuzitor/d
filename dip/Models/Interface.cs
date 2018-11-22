@@ -20,5 +20,14 @@ namespace dip.Models
     }
 
 
+    //public interface CheckBoxForm
+    //{
+    //    string Id { get; set; }
+    //    string Name { get; set; }
+    //    string Parent { get; set; }
+    //}
+
+
+
 
 }

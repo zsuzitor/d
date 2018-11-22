@@ -22,5 +22,33 @@ namespace dip.Models.Domain
 
 
         }
+
+
+
+        public static List<FizVel> GetParametricFizVels(string id)
+        {
+            List<FizVel> res = new List<FizVel>();
+            using (var db = new ApplicationDbContext())
+            {
+                 res = db.FizVels.Where(x1 => x1.Parent == id).ToList();
+
+                //TODO ошибка? условие должно быть если записей 0?????
+                if (res.Count != 0)
+                {
+                    res.Add(db.FizVels.Where(parametricFizVel => parametricFizVel.Id == "NO_FIZVEL").First());
+
+                    res = res.OrderBy(parametricFizVel => parametricFizVel.Id)
+                                                                    .ToList();
+
+                    // Отправляем его в представление
+                    //ViewBag.parametricFizVelId = selectListOfParametricFizVels;
+                }
+
+                // Отправляем его в представление
+
+            }
+            return res;
+        }
+
     }
 }

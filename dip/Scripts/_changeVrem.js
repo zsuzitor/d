@@ -27,6 +27,18 @@ var prefix = '/Actions/';
         if (hasChild == '0') // не загружены
         {
             // Формируем ajax-запрос
+
+
+goAjaxRequest({url:prefix + 'GetVremChild'+postfix+'&id=' + str,
+ func_success: function (vremChild)
+                {
+                    // Заменяем часть представления, отвечающего за отображение значений характеристики
+                    $('#' + id+type).replaceWith(vremChild);
+                }});
+
+
+
+/*
             $.ajax(
                 {
                     type: 'GET',
@@ -37,7 +49,7 @@ var prefix = '/Actions/';
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
                     $('#' + id+type).replaceWith(vremChild);
                 }
-            });
+            });*/
         }
     });
 }
@@ -65,6 +77,17 @@ function delChildVrem(type)
             if (hasChild == '1') // загружены
             {
                 // Формируем ajax-запрос
+
+
+goAjaxRequest({url:prefix + 'GetEmptyChild'+postfix+'&id=' + id,
+ func_success: function (emptyChild)
+                    {
+                        // Заменяем часть представления, отвечающего за отображение значений характеристики
+                        $('#' + id+type).replaceWith(emptyChild);
+                    }});
+
+
+/*
                 $.ajax(
                 {
                     type: 'GET',
@@ -75,7 +98,7 @@ function delChildVrem(type)
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
                         $('#' + id+type).replaceWith(emptyChild);
                     }
-                });
+                });*/
             }
         }
     });

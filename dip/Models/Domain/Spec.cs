@@ -23,5 +23,23 @@ namespace dip.Models.Domain
             Actions = new List<Action>();
 
         }
+
+
+        public static List<Spec> GetChild(string id)
+        {
+            // Получаем список значений, соответствующий данной характеристике
+            List<Spec> res = new List<Spec>();
+            using (var db = new ApplicationDbContext())
+                 res = db.Specs.Where(spec => spec.Parent == id).ToList();
+            return res;
+
+        }
+
+
+
+
+
+
+
     }
 }

@@ -16,6 +16,17 @@ function changeFizVel(type)
         id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
         id == 'VOZ11_FIZVEL_R5')
     {
+
+
+goAjaxRequest({url:prefix + 'GetParametricFizVels/' + id+postfix,
+ func_success: function (parametricFizVel)
+            {
+                // Заменяем часть представления, отвечающего за выбор физической величины
+                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+            }});
+
+
+/*
         // Формируем ajax-запрос
         $.ajax(
         {
@@ -26,7 +37,7 @@ function changeFizVel(type)
                 // Заменяем часть представления, отвечающего за выбор физической величины
                 $('#parametricFizVel'+type).replaceWith(parametricFizVel);
             }
-        });
+        });*/
     }
 };
 
