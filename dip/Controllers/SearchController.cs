@@ -59,16 +59,17 @@ namespace dip.Controllers
 
 
         [HttpPost]
-        public ActionResult TextSearch(string str)
+        public ActionResult TextSearch(string type,string str)
         {
             //TODO полнотекстовый поиск
 
-            var list_id=FEText.GetByText(str);
+            //var list_id=FEText.GetByText(str);
+            int count;
+            var res=Lucene_.Search(str,100,out count);
 
 
-
-
-            return View();
+            //TODO сейчас костыль просто потестить
+            return View(res.Select(x1=>x1.IDFE).ToArray());
         }
 
 

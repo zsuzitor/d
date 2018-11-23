@@ -51,7 +51,7 @@ namespace dip.Models.DataBase
 
             //load old db 
             OldData.ReloadDataBase();
-
+            Lucene_.BuildIndex();
 
             base.Seed(context);
         }

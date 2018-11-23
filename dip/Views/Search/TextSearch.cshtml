@@ -1,0 +1,20 @@
+﻿
+@model IEnumerable<int>
+
+@{
+    ViewBag.Title = "TextSearch";
+}
+
+<h2>TextSearch</h2>
+
+@{ 
+    var g = Model;
+}
+
+@Html.Action("ListFeText", "Physic", new { listId = Model })
+
+
+
+
+
+
