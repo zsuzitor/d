@@ -18,7 +18,9 @@ using System.Web;
 
 
 //ru analizer//tok//norm  https://github.com/apache/lucenenet/tree/master/src/Lucene.Net.Analysis.Common/Analysis/Ru
+//тоже самое но с ридером https://lucenenet.apache.org/docs/3.0.3/d1/d8f/_russian_analyzer_8cs_source.html
 
+// https://github.com/apache/lucenenet
 
 namespace dip.Models
 {

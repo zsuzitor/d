@@ -1,4 +1,4 @@
-рефакторинг в kucene , убрать product и др слова
+рефакторинг в lucene , убрать product и др слова
 нужна нормализация в поиске+ выпилить передачу в результат поиска из класса всех полей кроме id
 строку поиска мб надо сплитить и рассыловать по параметрам как из примера
 в phys контроллере  //TODO мб убрать условие, но надо потестить тк там редактирование
@@ -80,8 +80,8 @@ http://qaru.site/questions/420668/how-hard-is-it-to-incorporate-full-text-search
 
 надо посмотреть http://sonyblogpost.blogspot.com/
 
-   длинно, задротство                        http://sonyks2007.blogspot.com/2015/04/lucenenet.html
-   длинно, задротство                        https://www.codeproject.com/Articles/187799/LuceneWrap-A-Compact-Lucene-net-Wrapper
+   длинно, зд                        http://sonyks2007.blogspot.com/2015/04/lucenenet.html
+   длинно, зд                        https://www.codeproject.com/Articles/187799/LuceneWrap-A-Compact-Lucene-net-Wrapper
 !  коротко основа                 http://www.waveaccess.ru/blog/2014/september/02/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-apache-lucene.aspx
                    https://www.codeproject.com/Articles/609980/Small-Lucene-NET-Demo-App
 !  коротко основа                 https://pavelbelousov.wordpress.com/2011/03/20/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D0%B8%D0%BC%D1%81%D1%8F-%D1%81-lucene-net/
@@ -91,6 +91,24 @@ http://qaru.site/questions/420668/how-hard-is-it-to-incorporate-full-text-search
    видос норм, код короткий       https://www.youtube.com/watch?v=E7i1krQVRzI
    видос норм, код короткий       https://www.youtube.com/watch?v=F4cB7su-Pyc
 !                                 https://csharpdreams.wordpress.com/2012/10/01/simple-search-engine-in-c-with-lucene-net/
+
+
+ lucene{
+
+PorterStemmer.cs ---      ???       https://lucenenet.apache.org/docs/3.0.3/d7/db1/class_lucene_1_1_net_1_1_analysis_1_1_porter_stemmer.html
+под англ, но сам класс и тд мб норм https://lucenenet.apache.org/docs/3.0.3/de/db6/core_2_analysis_2_porter_stemmer_8cs_source.html
+
+
+что то про подсветку, посомтреть подробнее https://www.sql.ru/forum/547218-2/lucene-stemmer-dlya-russkogo-yazyka
+
+нормализация слова lucene.net
+steaming
+lucene.net Normalize word
+код с форма, хз https://stackoverrun.com/ru/q/7395981
+stemming lucene.net
+}
+
+
 
 
 
