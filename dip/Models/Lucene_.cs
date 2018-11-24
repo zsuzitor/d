@@ -1,16 +1,19 @@
 ﻿using dip.Models.Domain;
 using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Ru;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using PagedList;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 
@@ -24,6 +27,36 @@ using System.Web;
 
 namespace dip.Models
 {
+
+
+
+    //static string[] Search(string searchTerm)
+    //{
+    //    Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Snowball.SnowballAnalyzer("English");
+    //    //Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer();
+    //    Lucene.Net.QueryParsers.QueryParser parser = new Lucene.Net.QueryParsers.QueryParser(Lucene.Net.Util.Version.LUCENE_29, "text", analyzer);
+    //    Lucene.Net.Search.Query query = parser.Parse(searchTerm);
+
+    //    Lucene.Net.Search.Searcher searcher = new Lucene.Net.Search.IndexSearcher(Lucene.Net.Store.FSDirectory.Open(new DirectoryInfo("./index/")), true);
+    //    var topDocs = searcher.Search(query, null, 10);
+
+    //    List<string> results = new List<string>();
+
+    //    foreach (var scoreDoc in topDocs.scoreDocs)
+    //    {
+    //        results.Add(searcher.Doc(scoreDoc.doc).Get("raw"));
+    //    }
+
+    //    return results.ToArray();
+    //}
+
+
+
+
+
+
+
+
     public class Lucene_
     {
 
@@ -40,10 +73,126 @@ namespace dip.Models
                 writer.DeleteAll();
                 foreach (var i in feList)
                 {
+                    //TODO убрать знаки препинания, стопслова
+                    //if (i.IDFE == 695)
+                    //{
+                    //    var ht = 10;
+                    //}
+
+                    i.ChangeForMap();
                     var document = MapProduct(i);
                     writer.AddDocument(document);
                 }
             }
+        }
+
+
+        public static  string ChangeForMap(string s)
+        {
+            // string s = "Мама  мыла  раму. ";
+            //string pattern = @"\s+";
+            string pattern = "";
+
+            pattern = @"\s+а\s+|\s+без\s+|\s+более\s+|\s+бы\s+|\s+был\s+|" +
+                @"\s+была\s+|\s+были\s+|\s+было\s+|\s+быть\s+|\s+в\s+|\s+вам\s+|\s+вас\s+|" +
+                @"\s+весь\s+|\s+во\s+|\s+вот\s+|\s+все\s+|\s+всего\s+|\s+всех\s+|\s+вы\s+|" +
+                @"\s+где\s+|\s+да\s+|\s+даже\s+|\s+для\s+|\s+до\s+|\s+его\s+|\s+ее\s+|\s+ей\s+|" +
+                @"\s+ею\s+|\s+если\s+|\s+есть\s+|\s+еще\s+|\s+же\s+|\s+за\s+|\s+здесь\s+|\s+и\s+|" +
+                @"\s+из\s+|\s+или\s+|\s+им\s+|\s+их\s+|\s+к\s+|\s+как\s+|\s+ко\s+|\s+когда\s+|" +
+                @"\s+кто\s+|\s+ли\s+|\s+либо\s+|\s+мне\s+|\s+может\s+|\s+мы\s+|\s+на\s+|\s+надо\s+|" +
+@"\s+наш\s+|\s+не\s+|\s+него\s+|\s+нее\s+|\s+нет\s+|\s+ни\s+|\s+них\s+|\s+но\s+|" +
+@"\s+ну\s+|\s+о\s+|\s+об\s+|\s+однако\s+|\s+он\s+|\s+она\s+|\s+они\s+|\s+оно\s+|" +
+@"\s+от\s+|\s+очень\s+|\s+по\s+|\s+под\s+|\s+при\s+|\s+с\s+|\s+со\s+|\s+так\s+|" +
+@"\s+также\s+|\s+такой\s+|\s+там\s+|\s+те\s+|\s+тем\s+|\s+то\s+|\s+того\s+|" +
+@"\s+тоже\s+|\s+той\s+|\s+только\s+|\s+том\s+|\s+ты\s+|\s+у\s+|\s+уже\s+|\s+хотя\s+|" +
+@"\s+чего\s+|\s+чей\s+|\s+чем\s+|\s+что\s+|\s+чтобы\s+|\s+чье\s+|\s+чья\s+|\s+эта\s+|" +
+@"\s+эти\s+|\s+это\s+|\s+я\s+|\s+этом\s+|\s+этого\s+";
+            pattern += @"|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
+
+            RegexOptions options = RegexOptions.IgnoreCase;
+            //pattern = "";
+
+            // pattern += @"|\W";
+
+            string target = " ";
+            Regex regex = new Regex(pattern, options);
+            string result = regex.Replace(s, target);
+            pattern = @"\s+";
+            regex = new Regex(pattern);
+            result = regex.Replace(result, target);
+
+
+            var st = new RussianLightStemmer();
+            //foreach (var i in obj.Text.Split(' '))
+            //{
+            //    Lucene_.ChangeForMap(i);
+            //    //var num = st.Stem(i.ToArray(), i.Length);
+            //    // var word = i.Substring(0, num);
+            //}
+            string res = "";
+            foreach (var i in result.Split(new char[] { ' ' },StringSplitOptions.RemoveEmptyEntries))
+            {
+
+
+                var num = st.Stem(i.ToArray(), i.Length);
+                res += i.Substring(0, num)+" ";
+                //res += i+" ";
+            }
+            res.Trim();
+
+
+            return res;
+
+
+
+
+
+            //result = regex.Replace(result, target);
+            //result = regex.Replace(result, target);
+
+
+
+            //String[] RUSSIAN_STOP_WORDS = {
+            //                                                                   "а", "без", "более", "бы", "был", "была", "были",
+            //                                                                   "было", "быть", "в",
+            //                                                                   "вам", "вас", "весь", "во", "вот", "все", "всего",
+            //                                                                   "всех", "вы", "где",
+            //                                                                   "да", "даже", "для", "до", "его", "ее", "ей", "ею",
+            //                                                                   "если", "есть",
+            //                                                                   "еще", "же", "за", "здесь", "и", "из", "или", "им",
+            //                                                                   "их", "к", "как",
+            //                                                                   "ко", "когда", "кто", "ли", "либо", "мне", "может",
+            //                                                                   "мы", "на", "надо",
+            //                                                                   "наш", "не", "него", "нее", "нет", "ни", "них", "но",
+            //                                                                   "ну", "о", "об",
+            //                                                                   "однако", "он", "она", "они", "оно", "от", "очень",
+            //                                                                   "по", "под", "при",
+            //                                                                   "с", "со", "так", "также", "такой", "там", "те", "тем"
+            //                                                                   , "то", "того",
+            //                                                                   "тоже", "той", "только", "том", "ты", "у", "уже",
+            //                                                                   "хотя", "чего", "чей",
+            //                                                                   "чем", "что", "чтобы", "чье", "чья", "эта", "эти",
+            //                                                                   "это", "я"
+            //                                                               };
+            //string hh = "";
+            //foreach (var i in RUSSIAN_STOP_WORDS)
+            //    hh += @"\s+" + i + @"\s+|";
+
+            //string h1 = hh;
+
+
+            //h1 += "|.|";
+            //h1 += @"|\W";
+            //\s    -- пробельный
+            // \d   - цифра
+            // \W   -  любой не буква\цифра\_
+            //return "";
+
+
+
+
+
+
         }
 
 
@@ -202,7 +351,7 @@ namespace dip.Models
 
 
         //TODO если в MapProduct будет нормализация то доставать только id и по ним искать
-        static public List<FEText> Search(string keywords, int limit, out int count)
+        static public List<int> Search(string keywords, int limit, out int count)
         {
             using (var directory = GetDirectory())
             using (var searcher = new IndexSearcher(directory))
@@ -212,22 +361,22 @@ namespace dip.Models
                 //var filter = GetFilter();
                 var docs = searcher.Search(query, null, limit, sort);
                 count = docs.TotalHits;
-                var products = new List<FEText>();
+                var products = new List<int>();
                 foreach (var scoreDoc in docs.ScoreDocs)
                 {
                    //var g= scoreDoc.Score;
                     var doc = searcher.Doc(scoreDoc.Doc);
                     
-                    var product = new FEText { IDFE = int.Parse(doc.Get("IDFE")),
-                        Name = doc.Get("Name"),
-                        Text = doc.Get("Text"),
-                        TextApp = doc.Get("TextApp"),
-                         TextInp= doc.Get("TextInp"),
-                        TextLit = doc.Get("TextLit"),
-                        TextObj = doc.Get("TextObj"),
-                        TextOut = doc.Get("TextOut")
-                    };
-                    products.Add(product);
+                    //var product = new FEText { IDFE = int.Parse(doc.Get("IDFE")),
+                    //    Name = doc.Get("Name"),
+                    //    Text = doc.Get("Text"),
+                    //    TextApp = doc.Get("TextApp"),
+                    //     TextInp= doc.Get("TextInp"),
+                    //    TextLit = doc.Get("TextLit"),
+                    //    TextObj = doc.Get("TextObj"),
+                    //    TextOut = doc.Get("TextOut")
+                    //};
+                    products.Add(int.Parse(doc.Get("IDFE")));
                 }
                 return products;
             }

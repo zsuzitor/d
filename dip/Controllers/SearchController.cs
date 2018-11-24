@@ -1,5 +1,6 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
+using Lucene.Net.Analysis.Ru;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,11 +66,45 @@ namespace dip.Controllers
 
             //var list_id=FEText.GetByText(str);
             int count;
-            var res=Lucene_.Search(str,100,out count);
+            str = Lucene_.ChangeForMap(str);
+            //TODO убрать знаки препинания, стопслова
+            var res =Lucene_.Search(str,100,out count);
+
+
+
+
+            //
+            
+
+            //var obj = res.Take(20);
+            //if (obj != null)
+            //{
+            //    var st = new RussianLightStemmer();
+            //    //foreach (var i in obj.Text.Split(' '))
+            //    //{
+            //    //    Lucene_.ChangeForMap(i);
+            //    //    //var num = st.Stem(i.ToArray(), i.Length);
+            //    //    // var word = i.Substring(0, num);
+            //    //}
+            //    foreach (var i in obj)
+            //    {
+            //        var bef = i.Text;
+            //        var aft=Lucene_.ChangeForMap(bef);
+            //        //var num = st.Stem(i.ToArray(), i.Length);
+            //        // var word = i.Substring(0, num);
+            //    }
+            //}
+
+
+
+
+
+            //
+
 
 
             //TODO сейчас костыль просто потестить
-            return View(res.Select(x1=>x1.IDFE).ToArray());
+            return View(res.ToArray());//.Select(x1=>x1.IDFE)
         }
 
 

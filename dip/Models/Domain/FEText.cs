@@ -55,7 +55,19 @@ namespace dip.Models.Domain
             return true;
         }
 
+        public void ChangeForMap()
+        {
+            //TODO pattern?
+            Text=Lucene_.ChangeForMap(Text);
+            Name = Lucene_.ChangeForMap(Name);
+            TextApp = Lucene_.ChangeForMap(TextApp);
+            TextInp = Lucene_.ChangeForMap(TextInp);
+            TextLit = Lucene_.ChangeForMap(TextLit);
+            TextObj = Lucene_.ChangeForMap(TextObj);
+            TextOut = Lucene_.ChangeForMap(TextOut);
+            
 
+        }
 
 
         public static FEText Get(int? id){

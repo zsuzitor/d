@@ -229,6 +229,14 @@
     <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Interface.cs" />
+    <Compile Include="Models\luceneModels\RussianAnalyzer.cs" />
+    <Compile Include="Models\luceneModels\RussianLetterTokenizer.cs" />
+    <Compile Include="Models\luceneModels\RussianLetterTokenizerFactory.cs" />
+    <Compile Include="Models\luceneModels\RussianLightStemFilter.cs" />
+    <Compile Include="Models\luceneModels\RussianLightStemFilterFactory.cs" />
+    <Compile Include="Models\luceneModels\RussianLightStemmer.cs" />
+    <Compile Include="Models\LuceneMore\RussianLightStemmer.cs" />
+    <Compile Include="Models\LuceneMore\StemmerUtil.cs" />
     <Compile Include="Models\Lucene_.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TechnicalFunctions\Index.cs" />
