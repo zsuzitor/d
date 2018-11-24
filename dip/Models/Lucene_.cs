@@ -16,6 +16,10 @@ using System.Web;
 
 //http://www.waveaccess.ru/blog/2014/september/02/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-apache-lucene.aspx
 
+
+//ru analizer//tok//norm  https://github.com/apache/lucenenet/tree/master/src/Lucene.Net.Analysis.Common/Analysis/Ru
+
+
 namespace dip.Models
 {
     public class Lucene_
@@ -128,6 +132,53 @@ namespace dip.Models
             return new Sort(fields); // sort by brand, then by score 
         }
 
+
+        //#steamm
+
+        //public static string Steam()
+        //{
+        //    var s = new PorterStemmer();
+
+
+
+        //}
+
+
+
+
+
+
+//        public static String removeStopWordsAndGetNorm(String text, String[] stopWords, Normalizer normalizer) 
+//        {
+//    //        TokenStream tokenStream = new ClassicTokenizer(Version.LUCENE_44, new StringReader(text));
+//    //        tokenStream = new StopFilter(Version.LUCENE_44, tokenStream, StopFilter.makeStopSet(Version.LUCENE_44, stopWords, true));
+//    //        tokenStream = new LowerCaseFilter(Version.LUCENE_44, tokenStream);
+//    //        tokenStream = new StandardFilter(Version.LUCENE_44, tokenStream);
+//    //        tokenStream.reset();
+//    //        String result = "";
+//    //        while (tokenStream.incrementToken())
+//    //        {
+//    //            CharTermAttribute token = tokenStream.getAttribute(CharTermAttribute.class); 
+//    // try 
+//    // { 
+//    //  //normalizer.getNormalForm(...) - stemmer or lemmatizer 
+//    //  result += normalizer.getNormalForm(token.toString()) + " "; 
+//    // } 
+//    // catch(Exception e) 
+//    // { 
+//    //  //if something went wrong 
+//    // } 
+//    //} 
+//}
+
+
+
+
+
+
+
+
+
         //static Filter GetFilter()
         //{
         //    return NumericRangeFilter.NewIntRange("Id", 2, 5, true, false); // [2; 5) range 
@@ -162,7 +213,9 @@ namespace dip.Models
                 var products = new List<FEText>();
                 foreach (var scoreDoc in docs.ScoreDocs)
                 {
+                   //var g= scoreDoc.Score;
                     var doc = searcher.Doc(scoreDoc.Doc);
+                    
                     var product = new FEText { IDFE = int.Parse(doc.Get("IDFE")),
                         Name = doc.Get("Name"),
                         Text = doc.Get("Text"),
@@ -177,9 +230,13 @@ namespace dip.Models
                 return products;
             }
         }
-        
 
 
+        static public void rus()
+        {
+            //Lucene.Net.Analysis.Ru.RussianAnalyzer r = new Lucene.Net.Analysis.Ru.RussianAnalyzer();
 
-    }
+        }
+
+        }
 }
