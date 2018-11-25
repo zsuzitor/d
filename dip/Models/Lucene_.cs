@@ -232,39 +232,68 @@ namespace dip.Models
 
 
 
-        static Query GetQuery(string keywords)
+        static Query GetQuery(string keyword)
         {
             using (var analyzer = GetAnalyzer())
             {
                 var query = new BooleanQuery();
+                var keywords = keyword.Trim().Split(' ');
 
-                var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Name", analyzer);
-                var keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
+                foreach (var i in FEText.GetPropTextSearch())
+                {
+                    var phraseQuery = new PhraseQuery();
+                    foreach (var i2 in keywords)
+                    {
+                        phraseQuery.Add(new Term(i, i2));
+                        
+                    }
+                    query.Add(phraseQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Text", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextInp", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
+                    var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, i, analyzer);
+                    var keywordsQuery = parser.Parse(keyword);
+                    query.Add(keywordsQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextOut", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
+                }
+                //var phraseQuery = new PhraseQuery();
+                //phraseQuery.Add(new Term("Name", "electric"));
+                //phraseQuery.Add(new Term("Name", "guitar"));
+                //query.Add(phraseQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextObj", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextApp", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
 
-                parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextLit", analyzer);
-                keywordsQuery = parser.Parse(keywords);
-                query.Add(keywordsQuery, Occur.SHOULD);
+                //var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Name", analyzer);
+                //var keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Text", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextInp", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextOut", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextObj", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextApp", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextLit", analyzer);
+                //keywordsQuery = parser.Parse(keyword);
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+
+
+
+
                 //Term - 1парам - поле в котором ищем
                 // var termQuery = new TermQuery(new Term("Brand", "Fender"));
                 //var phraseQuery = new PhraseQuery();
@@ -351,7 +380,7 @@ namespace dip.Models
 
 
         //TODO если в MapProduct будет нормализация то доставать только id и по ним искать
-        static public List<int> Search(string keywords, int limit, out int count)
+        static public List<int> Search(string keywords, int limit, out int count)//Dictionary<int,double>
         {
             using (var directory = GetDirectory())
             using (var searcher = new IndexSearcher(directory))
@@ -361,10 +390,10 @@ namespace dip.Models
                 //var filter = GetFilter();
                 var docs = searcher.Search(query, null, limit, sort);
                 count = docs.TotalHits;
-                var products = new List<int>();
+                var products = new List<int>();//new Dictionary<int, double>();
                 foreach (var scoreDoc in docs.ScoreDocs)
                 {
-                   //var g= scoreDoc.Score;
+                  // var g= scoreDoc.Score;
                     var doc = searcher.Doc(scoreDoc.Doc);
                     
                     //var product = new FEText { IDFE = int.Parse(doc.Get("IDFE")),
@@ -376,7 +405,8 @@ namespace dip.Models
                     //    TextObj = doc.Get("TextObj"),
                     //    TextOut = doc.Get("TextOut")
                     //};
-                    products.Add(int.Parse(doc.Get("IDFE")));
+                    //doc.Boost
+                    products.Add(int.Parse(doc.Get("IDFE")));//,g
                 }
                 return products;
             }

@@ -74,7 +74,7 @@ namespace dip.Controllers
 
 
             //
-            
+
 
             //var obj = res.Take(20);
             //if (obj != null)
@@ -101,7 +101,7 @@ namespace dip.Controllers
 
             //
 
-
+            //ViewBag.mark = res.Select(x1=>x1.);
 
             //TODO сейчас костыль просто потестить
             return View(res.ToArray());//.Select(x1=>x1.IDFE)

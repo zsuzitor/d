@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace dip.Models.Domain
@@ -69,6 +70,21 @@ namespace dip.Models.Domain
 
         }
 
+
+        public static List<string> GetPropTextSearch()
+        {
+            var res= new List<string>();
+            var listNM=new List<string>() { "IDFE" };//исключаем
+
+
+            PropertyInfo[] myPropertyInfo;
+            Type myType = typeof(FEText);
+            // Get the type and fields of FieldInfoClass.
+            myPropertyInfo = myType.GetProperties();
+            res = myPropertyInfo.Where(x1=>listNM.FirstOrDefault(x2=>x2== x1.Name)==null).Select(x1=>x1.Name).ToList();
+
+            return res;
+        }
 
         public static FEText Get(int? id){
             FEText res =null;
