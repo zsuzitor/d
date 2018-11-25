@@ -25,9 +25,11 @@
             </div>
             @Html.Partial("_LoginPartial")
         </div>
-        @using (Html.BeginForm("TextSearch", "Search"))
+        @using (Html.BeginForm("TextSearch", "Search",FormMethod.Get))
         {
-            <input name="str" type="text" />
+            <input name="str" type="text" value="@(TempData["textSearchStr"])"/>
+            <hidden name="type" type="text" >@(TempData["textSearchType"])</hidden>
+            
             <input type="submit" value="поиск" />
         }
     </div>

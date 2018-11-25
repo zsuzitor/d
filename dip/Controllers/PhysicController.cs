@@ -139,7 +139,7 @@ namespace dip.Controllers
 
 
 
-            return View(@"~/Views/DescriptionQueries/Details.cshtml", oldObj);
+            return View(@"~/Views/Physic/Details.cshtml", oldObj);
         }
 
 

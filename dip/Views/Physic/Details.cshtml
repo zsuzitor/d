@@ -68,8 +68,7 @@
 
         @foreach (var i in Model.Images)
         {
-            <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
-            </div>
+           @helpers_.ImageLink(i)
 
         }
 

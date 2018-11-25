@@ -59,7 +59,8 @@ namespace dip.Controllers
         }
 
 
-        [HttpPost]
+        //[HttpPost]
+        //type - тип запроса lucene и др
         public ActionResult TextSearch(string type,string str)
         {
             //TODO полнотекстовый поиск
@@ -71,8 +72,8 @@ namespace dip.Controllers
             var res =Lucene_.Search(str,100,out count);
 
 
-
-
+            TempData["textSearchStr"] = str;
+            TempData["textSearchType"] = type;
             //
 
 

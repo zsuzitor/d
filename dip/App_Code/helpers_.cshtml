@@ -1,4 +1,5 @@
 ﻿@using System.Web.Mvc;
+@using dip.Models.Domain;
 
 @*@functions
 {
@@ -294,3 +295,60 @@
 
 
 }
+
+
+
+
+
+
+
+
+@helper ImageLink(Image a)
+{
+    @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@a.Id">*@
+if (a?.Id != null)
+{
+    <div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">@*@a.Id*@
+        @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
+        @helpers_.Image(a, true)
+        @*</a>*@
+    </div>
+}
+if (a?.Id == null)
+{
+    @helpers_.Image(a, true)
+}
+
+}
+
+
+
+@helper Image(Image a, bool show_empty_img)
+        {
+if (a?.Data != null)
+{
+    //TODO сейчас  не полностью картинки влезают
+    <div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@a.Id">
+        @*<img id="main_tag_one_img_id_@a.Id" class="class_image_standart" src="data:image/jpeg;base64,@Convert.ToBase64String(a.Data)" style="background: no-repeat;background-size: cover;">*@
+
+        <div id="main_tag_one_img_id_@a.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(a.Data)) no-repeat;background-size: cover;">
+        </div>
+    </div>
+}
+    
+    if (show_empty_img)
+    {
+
+
+        if (a?.Data == null)
+        {
+            <img src="~/Content/images/camera_200.png" />
+            }
+        }
+    }
+
+
+
+
+
+    

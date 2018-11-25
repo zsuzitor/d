@@ -28,9 +28,12 @@ namespace dip.Controllers
             return View();
         }
 
-        public ActionResult MainHeader()
+        public ActionResult MainHeader()//string textSearchStr, string textSearchType
         {
 
+
+            //ViewBag.textSearchStr = textSearchStr;
+            //ViewBag.textSearchType = ViewBag;
             return PartialView();
         }
 
