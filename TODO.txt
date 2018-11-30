@@ -97,6 +97,44 @@ damlevlim("BNNBKF",metaphone,20)=1
 
 
 
+
+full text search sql server
+{
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+можно указать расстояние между словами при NEAR()    --- where contains(...,'near((word1,word2),count_word)')
+where freetext(*,'word1 and word2')   поиск этих слов независимо друг от друга(если будут оба мб ранг будет выше, пока хз), если искать word1 то word1qwe тоже найдется
+contains(*,'formsof(inflectional,word1)')   поиск формы слова
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+общая статьяhttps://docs.microsoft.com/ru-ru/sql/relational-databases/search/query-with-full-text-search?view=sql-server-2017
+тизаурус, синонимы   https://docs.microsoft.com/ru-ru/sql/relational-databases/search/configure-and-manage-thesaurus-files-for-full-text-search?view=sql-server-2017
+
+
+немного инфы, но поиск тут так http://dbasimple.blogspot.com/2012/08/ms-sql-server-2008-full-text-search.html
+немного инфы, поиск так, но стоит пересмотреть  https://info-comp.ru/sisadminst/486-full-text-search-ms-sql-server.html
+тоже стоит посмотреть англ https://www.sqlshack.com/hands-full-text-search-sql-server/
+
+
+хороший видос(надо смотреть ) https://www.youtube.com/watch?v=hUOwCf61xXo
+тоже норм   + тут про тизарус(расположение)            https://www.youtube.com/watch?v=swGn2B1sSMA
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 в моделях technical  убрать virtual
 Многопоточность в строку подключения к бд
 
