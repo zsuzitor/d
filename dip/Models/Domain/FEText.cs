@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 
 namespace dip.Models.Domain
 {
+    [Table("FETexts")]// используется в oldDbContext.cs
     public class FEText
     {
+        // [Index("PK_FeTexts_cons", IsClustered = true,IsUnique =true)]//,IsClustered =true
+        //index должен быть PK_dbo.FeTexts, если менять то менять и в oldDbContext.cs
         [Key]
         public int IDFE { get; set; }
         [DataType(DataType.MultilineText)]

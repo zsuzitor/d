@@ -64,14 +64,39 @@ namespace dip.Controllers
         public ActionResult TextSearch(string type,string str)
         {
             //TODO полнотекстовый поиск
+            var res = new int[0];
+            //type = "fullTextSearch";
+            switch (type)
+            {
+                case "lucene":
+                    //var list_id=FEText.GetByText(str);
+                    int count;
+                    str = Lucene_.ChangeForMap(str);
+                    //TODO убрать знаки препинания, стопслова
+                    res = Lucene_.Search(str, 100, out count).ToArray();
+                    break;
+                case "fullTextSearch":
+                    using (var db=new ApplicationDbContext())
+                    {
+                        //TODO вынести в функцию sql server и юзать уже из linq
+                       var  res1 = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,{str})as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;");
+                    }
 
-            //var list_id=FEText.GetByText(str);
-            int count;
-            str = Lucene_.ChangeForMap(str);
-            //TODO убрать знаки препинания, стопслова
-            var res =Lucene_.Search(str,100,out count);
 
 
+                        break;
+
+
+            }
+
+
+            
+
+
+
+
+
+            //устанавливаем параметры для представления mainHeader
             TempData["textSearchStr"] = str;
             TempData["textSearchType"] = type;
             //
@@ -105,7 +130,7 @@ namespace dip.Controllers
             //ViewBag.mark = res.Select(x1=>x1.);
 
             //TODO сейчас костыль просто потестить
-            return View(res.ToArray());//.Select(x1=>x1.IDFE)
+            return View(res);//.Select(x1=>x1.IDFE)
         }
 
 

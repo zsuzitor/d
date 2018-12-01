@@ -13,8 +13,9 @@ using static dip.Models.Functions;
 namespace dip.Models.Domain
 {
 
-    class test
+    public class test
     {
+        //[Index("PK_FeTexts_cons", IsClustered = true, IsUnique = true)]//,IsClustered =true
         public int Id { get; set; }
 
         public string levName { get; set; }

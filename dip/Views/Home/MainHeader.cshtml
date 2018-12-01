@@ -29,7 +29,15 @@
         {
             <input name="str" type="text" value="@(TempData["textSearchStr"])"/>
             <hidden name="type" type="text" >@(TempData["textSearchType"])</hidden>
-            
+
+            <select name="type" class="form-control">
+
+                @*selected="selected"          атрибут для проставления активной строки*@
+                    <option value="lucene">lucene</option>
+                <option value="fullTextSearch">fullTextSearch</option>
+               
+            </select>
+
             <input type="submit" value="поиск" />
         }
     </div>

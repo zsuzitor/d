@@ -1,6 +1,7 @@
+sql иньекции??
 //после полнотекстового поиска в форме запроса отображать текст по которому ведется поиск
 когда открывается форма дескрипторного поиска по заполненной ссылке на него, надо форму отрисовывать правильно(по запросу) а не чистую
-
+TODO вынести в функцию(fulltextsearch скрипт) sql server и юзать уже из linq
 умеет ли lucene находить главное слово и связные слова?
 поискать что кроме томиты умеет так делать, и если реализовывать самому то реально ли
 окончание падежей, и связи с другими словами
@@ -66,11 +67,22 @@ xhr везде поменять на ajax
 }
 
 
+
+
+
 {  томита и смежное
 томита парсер how to use
  разобраться что это , мб применять https://tech.yandex.ru/mystem/
 https://tech.yandex.ru/tomita/
 https://github.com/yandex/tomita-parser/
+
+
+//-----------------------------
+падежи без томиты, склонение
+http://morpher.ru/Products/DLL/DotNet.aspx    подробно  Morpher.dll 
+http://yeaahcode.blogspot.com/2015/01/lingvonet.html   LingvoNET           небольшой кусок кода http://www.cyberforum.ru/csharp-net/thread1127563.html
+https://github.com/miyconst/Cyriller     склонение есть nuget
+
 
 }
 
@@ -104,6 +116,10 @@ full text search sql server
 можно указать расстояние между словами при NEAR()    --- where contains(...,'near((word1,word2),count_word)')
 where freetext(*,'word1 and word2')   поиск этих слов независимо друг от друга(если будут оба мб ранг будет выше, пока хз), если искать word1 то word1qwe тоже найдется
 contains(*,'formsof(inflectional,word1)')   поиск формы слова
+
+
+select * from
+freetexttable(dbo.FeTexts,*,'архимед газ ток')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -121,8 +137,43 @@ contains(*,'formsof(inflectional,word1)')   поиск формы слова
 
 
 
+///
+//проверяем установлено ли
+select SERVERPROPERTY('IsFullTextInstalled')
+SELECT 'IsFullTextInstalled', SERVERPROPERTY('IsFullTextInstalled')
+
+
+//создаем каталог
+create fulltext catalog DbaFeTextCatalog
+
+
+// не нужно
+alter table dbo.FeTexts add constraint PK_FeTexts_cons primary key clustered(
+IDFE
+);
+
+
+//
+create fulltext index on [dbo.FeTexts](
+Name language  1049,
+Text language  1049,
+TextInp language  1049,
+TextOut language  1049,
+TextObj language  1049,
+TextApp language  1049,
+TextLit language  1049
+)
+key index PK_dbo.FeTexts
+on DbaFeTextCatalog
+with change_tracking auto;
+
+
+
 
 }
+
+
+
 
 
 

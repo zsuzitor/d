@@ -123,8 +123,11 @@ namespace dip.Models
         public DbSet<Log> Logs{ get; set; }
         public DbSet<LogParam> LogParams { get; set; }
         public DbSet<Image> Images { get; set; }
-        
 
+
+        //----------------------------TEST--
+        //public DbSet<test> tests { get; set; }
+        
 
 
         //--------------------------------------------------------------

@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -73,7 +76,7 @@ namespace dip.Models.DataBase
             {
 
 
-
+               // return true;
                 //MSSQLSERVER
                 var connection1 = new SqlConnection();
                 //(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
@@ -1171,8 +1174,61 @@ namespace dip.Models.DataBase
 
 
 
+                //настройки для fullTextSearch sql server
 
+
+               // using (var db = new ApplicationDbContext())
+                {
+                    ObjectContext context =
+                (new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
+                    ObjectQuery<DbDataRecord> Customers =
+                context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
+
+                    ObjectQuery<DbDataRecord> Customers1 =
+                context.CreateQuery<DbDataRecord>(@"create fulltext index on [dbo.FeTexts](
+                    Name language  1049,
+                    Text language  1049,
+                    TextInp language  1049,
+                    TextOut language  1049,
+                    TextObj language  1049,
+                    TextApp language  1049,
+                    TextLit language  1049
+                    )
+                    key index PK_dbo.FeTexts
+                    on DbaFeTextCatalog
+                    with change_tracking auto;");
+                    context.SaveChanges();
+
+                    //                    db.Database.ExecuteSqlCommand(@"create fulltext catalog DbaFeTextCatalog");
+                    //db.Database.ExecuteSqlCommand(@"create fulltext index on [dbo.FeTexts](
+                    //Name language  1049,
+                    //Text language  1049,
+                    //TextInp language  1049,
+                    //TextOut language  1049,
+                    //TextObj language  1049,
+                    //TextApp language  1049,
+                    //TextLit language  1049
+                    //)
+                    //key index PK_dbo.FeTexts
+                    //on DbaFeTextCatalog
+                    //with change_tracking auto;");
+                }
+
+
+
+//# выполнение #sql скрипта 
                 
+//                var comps = db.Database.SqlQuery<Company>("SELECT * FROM Companies");
+//                возвращает количество затронутых строк
+//int numberOfRowInserted = db.Database.ExecuteSqlCommand("INSERT INTO Companies (Name) VALUES ('HTC')");
+//                получить строку подключения
+//db.Database.Connection.ConnectionString
+
+
+
+
+
+
 
 
 
