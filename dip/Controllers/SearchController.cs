@@ -79,7 +79,7 @@ namespace dip.Controllers
                     using (var db=new ApplicationDbContext())
                     {
                         //TODO вынести в функцию sql server и юзать уже из linq
-                       var  res1 = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,{str})as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;");
+                        res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str}')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").Take(100).ToArray();
                     }
 
 

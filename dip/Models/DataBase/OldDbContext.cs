@@ -1177,30 +1177,32 @@ namespace dip.Models.DataBase
                 //настройки для fullTextSearch sql server
 
 
-               // using (var db = new ApplicationDbContext())
+                //using (var db = new ApplicationDbContext())
                 {
-                    ObjectContext context =
-                (new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
-                    ObjectQuery<DbDataRecord> Customers =
-                context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
+                    //    ObjectContext context =
+                    //(new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
+                    //    ObjectQuery<DbDataRecord> Customers =
+                    //context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
 
-                    ObjectQuery<DbDataRecord> Customers1 =
-                context.CreateQuery<DbDataRecord>(@"create fulltext index on [dbo.FeTexts](
-                    Name language  1049,
-                    Text language  1049,
-                    TextInp language  1049,
-                    TextOut language  1049,
-                    TextObj language  1049,
-                    TextApp language  1049,
-                    TextLit language  1049
-                    )
-                    key index PK_dbo.FeTexts
-                    on DbaFeTextCatalog
-                    with change_tracking auto;");
-                    context.SaveChanges();
+                    //    ObjectQuery<DbDataRecord> Customers1 =
+                    //context.CreateQuery<DbDataRecord>(@"create fulltext index on [dbo].[FETexts](
+                    //    Name language  1049,
+                    //    Text language  1049,
+                    //    TextInp language  1049,
+                    //    TextOut language  1049,
+                    //    TextObj language  1049,
+                    //    TextApp language  1049,
+                    //    TextLit language  1049
+                    //    )
+                    //    key index [PK_dbo.FeTexts]
+                    //    on DbaFeTextCatalog
+                    //    with change_tracking auto;");
+                    //    context.SaveChanges();
+
+
 
                     //                    db.Database.ExecuteSqlCommand(@"create fulltext catalog DbaFeTextCatalog");
-                    //db.Database.ExecuteSqlCommand(@"create fulltext index on [dbo.FeTexts](
+                    //                    db.Database.ExecuteSqlCommand(@"create fulltext index on [dbo].[FETexts](
                     //Name language  1049,
                     //Text language  1049,
                     //TextInp language  1049,
@@ -1209,10 +1211,82 @@ namespace dip.Models.DataBase
                     //TextApp language  1049,
                     //TextLit language  1049
                     //)
-                    //key index PK_dbo.FeTexts
+                    //key index [PK_dbo.FeTexts]
                     //on DbaFeTextCatalog
                     //with change_tracking auto;");
-                }
+
+
+
+
+
+
+
+
+                    //тест функции
+
+
+
+
+
+
+                    //    ObjectContext context =
+                    //(new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
+                    //    ObjectQuery<DbDataRecord> Customers =
+                    //context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
+
+
+                    /*using (var db=new ApplicationDbContext())
+                    {
+
+
+
+
+                        //                        db.Database.ExecuteSqlCommand(@"CREATE FUNCTION[dbo].[initFullTextSearch]()
+                        //RETURNS int
+                        //AS
+                        //BEGIN
+
+                        //create fulltext catalog DbaFeTextCatalog
+                        //create fulltext index on [dbo].[FETexts](
+                        //Name language  1049,
+                        //Text language  1049,
+                        //TextInp language  1049,
+                        //TextOut language  1049,
+                        //TextObj language  1049,
+                        //TextApp language  1049,
+                        //TextLit language  1049
+                        //)
+                        //key index [PK_dbo.FeTexts]
+                        //on DbaFeTextCatalog
+                        //with change_tracking auto;
+                        //  RETURN 1
+                        //END");
+
+                        db.Database.ExecuteSqlCommand(@"
+CREATE PROC initFullTextSearch 
+AS    
+create fulltext catalog DbaFeTextCatalog
+create fulltext index on [dbo].[FETexts](
+Name language  1049,
+Text language  1049,
+TextInp language  1049,
+TextOut language  1049,
+TextObj language  1049,
+TextApp language  1049,
+TextLit language  1049
+)
+key index [PK_dbo.FeTexts]
+on DbaFeTextCatalog
+with change_tracking auto;");
+                        db.SaveChanges();
+                        //db.Database.ExecuteSqlCommand(@"initFullTextSearch();");
+                        //db.SaveChanges();
+                    }
+                    */
+                    
+
+
+    }
 
 
 

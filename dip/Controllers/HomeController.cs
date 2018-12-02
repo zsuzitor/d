@@ -10,10 +10,7 @@ using System.Web.Mvc;
 using System.Configuration;
 using System.Data.SqlClient;
 using dip.Models.Domain;
-
-
-
-
+using dip.Models;
 
 namespace dip.Controllers
 {
@@ -21,6 +18,14 @@ namespace dip.Controllers
     {
         public ActionResult Index()
         {
+            using (var db = new ApplicationDbContext())
+            {
+                //db.Database.ExecuteSqlCommand(@"EXEC initFullTextSearch;");
+                //db.SaveChanges();
+            }
+               
+
+
             return View();
         }
         public ActionResult About()
@@ -30,7 +35,7 @@ namespace dip.Controllers
 
         public ActionResult MainHeader()//string textSearchStr, string textSearchType
         {
-
+            ViewBag.searchList = new List<string>() { "lucene", "fullTextSearch" };
 
             //ViewBag.textSearchStr = textSearchStr;
             //ViewBag.textSearchType = ViewBag;

@@ -25,7 +25,22 @@
 <div>
     
     @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    { 
+    {
+
+        @Html.Action("DescriptionInput", "Actions")
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Html.HiddenFor(x1 => x1.IDFE)
     
     <dl class="dl-horizontal">

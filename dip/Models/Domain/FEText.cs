@@ -171,11 +171,31 @@ namespace dip.Models.Domain
         }
 
 
-        public bool AddToDb()
+        public bool AddToDb(DescrSearchIInput inp , DescrSearchIOut outp )
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.FEText.Add(this);
+                db.SaveChanges();
+
+
+             
+
+                db.FEActions.Add(new FEAction() {Idfe=this.IDFE,Input=1,Type=inp.actionTypeI, FizVelId= inp.FizVelIdI,
+                    Pros = inp.listSelectedProsI, Spec= inp.listSelectedSpecI,
+                    Vrem= inp.listSelectedVremI
+                });
+
+                db.FEActions.Add(new FEAction()
+                {
+                    Idfe = this.IDFE,
+                    Input = 0,
+                    Type = inp.actionTypeI,
+                    FizVelId = inp.FizVelIdI,
+                    Pros = inp.listSelectedProsI,
+                    Spec = inp.listSelectedSpecI,
+                    Vrem = inp.listSelectedVremI
+                });
                 db.SaveChanges();
             }
             return true;

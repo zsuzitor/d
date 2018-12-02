@@ -83,7 +83,7 @@ namespace dip.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_)
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
             //TODO добавление записи
             var list_img_byte = Get_photo_post(uploadImage);
@@ -100,7 +100,7 @@ namespace dip.Controllers
             if (oldObj == null)
             {
                 //новая
-                obj.AddToDb();
+                obj.AddToDb(inp, outp);
                 //foreach(var i in list_img_byte)
                 //{
                 //    db.Images.Add(new Image() { Data=i, FeTextId= obj.IDFE });

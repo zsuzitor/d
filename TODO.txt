@@ -1,3 +1,11 @@
+physic controller -> Create  view часть, форма должна полностью рисоваться, но делать ничего не будет тк нет js части, надо сделать как в DescriptionSearch.cshtml
+в feactions столбцы которые не используются -- name fizvelsection fizvelchange fizvelleftborder fizvelrightborder
+
+с открытием контекста поаккуратнее, мб посокращать где можно
+удаление сущностей из бд
+в дескр поиске, все таки открывать 1 контекст?
+подтверждение по почте
+подумать над поменением контекста в синглтон      , как будет определяться надо ли присоединять к контексту который вернется методом, мб у конекста id есть(хотя ничего не даст)
 sql иньекции??
 //после полнотекстового поиска в форме запроса отображать текст по которому ведется поиск
 когда открывается форма дескрипторного поиска по заполненной ссылке на него, надо форму отрисовывать правильно(по запросу) а не чистую
@@ -15,10 +23,20 @@ TODO вынести в функцию(fulltextsearch скрипт) sql server и юзать уже из linq
 
 Попробовать поиск строки с несколькими словами
 Сплитить и передавать как в примере
+добавление не только в  fetext но и самих дескрипторов , форма в которой по порядку выбираешь и выбираешь добавить новое и тогда уже конкретная форма под пункт, либо выбираешь пункт из уже существующих
 
 
 репозитории почистить и выбрать ветку, мб удалить все
 подумать как переиндексировать бд при занесении новых записей
+
+{ pdf
+формирование pdf c#
+очень хорошо с кодом и тдтд       https://habr.com/post/112707/  
+еще    https://ru.stackoverflow.com/questions/653246/%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C-%D1%84%D0%B0%D0%B9%D0%BB-pdf   
+еще    http://lsreg.ru/prostoj-sposob-sozdat-pdf-na-c/
+}
+
+
 {
 
 + стоп слова   -- если в при этом с этого когда
@@ -154,7 +172,7 @@ IDFE
 
 
 //
-create fulltext index on [dbo.FeTexts](
+create fulltext index on [dbo].[FETexts](
 Name language  1049,
 Text language  1049,
 TextInp language  1049,
@@ -163,7 +181,58 @@ TextObj language  1049,
 TextApp language  1049,
 TextLit language  1049
 )
-key index PK_dbo.FeTexts
+key index [PK_dbo.FeTexts]
+on DbaFeTextCatalog
+with change_tracking auto;
+
+
+
+
+
+
+
+
+--declare @ch int  -- проверять существует ли
+--@ch  = select SERVERPROPERTY('IsFullTextInstalled')
+
+
+CREATE FUNCTION[dbo].[initFullTextSearch]()
+RETURNS int
+AS
+BEGIN
+
+create fulltext catalog DbaFeTextCatalog
+create fulltext index on [dbo].[FETexts](
+Name language  1049,
+Text language  1049,
+TextInp language  1049,
+TextOut language  1049,
+TextObj language  1049,
+TextApp language  1049,
+TextLit language  1049
+)
+key index [PK_dbo.FeTexts]
+on DbaFeTextCatalog
+with change_tracking auto;
+  RETURN 1
+END
+
+
+
+
+CREATE PROC initFullTextSearch 
+AS    
+create fulltext catalog DbaFeTextCatalog
+create fulltext index on [dbo].[FETexts](
+Name language  1049,
+Text language  1049,
+TextInp language  1049,
+TextOut language  1049,
+TextObj language  1049,
+TextApp language  1049,
+TextLit language  1049
+)
+key index [PK_dbo.FeTexts]
 on DbaFeTextCatalog
 with change_tracking auto;
 
