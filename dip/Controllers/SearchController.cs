@@ -41,10 +41,12 @@ namespace dip.Controllers
 
 
 
-            int[] list_id = FEText.GetByDescr(inp, outp) ;
-            
+            int[] list_id = null;
 
-
+            if (!DescrSearchIInput.IsNull(inp) && !DescrSearchIOut.IsNull(outp))
+                list_id = FEText.GetByDescr(inp, outp);
+            else
+                ViewBag.itsSearch = true;
 
 
             if (search != null)

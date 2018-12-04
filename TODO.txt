@@ -1,3 +1,8 @@
+form-control btn btn-default
+когда ищу люцианом в tmpdata записываетс€ порезанна€ верси€ запроса, исправить
+на страницу редактирование fetext добавить кнопку дл€ просто просмотра записи(выхода из редактировани€)
+дескрипторный поиск сломалс€, почему пока не знаю исправить
+actionscontroller -> descriptioninput   вынести оттуда кнопку "поиск" ????
 physic controller -> Create  view часть, форма должна полностью рисоватьс€, но делать ничего не будет тк нет js части, надо сделать как в DescriptionSearch.cshtml
 в feactions столбцы которые не используютс€ -- name fizvelsection fizvelchange fizvelleftborder fizvelrightborder
 

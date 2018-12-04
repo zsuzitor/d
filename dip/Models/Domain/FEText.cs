@@ -160,7 +160,7 @@ namespace dip.Models.Domain
         }
 
 
-        public static List<FEText> GetList(int[]id)
+        public static List<FEText> GetList(params int[]id)
         {
             var res = new List<FEText>();
             if (id != null)

@@ -4,133 +4,161 @@
 @*<div class="navbar navbar-inverse navbar-fixed-top">*@
 
     <div class="Main_header_big navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
+        <div class="">@*container*@
+            @*<div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @*Система поиска физических эффектов*@
+                
                 @Html.ActionLink("MAIN LINK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Поиск физических эффектов", "Create", "DescriptionQueries")</li>
-                    <li>@Html.ActionLink("Индексация технических функций", "Index", "Indexes")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("descr", "DescriptionSearch", "Search")</li>
+            </div>*@
+            <div class="Main_header_link_block">@*navbar-collapse collapse*@
+                <ul class="Main_header_menu">@*nav navbar-nav*@
+                    @*<li>@Html.ActionLink("Поиск физических эффектов", "Create", "DescriptionQueries")</li>
+                    <li>@Html.ActionLink("Индексация технических функций", "Index", "Indexes")</li>*@
+                    <li>@Html.ActionLink("Добавить физический эффект", "Create", "Physic",new { }, new {@class= "navbar-brand" })</li>
+                    <li>@Html.ActionLink("О программе", "About", "Home", new { }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("Дескрипторный поиск", "DescriptionSearch", "Search", new { }, new { @class = "navbar-brand" })</li>
                 </ul>
 
             </div>
-            @Html.Partial("_LoginPartial")
+            
         </div>
-        @using (Html.BeginForm("TextSearch", "Search",FormMethod.Get))
-        {
-            <input name="str" type="text" value="@(TempData["textSearchStr"])"/>
-            @*<hidden name="type" type="text" >@(TempData["textSearchType"])</hidden>*@
+        <div class="main_header_text_search_form_block">
+            @using (Html.BeginForm("TextSearch", "Search", FormMethod.Get))
+            {
+                <div class="main_header_text_search_all_block">
+                    <div class="div_inline_block main_header_search_str_div"><input class="form-control" name="str" type="text" value="@(TempData["textSearchStr"])" /></div>
+                    <div class="div_inline_block main_header_search_type_div">
+                        <select name="type" class="cursor_pointer form-control">
 
-            <select name="type" class="form-control">
+                            @*selected="selected"          атрибут для проставления активной строки*@
+                            @foreach (var itemSearchType in (List<string>)ViewBag.searchList)
+                            {
+                                //string selected = "";
 
-                @*selected="selected"          атрибут для проставления активной строки*@
-                @foreach (var itemSearchType in (List<string>)ViewBag.searchList)
-                {
-                    //string selected = "";
+                                if (itemSearchType == (string)TempData["textSearchType"])
+                                {
+                                    //selected = @"selected='selected'";
+                                    <option selected='selected' value="@itemSearchType">@itemSearchType</option>
+                                }
+                                if (itemSearchType != (string)TempData["textSearchType"])
+                                {
+                                    <option value="@itemSearchType">@itemSearchType</option>@*@selected*@
 
-                    if (itemSearchType == (string)TempData["textSearchType"])
-                    {
-                        //selected = @"selected='selected'";
-                        <option selected='selected' value="@itemSearchType">@itemSearchType</option>
-                    }
-                    if (itemSearchType != (string)TempData["textSearchType"])
-                    {
-                    <option  value="@itemSearchType">@itemSearchType</option>@*@selected*@
-                    }
-                }
+                                }
+                            }
 
-                    @*<option value="lucene">lucene</option>
-                <option value="fullTextSearch">fullTextSearch</option>*@
-               
-            </select>
+                            @*<option value="lucene">lucene</option>
+                            <option value="fullTextSearch">fullTextSearch</option>*@
+                            @*<option value="lucene"></option>
+                            <option value="fullTextSearch"></option>*@
 
-            <input type="submit" value="поиск" />
-        }
+                        </select>
+                    </div>
+                    <div class="div_inline_block main_header_search_but_div"><input class="btn btn-default" type="submit" value="поиск" /></div>
+
+                    @*<hidden name="type" type="text" >@(TempData["textSearchType"])</hidden>*@
+
+
+
+                </div>
+            }
+        </div>
+        <div class="Main_header_home_link">@Html.ActionLink("Главная страница", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</div>@*col_black*@
+        <div class="Main_header_big_log_part">@Html.Partial("_LoginPartial")</div>
+        
+        
     </div>
+
     <div id="Main_header_check_small_or_big_header">
+        
     </div>
-    <div class="Main_header_small" id="Main_header_small_id">
+
+
+    <div class="Main_header_small navbar navbar-inverse" id="Main_header_small_id">
         @Html.Partial("_LoginPartial")
     </div>
+
+
+
+    @*<div class="Main_header_small" id="Main_header_small_id">
+        <div class="navbar navbar-inverse">
+            @Html.Partial("_LoginPartial")
+        </div>
+</div>*@
     @*</div>*@
 
 
 
 
-<script>
+    <script>
 
-    var time_for_page_up;// for up()
+        var time_for_page_up;// for up()
 
-    ///--------------------------------------------------------------------------------------
+        ///--------------------------------------------------------------------------------------
 
-    function up() {
-        var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-        if (top > 0) {
-            window.scrollBy(0, -100);
-            time_for_page_up = setTimeout('up()', 20);
-        } else clearTimeout(time_for_page_up);
-        return false;
-    }
-
-
-    function isVisible(tag) {
-        var t = $(tag);
-        var w = $(window);
-        var top_window = w.scrollTop();
-        var bot_window = top_window + document.documentElement.clientHeight;
-        var top_tag = t.offset().top;
-        var bot_tag = top_tag + t.height();
-        //alert(bot_tag);
-        //alert(top_window);
-        return ((bot_tag >= top_window && bot_tag <= bot_window) || (top_tag >= top_window && top_tag <= bot_window) || (bot_tag >= bot_window && top_tag <= top_window));
-    }
-
-
-    $(function () {
-        $(window).scroll(function () {
-            Change_main_header();
-            //Check_drop_footer();
-        });
-    });
-
-
-    //------------------------------------------------------------
-    function Change_main_header() {
-        var b = $("#Main_header_check_small_or_big_header");
-        if (!b.prop("shown") && !isVisible(b)) {
-            b.prop("shown", true);
-            var o = document.getElementById("Main_header_small_id")
-            var o1 = document.getElementById("Main_header_back_to_top_id")
-            o1.style.display = 'block';
-
-            o.style.display = 'block';
-
+        function up() {
+            var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+            if (top > 0) {
+                window.scrollBy(0, -100);
+                time_for_page_up = setTimeout('up()', 20);
+            } else clearTimeout(time_for_page_up);
+            return false;
         }
-        else {
-            if (b.prop("shown") && isVisible(b)) {
-                b.prop("shown", false);
+
+
+        function isVisible(tag) {
+            var t = $(tag);
+            var w = $(window);
+            var top_window = w.scrollTop();
+            var bot_window = top_window + document.documentElement.clientHeight;
+            var top_tag = t.offset().top;
+            var bot_tag = top_tag + t.height();
+            //alert(bot_tag);
+            //alert(top_window);
+            return ((bot_tag >= top_window && bot_tag <= bot_window) || (top_tag >= top_window && top_tag <= bot_window) || (bot_tag >= bot_window && top_tag <= top_window));
+        }
+
+
+        $(function () {
+            $(window).scroll(function () {
+                Change_main_header();
+                //Check_drop_footer();
+            });
+        });
+
+
+        //------------------------------------------------------------
+        function Change_main_header() {
+            var b = $("#Main_header_check_small_or_big_header");
+            if (!b.prop("shown") && !isVisible(b)) {
+                b.prop("shown", true);
                 var o = document.getElementById("Main_header_small_id")
                 var o1 = document.getElementById("Main_header_back_to_top_id")
-                o1.style.display = 'none';
-                o.style.display = 'none';
+                o1.style.display = 'block';
+
+                o.style.display = 'block';
+
             }
+            else {
+                if (b.prop("shown") && isVisible(b)) {
+                    b.prop("shown", false);
+                    var o = document.getElementById("Main_header_small_id")
+                    var o1 = document.getElementById("Main_header_back_to_top_id")
+                    o1.style.display = 'none';
+                    o.style.display = 'none';
+                }
+            }
+
         }
 
-    }
 
 
 
-
-</script>
+    </script>
 
 
 

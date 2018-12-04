@@ -66,6 +66,20 @@ namespace dip.Models.Domain
             }
             return false;
         }
+        public static bool IsNull(DescrSearchIInput a)
+        {
+            if (a == null)
+                return true;
+            if (a.actionIdI == null && a.actionTypeI == null && a.FizVelIdI == null
+                && a.parametricFizVelIdI == null && a.listSelectedProsI == null
+                && a.listSelectedSpecI == null && a.listSelectedVremI == null)
+                return true;
+
+
+            return false;
+        }
+
+
     }
 
 
@@ -101,6 +115,19 @@ namespace dip.Models.Domain
                 a.listSelectedVremO = NullToEmpryStr(a.listSelectedVremO);
                 return true;
             }
+            return false;
+        }
+
+        public static bool IsNull(DescrSearchIOut a)
+        {
+            if (a == null)
+                return true;
+            if (a.actionIdO == null && a.actionTypeO == null && a.FizVelIdO == null
+                && a.parametricFizVelIdO == null && a.listSelectedProsO == null
+                && a.listSelectedSpecO == null && a.listSelectedVremO == null)
+                return true;
+
+
             return false;
         }
     }

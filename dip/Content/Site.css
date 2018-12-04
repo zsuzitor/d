@@ -1,6 +1,7 @@
 ﻿body {
     /*padding-top: 50px;*/
     padding-bottom: 20px;
+    min-width:960px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -42,7 +43,7 @@ body{
 
 
 div.one_block_fetext_list{
-    height:55px;
+    height:75px;
     border:2px solid black;
 }
 
@@ -51,6 +52,18 @@ div.one_block_fetext_list{
 div.div_inline_block {
     display: inline-block;
     vertical-align: top;
+}
+
+
+div.cursor_pointer{
+    
+}
+.cursor_pointer:hover{
+    cursor:pointer;
+}
+
+.col_black{
+    color:black;
 }
 
 
@@ -113,6 +126,58 @@ div.Main_header_small {
     z-index: 5;
     border:2px solid black;
 }
+
+
+div.main_header_search_str_div{
+    width:70%;
+}
+
+div.main_header_search_type_div{
+    width:15%;
+}
+
+div.main_header_search_but_div{
+    width:100px;
+}
+div.Main_header_big_log_part{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+}
+div.main_header_text_search_all_block{
+    display:inline;
+    margin-left:3%;
+}
+div.main_header_text_search_form_block{
+    position:absolute;
+    top:40%;
+        width: 100%;
+}
+div.Main_header_home_link{
+position:absolute;
+    left:0px;
+    bottom:0px;
+    
+}
+ul.Main_header_menu li{
+    display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+ 
+    /*padding: 3px;*/ /* Поля вокруг текста */
+    margin-left:20px;
+    /*font-size: 18px;
+        line-height: 20px;*/
+}
+div.Main_header_link_block{
+    /*margin-left:10%;*/
+    /*display:inline-block;
+    position:center;*/
+}
+/*---------------------------------------------------------*/
+
+
+
+
 
 
 
@@ -245,7 +310,10 @@ div.div_for_replace_ajax_2{
 
 
 
-
+div.div_img_record_show_block{
+    width:250px;
+    height:250px;
+}
 
 
 
