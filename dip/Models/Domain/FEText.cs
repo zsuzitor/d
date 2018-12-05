@@ -99,31 +99,32 @@ namespace dip.Models.Domain
             
         }
 
-        public static int[] GetByDescr(DescrSearchIInput inp, DescrSearchIOut outp)
+        public static int[] GetByDescr(DescrSearchI inp, DescrSearchI outp)
         {
             int[] list_id = null;
-            if (DescrSearchIInput.Validation(inp) && DescrSearchIOut.Validation(outp))
+            if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
             {
                 //поиск
                 //List<int> list_id = new List<int>();
 
                 using (var db = new ApplicationDbContext())
                 {
+                    //TODO оптимизация? разница только в  x1.Input == 1\0
                     //находим все записи которые подходят по входным параметрам
                     var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
-                      x1.Type == inp.actionTypeI &&
-                      x1.FizVelId == inp.FizVelIdI &&
-                      x1.Pros == inp.listSelectedProsI &&
-                      x1.Spec == inp.listSelectedSpecI &&
-                      x1.Vrem == inp.listSelectedVremI);
+                      x1.Type == inp.actionType &&
+                      x1.FizVelId == inp.FizVelId &&
+                      x1.Pros == inp.listSelectedPros &&
+                      x1.Spec == inp.listSelectedSpec &&
+                      x1.Vrem == inp.listSelectedVrem);
 
                     //находим все записи которые подходят по выходным параметрам
                     var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
-                    x1.Type == outp.actionTypeO &&
-                    x1.FizVelId == outp.FizVelIdO &&
-                    x1.Pros == outp.listSelectedProsO &&
-                    x1.Spec == outp.listSelectedSpecO &&
-                    x1.Vrem == outp.listSelectedVremO);
+                    x1.Type == outp.actionType &&
+                    x1.FizVelId == outp.FizVelId &&
+                    x1.Pros == outp.listSelectedPros &&
+                    x1.Spec == outp.listSelectedSpec &&
+                    x1.Vrem == outp.listSelectedVrem);
 
                     //записи которые подходят по всем параметрам
                     list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();

@@ -17,7 +17,7 @@
     <div id="">
         @*div_form_id*@
     <div>
-        @Html.Action("DescriptionInput", "Actions")
+        @Html.Action("DescriptionInput", "Actions",new {inp= ViewBag.inputForm,outp = ViewBag.outpForm })
     </div>
 
 </div>

@@ -20,7 +20,7 @@ namespace dip.Controllers
 
 
         //TODO search- переименовать+ в js тоже поменять на partial
-        public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
         {
 
             //TEST
@@ -42,9 +42,15 @@ namespace dip.Controllers
 
 
             int[] list_id = null;
-
-            if (!DescrSearchIInput.IsNull(inp) && !DescrSearchIOut.IsNull(outp))
+            var inp = new DescrSearchI(inp_);
+            var outp = new DescrSearchI(outp_);
+            if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
+            {
                 list_id = FEText.GetByDescr(inp, outp);
+                ViewBag.inputForm = inp;
+                ViewBag.outpForm = outp;
+            }
+                
             else
                 ViewBag.itsSearch = true;
 
@@ -54,7 +60,7 @@ namespace dip.Controllers
 
                 ViewBag.search = true;
 
-                return RedirectToAction("ListFeText", "Actions", list_id);
+                return RedirectToAction("ListFeText", "Physic", list_id);
             }
 
             return View(list_id);

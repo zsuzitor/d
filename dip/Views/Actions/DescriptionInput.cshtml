@@ -20,11 +20,11 @@
     @*@helpers_.PartFormDescrSearch(Html)*@
     @*@Html.Label("1233")*@
 
-    @helpers_.PartFormDescrSearch(Model, "I")
-
+    @helpers_.PartFormDescrSearch(Model, "I", ViewBag.inputForm)
+    
     <hr />
     <h1>Выход</h1>
-    @helpers_.PartFormDescrSearch(Model, "O")
+    @helpers_.PartFormDescrSearch(Model, "O", ViewBag.outpForm)
 </div>
 
 <div>

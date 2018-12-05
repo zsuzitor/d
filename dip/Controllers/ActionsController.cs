@@ -33,11 +33,17 @@ namespace dip.Controllers
             //    return View();
             //}
 
-        public ActionResult DescriptionInput()
+        public ActionResult DescriptionInput(DescrSearchI inp, DescrSearchI outp)
         {
 
             DescriptionForm res = DescriptionForm.GetFormObject();
-
+            if (DescrSearchI.IsNull(inp) || DescrSearchI.IsNull(outp))
+            {
+                inp = null;
+                outp = null;
+            }
+            ViewBag.inputForm = inp;
+            ViewBag.outpForm = outp;
 
 
 
