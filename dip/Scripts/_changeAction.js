@@ -1,5 +1,6 @@
 
 // Функция, обновляющая характеристики воздействия
+// type: I -input , O-output
 function changeParams(type)
 {
     //var url = window.location.pathname.split('/');

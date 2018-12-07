@@ -26,9 +26,11 @@ namespace dip.Controllers
         
 
 
-        public ActionResult Details(int id)//, string technicalFunctionId
+        public ActionResult Details(int? id)//, string technicalFunctionId
         {
             FEText effect= FEText.Get(id);
+            if(effect==null)
+                return new HttpStatusCodeResult(404);
             string check_id = ApplicationUser.GetUserId();
 
             effect.LoadImage();

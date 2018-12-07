@@ -71,7 +71,13 @@ namespace dip.Controllers
         //type - тип запроса lucene и др
         public ActionResult TextSearch(string type,string str)
         {
+            
             //TODO полнотекстовый поиск
+
+            //устанавливаем параметры для представления mainHeader
+            TempData["textSearchStr"] = str;
+            TempData["textSearchType"] = type;
+
             var res = new int[0];
             //type = "fullTextSearch";
             switch (type)
@@ -104,9 +110,7 @@ namespace dip.Controllers
 
 
 
-            //устанавливаем параметры для представления mainHeader
-            TempData["textSearchStr"] = str;
-            TempData["textSearchType"] = type;
+            
             //
 
 

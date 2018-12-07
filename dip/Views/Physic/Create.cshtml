@@ -117,9 +117,12 @@
         </div>
     }
     
+    @if (Model.IDFE > 0)
+    {
+        Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
 
-
-
+    }
+    
 
 
 </div>
