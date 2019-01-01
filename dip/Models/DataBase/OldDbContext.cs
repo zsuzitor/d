@@ -60,7 +60,7 @@ namespace dip.Models.DataBase
         static OldData()
         {
             connection = new SqlConnection();
-            connection.ConnectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SOFI.mdf;Integrated Security=True";
+            connection.ConnectionString = Constants.sql_1;
             command = new SqlCommand();
             command.Connection = connection;
             command.CommandType = CommandType.Text;
@@ -86,7 +86,7 @@ namespace dip.Models.DataBase
 
 
                 //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
-                connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+                connection1.ConnectionString = Constants.sql_2;
 
                 var command1 = new SqlCommand();
                 command1.Connection = connection1;

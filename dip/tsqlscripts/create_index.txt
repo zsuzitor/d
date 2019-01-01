@@ -1,0 +1,12 @@
+create fulltext index on [dbo].[FETexts](
+Name language  1049,
+Text language  1049,
+TextInp language  1049,
+TextOut language  1049,
+TextObj language  1049,
+TextApp language  1049,
+TextLit language  1049
+)
+key index [PK_dbo.FeTexts]
+on DbaFeTextCatalog
+with change_tracking auto;

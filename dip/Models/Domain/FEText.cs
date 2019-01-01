@@ -116,7 +116,8 @@ namespace dip.Models.Domain
                       x1.FizVelId == inp.FizVelId &&
                       x1.Pros == inp.listSelectedPros &&
                       x1.Spec == inp.listSelectedSpec &&
-                      x1.Vrem == inp.listSelectedVrem);
+                      x1.Vrem == inp.listSelectedVrem &&
+                      x1.FizVelSection == inp.parametricFizVelId);
 
                     //находим все записи которые подходят по выходным параметрам
                     var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
@@ -124,7 +125,8 @@ namespace dip.Models.Domain
                     x1.FizVelId == outp.FizVelId &&
                     x1.Pros == outp.listSelectedPros &&
                     x1.Spec == outp.listSelectedSpec &&
-                    x1.Vrem == outp.listSelectedVrem);
+                    x1.Vrem == outp.listSelectedVrem &&
+                    x1.FizVelSection == outp.parametricFizVelId);
 
                     //записи которые подходят по всем параметрам
                     list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();

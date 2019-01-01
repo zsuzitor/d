@@ -75,3 +75,17 @@ E:\csharp\dip1\dip\dip\bin\ICSharpCode.SharpZipLib.dll
 E:\csharp\dip1\dip\dip\bin\Lucene.Net.dll
 E:\csharp\dip1\dip\dip\bin\Lucene.Net.pdb
 E:\csharp\dip1\dip\dip\bin\Lucene.Net.xml
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.ConnectionInfo.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.Smo.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.SqlClrProvider.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.SqlEnum.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.Dmf.Common.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.Diagnostics.STrace.dll
+E:\csharp\dip1\dip\dip\bin\Microsoft.SqlServer.ServiceBrokerEnum.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.ConnectionInfo.resources.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.Smo.resources.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.Management.Sdk.Sfc.resources.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.SqlEnum.resources.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.Dmf.Common.resources.dll
+E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.ServiceBrokerEnum.resources.dll

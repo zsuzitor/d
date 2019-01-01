@@ -122,6 +122,7 @@ div.Main_header_small {
     top: 0px;
     /*background-color: #cdfae0;*/
     background-image: url(/Content/images/main_header_back_big.jpg);
+    background-size: 100%;
     /*min-width:960px;*/
     z-index: 5;
     border:2px solid black;

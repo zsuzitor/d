@@ -28,17 +28,21 @@ namespace dip.Models.ViewModel
 
         }
 
-
-        public static DescriptionForm GetFormObject()
+        //возвращает форму(данные) для отображения
+        public static DescriptionForm GetFormObject(string actionId)
         {
             DescriptionForm res = new DescriptionForm();
 
 
             using (var db = new ApplicationDbContext())
             {
-                // Получаем список всех воздействий и выбираем по-умолчанию первое в списке
+                // Получаем список всех воздействий 
                 var listOfActions = db.AllActions.OrderBy(action => action.Id).ToList();
-                var actionId = listOfActions.First().Id;
+                
+                if (string.IsNullOrWhiteSpace(actionId))
+                    actionId = listOfActions.First().Id;
+               
+
 
                 // Получаем список типов воздействий     
                 var actionType = db.ActionTypes.OrderByDescending(type => type.Name).ToList();//, "id", "name", "Не выбрано")

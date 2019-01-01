@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using dip.Models.Domain;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,7 @@ namespace dip.Models.DataBase
             //load old db 
             OldData.ReloadDataBase();
             Lucene_.BuildIndex();
+            FullTextSearch_.Create();
 
             base.Seed(context);
         }

@@ -60,29 +60,7 @@ func_success:function (parametricFizVel)
                 $('#parametricFizVel'+type).replaceWith(parametricFizVel);
             }
 });
-/*
-goAjaxRequest(prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL&type='+type,
- null, function (parametricFizVel)
-            {
-                // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
-            });
-*/
-/*
-// Формируем холостой ajax-запрос
-        $.ajax(
-        {
-            type: 'GET',
-            url: prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL&type='+type,
-            
 
-            success: function (parametricFizVel)
-            {
-                // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
-            }
-        });
-*/
 
     }
     else{
@@ -91,20 +69,7 @@ formData.prosId='NULL';
 formData.specId='NULL';
 formData.vremId='NULL';
 
-// Формируем ajax-запрос
-/*
-        $.ajax(
-        {
-            type: 'GET',
-            url: prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,
-            
-            success: function (parametricFizVel)
-            {
-                // Заменяем часть представления, отвечающего за выбор физической величины
-                
-            }
-        });
-*/
+
 goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,
  func_success: function(a){
 $('#parametricFizVel'+type).replaceWith(a);

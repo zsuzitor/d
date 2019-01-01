@@ -6,9 +6,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Linq.Mapping;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using static dip.Models.Functions;
+
+
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Microsoft.SqlServer.Management.Smo;
+using Microsoft.SqlServer.Management.Common;
+using System.Web.Hosting;
+//using Microsoft.SqlServer.Management.Common;
+
+
+
 
 namespace dip.Models.Domain
 {
@@ -235,5 +247,52 @@ namespace dip.Models.Domain
         //    return false;
         //}
     }
+
+
+
+    public class FullTextSearch_
+    {
+
+
+        public static bool Create()
+        {
+            //string sqlConnectionString = Constants.sql_0;
+
+
+
+            //SqlConnection conn = new SqlConnection(sqlConnectionString);
+
+            //Server server = new Server(new ServerConnection(conn));//Microsoft.SqlServer.
+
+            //string script = File.ReadAllText(HostingEnvironment.MapPath("~/tsqlscripts/create_catalog.txt"));
+
+            //server.ConnectionContext.ExecuteNonQuery(script);
+            //script = File.ReadAllText(HostingEnvironment.MapPath("~/tsqlscripts/create_index.txt"));
+            //server.ConnectionContext.ExecuteNonQuery(script);
+
+
+
+             List<string> files = new List<string>() { "create_catalog", "create_index" };
+
+            var connection = new SqlConnection();
+            connection.ConnectionString = Constants.sql_0;
+            connection.Open();
+            foreach (var i in files)
+            {
+                string script = File.ReadAllText(HostingEnvironment.MapPath($"~/tsqlscripts/{i}.txt"));
+                
+                using (var command = new SqlCommand(script, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+            
+            return true;
+        }
+    }
+
+
 
 }

@@ -32,7 +32,8 @@
 
 @*dynamic*@
 @*HtmlHelper*@
-@helper PartFormDescrSearch(dip.Models.ViewModel.DescriptionForm a=null, string type = "", DescrSearchI param=null)
+@* отрисовывает форму(a) для дескрипторного поиска, форма уже заполнена и выбраны нужные параметры(param) *@
+@helper PartFormDescrSearch(dip.Models.ViewModel.DescriptionForm a, string type = "", DescrSearchI param=null)
 {
 //using System.Web.Mvc ;
     <div class="form-horizontal">
@@ -55,7 +56,7 @@
                     
                     @foreach (var i in a.actionId)
                     {
-                        if (param.actionId == i.Id)
+                        if (param?.actionId == i.Id)
                         {
                             <option selected value="@i.Id">@i.Name</option>
                         }
@@ -79,7 +80,7 @@
                     @foreach (var i in a.actionType)
                     {
 
-                        if (param.actionType == i.Id)
+                        if (param?.actionType == i.Id)
                         {
                             <option selected value="@i.Id">@i.Name</option>
                         }
@@ -115,7 +116,7 @@
 
                         @foreach (var i in a.fizVelId)
                         {
-                            if (param.FizVelId == i.Id)
+                            if (param?.FizVelId == i.Id)
                             {
                                 <option selected value="@i.Id">@i.Name</option>
                             }
@@ -145,7 +146,7 @@
                         @foreach (var i in a.parametricFizVelId)
                         {
 
-                            if (param.parametricFizVelId == i.Id)
+                            if (param?.parametricFizVelId == i.Id)
                             {
                                 <option selected value="@i.Id">@i.Name</option>
                             }
@@ -189,7 +190,15 @@
 
                                         <td>
                                             @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                            <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
+                                            @if (pros.Id == param?.listSelectedPros)
+                                            {
+                                                <input type="checkbox" checked name="listSelectedPros" value="@pros.Id" /> @pros.Name
+                                            }
+                                            @if (pros.Id != param?.listSelectedPros)
+                                            {
+                                                <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
+                                            }
+                                            
                                             <div id="@pros.Id" name="0"></div>
 
                                         </td>
@@ -230,7 +239,17 @@
                                         }
                                         @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
                                         <td>
-                                            <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
+
+                                            @if (spec.Id == param?.listSelectedSpec)
+                                            {
+                                                <input type="checkbox" checked name="listSelectedSpec" value="@spec.Id" /> @spec.Name
+                                            }
+                                            @if (spec.Id != param?.listSelectedSpec)
+                                            {
+                                                <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
+                                            }
+
+                                            
                                             <div id="@spec.Id" name="0"></div>
 
                                         </td>
@@ -270,7 +289,14 @@
                                         }
                                         @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
                                         <td>
+@if (vrem.Id == param?.listSelectedVrem)
+{
+    <input type="checkbox" checked name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
+}
+@if (vrem.Id != param?.listSelectedVrem)
+{
                                             <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
+}
                                             <div id="@vrem.Id" name="0"></div>
 
                                         </td>

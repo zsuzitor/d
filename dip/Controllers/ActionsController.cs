@@ -36,19 +36,20 @@ namespace dip.Controllers
         public ActionResult DescriptionInput(DescrSearchI inp, DescrSearchI outp)
         {
 
-            DescriptionForm res = DescriptionForm.GetFormObject();
+            ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionId);
+            ViewBag.outpForm = DescriptionForm.GetFormObject(outp?.actionId);
             if (DescrSearchI.IsNull(inp) || DescrSearchI.IsNull(outp))
             {
                 inp = null;
                 outp = null;
             }
-            ViewBag.inputForm = inp;
-            ViewBag.outpForm = outp;
+            ViewBag.inputFormData = inp;
+            ViewBag.outpFormData = outp;
 
 
 
             //ViewBag.postfix = postfix;
-            return PartialView(res);
+            return PartialView();
         }
 
 

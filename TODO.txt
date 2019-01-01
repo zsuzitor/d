@@ -1,20 +1,37 @@
+//в descriptioninput.cshtml попробовать удалить js который отправляет запрос на обновление формы при старте страницы, сейчас уже должно что от отрисовываться
+//{
+//форма дескрипторного поиска -- сделать заполнение не ajax запросом, а при построении формы, + передавать параметры туда
+//PartFormDescrSearch    --- в хелперах поправить отображение с них, и туда закидывать данные в параметрах, а не запросом
+//descriptionsearch.cshtml  {
+//@Html.Action("DescriptionInput", "Actions",new {inp= ViewBag.inputForm,outp = ViewBag.outpForm })
+//поменять на url.action   и посомтреть что сгенерит(будут ли ошибки из за одинаковых названий или будет рабочая ссылка)
+//и в зависимости от результата решить разделять ли в searchcontroller DescriptionSearch  входные параметры
+//и мб DescrSearchIInput вообще выпилить
+//actions DescriptionInput   если пустые то надо заполнить
+//}
+//}
+changeaction.js   data_descr_search.actionIdI= null; возможно надо не null а ''
+//в дескрипторном поиске parametricfizvel не отбрабатывается никак  select * from Operands where Value = 'МАССА (КГ)'
+//DescriptionForm res = DescriptionForm.GetFormObject();   надо что бы принимал параметр name и по нему строить форму
+//в searchc  list_id = FEText.GetByDescr(inp, outp);   странно меняет inp & outp
+
+
+при маленьком экране много что съезжает( в хэдере, и в полном варианте и в полоске)
+//tsql scripts  скрипты загружать из файла   http://qaru.site/questions/58466/how-to-execute-an-sql-script-file-using-c
+
+Для добавления дескрипторов в ближайшее на id use unique
 Цсс подогнать под мазиллу и оперу
 ввести поиск по хештегам -- как обязательный параметр
 при добавлении не просто fetext а еще и самих дескрипторов(если надо будет реализовать) проверяется название физического эффекта, нельзя создать с уже существующим именем 
-в descriptioninput.cshtml попробовать удалить js который отправляет запрос на обновление формы при старте страницы, сейчас уже должно что от отрисовываться
-{
-форма дескрипторного поиска -- сделать заполнение не ajax запросом, а при построении формы, + передавать параметры туда
-PartFormDescrSearch    --- в хелперах поправить отображение с них, и туда закидывать данные в параметрах, а не запросом
-
-descriptionsearch.cshtml  {
-@Html.Action("DescriptionInput", "Actions",new {inp= ViewBag.inputForm,outp = ViewBag.outpForm })
-поменять на url.action   и посомтреть что сгенерит(будут ли ошибки из за одинаковых названий или будет рабочая ссылка)
-и в зависимости от результата решить разделять ли в searchcontroller DescriptionSearch  входные параметры
-и мб DescrSearchIInput вообще выпилить
-}
-}
 
 
+#ssl #https    бесплатная генерация сертификатов https://letsencrypt.org/
+
+--- включение iis manager  https://www.youtube.com/watch?v=kLhhvCE2IZg
+https mvc
+несколько ссылок https://toster.ru/q/380584
+
+все изменение бд (удаление, добавление сохранение и тдтд) должно быть через post
 редирект на https при доступе без него
 при поиске прокручивание страницы на результат поиска, мб еще как то подсветить\выделить
 слева внизу в хэдере где ссылка на главную страницу, сделать не просто ссылку а иерархию . главная страница->дескрипторный поиск->запрос->конкретная запись
@@ -158,6 +175,20 @@ damlevlim("BNNBKF",metaphone,20)=1
 
 full text search sql server
 {
+!!!!!!!!!!!!!!!!!!!!!!TODO 
+важно, все перечитать
+Попробовать проиндексировать пустую Блять через фул текст сеарч и потом заполнить и поискать , Если не будет найдено, Если не найдется значит надо добавлять в индекс новые данные
+http://sqlcom.ru/helpful-and-interesting/full-text-search-main/
+
+Тезаурус чуть чуть   http://jarrettmeyer.com/2017/06/11/sql-server-full-text-search-part-1
+Добавить в поиск звездачку ? В двойных кавычках что бы искать вхождения    * только для contains
+Подумать искать ли по #слово или просто слово
+взвешенные значения,(посмотреть код для ограничения списка результата поиск по словам "Ниже приведено расширение того же запроса, которое возвращает только строки с рангом 10 или выше.")   https://docs.microsoft.com/ru-ru/sql/relational-databases/search/query-with-full-text-search?view=sql-server-2017
+https://info-comp.ru/sisadminst/486-full-text-search-ms-sql-server.html
+
+
+
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 можно указать расстояние между словами при NEAR()    --- where contains(...,'near((word1,word2),count_word)')
 where freetext(*,'word1 and word2')   поиск этих слов независимо друг от друга(если будут оба мб ранг будет выше, пока хз), если искать word1 то word1qwe тоже найдется
@@ -322,7 +353,7 @@ download pdf
 sql поиск   https://docs.microsoft.com/ru-ru/sql/relational-databases/search/full-text-search?view=sql-server-2017
 http://qaru.site/questions/420668/how-hard-is-it-to-incorporate-full-text-search-with-sql-server
 
-
+И с люцианом также сделать и подумать как обойти(проиндексировать пустую бд, и потом подобавлять, это будет как проверка и можно тестить)
    Lucene.net    
 
 надо посмотреть http://sonyblogpost.blogspot.com/
