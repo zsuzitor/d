@@ -20,6 +20,7 @@
         @{ 
             int countInStr = (int)(i.Text.Length * 0.3);
             countInStr = countInStr>150?150: countInStr;
+            countInStr = countInStr < 30 ? i.Text.Length : countInStr;
         }
         <p>@i.Text.Substring(0, countInStr) ...</p>
     </div>

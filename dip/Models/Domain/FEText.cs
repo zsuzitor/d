@@ -136,6 +136,8 @@ namespace dip.Models.Domain
             }
             return list_id;
         }
+
+        //алгоритм левинштайна
         public static int[] GetByText(string text)
         {
             using (var db = new ApplicationDbContext())
@@ -173,39 +175,58 @@ namespace dip.Models.Domain
             return res;
         }
 
-
-        public bool AddToDb(DescrSearchIInput inp , DescrSearchIOut outp )
+        public void GetDescrFrom(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
+            List<FEAction> lst = null;
+            using (var db = new ApplicationDbContext())
+            {
+                 lst = db.FEActions.Where(x1 => x1.Idfe == this.IDFE).ToList();
+            }
+            inp = new DescrSearchIInput(lst.First(x1=>x1.Input==1));
+
+
+        }
+
+
+
+        public bool AddToDb(DescrSearchIInput inp , DescrSearchIOut outp, List<byte[]> addImgs = null)
+        {
+            DescrSearchI inp_ = new DescrSearchI(inp);
+            DescrSearchI outp_ = new DescrSearchI(outp);
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.FEText.Add(this);
                 db.SaveChanges();
 
 
-             
 
-                db.FEActions.Add(new FEAction() {Idfe=this.IDFE,Input=1,Type=inp.actionTypeI, FizVelId= inp.FizVelIdI,
-                    Pros = inp.listSelectedProsI, Spec= inp.listSelectedSpecI,
-                    Vrem= inp.listSelectedVremI
-                });
+                FEAction inpa = new FEAction()
+                {
+                    Idfe = this.IDFE,
+                    Input = 1,
+                    
+                };
+                inpa.SetFromInput(inp_);
+                db.FEActions.Add(inpa);
 
-                db.FEActions.Add(new FEAction()
+                FEAction outpa=new FEAction()
                 {
                     Idfe = this.IDFE,
                     Input = 0,
-                    Type = inp.actionTypeI,
-                    FizVelId = inp.FizVelIdI,
-                    Pros = inp.listSelectedProsI,
-                    Spec = inp.listSelectedSpecI,
-                    Vrem = inp.listSelectedVremI
-                });
+                    
+                };
+                outpa.SetFromInput(outp_);
+                db.FEActions.Add(outpa);
+                this.AddImages(addImgs, db);
+
                 db.SaveChanges();
             }
             return true;
         }
 
-        public bool ChangeDb(FEText new_obj,List<int> deleteImg)
+        public bool ChangeDb(FEText new_obj,List<int> deleteImg=null, List<byte[]> addImgs=null, DescrSearchIInput inp = null, DescrSearchIOut outp=null)
         {
+            
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 this.Equal(new_obj);
@@ -216,23 +237,46 @@ namespace dip.Models.Domain
                     db.Images.RemoveRange(imgs);
                     db.SaveChanges();
                 }
+                this.AddImages(addImgs,db);
+
+                
+                var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//&&x1.Input==1
+                var inpdb = descrdb.FirstOrDefault(x1=>x1.Input==1);
+                var outpdb = descrdb.FirstOrDefault(x1 => x1.Input == 0);
+                if (inpdb == null || outpdb == null)
+                    return false;
+                inpdb.SetFromInput(new DescrSearchI(inp));
+                outpdb.SetFromInput(new DescrSearchI(outp));
+
+                db.SaveChanges();
             }
             return true;
         }
+
+
+
+
+        //не загружает картинки, только добавляет в бд
         public void AddImages(List<byte[]>imgs)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                foreach (var i in imgs)
-                {
-                    db.Images.Add(new Image() { Data = i, FeTextIDFE = this.IDFE });//FeTextId = oldObj.IDFE    //  FeText= oldObj
-                }
-                db.SaveChanges();
+                //db.Set<FEText>().Attach(this);
+                //this.
+                this.AddImages(imgs,db);
             }
+        }
+        public void AddImages(List<byte[]> imgs, ApplicationDbContext db)
+        {
+            foreach (var i in imgs)
+            {
+                db.Images.Add(new Image() { Data = i, FeTextIDFE = this.IDFE });//FeTextId = oldObj.IDFE    //  FeText= oldObj
+            }
+            db.SaveChanges();
         }
 
 
-        
+
 
         }
 }

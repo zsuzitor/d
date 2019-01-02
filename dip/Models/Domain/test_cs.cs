@@ -60,7 +60,17 @@ namespace dip.Models.Domain
         {
 
         }
-
+        public DescrSearchIInput(FEAction a)
+        {
+            //TODO 1 параметр не проставляется, его надо брать из бд
+            this.actionTypeI = a.Type;
+            this.FizVelIdI = a.FizVelId;
+            this.listSelectedProsI = a.Pros;
+            this.listSelectedSpecI = a.Spec;
+            this.listSelectedVremI = a.Vrem;
+            this.parametricFizVelIdI = a.FizVelSection;
+           
+        }
 
 
         //public static bool Validation(DescrSearchIInput a)
@@ -120,7 +130,7 @@ namespace dip.Models.Domain
             this.listSelectedPros = a.listSelectedProsI;
             this.listSelectedSpec = a.listSelectedSpecI;
             this.listSelectedVrem = a.listSelectedVremI;
-            
+            DescrSearchI.Validation(this);
         }
 
         public DescrSearchI(DescrSearchIOut a)
@@ -134,7 +144,7 @@ namespace dip.Models.Domain
             this.listSelectedPros = a.listSelectedProsO;
             this.listSelectedSpec = a.listSelectedSpecO;
             this.listSelectedVrem = a.listSelectedVremO;
-            
+            DescrSearchI.Validation(this);
         }
 
 
@@ -159,9 +169,9 @@ namespace dip.Models.Domain
         {
             if (a == null)
                 return true;
-            if (a.actionId == null && a.actionType == null && a.FizVelId == null
-                && a.parametricFizVelId == null && a.listSelectedPros == null
-                && a.listSelectedSpec == null && a.listSelectedVrem == null)
+            if (string.IsNullOrWhiteSpace( a.actionId ) && string.IsNullOrWhiteSpace(a.actionType)  && string.IsNullOrWhiteSpace(a.FizVelId )
+                && string.IsNullOrWhiteSpace(a.parametricFizVelId) && string.IsNullOrWhiteSpace(a.listSelectedPros )
+                && string.IsNullOrWhiteSpace(a.listSelectedSpec)  && string.IsNullOrWhiteSpace(a.listSelectedVrem ))
                 return true;
 
 
@@ -215,11 +225,21 @@ namespace dip.Models.Domain
         {
 
         }
+        public DescrSearchIOut(FEAction a)
+        {
+            //TODO 1 параметр не проставляется, его надо брать из бд
+            this.actionTypeO = a.Type;
+            this.FizVelIdO = a.FizVelId;
+            this.listSelectedProsO = a.Pros;
+            this.listSelectedSpecO = a.Spec;
+            this.listSelectedVremO = a.Vrem;
+            this.parametricFizVelIdO = a.FizVelSection;
 
+        }
 
         //public static bool Validation(DescrSearchIOut a)
         //{
-            
+
         //    if (a != null)
         //    {
         //        a.actionIdO = NullToEmpryStr(a.actionIdO);
@@ -285,10 +305,8 @@ namespace dip.Models.Domain
                 {
                     command.ExecuteNonQuery();
                 }
-
-                connection.Close();
             }
-            
+            connection.Close();
             return true;
         }
     }

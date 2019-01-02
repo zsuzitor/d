@@ -28,5 +28,41 @@ namespace dip.Models.Domain
         {
 
         }
+
+        public static void Get(int FETextId, FEAction inp, FEAction outp)
+        {
+            List<FEAction> lst = null;
+            using (var db = new ApplicationDbContext())
+            {
+                 lst= db.FEActions.Where(x1=>x1.Idfe==FETextId).ToList();
+            }
+            inp = lst.First(x1=>x1.Input==1);
+            outp = lst.First(x1 => x1.Input == 0);
+        }
+
+        public void SetFromInput(DescrSearchI a)
+        {
+
+            Type = a?.actionType;
+            FizVelId = a?.FizVelId;
+            FizVelSection = a?.parametricFizVelId;
+            Pros = a?.listSelectedPros;
+            Spec = a?.listSelectedSpec;
+            Vrem = a?.listSelectedVrem;
+            
+        }
+        //public void SetFromInput(DescrSearchIOut a)
+        //{
+
+        //    Type = a?.actionTypeO;
+        //    FizVelId = a?.FizVelIdO;
+        //    FizVelSection = a?.parametricFizVelIdO;
+        //    Pros = a?.listSelectedProsO;
+        //    Spec = a?.listSelectedSpecO;
+        //    Vrem = a?.listSelectedVremO;
+
+        //}
+
+
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace dip.Controllers
 {
@@ -59,8 +60,17 @@ namespace dip.Controllers
             {
 
                 ViewBag.search = true;
+                TempData["list_fe_id"] = list_id;
+                
 
-                return RedirectToAction("ListFeText", "Physic", list_id);
+
+                //var dict = new RouteValueDictionary();
+                //dict.Add("listId", list_id);
+
+                return RedirectToAction("ListFeText", "Physic");
+                //return RedirectToRoute(new { controller = "Physic", action = "ListFeText", listId = list_id });//new { listId = list_id }
+                //return RedirectToAction("ListFeText", "Physic", new { listId = list_id });
+                
             }
 
             return View(list_id);

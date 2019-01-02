@@ -11,7 +11,7 @@
         <h4>@ViewBag.EffectName</h4>
         @if (ViewBag.Admin == true)
         {
-            @Html.ActionLink("Редактировать", "Create", "Physic", new { id = Model.IDFE }, new { })
+            @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.IDFE }, new { })
         }
         <hr />
         <dl class="dl-horizontal">

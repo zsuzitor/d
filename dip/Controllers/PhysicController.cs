@@ -51,10 +51,14 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ListFeText(int[] listId)
+        public ActionResult ListFeText(int[] listId=null)
         {
 
             List<FEText> res = new List<FEText>();
+            if (listId == null)
+            {
+                listId = (int[])TempData["list_fe_id"];
+            }
             res = FEText.GetList(listId);
 
 
@@ -63,33 +67,36 @@ namespace dip.Controllers
         }
 
 
-
-
         [Authorize(Roles = "admin")]
-        public ActionResult Create(int? id)
+        public ActionResult Edit(int? id)
         {
             //TODO страница добавления
-            FEText res = new FEText() ;
-            //TODO мб убрать условие, но надо потестить тк там редактирование
-            if (id != null)
-            {
-                
-                    res = FEText.Get(id);
-                    res.LoadImage();
-                    
-                
-            }
+            FEText res = res = FEText.Get(id);
+            
+            if(res==null)
+                return new HttpStatusCodeResult(404);
+
+            FEAction inp = null;
+            FEAction outp = null;
+            FEAction.Get((int)id,inp,outp);
+
+            ViewBag.inputForm = new DescrSearchIInput(inp);
+            ViewBag.outpForm = new DescrSearchIOut(outp); 
+
+            res.LoadImage();
+
+
+            
             return View(res);
         }
 
-
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
             //TODO добавление записи
             var list_img_byte = Get_photo_post(uploadImage);
-            FEText oldObj = null;
+            
             List<int> deleteImg = null;
             if (deleteImg_ != null)
                 deleteImg = deleteImg_.Distinct().ToList();
@@ -97,51 +104,52 @@ namespace dip.Controllers
             //{
 
             //TODO валидация
-            if (obj.IDFE != 0)
-                oldObj = FEText.Get(obj.IDFE);
+
+            FEText oldObj = FEText.Get(obj.IDFE);
             if (oldObj == null)
-            {
+                return new HttpStatusCodeResult(404);
+            if(!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp, outp))
+                return new HttpStatusCodeResult(404);
+          
+
+            //oldObj.LoadImage();
+            //return View(@"~/Views/Physic/Details.cshtml", oldObj);
+            return RedirectToAction("Details", "Physic",new {id= oldObj.IDFE });
+        }
+
+
+
+
+
+
+
+        [Authorize(Roles = "admin")]
+        public ActionResult Create()
+        {
+            //TODO страница добавления
+            FEText res = new FEText() ;
+            //TODO мб убрать условие, но надо потестить тк там редактирование
+            
+            return View(res);
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage,  DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        {
+            //TODO добавление записи
+            var list_img_byte = Get_photo_post(uploadImage);
+            
+           
                 //новая
-                obj.AddToDb(inp, outp);
-                //foreach(var i in list_img_byte)
-                //{
-                //    db.Images.Add(new Image() { Data=i, FeTextId= obj.IDFE });
-                //}
-                //db.SaveChanges();
-            }
-            else
-            {
-                //обновляем
-                oldObj.ChangeDb(obj, deleteImg);
-                //oldObj.Equal(obj);
-                //if(deleteImg!=null&& deleteImg.Count > 0)
-                //{
-                //    var imgs = db.Images.Where(x1 => x1.FeTextIDFE == oldObj.IDFE).
-                //                            Join(deleteImg, x1 => x1.Id, x2 => x2, (x1, x2) => x1).ToList();//Where(x1 => x1.FeTextId == obj.IDFE);
-                //    db.Images.RemoveRange(imgs);
-                //    db.SaveChanges();
-                //}
-
-                //foreach (var i in list_img_byte)
-                //{
-                //    db.Images.Add(new Image() { Data = i, FeTextId = obj.IDFE });
-                //}
-                //db.SaveChanges();
-            }
-            oldObj.AddImages(list_img_byte);
-            //foreach (var i in list_img_byte)
-            //{
-            //    db.Images.Add(new Image() { Data = i, FeTextIDFE = oldObj.IDFE });//FeTextId = oldObj.IDFE    //  FeText= oldObj
-            //}
-            //db.SaveChanges();
-            oldObj.LoadImage();
-            //if (!db.Entry(oldObj).Collection(x1 => x1.Images).IsLoaded)
-            //    db.Entry(oldObj).Collection(x1 => x1.Images).Load();
-            //}
+                obj.AddToDb(inp, outp, list_img_byte);
 
 
 
-            return View(@"~/Views/Physic/Details.cshtml", oldObj);
+            //obj.LoadImage();
+            //return View(@"~/Views/Physic/Details.cshtml", oldObj);
+            return RedirectToAction("Details", "Physic", new { id = obj.IDFE });
         }
 
 

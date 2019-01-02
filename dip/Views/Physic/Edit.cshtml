@@ -1,0 +1,152 @@
+﻿@model dip.Models.Domain.FEText
+@{
+    ViewBag.Title = "Edit";
+}
+
+<script>
+    var num_delete_img=0;
+    function delete_img(but) {
+        var id=but.id.split("_")[1];
+        var div = document.getElementById("div_delete_img_id");
+        var str = "<input type='hidden' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
+        div.innerHTML += str;
+
+        document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
+    }
+
+
+
+</script>
+
+
+
+
+<h2>Edit</h2>
+
+@if(Model== null)
+{
+    <p>запись не найдена</p>
+}
+
+@if (Model != null)
+{
+
+    <div>
+
+        @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            
+            @Html.Action("DescriptionInput", "Actions", new { inp = ViewBag.inputForm, outp = ViewBag.outpForm })
+
+
+
+
+
+
+            @Html.HiddenFor(x1 => x1.IDFE)
+
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Название")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayName("Описание")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.Text)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Входное воздействие")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.TextInp)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Выходное воздействие")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.TextOut)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Объект")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.TextObj)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Применение")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.TextApp)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Литература")
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.TextLit)
+                </dd>
+
+            </dl>
+
+
+
+
+
+            <div id="div_delete_img_id">
+
+            </div>
+
+
+
+            <input class="btn btn-default" type="file" multiple name="uploadImage" />
+            <input class="btn btn-default" type="submit" value="отправить" />
+        }
+        @foreach (var i in Model.Images)
+        {
+            <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
+                <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+                </div>
+                <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
+            </div>
+        }
+
+
+        @Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { });
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+

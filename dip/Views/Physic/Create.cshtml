@@ -6,20 +6,7 @@
 
 <h2>Create</h2>
 
-<script>
-    var num_delete_img=0;
-    function delete_img(but) {
-        var id=but.id.split("_")[1];
-        var div = document.getElementById("div_delete_img_id");
-        var str = "<input type='hidden' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
-        div.innerHTML += str;
 
-        document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
-    }
-
-
-
-</script>
 
 
 <div>
@@ -29,13 +16,7 @@
 
         @Html.Action("DescriptionInput", "Actions")
 
-
-
         
-
-
-
-    @Html.HiddenFor(x1 => x1.IDFE)
     
     <dl class="dl-horizontal">
         <dt>
@@ -96,32 +77,10 @@
     </dl>
 
 
-    
-
-
-    <div id="div_delete_img_id">
-
-    </div>
-
-
-
     <input class="btn btn-default" type="file" multiple name="uploadImage" />
     <input class="btn btn-default" type="submit" value="отправить"/>
     }
-    @foreach (var i in Model.Images)
-    {
-        <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-            <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
-            </div>
-            <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
-        </div>
-    }
-    
-    @if (Model.IDFE > 0)
-    {
-        Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
-
-    }
+   
     
 
 

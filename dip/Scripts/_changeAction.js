@@ -19,14 +19,14 @@ function changeParams(type)
             data_descr_search.actionIdI= null;
             data_descr_search.actionTypeI= null;
             data_descr_search.FizVelIdI= null;
-            data_descr_search.parametricFizVelIdI= null;
+            data_descr_search.parametricFizVelIdI= '';
             data_descr_search.listSelectedProsI= '';
             data_descr_search.listSelectedSpecI= '';
             data_descr_search.listSelectedVremI= '';
             data_descr_search.actionIdO= null;
             data_descr_search.actionTypeO= null;
             data_descr_search.FizVelIdO= null;
-            data_descr_search.parametricFizVelIdO= null;
+            data_descr_search.parametricFizVelIdO= '';
             data_descr_search.listSelectedProsO= '';
             data_descr_search.listSelectedSpecO= '';
             data_descr_search.listSelectedVremO= '';

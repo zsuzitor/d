@@ -1,3 +1,9 @@
+!полный функционал просмотра картинок
+! в конструкторах DescrSearchIOut и inp сейчас самый первый параметр не проставляется? тащить из бд надо
+render sections
+//DescrSearchI.Validation(inp) в редактировании и добавлении надо валидировать этой штукой
+все поиски проверить как будут работать с добавлением данных
+
 //в descriptioninput.cshtml попробовать удалить js который отправляет запрос на обновление формы при старте страницы, сейчас уже должно что от отрисовываться
 //{
 //форма дескрипторного поиска -- сделать заполнение не ajax запросом, а при построении формы, + передавать параметры туда
@@ -15,6 +21,7 @@ changeaction.js   data_descr_search.actionIdI= null; возможно надо не null а ''
 //DescriptionForm res = DescriptionForm.GetFormObject();   надо что бы принимал параметр name и по нему строить форму
 //в searchc  list_id = FEText.GetByDescr(inp, outp);   странно меняет inp & outp
 
+в дескрипторном поиске не учитывается поле actionId(I\O) и соответственно при добавлении тоже и хз надо ли учитывать
 
 при маленьком экране много что съезжает( в хэдере, и в полном варианте и в полоске)
 //tsql scripts  скрипты загружать из файла   http://qaru.site/questions/58466/how-to-execute-an-sql-script-file-using-c
@@ -30,6 +37,10 @@ changeaction.js   data_descr_search.actionIdI= null; возможно надо не null а ''
 --- включение iis manager  https://www.youtube.com/watch?v=kLhhvCE2IZg
 https mvc
 несколько ссылок https://toster.ru/q/380584
+добавление сертификата в доверенные https://mfoc.ru/information/adding-certificates-in-storage/
+! попробовать последние 2 шага http://www.ssl.ua/news/create-a-self-signed-certificate-in-iis-7/
+
+
 
 все изменение бд (удаление, добавление сохранение и тдтд) должно быть через post
 редирект на https при доступе без него
