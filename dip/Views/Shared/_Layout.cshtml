@@ -79,13 +79,17 @@
             var div = document.getElementById("div_for_replace_ajax_id_2");
             var div2 = document.getElementById("div_for_replace_ajax_id");
             div2.style.width = '100%';//document.documentElement.clientWidth + 'px';
-            div2.style.height = '100%';//document.documentElement.clientHeight + 'px';
-
+            div2.style.height = window.screen.availHeight+'px';//'100%';//document.documentElement.clientHeight + 'px';
+            
             var str = " <div class='ImageRecord_all_block'>" + document.getElementById("out_main_tag_one_img_id_" + a).innerHTML + "</div>";
 
             div.innerHTML = str;
-            div.style.left = '0px';
+            div.style.left = '100px';
             div.style.top = '100px';
+
+            div.style.height = document.documentElement.clientHeight - 200 + 'px';//window.screen.availHeight - 200 + 'px';
+            div.style.width = document.documentElement.clientWidth -200 + 'px';//window.screen.availWidth - 200 + 'px';
+
             div2.style.left = '0px';
             div2.style.top = '0px';
             div2.style.display = 'block';
