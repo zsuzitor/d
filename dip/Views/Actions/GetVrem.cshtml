@@ -3,32 +3,4 @@
 
 
 @model dip.Models.Domain.Action
-<div class="form-group" id=@("vrem"+((string)ViewBag.type))>
-    @if (ViewBag.vrem.Count != 0)
-    {
-        @Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <table>
-                <tr>
-                    @{
-                        int cnt = 0;
-                        foreach (var vrem in ViewBag.vrem)
-                        {
-                            if (cnt++ % 3 == 0)
-                            {
-                                @:</tr><tr>
-                            }
-                            
-                            <td>
-                                <input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name
-                                <div id="@(vrem.Id+((string)ViewBag.type))" name="0"></div>
-                               
-                            </td>
-                        }
-                       
-                    @: </tr>
-                    }
-                </table>
-            </div>
-                        }
-</div>
+@helpers_.DescrFormVrem((string)ViewBag.type, (List<dip.Models.Domain.Vrem>)ViewBag.vrem)

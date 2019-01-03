@@ -2,33 +2,8 @@
 
 @model dip.Models.Domain.Action
 
-<div class="form-group" id=@("fizVel"+((string)ViewBag.type))>
-    @if (ViewBag.currentActionId != "VOZ11")
-    {
-        @Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })
-    }
-    else
-    {
-        @Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })
-    }
-    <div class="col-md-10">
-        @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
-        <select name=@("fizVelId"+ ((string)ViewBag.type)) class="form-control" id=@("fizVelId"+ ((string)ViewBag.type))>
-            
-            @foreach (var i in (List<dip.Models.Domain.FizVel>)ViewBag.fizVelId)
-            {
-                <option value="@i.Id">@i.Name</option>
-            }
+@helpers_.DescrFormFizVels((string)ViewBag.type, (List<dip.Models.Domain.FizVel>)ViewBag.fizVelId,(string)ViewBag.currentActionId)
 
-        </select>
-
-
-
-    
-    
-    @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
-    </div>
-</div>
 
 
 

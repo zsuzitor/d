@@ -3,30 +3,4 @@
 
 
 @model dip.Models.Domain.Action
-<div class="form-group" id=@("spec"+((string)ViewBag.type))>
-    @if (ViewBag.spec.Count != 0)
-    {
-        @Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <table>
-                <tr>
-                    @{
-                        int cnt = 0;
-                        foreach (var spec in ViewBag.spec)
-                        {
-                            if (cnt++ % 3 == 0)
-                            {
-                                @: </tr> <tr>
-                            }
-                            @:
-                            <td>
-                                <input id=@("listSelectedSpec"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" /> @spec.Name
-                                <div id="@(spec.Id+((string)ViewBag.type))" name="0"></div>
-                                </td>
-                        }
-                        @:</tr>
-                    }
-                </table>
-            </div>
-                        }
-</div>
+@helpers_.DescrFormSpec((string)ViewBag.type, (List<dip.Models.Domain.Spec>)ViewBag.spec)

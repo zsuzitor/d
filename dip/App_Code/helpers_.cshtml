@@ -99,216 +99,21 @@
             </div>
         </div>
         <div id=@("fizVelGroup"+ type)>
-            <div class="form-group" id=@("fizVel"+ type)>
-                @if (a.currentAction != "VOZ11")
-                {
-                    <label id="" class="control-label col-md-2">Название физической величины</label>
-                    @*@Html.Label("Название физической величины", new { @class = "control-label col-md-2" })*@
-                }
-                else
-                {
-                    <label id="" class="control-label col-md-2">Раздел физики</label>
-                    @*@Html.Label("Раздел физики", new { @class = "control-label col-md-2" })*@
-                }
-                <div class="col-md-10">
 
-                    <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+type)>
-
-                        @foreach (var i in a.fizVelId)
-                        {
-                            if (param?.FizVelId == i.Id)
-                            {
-                                <option selected value="@i.Id">@i.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Name</option>
-                            }
-
-
-
-
-                        }
-                    </select>
-                    @*@Html.DropDownList("fizVelId" + type, null, htmlAttributes: new { id = "fizVelId" + type, @class = "form-control" })*@
-                    @*@Html.ValidationMessageFor(model => model.Action.FizVelId, "", new { @class = "text-danger" })*@
-                </div>
-            </div>
+            @helpers_.DescrFormFizVels(type, a.fizVelId, a.currentActionId, param)
         </div>
-        <div class="form-group" id=@("parametricFizVel"+ type)>
-            @if (a.parametricFizVelId.Count != 0)
-            {
-                <label id="" class="control-label col-md-2">Название физической величины</label>
-                @*@Html.Label("Название физической величины", new { @class = "control-label col-md-2" })*@
-                <div class="col-md-10">
-                    <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+type)>
-                        <option value="NO_FIZVEL">Не выбрано</option>
-                        @foreach (var i in a.parametricFizVelId)
-                        {
 
-                            if (param?.parametricFizVelId == i.Id)
-                            {
-                                <option selected value="@i.Id">@i.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Name</option>
-                            }
-
-
-
-
-                        }
-
-                    </select>
-                    @*@Html.DropDownList("parametricFizVelId" + type, null, htmlAttributes: new { @class = "form-control" })@*(IEnumerable<SelectListItem>)a.parametricFizVelId*@
-                </div>
-            }
-        </div>
+        @helpers_.DescrFormParamFizVels(type, a.parametricFizVelId, param )
         <div id=@("prosGroup"+type)>
-            <div class="form-group" id=@("pros"+type)>
-                @if (a.pros.Count != 0)
-                {
-                    <label id="" class="control-label col-md-2">Пространственные характеристики</label>
-                    @*@Html.Label("Пространственные характеристики", new { @class = "control-label col-md-2" })*@
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{
-
-                                    int cntPros = 0;
-                                    foreach (var pros in a.pros)
-                                    {
-                                        if (cntPros++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-                            
-                                        }
-
-                                        <td>
-                                            @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                            @if (pros.Id == param?.listSelectedPros)
-                                            {
-                                                <input type="checkbox" checked name="listSelectedPros" value="@pros.Id" /> @pros.Name
-                                            }
-                                            @if (pros.Id != param?.listSelectedPros)
-                                            {
-                                                <input type="checkbox" name="listSelectedPros" value="@pros.Id" /> @pros.Name
-                                            }
-                                            
-                                            <div id="@pros.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-
-                                }
-                            </tr>
-                        </table>
-                    </div>
-                                    }
-            </div>
+            @helpers_.DescrFormPros(type, a.pros, param)
+            
         </div>
         <div id=@("specGroup"+type)>
-            <div class="form-group" id=@("spec"+type)>
-                @if (a.spec.Count != 0)
-                {
-                    <label id="" class="control-label col-md-2">Специальные характеристики</label>
-                    @*@Html.Label("Специальные характеристики", new { @class = "control-label col-md-2" })*@
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{int cntSpec = 0;
-                                    foreach (var spec in a.spec)
-                                    {
-                                        if (cntSpec++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-
-
-
-
-
-
-                                        }
-                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                        <td>
-
-                                            @if (spec.Id == param?.listSelectedSpec)
-                                            {
-                                                <input type="checkbox" checked name="listSelectedSpec" value="@spec.Id" /> @spec.Name
-                                            }
-                                            @if (spec.Id != param?.listSelectedSpec)
-                                            {
-                                                <input type="checkbox" name="listSelectedSpec" value="@spec.Id" /> @spec.Name
-                                            }
-
-                                            
-                                            <div id="@spec.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-                                    @:</tr>
-                                }
-                            </table>
-                        </div>
-                                    }
-            </div>
+            @helpers_.DescrFormSpec(type, a.spec,param )
         </div>
         <div id=@("vremGroup"+type)>
-            <div class="form-group" id=@("vrem"+type)>
-                @if (a.vrem.Count != 0)
-                {
-                    <label id="" class="control-label col-md-2">Временные характеристики</label>
-                    @*@Html.Label("Временные характеристики", new { @class = "control-label col-md-2" })*@
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{int cntVrem = 0;
-                                    foreach (var vrem in a.vrem)
-                                    {
-                                        if (cntVrem++ % 3 == 0)
-                                        {
-
-                                            @:</tr><tr>
-
-
-
-
-
-
-
-
-                                        }
-                                        @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! id мб менять *@
-                                        <td>
-@if (vrem.Id == param?.listSelectedVrem)
-{
-    <input type="checkbox" checked name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
-}
-@if (vrem.Id != param?.listSelectedVrem)
-{
-                                            <input type="checkbox" name="listSelectedVrem" value="@vrem.Id" /> @vrem.Name
-}
-                                            <div id="@vrem.Id" name="0"></div>
-
-                                        </td>
-                                    }
-
-                                    @:</tr>
-                                }
-                            </table>
-                        </div>
-                                    }
-            </div>
-        </div>
+            @helpers_.DescrFormVrem(type, a.vrem, param )
+</div>
         @*<div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
@@ -326,9 +131,228 @@
 }
 
 
+@helper DescrFormFizVels(string type, List<FizVel> fizVelId,string currentActionId, DescrSearchI param = null)
+{
+    <div class="form-group" id=@("fizVel"+type)>
+        @if (currentActionId != "VOZ11")
+    {
+            @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Название физической величины</label>
+        }
+        else
+        {
+            @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Раздел физики</label>
+        }
+        <div class="col-md-10">
+            @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
+            <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+ type)>
+
+                @foreach (var i in fizVelId)
+                {
+                    if (param?.FizVelId == i.Id)
+                    {
+                        <option selected value="@i.Id">@i.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@i.Id">@i.Name</option>
+                    }
+
+                    
+                }
+
+            </select>
 
 
 
+
+
+            @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+}
+
+
+
+@helper DescrFormParamFizVels(string type, List<FizVel> parametricFizVelId, DescrSearchI param = null)
+{
+    <div class="form-group" id=@("parametricFizVel"+type)>
+        @if (parametricFizVelId.Count != 0)
+    {
+            @*@Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Название физической величины</label>
+            <div class="col-md-10">
+                @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
+
+                <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+ type)>
+                    <option value="NO_FIZVEL">Не выбрано</option>
+                    @foreach (var i in parametricFizVelId)
+                    {
+
+                        if (param?.parametricFizVelId == i.Id)
+                        {
+                            <option selected value="@i.Id">@i.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+
+                        
+                    }
+
+                </select>
+
+            </div>
+        }
+    </div>
+}
+
+
+
+@helper DescrFormVrem(string type, List<Vrem> vrems, DescrSearchI param = null)
+{
+    <div class="form-group" id=@("vrem"+type)>
+        @if (vrems.Count != 0)
+    {
+            @*@Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Временные характеристики</label>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var vrem in vrems)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @: </tr> <tr>
+                            }
+
+                                <td>
+                                    @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
+                                    @if (vrem.Id == param?.listSelectedVrem)
+                                    {
+                                        <input type="checkbox" id=@("listSelectedVrem"+type+cnt) checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    }
+                                    @if (vrem.Id != param?.listSelectedVrem)
+                                    {
+                                        <input type="checkbox" id=@("listSelectedVrem"+type+cnt) name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    }
+                                    <div id="@(vrem.Id+type)" name="0"></div>
+
+                                </td>
+                            }
+
+                            @: </tr>
+                        }
+                    </table>
+                </div>
+                            }
+    </div>
+
+
+
+}
+
+
+
+
+
+@helper DescrFormSpec(string type,List<Spec> specs, DescrSearchI param = null)
+{
+    <div class="form-group" id=@("spec"+type)>
+        @if (specs.Count != 0)
+    {
+            @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Специальные характеристики</label>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var spec in specs)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @: </tr> <tr>
+                            }
+                                @:<td>
+                    if (spec.Id == param?.listSelectedSpec)
+                    {
+                        <input type="checkbox" id=@("listSelectedSpec"+type+cnt) checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                    }
+                                if (spec.Id != param?.listSelectedSpec)
+                                {
+                                    <input type="checkbox" id=@("listSelectedSpec"+type+cnt) name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                }
+
+
+                                
+                                    <div id="@(spec.Id+type)" name="0"></div>
+                                @:</td>
+                            }
+                            @: </tr>
+                        }
+                    </table>
+                </div>
+                            }
+    </div>
+}
+
+
+
+
+@helper DescrFormPros(string type,List<Pro> pros, DescrSearchI param = null)
+{
+    <div class="form-group" id=@("pros"+type)>
+        @if (pros.Count != 0)
+    {
+            @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2">Пространственные характеристики</label>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var pro in pros)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                            }
+                                @: <td>
+                                    @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
+
+                                if (pro.Id == param?.listSelectedPros)
+                                {
+                                    <input id=@("listSelectedPros"+type+cnt) type="checkbox" checked name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
+                                }
+                                if (pro.Id != param?.listSelectedPros)
+                                {
+                                    <input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
+                                }
+
+                               
+                                    <div id="@(pro.Id+type)" name="0"></div>
+                               @: </td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+                            }
+    </div>
+
+
+}
+
+
+
+
+@*TODO     не помню зачем это нужно и нужно ли вообще*@
 @helper selectList(dynamic a, string label, string id, string name)
 {
 
