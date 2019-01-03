@@ -36,8 +36,8 @@ namespace dip.Controllers
         public ActionResult DescriptionInput(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
 
-            ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionIdI);
-            ViewBag.outpForm = DescriptionForm.GetFormObject(outp?.actionIdO);
+            ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI);
+            ViewBag.outpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO);
 
             var inp_ = new DescrSearchI(inp);
             var outp_ = new DescrSearchI(outp);
@@ -63,68 +63,29 @@ namespace dip.Controllers
         //////------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-        public ActionResult ChangeAction(string fizVelId, string prosId, string specId, string vremId, string type)
+        public ActionResult ChangeAction(string fizVelId, string type)
         {
-            //List<FizVel> listOfFizVels;
-
-            //using (var db = new ApplicationDbContext())
-            //    if (fizVelId != "VOZ11") // непараметрическое воздействие
-            //                       // Получаем обновленный список физических величин
-            //        listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == fizVelId + "_FIZVEL") ||
-            //                                                                  (fizVel.Id == "NO_FIZVEL"))
-            //                                               .OrderBy(fizVel => fizVel.Id).ToList();
-            //    else
-            //        // Получаем обновленный список физических величин
-            //        listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == fizVelId + "_FIZVEL"))
-            //                                               .OrderBy(fizVel => fizVel.Id).ToList();
-
-            //// Отправляем его в представление
-            //ViewBag.fizVelId = listOfFizVels;
-            //ViewBag.currentActionId = fizVelId;
-
-
-            ////-----
-
-            //List<Pro> prosList = new List<Pro>();
-            //using (var db = new ApplicationDbContext())
-            //    prosList = db.Pros.Where(pros => pros.Parent == prosId + "_PROS").ToList();
-            //// var listSelectedPros = GetListSelectedItem(prosList);
-
-            //// Отправляем его в представление
-            //ViewBag.pros = prosList;
-
-
-            ////-----
-
-
-            //List<Spec> specList = new List<Spec>();
-            //using (var db = new ApplicationDbContext())
-            //    specList = db.Specs.Where(spec => spec.Parent == specId + "_SPEC").ToList();
-            ////var listSelectedSpec = GetListSelectedItem(specList);
-
-            //// Отправляем его в представление
-            //ViewBag.spec = specList;
-
-
-            ////-----
-
-
-            //List<Vrem> vremList = new List<Vrem>();
-            //using (var db = new ApplicationDbContext())
-            //    vremList = db.Vrems.Where(vrem => vrem.Parent == vremId + "_VREM").ToList();
-
-
-            //// Отправляем его в представление
-            //ViewBag.vrem = vremList;
-
-
+            
+            if(fizVelId== "VOZ11")
+            {
+                ViewBag.CheckboxParamsId = null;
+               
+                ViewBag.ParametricFizVelsId = "VOZ11_FIZVEL_R1";
+                
+            }
+            else
+            {
+                ViewBag.CheckboxParamsId = fizVelId;
+           
+                ViewBag.ParametricFizVelsId =null;
+            }
 
             ////-----
             
             ViewBag.fizVelId = fizVelId;
-            ViewBag.prosId = prosId;
-            ViewBag.specId = specId;
-            ViewBag.vremId = vremId;
+           
+            
+
             ViewBag.type = type;
 
             return PartialView();
@@ -246,9 +207,10 @@ namespace dip.Controllers
         public ActionResult GetParametricFizVels(string id, string type)
         {
             // Получаем список физических величин для параметрических воздействий
-
-
-            ViewBag.parametricFizVelId = FizVel.GetParametricFizVels(id) ;
+            List<FizVel> res = new List<FizVel>();
+            if (!string.IsNullOrWhiteSpace(id))
+                 res = FizVel.GetParametricFizVels(id) ;
+            ViewBag.parametricFizVelId = res;
             ViewBag.type = type;
             return PartialView();
         }

@@ -78,7 +78,7 @@ namespace dip.Controllers
 
             FEAction inp = null;
             FEAction outp = null;
-            FEAction.Get((int)id,inp,outp);
+            FEAction.Get((int)id, ref inp, ref outp);
 
             ViewBag.inputForm = new DescrSearchIInput(inp);
             ViewBag.outpForm = new DescrSearchIOut(outp); 
@@ -139,6 +139,9 @@ namespace dip.Controllers
         public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage,  DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
             //TODO добавление записи
+            if(!obj.Validation())
+                return new HttpStatusCodeResult(404);
+
             var list_img_byte = Get_photo_post(uploadImage);
             
            

@@ -29,7 +29,7 @@ namespace dip.Models.ViewModel
         }
 
         //возвращает форму(данные) для отображения
-        public static DescriptionForm GetFormObject(string actionId)
+        public static DescriptionForm GetFormObject(string actionId,string fizVelId)
         {
             DescriptionForm res = new DescriptionForm();
 
@@ -52,8 +52,9 @@ namespace dip.Models.ViewModel
                                                                               (fizVel.Id == "NO_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
 
-                // Выбираем первый из списка раздел физики
-                var fizVelId = listOfFizVels.First().Id;
+                // Выбираем  из списка раздел физики
+                if (string.IsNullOrWhiteSpace(fizVelId))
+                    fizVelId = listOfFizVels.First().Id;
 
                 // Получаем список физических величин для параметрических воздействий
                 var listOfParametricFizVels = db.FizVels.Where(parametricFizVel => (parametricFizVel.Parent == fizVelId))

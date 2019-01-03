@@ -38,45 +38,45 @@ function changeParams(type)
 
 var formData={
 fizVelId:id,
-prosId:'',
-specId:'',
-vremId:'',
+// prosId:'',
+// specId:'',
+// vremId:'',
 type:type
 };
 
 
 
-if (id != 'VOZ11') {// непараметрическое воздействие
+// if (id != 'VOZ11') {// непараметрическое воздействие
 
-formData.prosId=id;
-formData.specId=id;
-formData.vremId=id;
-
-
-goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + '&type='+type,
-func_success:function (parametricFizVel)
-            {
-                // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
-            }
-});
+// formData.prosId=id;
+// formData.specId=id;
+// formData.vremId=id;
 
 
-    }
-    else{
-
-formData.prosId='';
-formData.specId='';
-formData.vremId='';
-
-
-goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,
- func_success: function(a){
-$('#parametricFizVel'+type).replaceWith(a);
- }});
+// goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + '&type='+type,
+// func_success:function (parametricFizVel)
+//             {
+//                 // Заменяем часть представления, отвечающего за выбор физической величины
+//                 $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+//             }
+// });
 
 
-    }
+//     }
+//     else{
+
+// formData.prosId='';
+// formData.specId='';
+// formData.vremId='';
+
+
+// goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,
+//  func_success: function(a){
+// $('#parametricFizVel'+type).replaceWith(a);
+//  }});
+
+
+//     }
 
 goAjaxRequest({url:prefix+"ChangeAction",
  data:formData,func_success: function (req) { 
@@ -86,6 +86,7 @@ $('#fizVel'+type).replaceWith(data[1]);
 $('#pros'+type).replaceWith(data[2]);
 $('#spec'+type).replaceWith(data[3]);
                      $('#vrem'+type).replaceWith(data[4]); 
+                     $('#parametricFizVel'+type).replaceWith(data[5]);
                 	
                 	 },type:'POST'});
 

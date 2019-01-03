@@ -62,7 +62,8 @@ namespace dip.Models.Domain
         }
         public DescrSearchIInput(FEAction a)
         {
-            //TODO 1 параметр не проставляется, его надо брать из бд
+           
+            this.actionIdI = a.Name;
             this.actionTypeI = a.Type;
             this.FizVelIdI = a.FizVelId;
             this.listSelectedProsI = a.Pros;
@@ -227,7 +228,8 @@ namespace dip.Models.Domain
         }
         public DescrSearchIOut(FEAction a)
         {
-            //TODO 1 параметр не проставляется, его надо брать из бд
+            
+            this.actionIdO = a.Name;
             this.actionTypeO = a.Type;
             this.FizVelIdO = a.FizVelId;
             this.listSelectedProsO = a.Pros;

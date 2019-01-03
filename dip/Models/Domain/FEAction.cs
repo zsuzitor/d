@@ -26,10 +26,17 @@ namespace dip.Models.Domain
         public FizVel FizVel { get; set; }
         public FEAction()
         {
+            Type = "";
+            Name = "";
+            FizVelSection = "";
+            FizVelChange = "";
+            Pros = "";
+            Spec = "";
+            Vrem = "";
 
         }
 
-        public static void Get(int FETextId, FEAction inp, FEAction outp)
+        public static void Get(int FETextId,ref FEAction inp, ref FEAction outp)
         {
             List<FEAction> lst = null;
             using (var db = new ApplicationDbContext())
@@ -42,7 +49,7 @@ namespace dip.Models.Domain
 
         public void SetFromInput(DescrSearchI a)
         {
-
+            Name = a?.actionId;
             Type = a?.actionType;
             FizVelId = a?.FizVelId;
             FizVelSection = a?.parametricFizVelId;

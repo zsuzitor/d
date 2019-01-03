@@ -90,13 +90,14 @@ namespace dip.Models.Domain
             return res;
         }
 
-        public static FEText Get(int? id){
-            FEText res =null;
+        public static FEText Get(int? id)
+        {
+            FEText res = null;
             if (id != null)//&&id>0
                 using (var db = new ApplicationDbContext())
                     res = db.FEText.FirstOrDefault(x1 => x1.IDFE == id);
             return res;
-            
+
         }
 
         public static int[] GetByDescr(DescrSearchI inp, DescrSearchI outp)
@@ -112,6 +113,7 @@ namespace dip.Models.Domain
                     //TODO оптимизация? разница только в  x1.Input == 1\0
                     //находим все записи которые подходят по входным параметрам
                     var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
+                    x1.Name == inp.actionId &&
                       x1.Type == inp.actionType &&
                       x1.FizVelId == inp.FizVelId &&
                       x1.Pros == inp.listSelectedPros &&
@@ -121,6 +123,7 @@ namespace dip.Models.Domain
 
                     //находим все записи которые подходят по выходным параметрам
                     var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
+                     x1.Name == outp.actionId &&
                     x1.Type == outp.actionType &&
                     x1.FizVelId == outp.FizVelId &&
                     x1.Pros == outp.listSelectedPros &&
@@ -187,10 +190,24 @@ namespace dip.Models.Domain
 
         }
 
+        public bool Validation()
+        {
+            if (string.IsNullOrWhiteSpace(Name) ||
+                string.IsNullOrWhiteSpace(Text) ||
+                string.IsNullOrWhiteSpace(TextInp) ||
+                string.IsNullOrWhiteSpace(TextOut) ||
+                string.IsNullOrWhiteSpace(TextObj) ||
+                string.IsNullOrWhiteSpace(TextApp) ||
+                string.IsNullOrWhiteSpace(TextLit))
+                return false;
 
+            return true;
+        }
 
         public bool AddToDb(DescrSearchIInput inp , DescrSearchIOut outp, List<byte[]> addImgs = null)
         {
+            //if (!this.Validation())
+            //    return false;
             DescrSearchI inp_ = new DescrSearchI(inp);
             DescrSearchI outp_ = new DescrSearchI(outp);
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -229,6 +246,7 @@ namespace dip.Models.Domain
             
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                db.Set<FEText>().Attach(this);
                 this.Equal(new_obj);
                 if (deleteImg != null && deleteImg.Count > 0)
                 {
