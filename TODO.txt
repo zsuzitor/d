@@ -1,3 +1,13 @@
+при загрузке формы с параметрическим параметром проверить отображение
+при смене actionid в форме сократить до 1 запроса
+//при смене actionid в форме отправляется "NULL" а не null
+public ActionResult ChangeAction(string fizVelId, string prosId, string specId, string vremId, string type)
+        {
+прос и тд не нужны
+js var formData={  убрать лишние параметры и не передавать их
+но это после того как останется 1 запрос при смене 
+}
+using убрать из всех контроллеров
 !полный функционал просмотра картинок
 ! в конструкторах DescrSearchIOut и inp сейчас самый первый параметр не проставляется? тащить из бд надо
 render sections

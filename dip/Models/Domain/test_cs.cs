@@ -123,13 +123,13 @@ namespace dip.Models.Domain
         {
             
             
-            this.actionId = a.actionIdI;
-            this.actionType = a.actionTypeI;
-            this.FizVelId = a.FizVelIdI;
-            this.parametricFizVelId = a.parametricFizVelIdI;
-            this.listSelectedPros = a.listSelectedProsI;
-            this.listSelectedSpec = a.listSelectedSpecI;
-            this.listSelectedVrem = a.listSelectedVremI;
+            this.actionId = a?.actionIdI;
+            this.actionType = a?.actionTypeI;
+            this.FizVelId = a?.FizVelIdI;
+            this.parametricFizVelId = a?.parametricFizVelIdI;
+            this.listSelectedPros = a?.listSelectedProsI;
+            this.listSelectedSpec = a?.listSelectedSpecI;
+            this.listSelectedVrem = a?.listSelectedVremI;
             DescrSearchI.Validation(this);
         }
 
@@ -137,13 +137,13 @@ namespace dip.Models.Domain
         {
 
 
-            this.actionId = a.actionIdO;
-            this.actionType = a.actionTypeO;
-            this.FizVelId = a.FizVelIdO;
-            this.parametricFizVelId = a.parametricFizVelIdO;
-            this.listSelectedPros = a.listSelectedProsO;
-            this.listSelectedSpec = a.listSelectedSpecO;
-            this.listSelectedVrem = a.listSelectedVremO;
+            this.actionId = a?.actionIdO;
+            this.actionType = a?.actionTypeO;
+            this.FizVelId = a?.FizVelIdO;
+            this.parametricFizVelId = a?.parametricFizVelIdO;
+            this.listSelectedPros = a?.listSelectedProsO;
+            this.listSelectedSpec = a?.listSelectedSpecO;
+            this.listSelectedVrem = a?.listSelectedVremO;
             DescrSearchI.Validation(this);
         }
 

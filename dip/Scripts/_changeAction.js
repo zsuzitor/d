@@ -16,16 +16,16 @@ function changeParams(type)
 
 //data_descr_search 
             //have_input:null,
-            data_descr_search.actionIdI= null;
-            data_descr_search.actionTypeI= null;
-            data_descr_search.FizVelIdI= null;
+            data_descr_search.actionIdI= '';
+            data_descr_search.actionTypeI= '';
+            data_descr_search.FizVelIdI= '';
             data_descr_search.parametricFizVelIdI= '';
             data_descr_search.listSelectedProsI= '';
             data_descr_search.listSelectedSpecI= '';
             data_descr_search.listSelectedVremI= '';
-            data_descr_search.actionIdO= null;
-            data_descr_search.actionTypeO= null;
-            data_descr_search.FizVelIdO= null;
+            data_descr_search.actionIdO= '';
+            data_descr_search.actionTypeO= '';
+            data_descr_search.FizVelIdO= '';
             data_descr_search.parametricFizVelIdO= '';
             data_descr_search.listSelectedProsO= '';
             data_descr_search.listSelectedSpecO= '';
@@ -38,9 +38,9 @@ function changeParams(type)
 
 var formData={
 fizVelId:id,
-prosId:null,
-specId:null,
-vremId:null,
+prosId:'',
+specId:'',
+vremId:'',
 type:type
 };
 
@@ -53,7 +53,7 @@ formData.specId=id;
 formData.vremId=id;
 
 
-goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'NULL&type='+type,
+goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + '&type='+type,
 func_success:function (parametricFizVel)
             {
                 // Заменяем часть представления, отвечающего за выбор физической величины
@@ -65,9 +65,9 @@ func_success:function (parametricFizVel)
     }
     else{
 
-formData.prosId='NULL';
-formData.specId='NULL';
-formData.vremId='NULL';
+formData.prosId='';
+formData.specId='';
+formData.vremId='';
 
 
 goAjaxRequest({url:prefix + 'GetParametricFizVels'+postfix+'id=' + 'VOZ11_FIZVEL_R1&type='+type,

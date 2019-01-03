@@ -33,7 +33,7 @@ namespace dip.Controllers
             //    return View();
             //}
 
-        public ActionResult DescriptionInput(DescrSearchIInput inp, DescrSearchIOut outp)
+        public ActionResult DescriptionInput(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
 
             ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionIdI);
@@ -43,8 +43,8 @@ namespace dip.Controllers
             var outp_ = new DescrSearchI(outp);
             if (DescrSearchI.IsNull(inp_) || DescrSearchI.IsNull(outp_))
             {
-                inp = null;
-                outp = null;
+                inp_ = null;
+                outp_ = null;
             }
             ViewBag.inputFormData = inp_;
             ViewBag.outpFormData = outp_;
@@ -173,8 +173,9 @@ namespace dip.Controllers
             // Получаем обновленный список пространственных характеристик
 
             List<Pro> prosList = new List<Pro>();
-            using (var db = new ApplicationDbContext())
-                prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
             // var listSelectedPros = GetListSelectedItem(prosList);
 
             // Отправляем его в представление
@@ -196,8 +197,9 @@ namespace dip.Controllers
         {
             // Получаем обновленный список специальных характеристик
             List<Spec> specList = new List<Spec>();
-            using (var db = new ApplicationDbContext())
-                specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
             //var listSelectedSpec = GetListSelectedItem(specList);
 
             // Отправляем его в представление
@@ -218,8 +220,9 @@ namespace dip.Controllers
         {
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
-            using (var db = new ApplicationDbContext())
-                vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
 
 
             // Отправляем его в представление
