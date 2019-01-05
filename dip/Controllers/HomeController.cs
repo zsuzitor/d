@@ -35,7 +35,7 @@ namespace dip.Controllers
 
         public ActionResult MainHeader()//string textSearchStr, string textSearchType
         {
-            ViewBag.searchList = new List<string>() { "lucene", "fullTextSearch" };
+            ViewBag.searchList = new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
 
             //ViewBag.textSearchStr = textSearchStr;
             //ViewBag.textSearchType = ViewBag;

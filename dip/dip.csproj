@@ -18,8 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44369</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -243,6 +242,7 @@
     <Compile Include="Models\LuceneMore\StemmerUtil.cs" />
     <Compile Include="Models\Lucene_.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Search.cs" />
     <Compile Include="Models\TechnicalFunctions\Index.cs" />
     <Compile Include="Models\TechnicalFunctions\Limit.cs" />
     <Compile Include="Models\TechnicalFunctions\Operand.cs" />
@@ -348,6 +348,7 @@
     <Content Include="Views\Physic\Details.cshtml" />
     <Content Include="Views\Search\TextSearch.cshtml" />
     <Content Include="Views\Physic\Edit.cshtml" />
+    <Content Include="Views\Search\TextSearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

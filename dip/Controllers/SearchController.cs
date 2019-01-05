@@ -76,51 +76,30 @@ namespace dip.Controllers
             return View(list_id);
         }
 
+        public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int lucCount = 1)
+        {
+            var res = Search.GetList(type, str, lastId, lucCount);
 
+
+            return PartialView(res);
+        }
         //[HttpPost]
         //type - тип запроса lucene и др
-        public ActionResult TextSearch(string type,string str)
+        //lucCount- номер запроса 
+        public ActionResult TextSearch(string type,string str,int lastId=0,int lucCount=1)
         {
-            
+            //TODO валидация строки от sql иньекций и тд
             //TODO полнотекстовый поиск
 
             //устанавливаем параметры для представления mainHeader
-            TempData["textSearchStr"] = str;
-            TempData["textSearchType"] = type;
+           
+                TempData["textSearchStr"] = str;
+                TempData["textSearchType"] = type;
 
-            var res = new int[0];
-            //type = "fullTextSearch";
-            switch (type)
-            {
-                case "lucene":
-                    //var list_id=FEText.GetByText(str);
-                    int count;
-                    str = Lucene_.ChangeForMap(str);
-                    //TODO убрать знаки препинания, стопслова
-                    res = Lucene_.Search(str, 100, out count).ToArray();
-                    break;
-                case "fullTextSearch":
-                    using (var db=new ApplicationDbContext())
-                    {
-                        //TODO вынести в функцию sql server и юзать уже из linq
-                        res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str}')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").Take(100).ToArray();
-                    }
-
-
-
-                        break;
-
-
-            }
-
-
+            var res = Search.GetList(type, str, lastId, lucCount);
             
 
 
-
-
-
-            
             //
 
 

@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Hosting;
 
 
 //http://www.waveaccess.ru/blog/2014/september/02/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-apache-lucene.aspx
@@ -73,18 +74,35 @@ namespace dip.Models
                 writer.DeleteAll();
                 foreach (var i in feList)
                 {
-                    //TODO убрать знаки препинания, стопслова
-                    //if (i.IDFE == 695)
-                    //{
-                    //    var ht = 10;
-                    //}
-
-                    i.ChangeForMap();
-                    var document = MapProduct(i);
-                    writer.AddDocument(document);
+                    Lucene_.BuildIndexSolo(writer, i);
                 }
             }
         }
+
+
+        static public void BuildIndexSolo(IndexWriter writer, FEText obj)
+        {
+
+            obj.ChangeForMap();
+            var document = MapProduct(obj);
+            writer.AddDocument(document);
+        }
+
+
+        static public void BuildIndexSolo(FEText a)
+        {
+
+            using (var directory = GetDirectory())
+            using (var analyzer = GetAnalyzer())
+            using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            {
+
+                Lucene_.BuildIndexSolo(writer, a);
+
+            }
+        }
+
+
 
 
         public static  string ChangeForMap(string s)
@@ -219,7 +237,9 @@ namespace dip.Models
 
         static Lucene.Net.Store.Directory GetDirectory()
         {
-            return new SimpleFSDirectory(new DirectoryInfo(@"E:\csharp\dip1\dip\dip\lucene"));//(@"~/lucene"));
+            //
+            return new SimpleFSDirectory(new DirectoryInfo(HostingEnvironment.MapPath($"~/lucene")));
+            //return new SimpleFSDirectory(new DirectoryInfo(@"E:\csharp\dip1\dip\dip\lucene"));//(@"~/lucene"));
         }
 
 

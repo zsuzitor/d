@@ -238,6 +238,7 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
+            Lucene_.BuildIndexSolo(this);
             return true;
         }
 

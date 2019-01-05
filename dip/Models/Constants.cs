@@ -17,5 +17,8 @@ namespace dip.Models
         public const string sql_2 = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
 
 
+        public const  int CountForLoad=10;
+
+
     }
 }

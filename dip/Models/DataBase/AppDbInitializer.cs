@@ -51,6 +51,7 @@ namespace dip.Models.DataBase
 
 
             //load old db 
+            
             OldData.ReloadDataBase();
             Lucene_.BuildIndex();
             FullTextSearch_.Create();

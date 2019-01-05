@@ -70,7 +70,7 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
-            //TODO страница добавления
+            
             FEText res = res = FEText.Get(id);
             
             if(res==null)
@@ -94,7 +94,7 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
-            //TODO добавление записи
+            
             var list_img_byte = Get_photo_post(uploadImage);
             
             List<int> deleteImg = null;
@@ -126,9 +126,9 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
-            //TODO страница добавления
+            
             FEText res = new FEText() ;
-            //TODO мб убрать условие, но надо потестить тк там редактирование
+            
             
             return View(res);
         }
@@ -138,7 +138,7 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage,  DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
-            //TODO добавление записи
+            
             if(!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
