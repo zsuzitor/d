@@ -30,9 +30,11 @@
             @using (Html.BeginForm("TextSearch", "Search", FormMethod.Get))
             {
                 <div class="main_header_text_search_all_block">
-                    <div class="div_inline_block main_header_search_str_div"><input class="form-control" name="str" type="text" value="@(TempData["textSearchStr"])" /></div>
+                    <div class="div_inline_block main_header_search_str_div">
+                    <input class="form-control" id="full_text_search_str" name="str" type="text" value="@(TempData["textSearchStr"])" />
+                    </div>
                     <div class="div_inline_block main_header_search_type_div">
-                        <select name="type" class="cursor_pointer form-control">
+                        <select name="type" id="full_text_search_type" class="cursor_pointer form-control">
 
                             @*selected="selected"          атрибут для проставления активной строки*@
                             @foreach (var itemSearchType in (List<string>)ViewBag.searchList)

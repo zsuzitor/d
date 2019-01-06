@@ -116,7 +116,7 @@
             goAjaxRequest({
                 url: "/Search/DescriptionSearch",
                 data: data_descr_search,
-                func_success: function (data) {
+                func_success: function (data, status, jqXHR) {
 
                     //alert(data);
                     document.getElementById('search_content_div_id').innerHTML = data;

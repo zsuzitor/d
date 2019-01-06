@@ -4,6 +4,7 @@ using Lucene.Net.Analysis.Ru;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -23,23 +24,6 @@ namespace dip.Controllers
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
         {
-
-            //TEST
-            //{
-            //    inp.actionTypeI = "INT_ACTIONS";
-            //    inp.FizVelIdI = "VOZ1_FIZVEL_1";
-            //    inp.listSelectedProsI = "VOZ1_PROS1 ";
-            //    inp.listSelectedSpecI = "";
-            //    inp.listSelectedVremI = "";
-
-
-            //    outp.actionTypeO = "INT_ACTIONS";
-            //    outp.FizVelIdO = "VOZ2_FIZVEL_1";
-            //    outp.listSelectedProsO = "";
-            //    outp.listSelectedSpecO = "";
-            //    outp.listSelectedVremO = "";
-            //}
-
 
 
             int[] list_id = null;
@@ -61,12 +45,16 @@ namespace dip.Controllers
 
                 ViewBag.search = true;
                 TempData["list_fe_id"] = list_id;
-                
+
 
 
                 //var dict = new RouteValueDictionary();
                 //dict.Add("listId", list_id);
 
+                Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
+                ApplicationUser.GetUserId(),true);
+                log.SetDescrParam(inp, outp);
+                log.AddLogDb();
                 return RedirectToAction("ListFeText", "Physic");
                 //return RedirectToRoute(new { controller = "Physic", action = "ListFeText", listId = list_id });//new { listId = list_id }
                 //return RedirectToAction("ListFeText", "Physic", new { listId = list_id });
@@ -76,62 +64,48 @@ namespace dip.Controllers
             return View(list_id);
         }
 
-        public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int lucCount = 1)
+        public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int countLoad = 1)
         {
-            var res = Search.GetList(type, str, lastId, lucCount);
+            //str = "газ";
+          
+            var res = Search.GetList(type, str, lastId, countLoad);
+            if (res.Count == 0)
+            {
+                Response.StatusCode = 204;
+                return Content("", "text/html");//Emty
+            }
+            ViewBag.countLoad = countLoad;
 
-
-            return PartialView(res);
+            Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
+               ApplicationUser.GetUserId(), true, null, type,str, lastId.ToString(), countLoad.ToString());
+            log.AddLogDb();
+            return PartialView(res.ToArray());
         }
+
+
+
         //[HttpPost]
         //type - тип запроса lucene и др
         //lucCount- номер запроса 
-        public ActionResult TextSearch(string type,string str,int lastId=0,int lucCount=1)
+        public ActionResult TextSearch(string type,string str)
         {
             //TODO валидация строки от sql иньекций и тд
             //TODO полнотекстовый поиск
 
             //устанавливаем параметры для представления mainHeader
            
-                TempData["textSearchStr"] = str;
+            TempData["textSearchStr"] = str;
                 TempData["textSearchType"] = type;
+            var res = new List<int>();
+            if (!string.IsNullOrWhiteSpace(str))
 
-            var res = Search.GetList(type, str, lastId, lucCount);
+                res =Search.GetList(type, str, 0, 1);
+
             
-
-
-            //
-
-
-            //var obj = res.Take(20);
-            //if (obj != null)
-            //{
-            //    var st = new RussianLightStemmer();
-            //    //foreach (var i in obj.Text.Split(' '))
-            //    //{
-            //    //    Lucene_.ChangeForMap(i);
-            //    //    //var num = st.Stem(i.ToArray(), i.Length);
-            //    //    // var word = i.Substring(0, num);
-            //    //}
-            //    foreach (var i in obj)
-            //    {
-            //        var bef = i.Text;
-            //        var aft=Lucene_.ChangeForMap(bef);
-            //        //var num = st.Stem(i.ToArray(), i.Length);
-            //        // var word = i.Substring(0, num);
-            //    }
-            //}
-
-
-
-
-
-            //
-
-            //ViewBag.mark = res.Select(x1=>x1.);
-
-            //TODO сейчас костыль просто потестить
-            return View(res);//.Select(x1=>x1.IDFE)
+            Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
+               ApplicationUser.GetUserId(), true, null, type, str);
+            log.AddLogDb();
+            return View(res.ToArray());//.Select(x1=>x1.IDFE)
         }
 
 

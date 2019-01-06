@@ -19,10 +19,10 @@ function changeFizVel(type)
 
 
 goAjaxRequest({url:prefix + 'GetParametricFizVels/' + id+postfix,
- func_success: function (parametricFizVel)
+    func_success: function (data, status, jqXHR)
             {
                 // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(parametricFizVel);
+                $('#parametricFizVel'+type).replaceWith(data);
             }});
 
 

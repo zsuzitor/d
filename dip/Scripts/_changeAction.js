@@ -79,7 +79,8 @@ type:type
 //     }
 
 goAjaxRequest({url:prefix+"ChangeAction",
- data:formData,func_success: function (req) { 
+    data: formData,
+    func_success: function (req, status, jqXHR) {
 var data = req.split('<hr />');//.responseText
                             var type = data[0].trim();
 $('#fizVel'+type).replaceWith(data[1]);

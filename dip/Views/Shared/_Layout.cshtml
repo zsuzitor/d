@@ -38,14 +38,14 @@
             data: obj.data,
             url: obj.url,
 
-            success: function (data) {
+            success: function (xhr, status, jqXHR) {
                 if (obj.func_success)
-                    obj.func_success(data);
+                    obj.func_success(xhr, status, jqXHR);
             },
-            error: function () {
+            error: function (xhr, status, error) {
                 alert("ошибка загрузки");
                 if (obj.func_error)
-                    obj.func_error();
+                    obj.func_error(xhr, status, error);
             },
             // shows the loader element before sending.
             beforeSend: function () {

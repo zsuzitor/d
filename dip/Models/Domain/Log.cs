@@ -35,8 +35,9 @@ namespace dip.Models.Domain
             Person = null;
             PersonId = null;
             LogParams = new List<LogParam>();
+            Params_ = new List<string>();
         }
-        public Log(string Action,string Controller, bool Succes,string Info=null,params string[] param)
+        public Log(string Action,string Controller,string PersonId, bool Succes,string Info=null,params string[] param)
         {
             DateTime = DateTime.Now;
             this.Action = Action;
@@ -44,9 +45,36 @@ namespace dip.Models.Domain
             this.Succes = Succes;
             this.Info = Info;
             
+            this.PersonId = PersonId;
+            this.LogParams = new List<LogParam>();
+            this.Params_ = new List<string>();
             if (param.Length > 0)
                 this.Params_.AddRange(param.ToList());
         }
+
+
+        public void SetDescrParam(DescrSearchI inp, DescrSearchI outp)
+        {
+            //при добавлении добавлять в конец
+            this.Params_.Add(inp.actionId);
+            this.Params_.Add(inp.actionType);
+            this.Params_.Add(inp.FizVelId);
+            this.Params_.Add(inp.parametricFizVelId);
+            this.Params_.Add(inp.listSelectedPros);
+            this.Params_.Add(inp.listSelectedSpec);
+            this.Params_.Add(inp.listSelectedVrem);
+            this.Params_.Add(outp.actionId);
+            this.Params_.Add(outp.actionType);
+            this.Params_.Add(outp.FizVelId);
+            this.Params_.Add(outp.parametricFizVelId);
+            this.Params_.Add(outp.listSelectedPros);
+            this.Params_.Add(outp.listSelectedSpec);
+            this.Params_.Add(outp.listSelectedVrem);
+
+
+
+        }
+
 
 
         public bool AddLogDb()

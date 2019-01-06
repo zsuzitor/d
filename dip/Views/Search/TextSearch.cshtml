@@ -11,10 +11,60 @@
     var g = Model;
 }
 
-@Html.Action("ListFeText", "Physic", new { listId = Model })
+<div id="div_search_ft_result_id">
+    @Html.Action("ListFeText", "Physic", new { listId = Model })
 
 
+</div>
+<div id="div_search_ft_but_id">
+    <button onclick="loadMoreFT()">загрузить еще</button>
+</div>
+
+<script>
+    var block_load = false;
+   // var NumLoad = 2;
+    function loadMoreFT() {
+
+        //если вернулся пустой список то возвращать статус серва с ошибкой, блокировать множественное нажатие кнопки
+
+        if (!block_load) {
+            block_load = true;
+            var formData = {
+                type: document.getElementById('full_text_search_type').value,
+                str: document.getElementById('full_text_search_str').value
+            };
+            var div_last_load_c = document.getElementById('div_search_ft_result_id').children;
+            var div_last_load = div_last_load_c[div_last_load_c.length - 1];
+            formData.countLoad = +div_last_load.id.split('_')[6]+1;
+            var div_last_fe_c = div_last_load.children;
+            var div_last_fe = div_last_fe_c[div_last_fe_c.length - 1];
+        formData.lastId = div_last_fe.id.split('_')[5];
+            goAjaxRequest({
+                url: '/Search/TextSearchPartial',
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    if (jqXHR.status == 204) {
+                        document.getElementById('div_search_ft_but_id').innerHTML = '';
+                    }
+                    else {
+                        var div = document.getElementById('div_search_ft_result_id');
+                        div.innerHTML += req;
+                        //NumLoad++;
+                        block_load = false;
+                    }
+                    
+
+                }, type: 'POST',
+                beforeSend: function () {
+                   
+                }
+                
+            });
+        }
 
 
+    }
 
 
+    ;
+</script>

@@ -36,14 +36,17 @@ namespace dip.Controllers
             effect.LoadImage();
             ViewBag.EffectName = effect.Name;
             ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
-            
 
-            ApplicationUserManager userManager = HttpContext.GetOwinContext()
-                                            .GetUserManager<ApplicationUserManager>();
-            IList<string> roles = userManager.GetRoles(check_id);
-
-            if (roles.Contains("admin"))
-                ViewBag.Admin = true;
+            if (check_id != null)
+            {
+                ApplicationUserManager userManager = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>();
+                IList<string> roles = userManager?.GetRoles(check_id);
+                if (roles != null)
+                    if (roles.Contains("admin"))
+                        ViewBag.Admin = true;
+            }
+         
 
 
             return View(effect);
@@ -51,7 +54,7 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ListFeText(int[] listId=null)
+        public ActionResult ListFeText(int[] listId=null,int numLoad=1)
         {
 
             List<FEText> res = new List<FEText>();
@@ -60,7 +63,7 @@ namespace dip.Controllers
                 listId = (int[])TempData["list_fe_id"];
             }
             res = FEText.GetList(listId);
-
+            ViewBag.numLoad = numLoad;
 
 
             return PartialView(res);

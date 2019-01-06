@@ -30,10 +30,10 @@ var prefix = '/Actions/';
 
 
 goAjaxRequest({url:prefix + 'GetVremChild'+postfix+'&id=' + str,
- func_success: function (vremChild)
+    func_success: function (data, status, jqXHR)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
-                    $('#' + id+type).replaceWith(vremChild);
+                    $('#' + id+type).replaceWith(data);
                 }});
 
 
@@ -80,10 +80,10 @@ function delChildVrem(type)
 
 
 goAjaxRequest({url:prefix + 'GetEmptyChild'+postfix+'&id=' + id,
- func_success: function (emptyChild)
+    func_success: function (data, status, jqXHR)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
-                        $('#' + id+type).replaceWith(emptyChild);
+                        $('#' + id+type).replaceWith(data);
                     }});
 
 

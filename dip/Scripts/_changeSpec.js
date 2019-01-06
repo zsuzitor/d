@@ -31,10 +31,10 @@ function setChildSpec(type)
 
 
 goAjaxRequest({url:prefix + 'GetSpecChild'+postfix+'&id=' + str,
- func_success: function (specChild)
+    func_success: function (data, status, jqXHR)
                 {
                     // Заменяем часть представления, отвечающего за отображение значений характеристики
-                    $('#' + id+type).replaceWith(specChild);
+                    $('#' + id+type).replaceWith(data);
                 }});
 
 
@@ -83,10 +83,10 @@ function delChildSpec(type)
 
 
 goAjaxRequest({url:prefix + 'GetEmptyChild'+postfix+'&id=' + id,
- func_success: function (emptyChild)
+    func_success: function (data, status, jqXHR)
                     {
                         // Заменяем часть представления, отвечающего за отображение значений характеристики
-                        $('#' + id+type).replaceWith(emptyChild);
+                        $('#' + id+type).replaceWith(data);
                     }});
 
 

@@ -107,6 +107,7 @@ namespace dip.Models.Domain
 
     public class DescrSearchI
     {
+       
         public string actionId { get; set; }
         public string actionType { get; set; }
         public string FizVelId { get; set; }

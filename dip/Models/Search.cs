@@ -21,14 +21,29 @@ namespace dip.Models
                     str = Lucene_.ChangeForMap(str);
                     //TODO убрать знаки препинания, стопслова
                     res = Lucene_.Search(str, Constants.CountForLoad * lucCount, out count).Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
+                    
+                    //res = Lucene_.Search(str, 100, out count);
+                    //res= res.Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
+
                     break;
                 case "fullTextSearchF"://freetexttable
 
                     using (var db = new ApplicationDbContext())
                     {
                         //TODO вынести в функцию sql server и юзать уже из linq
-                        res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
-                            }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").Where(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+                        //IEnumerable<int> resenum;//= res.AsEnumerable() ;
+                         res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
+                            }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;")
+                            .SkipWhile(x1 => lastId>0?( x1 != lastId) :false).Skip( lastId > 0 ?1:0 ).Take(Constants.CountForLoad).ToList();//.ToArray()
+                        
+                        //if (lastId > 0)
+                        //{
+                        //    resenum = resenum.SkipWhile(x1 => x1 > lastId);
+                        //}
+                        //res = resenum.Take(Constants.CountForLoad).ToList();
+
+
+
                     }
 
                     break;
@@ -54,7 +69,9 @@ namespace dip.Models
                         }
                         strquery = strquery.Substring(0, strquery.Length - 1);
                         strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-                        res = db.Database.SqlQuery<int>(strquery).Where(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+                        res = db.Database.SqlQuery<int>(strquery)
+                             .SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                            //.SkipWhile(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
                     }
 
 
@@ -80,7 +97,9 @@ namespace dip.Models
                         }
                         strquery = strquery.Substring(0, strquery.Length - 1);
                         strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-                        res = db.Database.SqlQuery<int>(strquery).Where(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+                        res = db.Database.SqlQuery<int>(strquery)
+                             .SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                        //.SkipWhile(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
                     }
 
 
