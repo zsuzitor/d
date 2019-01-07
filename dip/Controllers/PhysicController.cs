@@ -52,6 +52,13 @@ namespace dip.Controllers
             return View(effect);
         }
 
+        public ActionResult ShowSimilar(int id)//, string technicalFunctionId
+        {
+           var list= FEText.GetListSimilar(id);
+
+            ViewBag.listSimilar = list;
+            return PartialView();
+        }
 
 
         public ActionResult ListFeText(int[] listId=null,int numLoad=1)

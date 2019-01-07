@@ -8,7 +8,7 @@ namespace dip.Models
     public class Search
     {
 
-        public static List<int> GetList(string type, string str, int lastId = 0, int lucCount = 1)
+        public static List<int> GetListPhys(string type, string str, int lastId = 0, int lucCount = 1)
         {
             //var res = new int[0];
             var res = new List<int>();
@@ -109,5 +109,34 @@ namespace dip.Models
             return res;
         }
 
-    }
+
+        public static string StringSemanticParse(int logParamId)
+        {
+            var res = "";
+            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
+FROM SEMANTICKEYPHRASETABLE  
+    (  
+    LogParams,  
+    Param,  
+    {logParamId}  
+    ) AS KEYP_TBL  
+ORDER BY KEYP_TBL.score DESC;";
+            var ldr=DataBase.DataBase.ExecuteQuery(q, "keyphrase");
+            foreach (var i in ldr)
+                res += i["keyphrase"].ToString()+" ";
+
+            return res.Trim();
+        }
+
+
+        //public static List<int> GetListSimilarPhys(int id,int count=5)
+        //{
+        //    List<int> res = new List<int>();
+
+
+
+        //    return res;
+        //}
+
+        }
 }

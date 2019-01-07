@@ -35,7 +35,7 @@ namespace dip.Controllers
                 ViewBag.inputForm = inp;
                 ViewBag.outpForm = outp;
             }
-                
+
             else
                 ViewBag.itsSearch = true;
 
@@ -52,13 +52,13 @@ namespace dip.Controllers
                 //dict.Add("listId", list_id);
 
                 Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-                ApplicationUser.GetUserId(),true);
+                ApplicationUser.GetUserId(), true);
                 log.SetDescrParam(inp, outp);
                 log.AddLogDb();
                 return RedirectToAction("ListFeText", "Physic");
                 //return RedirectToRoute(new { controller = "Physic", action = "ListFeText", listId = list_id });//new { listId = list_id }
                 //return RedirectToAction("ListFeText", "Physic", new { listId = list_id });
-                
+
             }
 
             return View(list_id);
@@ -67,8 +67,8 @@ namespace dip.Controllers
         public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int countLoad = 1)
         {
             //str = "газ";
-          
-            var res = Search.GetList(type, str, lastId, countLoad);
+
+            var res = Search.GetListPhys(type, str, lastId, countLoad);
             if (res.Count == 0)
             {
                 Response.StatusCode = 204;
@@ -77,7 +77,7 @@ namespace dip.Controllers
             ViewBag.countLoad = countLoad;
 
             Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-               ApplicationUser.GetUserId(), true, null, type,str, lastId.ToString(), countLoad.ToString());
+               ApplicationUser.GetUserId(), true, null, type, str, lastId.ToString(), countLoad.ToString());
             log.AddLogDb();
             return PartialView(res.ToArray());
         }
@@ -87,27 +87,37 @@ namespace dip.Controllers
         //[HttpPost]
         //type - тип запроса lucene и др
         //lucCount- номер запроса 
-        public ActionResult TextSearch(string type,string str)
+        public ActionResult TextSearch(string type, string str)//,bool semanticParse=false
         {
             //TODO валидация строки от sql иньекций и тд
             //TODO полнотекстовый поиск
 
             //устанавливаем параметры для представления mainHeader
-           
+
             TempData["textSearchStr"] = str;
-                TempData["textSearchType"] = type;
+            TempData["textSearchType"] = type;
+
+
+
+            Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
+               ApplicationUser.GetUserId(), true, null, type, str);
+            var listmaramslog = log.AddLogDb();
+
+            if (str.Length > 10)
+                str = Search.StringSemanticParse(listmaramslog[1]);
+
+
+
             var res = new List<int>();
             if (!string.IsNullOrWhiteSpace(str))
 
-                res =Search.GetList(type, str, 0, 1);
+                res = Search.GetListPhys(type, str, 0, 1);
 
-            
-            Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-               ApplicationUser.GetUserId(), true, null, type, str);
-            log.AddLogDb();
+
+            //TODO если произошла ошибка, надо найти лог и поменять флаг
             return View(res.ToArray());//.Select(x1=>x1.IDFE)
         }
-
+        //create fulltext catalog DbaLogParamsCatalog;
 
 
 

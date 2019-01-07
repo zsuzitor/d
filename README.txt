@@ -12,6 +12,11 @@ fullTextSearchCl - поиск по вхождениям, можно использовать (#слово) для повышени
 
 
 
+sql server 2014  (782!)
+visual studio 2015
+
+установка семантического поиска https://docs.microsoft.com/ru-ru/sql/relational-databases/search/install-and-configure-semantic-search?view=sql-server-2017
+библиотека для семантического поиска https://www.microsoft.com/ru-RU/download/details.aspx?id=52681
 
 
 

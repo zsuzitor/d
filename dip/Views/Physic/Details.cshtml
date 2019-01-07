@@ -78,4 +78,33 @@
     <p>
         @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
     </p>
+
+
+   
+    <div id="DivMoreSimilar_id">
+        <p>
+            <button onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
+
+        </p>
+    </div>
 }
+
+
+
+
+<script>
+
+    function loadSimilar(id){
+        document.getElementById('DivMoreSimilar_id').innerHTML= '';
+        goAjaxRequest({
+            url: '/Physic/ShowSimilar',
+            type:'POST',
+            data:{id:id},
+            func_success: function (data, status, jqXHR) {
+                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                document.getElementById('DivMoreSimilar_id').innerHTML=data;
+            }
+        });
+    }
+
+</script>

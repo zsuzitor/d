@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -166,6 +168,50 @@ namespace dip.Models.Domain
             }
                 
         }
+
+
+        public static List<int> GetListSimilar(int id, int count = 5)
+        {
+            List<int> res = new List<int>();
+            var quer=$@"select top({count})IDFE
+from
+       semanticsimilaritytable (FETexts, *, {id} ) data
+            inner join dbo.FETexts
+            txt on data.matched_document_key = txt.IDFE
+order by data.score desc";
+
+
+            var connection1 = new SqlConnection();
+            connection1.ConnectionString = Constants.sql_0;
+            var command1 = new SqlCommand();
+            command1.Connection = connection1;
+            command1.CommandType = CommandType.Text;
+
+            connection1.Open();
+            command1.CommandText = quer;
+            using (SqlDataReader reader = command1.ExecuteReader())
+            {
+
+                //SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+
+
+                        res.Add(Convert.ToInt32( reader["IDFE"]));
+                        
+                    }
+                }
+
+            }
+            return res;
+        }
+        //public  List<int> GetListSimilar(int count = 5)
+        //{
+            
+        //    return FEText.GetListSimilarS(this.IDFE,count);
+        //}
 
 
         public static List<FEText> GetList(params int[]id)

@@ -1,0 +1,24 @@
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN Name  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN Text  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN TextInp  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN TextOut  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN TextObj  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN TextApp  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
+    ALTER COLUMN TextLit  
+        ADD Statistical_Semantics ;
+ALTER FULLTEXT INDEX ON [dbo].[LogParams]  
+    ALTER COLUMN Param  
+        ADD Statistical_Semantics ;

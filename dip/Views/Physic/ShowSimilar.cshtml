@@ -1,0 +1,11 @@
+﻿
+
+
+<div>
+
+    @foreach (var i in (List<int>)ViewBag.listSimilar)
+    {
+        <p>@Html.ActionLink(i.ToString(), "Details", "Physic", new { id = i}, new { })</p>
+    }
+
+</div>

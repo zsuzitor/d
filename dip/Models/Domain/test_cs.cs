@@ -294,8 +294,10 @@ namespace dip.Models.Domain
             //server.ConnectionContext.ExecuteNonQuery(script);
 
 
-
-             List<string> files = new List<string>() { "create_catalog", "create_index" };
+            //1-создать каталог
+            //2- добавить индекс
+            //3- апнуть индекс до семантического
+             List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
 
             var connection = new SqlConnection();
             connection.ConnectionString = Constants.sql_0;

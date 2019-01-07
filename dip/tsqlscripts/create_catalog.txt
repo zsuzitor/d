@@ -1,1 +1,2 @@
 create fulltext catalog DbaFeTextCatalog;
+create fulltext catalog DbaLogParamsCatalog;

@@ -77,22 +77,28 @@ namespace dip.Models.Domain
 
 
 
-        public bool AddLogDb()
+        public List<int> AddLogDb()
         {
+            List<int> res = new List<int>();
             using (var db=new ApplicationDbContext())
             {
                 db.Logs.Add(this);
                 db.SaveChanges();
                 foreach(var i in this.Params_)
                 {
-                    db.LogParams.Add(new LogParam() {LogId=this.Id,Param=i });
+                    var paramObj = new LogParam() { LogId = this.Id, Param = i };
+                    
+                    db.LogParams.Add(paramObj);
+                    
+                                        db.SaveChanges();
+                    res.Add(paramObj.Id);
                 }
-                db.SaveChanges();
+
             }
+            
 
 
-
-                return true;
+            return res;
         }
 
     }

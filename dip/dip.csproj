@@ -204,6 +204,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\DataBase\AppDbInitializer.cs" />
+    <Compile Include="Models\DataBase\DataBase.cs" />
     <Compile Include="Models\DataBase\OldDbContext.cs" />
     <Compile Include="Models\DataBase\PhysicalEffectsSearchEngine.cs" />
     <Compile Include="Models\DataBase\TechnicalFunctionsEntities.cs" />
@@ -349,6 +350,7 @@
     <Content Include="Views\Search\TextSearch.cshtml" />
     <Content Include="Views\Physic\Edit.cshtml" />
     <Content Include="Views\Search\TextSearchPartial.cshtml" />
+    <Content Include="Views\Physic\ShowSimilar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
