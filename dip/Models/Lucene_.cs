@@ -433,11 +433,11 @@ namespace dip.Models
         }
 
 
-        static public void rus()
-        {
-            //Lucene.Net.Analysis.Ru.RussianAnalyzer r = new Lucene.Net.Analysis.Ru.RussianAnalyzer();
+        //static public void rus()
+        //{
+        //    //Lucene.Net.Analysis.Ru.RussianAnalyzer r = new Lucene.Net.Analysis.Ru.RussianAnalyzer();
 
-        }
+        //}
 
         }
 }
