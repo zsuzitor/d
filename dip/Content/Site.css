@@ -30,11 +30,11 @@ textarea{
 }
 
 
-
-div.one_effect_img{
+/*при редактиваронии*/
+/*div.one_effect_img{
     width:100px;
     height:100px;
-}
+}*/
 
 
 body{
@@ -49,6 +49,9 @@ div.one_block_fetext_list{
 
 
 
+div.inline {
+     display: inline;
+}
 div.div_inline_block {
     display: inline-block;
     vertical-align: top;
@@ -251,6 +254,8 @@ width: 100%;
         /*background-size: cover;
     background-repeat: no-repeat;
     background: no-repeat;*/
+        /*background-position: center;
+        background-size: contain;*/
     }
 
 
@@ -263,6 +268,7 @@ width: 100%;
     cursor:pointer;
     height:200px;
       width:200px;
+      
 }
 
 
@@ -274,6 +280,23 @@ width: 100%;
            border:2px solid black;*
            padding-right:360px;
        }*/
+
+
+
+   
+   /*-------------------------------DETAILS   and edit---------------*/
+
+   div.details_one_image{
+       border-radius:5%;
+       overflow:hidden;
+       width:200px;
+       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+   }
+
+   div.block_images{
+           text-align: center;
+           padding-top:50px;
+   }
 
 
 

@@ -117,19 +117,26 @@
             <input class="btn btn-default" type="file" multiple name="uploadImage" />
             <input class="btn btn-default" type="submit" value="отправить" />
         }
-        <div>
-            @foreach (var i in Model.Images)
-            {
-                <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                    <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+        <div class="block_images">
+            <div class="inline">
+                @foreach (var i in Model.Images)
+                {
+                    @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
+                        <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+                        </div>
+                        <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
+                    </div>*@
+                    <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
+                        <div class="details_one_image">
+                            @helpers_.ImageLink(i)
+                        </div>
+                        <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
                     </div>
-                    <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
-                </div>
-            }
+                }
+            </div>
         </div>
-
-        @Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
-    </div>
+            @Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
+        </div>
 
 
 
