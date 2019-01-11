@@ -77,15 +77,15 @@
 
 
     </div>
-    <p>
+    @*<p>
         @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
-    </p>
+    </p>*@
 
 
    
     <div id="DivMoreSimilar_id">
         <p>
-            <button onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
+            <button class="btn btn-default" onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
 
         </p>
     </div>

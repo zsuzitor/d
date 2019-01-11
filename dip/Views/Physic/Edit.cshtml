@@ -8,13 +8,60 @@
     function delete_img(but) {
         var id=but.id.split("_")[1];
         var div = document.getElementById("div_delete_img_id");
-        var str = "<input type='hidden' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
+        var str = "<input type='hidden' id='one_block_delete_img_id_" + num_delete_img++ + "' name='deleteImg_[" + num_delete_img + "]' value='" + id + "' />";
         div.innerHTML += str;
 
-        document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
+        //document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
+
+        document.getElementById("div_img_hide_block_" + id).style.display = 'none';
+
+        document.getElementById("div_img_reset_block_" + id).style.display = 'block';
     }
 
+    function reset_img(but) {
+        var id = but.id.split("_")[1];
+        var cur_num = 0;
+        var res = "";
+        for (var i = 0; i < num_delete_img; ++i) {
+            var del = document.getElementById('one_block_delete_img_id_' + i);
+            if (del.value != id) {
+                res += "<input type='hidden' id='one_block_delete_img_id_" + cur_num++ + "' name='deleteImg_[" + cur_num + "]' value='" + del.value + "' />";
+            }
 
+        }
+        num_delete_img = cur_num;
+        var div = document.getElementById("div_delete_img_id");
+        div.innerHTML = res;
+        document.getElementById("div_img_hide_block_" + id).style.display = 'block';
+
+        document.getElementById("div_img_reset_block_" + id).style.display = 'none';
+        //var del = document.getElementById('one_block_delete_img_id_' + id);
+        //del.remove();
+        //восстанавливаем
+        //var sh = false;
+        //var del_cur = document.getElementById('one_block_delete_img_id_' + 1);
+        //var del_next = document.getElementById('one_block_delete_img_id_' + 2);
+        //for (var i = 1; i < num_delete_img; ++i) {
+           
+        //    if (sh) {
+
+        //    }
+        //    else {
+
+        //    }
+        //    if (del.value == id) {
+        //        //for (; i < num_delete_img; ++i) {
+
+        //        //}
+        //        sh = true;
+
+        //        break;
+        //    }
+        //    del_cur = del_next;
+        //    del_next = document.getElementById('one_block_delete_img_id_' + (i+1));
+        //}
+
+    }
 
 </script>
 
@@ -22,7 +69,7 @@
 
 
 <h2>Edit</h2>
-
+@Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
 @if(Model== null)
 {
     <p>запись не найдена</p>
@@ -127,15 +174,22 @@
                         <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
                     </div>*@
                     <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                        <div class="details_one_image">
-                            @helpers_.ImageLink(i)
+                        <div id="div_img_hide_block_@i.Id">
+                            <div class="details_one_image">
+                                @helpers_.ImageLink(i)
+                            </div>
+                            <div class="edit_button_image_action">
+                                <button id="buttonDeleteId_@i.Id" class="btn btn-default" onclick="delete_img(this)">Удалить</button>
+                            </div>
                         </div>
-                        <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
-                    </div>
+                        <div class="edit_button_image_action" id="div_img_reset_block_@i.Id" style="display:none;">
+                            <button id="buttonResetId_@i.Id" class="btn btn-default" onclick="reset_img(this)">Восстановить</button>
+                        </div>
+                        </div>
                 }
             </div>
         </div>
-            @Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
+           
         </div>
 
 

@@ -113,7 +113,8 @@ namespace dip.Controllers
 
                 res = Search.GetListPhys(type, str, 0, 1);
 
-
+            if (res.Count < Constants.CountForLoad)
+                ViewBag.ShowBtLoad = false;
             //TODO если произошла ошибка, надо найти лог и поменять флаг
             return View(res.ToArray());//.Select(x1=>x1.IDFE)
         }
