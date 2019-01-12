@@ -192,10 +192,23 @@ div.Main_header_link_block{
 
 
 div.main_footer{
-    height:200px;
-    border:2px solid black;
+   
+    /*border:2px solid black;*/
 }
 
+div.main_footer_up{
+     color:white;
+    background-color:rgba(60,60,60,0.5);
+    height:100px;
+}
+div.main_footer_middle{
+    height:25px;
+}
+div.main_footer_down{
+    color:white;
+    height:300px;
+    background-color:rgba(60,60,60,1);
+}
   div.Main_preloader{
         position:fixed;
     width:100px;

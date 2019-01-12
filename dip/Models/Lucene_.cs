@@ -72,6 +72,7 @@ namespace dip.Models
             using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 writer.DeleteAll();
+               
                 foreach (var i in feList)
                 {
                     Lucene_.BuildIndexSolo(writer, i);
@@ -79,6 +80,48 @@ namespace dip.Models
             }
         }
 
+        static public void UpdateDocument(string idfe,FEText obj)
+        {
+            using (var directory = GetDirectory())
+            using (var analyzer = GetAnalyzer())
+            using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            {
+                //obj.ChangeForMap();
+                //writer.DeleteDocuments(new Term("IDFE", obj.IDFE.ToString()));
+                //BuildIndexSolo(writer,obj);
+                obj.ChangeForMap();
+                writer.UpdateDocument(new Term("IDFE", idfe), MapProduct(obj), analyzer);
+                // writer.del
+
+
+
+
+                //var query = new BooleanQuery();
+                
+
+
+                //var phraseQuery = new PhraseQuery();
+                
+                //    phraseQuery.Add(new Term("IDFE", idfe));
+
+                
+                //query.Add(phraseQuery, Occur.SHOULD);
+
+
+                //var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "IDFE", analyzer);
+                //var keywordsQuery = parser.Parse(keyword);
+                
+                //query.Add(keywordsQuery, Occur.SHOULD);
+
+
+
+
+
+
+
+
+            }
+        }
 
         static public void BuildIndexSolo(IndexWriter writer, FEText obj)
         {
@@ -221,7 +264,8 @@ namespace dip.Models
         static Document MapProduct(FEText obj)
         {
             var document = new Document();
-            document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
+            // document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
+            document.Add(new Field("IDFE", obj.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("Name", obj.Name, Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("Text", obj.Text, Field.Store.YES, Field.Index.ANALYZED));
 

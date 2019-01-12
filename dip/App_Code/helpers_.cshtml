@@ -187,7 +187,7 @@
                 @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
 
                 <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+ type)>
-                    <option value="NO_FIZVEL">Не выбрано</option>
+                    @*<option value="NO_FIZVEL">Не выбрано</option>*@
                     @foreach (var i in parametricFizVelId)
                     {
 

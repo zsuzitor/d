@@ -120,7 +120,7 @@ namespace dip.Controllers
                 return new HttpStatusCodeResult(404);
             if(!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp, outp))
                 return new HttpStatusCodeResult(404);
-          
+            Lucene_.UpdateDocument(obj.IDFE.ToString(),obj);
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
@@ -128,7 +128,7 @@ namespace dip.Controllers
         }
 
 
-
+        
 
 
 

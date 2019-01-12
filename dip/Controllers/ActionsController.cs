@@ -54,8 +54,21 @@ namespace dip.Controllers
             //ViewBag.postfix = postfix;
             return PartialView();
         }
-
-
+        /// <summary>
+        /// загрузить для отображения(не формой а текстом)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult LoadDescr(int id)
+        {
+            //TODO сейчас полностью форма, а нужны только выбранные параметры
+            FEAction inp = null;
+            FEAction outp = null;
+            FEAction.Get(id, ref inp, ref outp);
+            ViewBag.inputForm = new DescrSearchIInput(inp);
+            ViewBag.outpForm = new DescrSearchIOut(outp);
+            return PartialView();
+        }
 
         //------------------------------------------------------
 

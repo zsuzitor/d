@@ -80,9 +80,15 @@
     @*<p>
         @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
     </p>*@
+    <p>
+        <button class="btn btn-default" onclick="loadDescrParam(@Model.IDFE)" id="show_descr_but">Показать дескрипторы</button>
 
+    </p>
+    <div id="DivDescriptionParams_id">
+       
+    </div>
+    <hr />
 
-   
     <div id="DivMoreSimilar_id">
         <p>
             <button class="btn btn-default" onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
@@ -95,6 +101,37 @@
 
 
 <script>
+
+    function loadDescrParam(id) {
+        var but = document.getElementById('show_descr_but');
+        var div = document.getElementById('DivDescriptionParams_id');
+        if (div.innerHTML.trim() == '') {
+            //загрузить
+            goAjaxRequest({
+                url: '/Actions/LoadDescr',
+                type: 'POST',
+                data: { id: id },
+                func_success: function (data, status, jqXHR) {
+                    // Заменяем часть представления, отвечающего за отображение значений характеристики
+                    document.getElementById('DivDescriptionParams_id').innerHTML = data;
+                }
+            });
+            div.style.display = 'block';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+            }
+            else {
+                //показать
+                div.style.display = 'block';
+            }
+        }
+
+
+    }
 
     function loadSimilar(id){
         document.getElementById('DivMoreSimilar_id').innerHTML= '';
