@@ -10,32 +10,62 @@ namespace dip.Models.DataBase
     public class DataBase
     {
 
-        public static void ExecuteNonQuery(string query)
+
+        /// <summary>
+        /// выполнение tsql запроса который ничего не возвращает
+        /// </summary>
+        /// <param name="query - будет использоваться только если command_==null"></param>
+        /// <param name="command_ - если не null то не закрывается"></param>
+        public static void ExecuteNonQuery(string query, SqlCommand command_ = null)
         {
-            var connection = new SqlConnection();
-            connection.ConnectionString = Constants.sql_0;
-            connection.Open();
-           
-                
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            
-            connection.Close();
+            var command = command_;
+            if (command_ == null)
+            {
+                var connection = new SqlConnection() { ConnectionString = Constants.sql_0 };
+                connection.Open();
+                command = new SqlCommand(query, connection);
+
+            }
+            command.ExecuteNonQuery();
+
+            if (command_ == null)
+            {
+                command.Connection.Close();
+                command.Dispose();
+            }
+
+
+            ////using (var command = command_?? new SqlCommand(query, connection))// new SqlCommand(query, connection))
+            //var command = command_ ?? new SqlCommand(query, connection);
+            //    command.ExecuteNonQuery();
+
+            //if (connection_ == null)
+            //    connection.Close();
         }
 
-        public static List<Dictionary<string, object>> ExecuteQuery(string query, params string[] props)
+        /// <summary>
+        /// выполнение tsql запроса(например выборка данных) который возвращает данные. при command_-null - откроет новое подключение
+        /// </summary>
+        /// <param name="query - будет использоваться только если command_==null"></param>
+        /// <param name="command_ - если не null то не закрывается"></param>
+        /// <param name="props - список свойств"></param>
+        /// <returns></returns>
+        public static List<Dictionary<string, object>> ExecuteQuery(string query,SqlCommand command_, params string[] props)
         {
             List<Dictionary<string, object>> res = new List<Dictionary<string, object>>();
 
 
-            var connection1 = new SqlConnection() { ConnectionString= Constants.sql_0 };
-            var command1 = new SqlCommand() { Connection = connection1, CommandType = CommandType.Text };
+            var command = command_;
+            if (command_ == null)
+            {
+                var connection = new SqlConnection() { ConnectionString = Constants.sql_0 };
+                connection.Open();
+                command = new SqlCommand(query, connection) { CommandType = CommandType.Text };
 
-            connection1.Open();
-            command1.CommandText = query;
-            using (SqlDataReader reader = command1.ExecuteReader())
+            }
+
+            
+            using (SqlDataReader reader = command.ExecuteReader())
                 if (reader.HasRows)
                     while (reader.Read())
                     {
@@ -44,8 +74,12 @@ namespace dip.Models.DataBase
                             dict.Add(i, reader[i]);
                         res.Add(dict);
                     }
-                        
-               
+            if (command_ == null)
+            {
+                command.Connection.Close();
+                command.Dispose();
+            }
+
             return res;
         }
 

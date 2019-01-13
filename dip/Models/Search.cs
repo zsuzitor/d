@@ -121,7 +121,7 @@ FROM SEMANTICKEYPHRASETABLE
     {logParamId}  
     ) AS KEYP_TBL  
 ORDER BY KEYP_TBL.score DESC;";
-            var ldr=DataBase.DataBase.ExecuteQuery(q, "keyphrase");
+            var ldr=DataBase.DataBase.ExecuteQuery(q,null, "keyphrase");
             foreach (var i in ldr)
                 res += i["keyphrase"].ToString()+" ";
 

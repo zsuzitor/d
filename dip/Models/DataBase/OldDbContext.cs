@@ -102,6 +102,15 @@ namespace dip.Models.DataBase
                 try
                 {
                     command1.CommandText = "select * from Limit";
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
+                    foreach (var i in ldr)
+                        res += i["keyphrase"].ToString() + " ";
+
+
+
+
+
+                    
                     using (SqlDataReader reader = command1.ExecuteReader())
                     {
 
