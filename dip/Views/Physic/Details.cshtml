@@ -117,16 +117,19 @@
                 }
             });
             div.style.display = 'block';
+            but.innerHTML='Скрыть дескрипторы';
         }
         else {
             //загружать не надо, надо показать\скрыть
             if (div.style.display == 'block') {
                 //скрыть
                 div.style.display = 'none';
+                but.innerHTML='Показать дескрипторы';
             }
             else {
                 //показать
                 div.style.display = 'block';
+                but.innerHTML='Скрыть дескрипторы';
             }
         }
 

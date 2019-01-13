@@ -104,37 +104,18 @@ namespace dip.Models.DataBase
                     command1.CommandText = "select * from Limit";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
                     foreach (var i in ldr)
-                        res += i["keyphrase"].ToString() + " ";
-
-
-
-
-
-                    
-                    using (SqlDataReader reader = command1.ExecuteReader())
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new TechnicalFunctions.Limit();
+                        obj.Id = i["Id"].ToString().Trim();
+                        obj.Value = i["Value"].ToString().Trim();
+                        obj.Parent = i["Parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new TechnicalFunctions.Limit();
-
-
-                                obj.Id = reader["Id"].ToString();
-                                obj.Value = reader["Value"].ToString();
-                                obj.Parent = reader["Parent"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Limits.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Limits.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
-
+                       
                 }
                 catch (Exception e)
                 {
@@ -148,29 +129,22 @@ namespace dip.Models.DataBase
 
                 try
                 {
+
                     command1.CommandText = "select * from OperandGroup";
-                    using (SqlDataReader reader = command1.ExecuteReader())
+                    
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new TechnicalFunctions.OperandGroup();
+                        obj.Id = i["Id"].ToString().Trim();
+                        obj.Value = i["Value"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new TechnicalFunctions.OperandGroup();
-
-
-                                obj.Id = reader["Id"].ToString();
-                                obj.Value = reader["Value"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.OperandGroups.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.OperandGroups.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
+                    
 
                 }
                 catch (Exception e)
@@ -186,30 +160,20 @@ namespace dip.Models.DataBase
                 try
                 {
                     command1.CommandText = "select * from Operation";
-                    using (SqlDataReader reader = command1.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new TechnicalFunctions.Operation();
+                        obj.Id = i["Id"].ToString().Trim();
+                        obj.Value = i["Value"].ToString().Trim();
+                        obj.Parent = i["Parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new TechnicalFunctions.Operation();
-
-
-                                obj.Id = reader["Id"].ToString();
-                                obj.Value = reader["Value"].ToString();
-                                obj.Parent = reader["Parent"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Operations.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Operations.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
-
+                    
                 }
                 catch (Exception e)
                 {
@@ -225,30 +189,20 @@ namespace dip.Models.DataBase
                 try
                 {
                     command1.CommandText = "select * from Operand";
-                    using (SqlDataReader reader = command1.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "OperandGroupId");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new TechnicalFunctions.Operand();
+                        obj.Id = i["Id"].ToString().Trim();
+                        obj.Value = i["Value"].ToString().Trim();
+                        obj.OperandGroupId = i["OperandGroupId"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new TechnicalFunctions.Operand();
-
-
-                                obj.Id = reader["Id"].ToString();
-                                obj.Value = reader["Value"].ToString();
-                                obj.OperandGroupId = reader["OperandGroupId"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Operands.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Operands.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
-
+                    
                 }
                 catch (Exception e)
                 {
@@ -262,51 +216,29 @@ namespace dip.Models.DataBase
                 try
                 {
                     command1.CommandText = "select * from [Index]";
-                    using (SqlDataReader reader = command1.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "OperationId", "OperandId", "LimitId", "EffectIds");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new TechnicalFunctions.Index();
+                        obj.Id = i["Id"].ToString().Trim();
+                        obj.OperationId = i["OperationId"].ToString().Trim();
+                        obj.OperandId = i["OperandId"].ToString().Trim();
+                        obj.LimitId = i["LimitId"].ToString().Trim();
+                        obj.EffectIds = i["EffectIds"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new TechnicalFunctions.Index();
-
-
-                                obj.Id = reader["Id"].ToString();
-                                obj.OperationId = reader["OperationId"].ToString();
-                                obj.OperandId = reader["OperandId"].ToString();
-                                obj.LimitId = reader["LimitId"].ToString();
-                                obj.EffectIds = reader["EffectIds"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Indexs.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Indexs.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
-
+                   
                 }
                 catch (Exception e)
                 {
                     throw e;
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                
             }
 
 
@@ -325,30 +257,21 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from Pros";
-                    using (SqlDataReader reader = command.ExecuteReader())
+
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.Pro();
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Parent = i["parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Pro();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Pros.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.Pros.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+
                 }
                 catch (Exception e)
                 {
@@ -365,33 +288,23 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from ActionTypes";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.ActionType();
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
+                            obj.Parent = null;
+                        else
+                            obj.Parent = i["parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.ActionType();
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
-                                    obj.Parent = null;
-                                else
-                                    obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.ActionTypes.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
-
+                            db.ActionTypes.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -407,35 +320,23 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from FizVels";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.FizVel();
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
+                            obj.Parent = null;
+                        else
+                            obj.Parent = i["parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FizVel();
-
-                                obj.Id = reader["id"].ToString();
-
-                                obj.Name = reader["name"].ToString();
-
-
-                                if (string.IsNullOrWhiteSpace(reader["parent"].ToString()))
-                                    obj.Parent = null;
-                                else
-                                    obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FizVels.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.FizVels.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -450,29 +351,23 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from AllActions";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.AllAction();
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
+                            obj.Parent = null;
+                        else
+                            obj.Parent = i["parent"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.AllAction();
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.AllActions.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.AllActions.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -488,7 +383,7 @@ namespace dip.Models.DataBase
                 try
                 {
 
-                    //костль для восстановления id, для того что бы начиналось с 134
+                    //костль для восстановления id, для того что бы начиналось с 134, можно при создании таблицы указывать начальный id
                     for (var i = 0; i < 133; ++i)
                     {
                         using (var db = new ApplicationDbContext())
@@ -504,28 +399,21 @@ namespace dip.Models.DataBase
 
 
                     command.CommandText = "select * from Actions";
-
-                    //SqlDataReader reader = command.ExecuteReader();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "actionId", "actionType", "fizVelId");
+                    foreach (var i in ldr)
                     {
-                        if (reader.HasRows)
+                        var obj = new Domain.Action();
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        obj.AllActionId = i["actionId"].ToString().Trim();
+                        obj.ActionType_Id = i["actionType"].ToString().Trim();
+                        obj.FizVelId = i["fizVelId"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Action();
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.AllActionId = reader["actionId"].ToString();
-                                obj.ActionType_Id = reader["actionType"].ToString();
-                                obj.FizVelId = reader["fizVelId"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Actions.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.Actions.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -556,41 +444,26 @@ namespace dip.Models.DataBase
 
                     //после action, pro
                     command.CommandText = "select * from ActionPros";
-                    //SqlDataReader reader = command.ExecuteReader()
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "prosId");
+                    foreach (var i in ldr)
                     {
-                        if (reader.HasRows)
+                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                        var ProId = i["prosId"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                
-                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                var ProId = reader["prosId"].ToString();
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    var act=db.Actions.First(x1=>x1.Id==ActionId);
-                                    act.Pros.Add(db.Pros.First(x1=>x1.Id==ProId));
-                                    db.SaveChanges();
-                                }
-
-                            }
-
+                            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                            act.Pros.Add(db.Pros.First(x1 => x1.Id == ProId));
+                            db.SaveChanges();
                         }
                     }
-                    // SqlDataReader reader = command.ExecuteReader();
-
+                    
 
                 }
                 catch (Exception e)
                 {
                     throw e;
                 }
-                //finally
-                //{
-                //    reader.Close();
-                //}
-
-
+              
 
 
 
@@ -601,29 +474,19 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from Spec";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.Spec();
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Parent = i["parent"].ToString().Trim();
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Spec();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Specs.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Specs.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
                 }
                 catch (Exception e)
@@ -653,31 +516,21 @@ namespace dip.Models.DataBase
 
 
                     command.CommandText = "select * from ActionSpec";
-
-                    //SqlDataReader reader = command.ExecuteReader();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "specId");
+                    foreach (var i in ldr)
                     {
-                        if (reader.HasRows)
+                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                        var SpecId = i["specId"].ToString().Trim();
+
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                //var obj = new Domain.ActionSpec();
-
-                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                var SpecId = reader["specId"].ToString();
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    var act = db.Actions.First(x1 => x1.Id == ActionId);
-                                    act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
-                                    db.SaveChanges();
-                                }
-
-                            }
-
+                            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                            act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
+                            db.SaveChanges();
                         }
                     }
 
+                    
                 }
                 catch (Exception e)
                 {
@@ -695,31 +548,22 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from Vrem";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.Vrem();
+                        
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Parent = i["parent"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.Vrem();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Vrems.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Vrems.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -751,32 +595,20 @@ namespace dip.Models.DataBase
                     //    }
                     //}
                     command.CommandText = "select * from ActionVrem";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "vremId");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                        var VremId = i["vremId"].ToString().Trim();
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                //var obj = new Domain.ActionVrem();
+                            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                            act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
 
-                                var ActionId = Convert.ToInt32(reader["actionId"].ToString());
-                                var VremId = reader["vremId"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    var act = db.Actions.First(x1 => x1.Id == ActionId);
-                                    act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
-
-                                    db.SaveChanges();
-                                }
-
-                            }
-
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -800,41 +632,43 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from FeAction";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "input", "type", "name", "fizVelId", 
+                        "fizVelSection", "fizVelChange", "fizVelLeftBorder", "fizVelRightBorder", "pros", "spec", "vrem");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.FEAction();
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                        obj.Input = Convert.ToInt32(i["input"].ToString().Trim());
+                        obj.Type = i["type"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        //TODO возможно так правильно, надо потестить
+                       
+                        obj.FizVelId = i["fizVelId"].ToString().Trim();
+                        obj.FizVelSection = i["fizVelSection"].ToString().Trim();
+                        if (!string.IsNullOrWhiteSpace(obj.FizVelSection))
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FEAction();
-
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.Idfe = Convert.ToInt32(reader["idfe"].ToString());
-                                obj.Input = Convert.ToInt32(reader["input"].ToString());
-                                obj.Type = reader["type"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.FizVelId = reader["fizVelId"].ToString();
-                                obj.FizVelSection = reader["fizVelSection"].ToString();
-                                obj.FizVelChange = reader["fizVelChange"].ToString();
-                                obj.FizVelLeftBorder = Convert.ToDouble(reader["fizVelLeftBorder"].ToString());
-                                obj.FizVelRightBorder = Convert.ToDouble(reader["fizVelRightBorder"].ToString());
-                                obj.Pros = reader["pros"].ToString();
-                                obj.Spec = reader["spec"].ToString();
-                                obj.Vrem = reader["vrem"].ToString();
-
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FEActions.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            string tmp = obj.FizVelId;
+                            obj.FizVelId = obj.FizVelSection;
+                            obj.FizVelSection = tmp;
+                        }
+                            //
+                            obj.FizVelChange = i["fizVelChange"].ToString().Trim();
+                        obj.FizVelLeftBorder = Convert.ToDouble(i["fizVelLeftBorder"].ToString().Trim());
+                        obj.FizVelRightBorder = Convert.ToDouble(i["fizVelRightBorder"].ToString().Trim());
+                        obj.Pros = i["pros"].ToString().Trim();
+                        obj.Spec = i["spec"].ToString().Trim();
+                        obj.Vrem = i["vrem"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
+                        {
+                            db.FEActions.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
+                    
                 }
                 catch (Exception e)
                 {
@@ -849,29 +683,21 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from FeIndex";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.FEIndex();
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                        obj.Index = i["Index"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FEIndex();
-
-                                obj.IDFE = Convert.ToInt32(reader["IDFE"].ToString());
-                                obj.Index = reader["Index"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FEIndexs.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.FEIndexs.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -889,39 +715,31 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from FeObject";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
+                        "conductivity", "mechanicalState", "opticalState", "special");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.FEObject();
 
-                        // SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+
+                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
+                        obj.PhaseState = i["phaseState"].ToString().Trim();
+                        obj.Composition = i["composition"].ToString().Trim();
+                        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
+                        obj.Conductivity = i["conductivity"].ToString().Trim();
+                        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
+                        obj.OpticalState = i["opticalState"].ToString().Trim();
+                        obj.Special = i["special"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FEObject();
-
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-
-                                obj.Idfe = Convert.ToInt32(reader["idfe"].ToString());
-                                obj.Begin = Convert.ToInt32(reader["begin"].ToString());
-                                obj.PhaseState = reader["phaseState"].ToString();
-                                obj.Composition = reader["composition"].ToString();
-                                obj.MagneticStructure = reader["magneticStructure"].ToString();
-                                obj.Conductivity = reader["conductivity"].ToString();
-                                obj.MechanicalState = reader["mechanicalState"].ToString();
-                                obj.OpticalState = reader["opticalState"].ToString();
-                                obj.Special = reader["special"].ToString();
-
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FEObjects.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.FEObjects.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -937,36 +755,29 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from FeText";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "name", "text", "textInp", "textOut", "textObj",
+                        "textApp", "textLit");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.FEText();
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Text = i["text"].ToString().Trim();
+                        obj.TextInp = i["textInp"].ToString().Trim();
+                        obj.TextOut = i["textOut"].ToString().Trim();
+                        obj.TextObj = i["textObj"].ToString().Trim();
+                        obj.TextApp = i["textApp"].ToString().Trim();
+                        obj.TextLit = i["textLit"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.FEText();
-
-                                obj.IDFE = Convert.ToInt32(reader["IDFE"].ToString());
-                                obj.Name = reader["name"].ToString();
-                                obj.Text = reader["text"].ToString();
-                                obj.TextInp = reader["textInp"].ToString();
-                                obj.TextOut = reader["textOut"].ToString();
-                                obj.TextObj = reader["textObj"].ToString();
-                                obj.TextApp = reader["textApp"].ToString();
-                                obj.TextLit = reader["textLit"].ToString();
-
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.FEText.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.FEText.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+
+                    
                 }
                 catch (Exception e)
                 {
@@ -987,35 +798,29 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from NewFeIndex";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "input", "output", "beginObjectState", "endObjectState",
+                       "beginPhase", "endPhase");
+                    foreach (var i in ldr)
                     {
+                        var obj = new Domain.NewFEIndex();
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                        obj.Input = i["input"].ToString().Trim();
+                        obj.Output = i["output"].ToString().Trim();
+                        obj.BeginObjectState = i["beginObjectState"].ToString().Trim();
+                        obj.EndObjectState = i["endObjectState"].ToString().Trim();
+                        obj.BeginPhase = i["beginPhase"].ToString().Trim();
+                        obj.EndPhase = i["endPhase"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.NewFEIndex();
-
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.Idfe = Convert.ToInt32(reader["idfe"].ToString());
-                                obj.Input = reader["input"].ToString();
-                                obj.Output = reader["output"].ToString();
-                                obj.BeginObjectState = reader["beginObjectState"].ToString();
-                                obj.EndObjectState = reader["endObjectState"].ToString();
-                                obj.BeginPhase = reader["beginPhase"].ToString();
-                                obj.EndPhase = reader["endPhase"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.NewFEIndexs.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.NewFEIndexs.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+
+                    
                 }
                 catch (Exception e)
                 {
@@ -1031,31 +836,22 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from NeZakon";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "FizVel1", "FizVel2");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.NeZakon();
+                        
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        obj.FizVel1 = i["FizVel1"].ToString().Trim();
+                        obj.FizVel2 = i["FizVel2"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.NeZakon();
-
-
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.FizVel1 = reader["FizVel1"].ToString();
-                                obj.FizVel2 = reader["FizVel2"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.NeZakons.Add(obj);
-                                    db.SaveChanges();
-                                }
-
-                            }
+                            db.NeZakons.Add(obj);
+                            db.SaveChanges();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -1090,44 +886,32 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from Thes";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent", "compatible", "path");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.The();
+                        
+                        obj.Id = i["id"].ToString().Trim();
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Parent = i["parent"].ToString().Trim();
+                        
+                        if (string.IsNullOrWhiteSpace(i["compatible"].ToString().Trim()))
+                            obj.Compatible = null;
+                        else
+                            obj.Compatible = i["compatible"].ToString().Trim();
+                        
+                        if (string.IsNullOrWhiteSpace(i["path"].ToString().Trim()))
+                            obj.Path = null;
+                        else
+                            obj.Path = i["path"].ToString().Trim();
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.The();
-
-
-                                obj.Id = reader["id"].ToString();
-                                obj.Name = reader["name"].ToString();
-                                obj.Parent = reader["parent"].ToString();
-
-
-
-                                if (string.IsNullOrWhiteSpace(reader["compatible"].ToString()))
-                                    obj.Compatible = null;
-                                else
-                                    obj.Compatible = reader["compatible"].ToString();
-
-
-                                if (string.IsNullOrWhiteSpace(reader["path"].ToString()))
-                                    obj.Path = null;
-                                else
-                                    obj.Path = reader["path"].ToString();
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.Thes.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.Thes.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -1145,233 +929,39 @@ namespace dip.Models.DataBase
                 try
                 {
                     command.CommandText = "select * from ThesChild";
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "nodeID", "childID", "order");
+                    foreach (var i in ldr)
                     {
-
-                        //SqlDataReader reader = command.ExecuteReader();
-                        if (reader.HasRows)
+                        var obj = new Domain.ThesChild();
+                        
+                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        obj.NodeID = i["nodeID"].ToString().Trim();
+                        obj.ChildID = i["childID"].ToString().Trim();
+                        if (i["order"].ToString().Trim() == null || i["order"].ToString().Trim() == "")
+                            obj.Order = null;
+                        else
+                            obj.Order = Convert.ToInt32(i["order"].ToString().Trim());
+                        
+                        using (var db = new ApplicationDbContext())
                         {
-                            while (reader.Read())
-                            {
-                                var obj = new Domain.ThesChild();
-
-
-                                obj.Id = Convert.ToInt32(reader["id"].ToString());
-                                obj.NodeID = reader["nodeID"].ToString();
-                                obj.ChildID = reader["childID"].ToString();
-                                if (reader["order"].ToString() == null || reader["order"].ToString() == "")
-                                    obj.Order = null;
-                                else
-                                    obj.Order = Convert.ToInt32(reader["order"].ToString());
-
-
-                                using (var db = new ApplicationDbContext())
-                                {
-                                    db.ThesChilds.Add(obj);
-                                    db.SaveChanges();
-                                }
-                            }
+                            db.ThesChilds.Add(obj);
+                            db.SaveChanges();
                         }
-
                     }
+                    
                 }
                 catch (Exception e)
                 {
                     throw e;
                 }
 
-
-
-
-                //настройки для fullTextSearch sql server
-
-
-                //using (var db = new ApplicationDbContext())
-                {
-                    //    ObjectContext context =
-                    //(new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
-                    //    ObjectQuery<DbDataRecord> Customers =
-                    //context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
-
-                    //    ObjectQuery<DbDataRecord> Customers1 =
-                    //context.CreateQuery<DbDataRecord>(@"create fulltext index on [dbo].[FETexts](
-                    //    Name language  1049,
-                    //    Text language  1049,
-                    //    TextInp language  1049,
-                    //    TextOut language  1049,
-                    //    TextObj language  1049,
-                    //    TextApp language  1049,
-                    //    TextLit language  1049
-                    //    )
-                    //    key index [PK_dbo.FeTexts]
-                    //    on DbaFeTextCatalog
-                    //    with change_tracking auto;");
-                    //    context.SaveChanges();
-
-
-
-                    //                    db.Database.ExecuteSqlCommand(@"create fulltext catalog DbaFeTextCatalog");
-                    //                    db.Database.ExecuteSqlCommand(@"create fulltext index on [dbo].[FETexts](
-                    //Name language  1049,
-                    //Text language  1049,
-                    //TextInp language  1049,
-                    //TextOut language  1049,
-                    //TextObj language  1049,
-                    //TextApp language  1049,
-                    //TextLit language  1049
-                    //)
-                    //key index [PK_dbo.FeTexts]
-                    //on DbaFeTextCatalog
-                    //with change_tracking auto;");
-
-
-
-
-
-
-
-
-                    //тест функции
-
-
-
-
-
-
-                    //    ObjectContext context =
-                    //(new ApplicationDbContext() as IObjectContextAdapter).ObjectContext;
-                    //    ObjectQuery<DbDataRecord> Customers =
-                    //context.CreateQuery<DbDataRecord>("create fulltext catalog DbaFeTextCatalog");
-
-
-                    /*using (var db=new ApplicationDbContext())
-                    {
-
-
-
-
-                        //                        db.Database.ExecuteSqlCommand(@"CREATE FUNCTION[dbo].[initFullTextSearch]()
-                        //RETURNS int
-                        //AS
-                        //BEGIN
-
-                        //create fulltext catalog DbaFeTextCatalog
-                        //create fulltext index on [dbo].[FETexts](
-                        //Name language  1049,
-                        //Text language  1049,
-                        //TextInp language  1049,
-                        //TextOut language  1049,
-                        //TextObj language  1049,
-                        //TextApp language  1049,
-                        //TextLit language  1049
-                        //)
-                        //key index [PK_dbo.FeTexts]
-                        //on DbaFeTextCatalog
-                        //with change_tracking auto;
-                        //  RETURN 1
-                        //END");
-
-                        db.Database.ExecuteSqlCommand(@"
-CREATE PROC initFullTextSearch 
-AS    
-create fulltext catalog DbaFeTextCatalog
-create fulltext index on [dbo].[FETexts](
-Name language  1049,
-Text language  1049,
-TextInp language  1049,
-TextOut language  1049,
-TextObj language  1049,
-TextApp language  1049,
-TextLit language  1049
-)
-key index [PK_dbo.FeTexts]
-on DbaFeTextCatalog
-with change_tracking auto;");
-                        db.SaveChanges();
-                        //db.Database.ExecuteSqlCommand(@"initFullTextSearch();");
-                        //db.SaveChanges();
-                    }
-                    */
-                    
-
-
-    }
-
-
-
-//# выполнение #sql скрипта 
-                
-//                var comps = db.Database.SqlQuery<Company>("SELECT * FROM Companies");
-//                возвращает количество затронутых строк
-//int numberOfRowInserted = db.Database.ExecuteSqlCommand("INSERT INTO Companies (Name) VALUES ('HTC')");
-//                получить строку подключения
-//db.Database.Connection.ConnectionString
-
-
-
-
-
-
-
-
-
                 returnvalue = true;
             }
-            //catch (Exception e)
-            //{
-            //    throw e;
-            //}
-            //finally
-            //{
-            //    connection.Close();
-            //}
+ 
             return returnvalue;
 
         }
-
-
-        //public struct tt
-        //{
-        //    public string Name { get; set; }// name var
-        //    public int Type { get; set; }// 1-int  2-string
-        //}
-        //public void test(string TableNam,params tt[] mass)
-        //{
-        //    try
-        //    {
-        //        command.CommandText = "select * from "+ TableNam;
-
-        //        SqlDataReader reader = command.ExecuteReader();
-        //        if (reader.HasRows)
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                var obj = new Domain.ActionType();
-
-        //                //obj.Id = reader["id"].ToString();
-        //                //obj.Name = reader["name"].ToString();
-        //                //obj.Parent = reader["parent"].ToString();
-        //                for(int i = 0; i < mass.Count(); ++i)
-        //                {
-
-        //                }
-
-        //                using (var db = new ApplicationDbContext())
-        //                {
-        //                    db.ActionTypes.Add(obj);
-        //                    db.SaveChanges();
-        //                }
-
-        //            }
-
-        //        }
-        //    }
-        //    catch { }
-        //}
-
+        
     }
-
-
-
-
+    
 }

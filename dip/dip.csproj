@@ -351,6 +351,7 @@
     <Content Include="Views\Physic\Edit.cshtml" />
     <Content Include="Views\Search\TextSearchPartial.cshtml" />
     <Content Include="Views\Physic\ShowSimilar.cshtml" />
+    <Content Include="Views\Actions\LoadDescr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -33,14 +33,7 @@ namespace dip.Models.DataBase
                 command.Connection.Close();
                 command.Dispose();
             }
-
-
-            ////using (var command = command_?? new SqlCommand(query, connection))// new SqlCommand(query, connection))
-            //var command = command_ ?? new SqlCommand(query, connection);
-            //    command.ExecuteNonQuery();
-
-            //if (connection_ == null)
-            //    connection.Close();
+            
         }
 
         /// <summary>
@@ -50,10 +43,9 @@ namespace dip.Models.DataBase
         /// <param name="command_ - если не null то не закрывается"></param>
         /// <param name="props - список свойств"></param>
         /// <returns></returns>
-        public static List<Dictionary<string, object>> ExecuteQuery(string query,SqlCommand command_, params string[] props)
+        public static List<Dictionary<string, object>> ExecuteQuery(string query, SqlCommand command_, params string[] props)
         {
             List<Dictionary<string, object>> res = new List<Dictionary<string, object>>();
-
 
             var command = command_;
             if (command_ == null)
@@ -64,7 +56,6 @@ namespace dip.Models.DataBase
 
             }
 
-            
             using (SqlDataReader reader = command.ExecuteReader())
                 if (reader.HasRows)
                     while (reader.Read())
@@ -82,7 +73,5 @@ namespace dip.Models.DataBase
 
             return res;
         }
-
-
     }
 }

@@ -1,0 +1,106 @@
+﻿@using dip.Models.Domain;
+
+
+<div>
+    <div>
+        <p>Входные</p>
+        <p>
+            <label>Название воздействия:</label>
+            <label>@(((Dictionary<string, string>)ViewBag.dict)["NameI"])</label>
+        </p>
+        <p>
+            <label>Тип входа:</label>
+            <label>@(((Dictionary<string, string>)ViewBag.dict)["TypeI"])</label>
+        </p>
+        @if (string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"]))
+        {
+            <p>
+                <label>Название физической величины:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdI"])</label>
+            </p>
+            <p>
+                <label>Пространственные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["ProsI"])</label>
+            </p>
+            <p>
+                <label>Специальные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["SpecsI"])</label>
+            </p>
+            <p>
+                <label>Временные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["VremsI"])</label>
+            </p>
+        }
+@if (!string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"]))
+{
+    <p>
+        <label>Раздел физики:</label>
+        <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdI"])</label>
+    </p>
+    <p>
+        <label>Название физической величины:</label>
+        <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"])</label>
+    </p>
+}
+
+    </div>
+    <div>
+        <p>Выходные</p>
+        <p>
+            <label>Название воздействия:</label>
+            <label>@(((Dictionary<string, string>)ViewBag.dict)["NameO"])</label>
+        </p>
+        <p>
+            <label>Тип входа:</label>
+            <label>@(((Dictionary<string, string>)ViewBag.dict)["TypeO"])</label>
+        </p>
+        @if (string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"]))
+        {
+            <p>
+                <label>Название физической величины:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdO"])</label>
+            </p>
+            <p>
+                <label>Пространственные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["ProsO"])</label>
+            </p>
+            <p>
+                <label>Специальные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["SpecsO"])</label>
+            </p>
+            <p>
+                <label>Временные характеристики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["VremsO"])</label>
+            </p>
+        }
+        @if (!string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"]))
+        {
+            <p>
+                <label>Раздел физики:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdO"])</label>
+            </p>
+            <p>
+                <label>Название физической величины:</label>
+                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"])</label>
+            </p>
+        }
+
+
+
+    </div>
+    
+
+
+</div>
+
+<p></p>
+
+
+
+
+
+
+
+
+
+

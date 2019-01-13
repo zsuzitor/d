@@ -61,12 +61,8 @@ namespace dip.Controllers
         /// <returns></returns>
         public ActionResult LoadDescr(int id)
         {
-            //TODO сейчас полностью форма, а нужны только выбранные параметры
-            FEAction inp = null;
-            FEAction outp = null;
-            FEAction.Get(id, ref inp, ref outp);
-            ViewBag.inputForm = new DescrSearchIInput(inp);
-            ViewBag.outpForm = new DescrSearchIOut(outp);
+           ViewBag.dict= DescriptionForm.GetFormShow(id);
+            
             return PartialView();
         }
 

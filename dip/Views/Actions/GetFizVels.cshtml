@@ -2,7 +2,7 @@
 
 @model dip.Models.Domain.Action
 
-@helpers_.DescrFormFizVels((string)ViewBag.type, (List<dip.Models.Domain.FizVel>)ViewBag.fizVelId,(string)ViewBag.currentActionId)
+@helpers_.DescrFormFizVels((string)ViewBag.type, (List<dip.Models.Domain.FizVel>)ViewBag.fizVelId, new dip.Models.Domain.DescrSearchI() {actionId= (string)ViewBag.currentActionId } )
 
 
 

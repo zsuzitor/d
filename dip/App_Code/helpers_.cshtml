@@ -100,7 +100,7 @@
         </div>
         <div id=@("fizVelGroup"+ type)>
 
-            @helpers_.DescrFormFizVels(type, a.fizVelId, a.currentActionId, param)
+            @helpers_.DescrFormFizVels(type, a.fizVelId, param)
         </div>
 
         @helpers_.DescrFormParamFizVels(type, a.parametricFizVelId, param )
@@ -131,10 +131,10 @@
 }
 
 
-@helper DescrFormFizVels(string type, List<FizVel> fizVelId,string currentActionId, DescrSearchI param = null)
+@helper DescrFormFizVels(string type, List<FizVel> fizVelId, DescrSearchI param = null)
 {
     <div class="form-group" id=@("fizVel"+type)>
-        @if (currentActionId != "VOZ11")
+        @if (param?.actionId != "VOZ11")
     {
             @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">Название физической величины</label>

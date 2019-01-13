@@ -28,6 +28,46 @@ namespace dip.Models.ViewModel
 
         }
 
+        //возвращает только данные для отображения(список полей и чему равны)
+        public static Dictionary<string, string> GetFormShow(int idfe)
+        {
+            Dictionary<string, string> res = new Dictionary<string, string>();
+
+            FEAction inp = null;
+            FEAction outp = null;
+            FEAction.Get(idfe, ref inp, ref outp);
+
+            string[] inp_pros = inp.Pros.Split(new string[] {" "},StringSplitOptions.RemoveEmptyEntries);
+            string[] inp_spec = inp.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] inp_vrem = inp.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            string[] outp_pros = outp.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] outp_spec = outp.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] outp_vrem = outp.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            using (var db = new ApplicationDbContext())
+            {
+                //TODO вынести по классам в методы типо "gettext"
+                res["NameI"] = db.AllActions.First(x1=>x1.Id==inp.Name).Name;
+                res["TypeI"] = db.ActionTypes.First(x1 => x1.Id == inp.Type).Name;
+                res["FizVelIdI"] = db.FizVels.First(x1 => x1.Id == inp.FizVelId).Name;
+                res["FizVelparamI"] = db.FizVels.FirstOrDefault(x1 => x1.Id == inp.FizVelSection)?.Name;
+                res["ProsI"] = string.Join(" ", db.Pros.Where(x1 => inp_pros.Contains(x1.Id)).Select(x1 => x1.Name).ToList());// ;
+                res["SpecsI"]  = string.Join(" ", db.Specs.Where(x1 => inp_spec.Contains(x1.Id)).Select(x1 => x1.Name).ToList());
+                res["VremsI"]  = string.Join(" ", db.Vrems.Where(x1 => inp_vrem.Contains(x1.Id)).Select(x1 => x1.Name).ToList());
+
+                res["NameO"] = db.AllActions.First(x1 => x1.Id == outp.Name).Name;
+                res["TypeO"] = db.ActionTypes.First(x1 => x1.Id == outp.Type).Name;
+                res["FizVelIdO"] = db.FizVels.First(x1 => x1.Id == outp.FizVelId).Name;
+                res["FizVelparamO"] = db.FizVels.FirstOrDefault(x1 => x1.Id == outp.FizVelSection)?.Name;
+                res["ProsO"]  = string.Join(" ", db.Pros.Where(x1 => outp_pros.Contains(x1.Id)).Select(x1 => x1.Name).ToList());
+                res["SpecsO"] = string.Join(" ", db.Specs.Where(x1 => outp_spec.Contains(x1.Id)).Select(x1 => x1.Name).ToList());
+                res["VremsO"]  = string.Join(" ", db.Vrems.Where(x1 => outp_vrem.Contains(x1.Id)).Select(x1 => x1.Name).ToList());
+            }
+            return res;
+        }
+
+
         //возвращает форму(данные) для отображения
         public static DescriptionForm GetFormObject(string actionId,string fizVelId)
         {
