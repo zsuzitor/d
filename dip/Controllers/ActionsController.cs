@@ -236,53 +236,10 @@ namespace dip.Controllers
         //[ChildActionOnly]
         public ActionResult GetProsChild(string id, string type)
         {
-            // Извлекаем дескриптор характеристики и идентификатор воздействия
-            var args = id.Split('@');
-            var prosId = args[0];
-            var actId = args[1];
-
-            // Преобразуем идентификатор воздействия из строки в число
-            var actionId = int.Parse(actId);
-
-            // Получаем список значений, соответствующий данной характеристике
-            List<Pro> prosList = new List<Pro>();
-            // Создаем новый список характеристик
-            var listSelectedPros = new List<SelectedItem>();
-
-
-            prosList = Pro.GetChild(prosId);
-            Models.Domain.Action action = Models.Domain.Action.GetAction(actionId);
-            listSelectedPros = SelectedItem.GetListSelectedItem(prosList, action, 2);
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    // Получаем список значений, соответствующий данной характеристике
-            //     prosList = db.Pros.Where(pros => pros.Parent == prosId).ToList();
-
-
-
-
-            //    Models.Domain.Action action = null;
-            //    if (actionId != -1) // значение идентификатора не равно -1
-            //    //{
-            //        // Извлекаем воздействие из БД
-            //         action = db.Actions.Find(actionId);
-
-            //        // Преобразуем список характеристик к нужному типу
-            //        listSelectedPros = SelectedItem.GetListSelectedItem(prosList, action,db,2);
-            ////    }
-            ////    else
-            ////        // Преобразуем список характеристик к нужному типу
-            ////        listSelectedPros = GetListSelectedItem(prosList,null,db);
-            //}
-                
-
-
-            
-
-            // Отправляем полученный список в представление
-            ViewBag.prosChild = listSelectedPros;
-            ViewBag.parent = prosId;
+            var res = Pro.GetChild(id);
+            ViewBag.ProsShildList= res.Count>0?res:null;
             ViewBag.type = type;
+            
             return PartialView();
         }
 
@@ -317,42 +274,12 @@ namespace dip.Controllers
         //[ChildActionOnly]
         public ActionResult GetSpecChild(string id, string type)
         {
-            // Извлекаем дескриптор характеристики и идентификатор воздействия
-            var args = id.Split('@');
-            var specId = args[0];
-            var actId = args[1];
 
-            // Создаем новый список характеристик
-            var listSelectedSpec = new List<SelectedItem>();
-
-            // Преобразуем идентификатор воздействия из строки в число
-            var actionId = int.Parse(actId);
-            //using (var db = new ApplicationDbContext())
-            //{
-
-                // Получаем список значений, соответствующий данной характеристике
-                var specList = Spec.GetChild(specId) ;
-
-
-
-
-                Models.Domain.Action action = Models.Domain.Action.GetAction(actionId);
-                //if (actionId != -1) // значение идентификатора не равно -1
-                
-                    // Извлекаем воздействие из БД
-                     //action = db.Actions.Find(actionId);
-
-                    // Преобразуем список характеристик к нужному типу
-                    listSelectedSpec = SelectedItem.GetListSelectedItem(specList, action,1);
-                //}
-                //else
-                //    // Преобразуем список характеристик к нужному типу
-                //    listSelectedSpec = GetListSelectedItem(specList,null,db);
-            //}
-            // Отправляем полученный список в представление
-            ViewBag.specChild = listSelectedSpec;
-            ViewBag.parent = specId;
+            var res = Spec.GetChild(id);
+            ViewBag.SpecShildList = res.Count > 0 ? res : null;
             ViewBag.type = type;
+
+
             return PartialView();
         }
 
@@ -373,40 +300,11 @@ namespace dip.Controllers
         //[ChildActionOnly]
         public ActionResult GetVremChild(string id, string type)
         {
-            // Извлекаем дескриптор характеристики и идентификатор воздействия
-            var args = id.Split('@');
-            var vremId = args[0];
-            var actId = args[1];
 
-            // Создаем новый список характеристик
-            var listSelectedVrem = new List<SelectedItem>();
-
-            // Преобразуем идентификатор воздействия из строки в число
-            var actionId = int.Parse(actId);
-
-            //using (var db = new ApplicationDbContext())
-            //{
-                // Получаем список значений, соответствующий данной характеристике
-                var vremList = Vrem.GetChild(vremId);//db.Vrems.Where(vrem => vrem.Parent == vremId).ToList();
-
-
-                Models.Domain.Action action = Models.Domain.Action.GetAction(actionId);
-                //if (actionId != -1) // значение идентификатора не равно -1
-               
-                    // Извлекаем воздействие из БД
-                     //action = db.Actions.Find(actionId);
-
-                    // Преобразуем список характеристик к нужному типу
-                    listSelectedVrem = SelectedItem.GetListSelectedItem(vremList, action,0);
-                //}
-                //else
-                //    // Преобразуем список характеристик к нужному типу
-                //    listSelectedVrem = GetListSelectedItem(vremList,null,db);
-            //}
-            // Отправляем полученный список в представление
-            ViewBag.vremChild = listSelectedVrem;
-            ViewBag.parent = vremId;
+            var res = Vrem.GetChild(id);
+            ViewBag.VremShildList = res.Count > 0 ? res : null;
             ViewBag.type = type;
+
             return PartialView();
         }
 

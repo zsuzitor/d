@@ -105,9 +105,10 @@
 
         @helpers_.DescrFormParamFizVels(type, a.parametricFizVelId, param )
         <div id=@("prosGroup"+type)>
-            @helpers_.DescrFormPros(type, a.pros, param)
-            
-        </div>
+            @*<div class="form-group" id=@("pros" + type)>*@
+                @helpers_.DescrFormPros(type, a.pros, param)
+            @*</div>*@
+            </div>
         <div id=@("specGroup"+type)>
             @helpers_.DescrFormSpec(type, a.spec,param )
         </div>
@@ -179,8 +180,8 @@
 @helper DescrFormParamFizVels(string type, List<FizVel> parametricFizVelId, DescrSearchI param = null)
 {
     <div class="form-group" id=@("parametricFizVel"+type)>
-        @if (parametricFizVelId.Count != 0)
-    {
+        @if (parametricFizVelId != null && parametricFizVelId.Count != 0)
+        {
             @*@Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">Название физической величины</label>
             <div class="col-md-10">
@@ -210,17 +211,22 @@
     </div>
 }
 
+@*@helper DescrFormVremCheckBoxes(string type, List<Vrem> vrems, DescrSearchI param = null)
+{
 
+
+
+}*@
 
 @helper DescrFormVrem(string type, List<Vrem> vrems, DescrSearchI param = null)
 {
-    <div class="form-group" id=@("vrem"+type)>
-        @if (vrems.Count != 0)
-    {
+    <div class="form-group" @*id=@("vrem"+type)*@>
+        @if (vrems!= null && vrems.Count != 0)
+        {
             @*@Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">Временные характеристики</label>
             <div class="col-md-10">
-                <table>
+                <table class="descrFormGroupCheckBox">
                     <tr>
                         @{
                             int cnt = 0;
@@ -263,13 +269,13 @@
 
 @helper DescrFormSpec(string type,List<Spec> specs, DescrSearchI param = null)
 {
-    <div class="form-group" id=@("spec"+type)>
-        @if (specs.Count != 0)
-    {
+    <div class="form-group" @*id=@("spec"+type)*@>
+        @if (specs!= null && specs.Count != 0)
+        {
             @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">Специальные характеристики</label>
             <div class="col-md-10">
-                <table>
+                <table class="descrFormGroupCheckBox">
                     <tr>
                         @{
                             int cnt = 0;
@@ -307,13 +313,13 @@
 
 @helper DescrFormPros(string type,List<Pro> pros, DescrSearchI param = null)
 {
-    <div class="form-group" id=@("pros"+type)>
-        @if (pros.Count != 0)
+    <div class="form-group" @*id=@("pros" + type)*@>
+        @if (pros!=null&&pros.Count != 0)
     {
             @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">Пространственные характеристики</label>
             <div class="col-md-10">
-                <table>
+                <table class="descrFormGroupCheckBox">
                     <tr>
                         @{
                             int cnt = 0;
@@ -362,7 +368,7 @@
             <label id="" class="control-label col-md-2">@label</label>
             @*@Html.Label(label, new { @class = "control-label col-md-2" })*@
             <div class="col-md-10">
-                <table>
+                <table class="descrFormGroupCheckBox">
                     <tr>
                         @{
                             int cnt = 0;

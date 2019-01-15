@@ -83,11 +83,20 @@ goAjaxRequest({url:prefix+"ChangeAction",
     func_success: function (req, status, jqXHR) {
 var data = req.split('<hr />');//.responseText
                             var type = data[0].trim();
-$('#fizVel'+type).replaceWith(data[1]);
-$('#pros'+type).replaceWith(data[2]);
-$('#spec'+type).replaceWith(data[3]);
-                     $('#vrem'+type).replaceWith(data[4]); 
-                     $('#parametricFizVel'+type).replaceWith(data[5]);
+        $('#fizVel'+type).replaceWith(data[1]);
+                            //document.getElementById('fizVel'+type).innerHTML = data[1];
+
+                            //$('#prosGroup' + type).replaceWith(data[2]);
+        document.getElementById('prosGroup' + type).innerHTML = data[2];
+
+        //$('#specGroup' + type).replaceWith(data[3]);
+        document.getElementById('specGroup' + type).innerHTML = data[3];
+
+       // $('#vremGroup' + type).replaceWith(data[4]);
+        document.getElementById('vremGroup' + type).innerHTML = data[4];
+
+        $('#parametricFizVel' + type).replaceWith(data[5]);
+        //document.getElementById('parametricFizVel' + type).innerHTML = data[5];
                 	
                 	 },type:'POST'});
 

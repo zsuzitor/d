@@ -1,8 +1,14 @@
 ﻿
 
 
+@if (ViewBag.SpecShildList != null)
+{
+    @helpers_.DescrFormSpec(ViewBag.type, ViewBag.ProsShildList)
+}
 
-@model dip.Models.Domain.Action
+ 
+
+@*@model dip.Models.Domain.Action
 @if (ViewBag.specChild.Count != 0)
 {
     <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
@@ -32,4 +38,4 @@
                 }
             </table>
         </div>
-                    }
+                    }*@

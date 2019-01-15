@@ -1,7 +1,14 @@
 ﻿
 
 
-@model dip.Models.Domain.Action
+@if (ViewBag.ProsShildList != null)
+{
+    @helpers_.DescrFormVrem(ViewBag.type, ViewBag.VremShildList)
+}
+
+
+
+@*@model dip.Models.Domain.Action
 @if (ViewBag.vremChild.Count != 0)
 {
     <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
@@ -31,4 +38,4 @@
                 }
             </table>
         </div>
-                    }
+                    }*@

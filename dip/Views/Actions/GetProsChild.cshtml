@@ -3,7 +3,14 @@
 
 
 
-@model dip.Models.Domain.Action
+@if (ViewBag.ProsShildList != null)
+{
+    @helpers_.DescrFormPros(ViewBag.type, ViewBag.ProsShildList)
+}
+
+
+
+@*@model dip.Models.Domain.Action
 @if (ViewBag.prosChild.Count != 0)
 {
     <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
@@ -32,5 +39,5 @@
                     @:</tr>
                 }
             </table>
-        </div>
-                    }
+        @*</div>
+                    }*@

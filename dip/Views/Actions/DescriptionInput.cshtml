@@ -105,13 +105,124 @@
             //if (this.checked) {
             //    // checkbox is checked
             //}
-           // var tt = data_descr_search;
+            // var tt = data_descr_search;
+
+
+
+             
+            if (this.id.indexOf('listSelectedPros') >= 0) {
+                //pros
+                loadCheckBoxChild(this, 'GetProsChild', 'Pros');
+            }
+            else if (this.id.indexOf('listSelectedSpec') >= 0) {
+                //spec
+                loadCheckBoxChild(this, 'GetSpecChild', 'Spec');
+            }
+            else if (this.id.indexOf('listSelectedVrem') >= 0) {
+                //vrem
+                loadCheckBoxChild(this, 'GetVremChild', 'Vrem');
+            }
+
+
         });
 
 
 
+    //-------------------------------------------------------------------------------------------
+
+        //function loadProsChild(ch) {
+        //    var type = ch.id.split('Pros')[1][0];
+        //    var div = document.getElementById((ch.value + type));
+           
+        //    if (div && !div.innerHTML.trim()) {
+        //        goAjaxRequest({
+        //            url: '/Actions/GetProsChild?id=' + ch.value + '&type=' + type,
+        //            func_success: function (data, status, jqXHR) {
+
+        //                if (data.trim()) {
+        //                    div.innerHTML = data;
+        //                }
+        //                else {
+        //                    div.remove();
+        //                }
+
+        //            }
+        //        });
+        //    }
+            
+        //}
 
 
+        //function loadSpecChild(ch) {
+        //    var type = ch.id.split('Spec')[1][0];
+        //    var div = document.getElementById((ch.value + type));
+
+        //    if (div && !div.innerHTML.trim()) {
+        //        goAjaxRequest({
+        //            url: '/Actions/GetSpecChild?id=' + ch.value + '&type=' + type,
+        //            func_success: function (data, status, jqXHR) {
+
+        //                if (data.trim()) {
+        //                    div.innerHTML = data;
+        //                }
+        //                else {
+        //                    div.remove();
+        //                }
+
+        //            }
+        //        });
+        //    }
+
+        //}
+
+
+        //function loadVremChild(ch) {
+        //    var type = ch.id.split('Vrem')[1][0];
+        //    var div = document.getElementById((ch.value + type));
+
+        //    if (div && !div.innerHTML.trim()) {
+        //        goAjaxRequest({
+        //            url: '/Actions/GetSpecChild?id=' + ch.value + '&type=' + type,
+        //            func_success: function (data, status, jqXHR) {
+
+        //                if (data.trim()) {
+        //                    div.innerHTML = data;
+        //                }
+        //                else {
+        //                    div.remove();
+        //                }
+
+        //            }
+        //        });
+        //    }
+
+        //}
+
+
+        function loadCheckBoxChild(ch,meth,key) {
+            var type = ch.id.split(key)[1][0];
+            var div = document.getElementById((ch.value + type));
+
+            if (div && !div.innerHTML.trim()) {
+                goAjaxRequest({
+                    url: '/Actions/' + meth + '?id=' + ch.value + '&type=' + type,
+                    func_success: function (data, status, jqXHR) {
+
+                        if (data.trim()) {
+                            div.innerHTML = data;
+                        }
+                        else {
+                            div.remove();
+                        }
+
+                    }
+                });
+            }
+
+        }
+
+
+    //-------------------------------------------------------------------------------------------
 
 
         //function ggg(callF) {
