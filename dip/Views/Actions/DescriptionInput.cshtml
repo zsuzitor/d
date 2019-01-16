@@ -86,39 +86,43 @@
         //var dict = {};
         $(document).on('change', ':checkbox', function () {
 
-            var name = this.name;
-            if (data_descr_search[name])
-                data_descr_search[name] ='';
-            var iter=1;
-            var stop=true;
-            do{
-                var bl = document.getElementById( name + iter);
-                if (bl) {
-                    if (bl.checked)//.prop('checked')
-                        data_descr_search[name]+=bl.value+' ';//val()
-                }
-                else
-                    stop = false;
-                ++iter;
-            } while (stop);
+            //var name = this.name;
+            //if (data_descr_search[name])
+            //    data_descr_search[name] ='';
+            //var iter=1;
+            //var stop=true;
+            //do{
+            //    var bl = document.getElementById( name + iter);
+            //    if (bl) {
+            //        if (bl.checked)//.prop('checked')
+            //            data_descr_search[name]+=bl.value+' ';//val()
+            //    }
+            //    else
+            //        stop = false;
+            //    ++iter;
+            //} while (stop);
 
             //if (this.checked) {
             //    // checkbox is checked
+            //    data_descr_search[name]
+            //}
+            //else {
+
             //}
             // var tt = data_descr_search;
 
 
 
              
-            if (this.id.indexOf('listSelectedPros') >= 0) {
+            if (this.name.indexOf('listSelectedPros') >= 0) {
                 //pros
                 loadCheckBoxChild(this, 'GetProsChild', 'Pros');
             }
-            else if (this.id.indexOf('listSelectedSpec') >= 0) {
+            else if (this.name.indexOf('listSelectedSpec') >= 0) {
                 //spec
                 loadCheckBoxChild(this, 'GetSpecChild', 'Spec');
             }
-            else if (this.id.indexOf('listSelectedVrem') >= 0) {
+            else if (this.name.indexOf('listSelectedVrem') >= 0) {
                 //vrem
                 loadCheckBoxChild(this, 'GetVremChild', 'Vrem');
             }
@@ -200,7 +204,7 @@
 
 
         function loadCheckBoxChild(ch,meth,key) {
-            var type = ch.id.split(key)[1][0];
+            var type = ch.name.split(key)[1][0];
             var div = document.getElementById((ch.value + type));
 
             if (div && !div.innerHTML.trim()) {
@@ -234,18 +238,47 @@
             data_descr_search.actionTypeI = UndefinedToStr($('#actionTypeI').val());
             data_descr_search.FizVelIdI = UndefinedToStr($('#fizVelIdI').val());
             data_descr_search.parametricFizVelIdI = UndefinedToStr($('#parametricFizVelIdI').val());
-            //data_descr_search.listSelectedProsI = data_descr_search.listSelectedProsI;//name listSelectedPros
-            //data_descr_search.listSelectedSpecI = data_descr_search.listSelectedSpecI;
-            //data_descr_search.listSelectedVremI = data_descr_search.listSelectedVremI;
+          
 
 
             data_descr_search.actionIdO = UndefinedToStr($('#actionO').val());
             data_descr_search.actionTypeO = UndefinedToStr($('#actionTypeO').val());
             data_descr_search.FizVelIdO = UndefinedToStr($('#fizVelIdO').val());
             data_descr_search.parametricFizVelIdO = UndefinedToStr($('#parametricFizVelIdO').val());
-            //data_descr_search.listSelectedProsO = data_descr_search.listSelectedProsO;//name listSelectedPros
-            //data_descr_search.listSelectedSpecO = data_descr_search.listSelectedSpecO;
-            //data_descr_search.listSelectedVremO = data_descr_search.listSelectedVremO;
+           
+
+            data_descr_search.listSelectedProsO = '';
+            data_descr_search.listSelectedSpecO = '';
+            data_descr_search.listSelectedVremO = '';
+
+            data_descr_search.listSelectedProsI = '';
+            data_descr_search.listSelectedSpecI = '';
+            data_descr_search.listSelectedVremI = '';
+            $('#prosGroupO input:checkbox:checked').each(function () {//[type=checkbox]
+                data_descr_search.listSelectedProsO += $(this).attr('value') + ' ';
+            });
+
+            $('#specGroupO input:checkbox:checked').each(function () {//[type=checkbox]
+               // alert($(this).attr('value'));
+                data_descr_search.listSelectedSpecO += $(this).attr('value') + ' ';
+            });
+
+            $('#vremGroupO input:checkbox:checked').each(function () {//[type=checkbox]
+                data_descr_search.listSelectedVremO += $(this).attr('value') + ' ';
+            });
+
+            $('#prosGroupI input:checkbox:checked').each(function () {//[type=checkbox]
+                data_descr_search.listSelectedProsI += $(this).attr('value') + ' ';
+            });
+
+            $('#specGroupI input:checkbox:checked').each(function () {//[type=checkbox]
+                // alert($(this).attr('value'));
+                data_descr_search.listSelectedSpecI += $(this).attr('value') + ' ';
+            });
+
+            $('#vremGroupI input:checkbox:checked').each(function () {//[type=checkbox]
+                data_descr_search.listSelectedVremI += $(this).attr('value') + ' ';
+            });
 
             //location.href = "xuz";
             if (data_descr_search.function_trigger != null)

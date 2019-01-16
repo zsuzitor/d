@@ -123,15 +123,30 @@ namespace dip.Models.Domain
         }
         public  DescrSearchI(DescrSearchIInput a)
         {
-            
+            //TODO чекбоксы отсортировать по числам
             
             this.actionId = a?.actionIdI;
             this.actionType = a?.actionTypeI;
             this.FizVelId = a?.FizVelIdI;
             this.parametricFizVelId = a?.parametricFizVelIdI;
-            this.listSelectedPros = a?.listSelectedProsI;
-            this.listSelectedSpec = a?.listSelectedSpecI;
-            this.listSelectedVrem = a?.listSelectedVremI;
+            if (a?.listSelectedProsI != null)
+                this.listSelectedPros = string.Join(" ", (a.listSelectedProsI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 =>int.Parse( x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedPros = null;
+
+            if (a?.listSelectedSpecI != null)
+                this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedSpec = null;
+
+            if (a?.listSelectedVremI != null)
+                this.listSelectedVrem = string.Join(" ", (a.listSelectedVremI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedVrem = null;
+            
             DescrSearchI.Validation(this);
         }
 
@@ -143,9 +158,25 @@ namespace dip.Models.Domain
             this.actionType = a?.actionTypeO;
             this.FizVelId = a?.FizVelIdO;
             this.parametricFizVelId = a?.parametricFizVelIdO;
-            this.listSelectedPros = a?.listSelectedProsO;
-            this.listSelectedSpec = a?.listSelectedSpecO;
-            this.listSelectedVrem = a?.listSelectedVremO;
+
+            if (a?.listSelectedProsO != null)
+                this.listSelectedPros = string.Join(" ", (a.listSelectedProsO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedPros = null;
+
+            if (a?.listSelectedSpecO != null)
+                this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedSpec = null;
+
+            if (a?.listSelectedVremO != null)
+                this.listSelectedVrem = string.Join(" ", (a.listSelectedVremO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+            else
+                this.listSelectedVrem = null;
+            
             DescrSearchI.Validation(this);
         }
 

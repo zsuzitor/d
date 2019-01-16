@@ -11,7 +11,7 @@
 
 <div>
     
-    @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new {id= "FormPhysCreate", enctype = "multipart/form-data" }))
     {
 
         @Html.Action("DescriptionInput", "Actions")
@@ -77,14 +77,26 @@
     </dl>
    
     <input class="btn btn-default" type="file" multiple name="uploadImage" />
-    <input class="btn btn-default" type="submit" value="отправить"/>
+    
     }
-   
+    <input class="btn btn-default" onclick="CreatePhysFunc()" value="отправить" />
     
 
 
 </div>
 
+
+<script>
+
+    function CreatePhysFunc() {
+
+        data_descr_search.function_trigger = function () {
+            document.getElementById('FormPhysCreate').submit();
+        };
+        Go_next_step();
+    }
+
+</script>
 
 
 

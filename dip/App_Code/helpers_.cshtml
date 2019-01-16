@@ -241,13 +241,19 @@
                                     @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
                                     @if (vrem.Id == param?.listSelectedVrem)
                                     {
-                                        <input type="checkbox" id=@("listSelectedVrem"+type+cnt) checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                        <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     @if (vrem.Id != param?.listSelectedVrem)
                                     {
-                                        <input type="checkbox" id=@("listSelectedVrem"+type+cnt) name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                        <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
-                                    <div id="@(vrem.Id+type)" name="0"></div>
+                                    <div id="@(vrem.Id+type)" name="0">
+                                        @if (vrem.VremChilds.Count > 0)
+                                        {
+                                            @helpers_.DescrFormVrem(type, vrem.VremChilds, param)
+                                        }
+                                        
+                                    </div>
 
                                 </td>
                             }
@@ -288,16 +294,21 @@
                                 @:<td>
                     if (spec.Id == param?.listSelectedSpec)
                     {
-                        <input type="checkbox" id=@("listSelectedSpec"+type+cnt) checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                        <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                     }
                                 if (spec.Id != param?.listSelectedSpec)
                                 {
-                                    <input type="checkbox" id=@("listSelectedSpec"+type+cnt) name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                                 }
 
 
                                 
-                                    <div id="@(spec.Id+type)" name="0"></div>
+                                    <div id="@(spec.Id+type)" name="0">
+@if (spec.SpecChilds.Count > 0)
+{
+                                        @helpers_.DescrFormSpec(type, spec.SpecChilds, param)
+}
+                                    </div>
                                 @:</td>
                             }
                             @: </tr>
@@ -334,15 +345,20 @@
 
                                 if (pro.Id == param?.listSelectedPros)
                                 {
-                                    <input id=@("listSelectedPros"+type+cnt) type="checkbox" checked name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" checked name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
                                 }
                                 if (pro.Id != param?.listSelectedPros)
                                 {
-                                    <input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
                                 }
 
                                
-                                    <div id="@(pro.Id+type)" name="0"></div>
+                                    <div id="@(pro.Id+type)" name="0">
+@if (pro.ProsChilds.Count > 0)
+{
+                                        @helpers_.DescrFormPros(type, pro.ProsChilds, param)
+}
+                                    </div>
                                @: </td>
                             }
                             @:</tr>

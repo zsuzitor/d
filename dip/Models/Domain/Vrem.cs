@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -15,11 +16,15 @@ namespace dip.Models.Domain
 
         public string Parent { get; set; }
 
-        public ICollection<Action> Actions { get; set; }
+        public List<Action> Actions { get; set; }
+
+        [NotMapped]
+        public List<Vrem> VremChilds { get; set; }
 
         public Vrem()
         {
             Actions = new List<Action>();
+            VremChilds = new List<Vrem>();
 
         }
 
