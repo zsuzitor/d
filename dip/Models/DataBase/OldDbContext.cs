@@ -629,7 +629,7 @@ namespace dip.Models.DataBase
 
                 //FeAction
 
-                try
+                //try
                 {
                     command.CommandText = "select * from FeAction";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "input", "type", "name", "fizVelId", 
@@ -643,8 +643,8 @@ namespace dip.Models.DataBase
                         obj.Input = Convert.ToInt32(i["input"].ToString().Trim());
                         obj.Type = i["type"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
+
                         //TODO возможно так правильно, надо потестить
-                       
                         obj.FizVelId = i["fizVelId"].ToString().Trim();
                         obj.FizVelSection = i["fizVelSection"].ToString().Trim();
                         if (!string.IsNullOrWhiteSpace(obj.FizVelSection))
@@ -657,10 +657,64 @@ namespace dip.Models.DataBase
                             obj.FizVelChange = i["fizVelChange"].ToString().Trim();
                         obj.FizVelLeftBorder = Convert.ToDouble(i["fizVelLeftBorder"].ToString().Trim());
                         obj.FizVelRightBorder = Convert.ToDouble(i["fizVelRightBorder"].ToString().Trim());
-                        obj.Pros = i["pros"].ToString().Trim();
-                        obj.Spec = i["spec"].ToString().Trim();
-                        obj.Vrem = i["vrem"].ToString().Trim();
-                        
+
+                        //
+                        {
+                            obj.Pros = i["pros"].ToString().Trim();
+                            //if (obj.Pros.Contains("VOZ8_PROS1")||obj.Pros.Contains("VOZ8_PROS8"))
+                            //{
+                            //    var gh = "213";
+                            //}
+                            string prs = "";
+                            string prsRes = "";
+                            if (!string.IsNullOrWhiteSpace(obj.Pros))
+                            {
+                                foreach (var pr in obj.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    prs = pr + " " + Pro.GetParents(pr);
+                                    prsRes += prs + " ";
+                                }
+
+                            }
+
+
+                            obj.Pros = Pro.SortIds(prsRes);
+                        }
+                        //
+                        {
+                            obj.Spec = i["spec"].ToString().Trim();
+                            string spc = "";
+                            string spcRes = "";
+                            if (!string.IsNullOrWhiteSpace(obj.Spec))
+                            {
+                                foreach (var sp in obj.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    spc = sp + " " + Spec.GetParents(sp);
+                                    spcRes += spc + " ";
+                                }
+
+                            }
+                            obj.Spec = Spec.SortIds(spcRes);
+                        }
+                        //
+                       
+                        {
+                            obj.Vrem = i["vrem"].ToString().Trim();
+                            string vrm = "";
+                            string vrmRes = "";
+                            if (!string.IsNullOrWhiteSpace(obj.Vrem))
+                            {
+                                foreach (var vr in obj.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    vrm = vr + " " + Vrem.GetParents(vr);
+                                    vrmRes += vrm + " ";
+                                }
+
+                            }
+                            obj.Vrem = Vrem.SortIds(vrmRes);
+                        }
+
+                        //
                         using (var db = new ApplicationDbContext())
                         {
                             db.FEActions.Add(obj);
@@ -670,10 +724,10 @@ namespace dip.Models.DataBase
                     
                     
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
                 //FeIndex

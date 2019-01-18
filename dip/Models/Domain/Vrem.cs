@@ -9,12 +9,12 @@ namespace dip.Models.Domain
 {
     public class Vrem: Item
     {
-        [Key]
-        public string Id { get; set; }
+        //[Key]
+        //public string Id { get; set; }
 
-        public string Name { get; set; }
+        //public string Name { get; set; }
 
-        public string Parent { get; set; }
+        //public string Parent { get; set; }
 
         public List<Action> Actions { get; set; }
 
@@ -28,6 +28,37 @@ namespace dip.Models.Domain
 
         }
 
+
+        public static string SortIds(string ids)
+        {
+            if (ids == null)
+                return null;
+            string res = string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                     OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
+            return res;
+        }
+
+
+        public static string GetParents(string id, ApplicationDbContext db_ = null)
+        {
+            string res = "";
+            var db = db_ ?? new ApplicationDbContext();
+
+            var cur = db.Vrems.FirstOrDefault(x1 => x1.Id == id)?.Parent;
+            if (!string.IsNullOrWhiteSpace(cur))
+                if (cur.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
+                {
+                    res += cur + " ";
+                    res += Vrem.GetParents(cur, db);
+
+                }
+
+
+            if (db_ == null)
+                db.Dispose();
+
+            return res;
+        }
 
 
         public static List<Vrem> GetChild(string id)
