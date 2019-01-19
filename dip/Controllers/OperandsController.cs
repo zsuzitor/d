@@ -37,7 +37,7 @@ namespace dip.Controllers
                 {
                     var selectedFizVelses =
                         (from fizVel in db.FizVels
-                         where fizVel.Parent == operandGroup.Id
+                         where fizVel.ParentId == operandGroup.Id
                          select fizVel).ToList();
 
                     foreach (var fizVel in selectedFizVelses)

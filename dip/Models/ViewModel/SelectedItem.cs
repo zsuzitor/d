@@ -55,7 +55,7 @@ namespace dip.Models.ViewModel
             where T : Item
         {
             // Сортируем список характеристик
-            list = list.OrderBy(pros => pros.Parent).ToList();
+            list = list.OrderBy(pros => pros.ParentId).ToList();
 
             // Создаем список List<SelectedItem>
             var listSelectedPros = new List<SelectedItem>();

@@ -172,7 +172,9 @@ namespace dip.Models
                .ToTable("ActionVrem"));//название таблицы
 
 
-
+            modelBuilder.Entity<Pro>()
+            .HasMany(x => x.ProsChilds)
+            .WithOptional(x => x.Parent);
 
             base.OnModelCreating(modelBuilder);//инициализация что бы роли и все остальное добавилось нормально
         }

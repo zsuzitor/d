@@ -44,7 +44,7 @@ namespace dip.Models.Domain
             string res = "";
             var db = db_ ?? new ApplicationDbContext();
 
-            var cur = db.Vrems.FirstOrDefault(x1 => x1.Id == id)?.Parent;
+            var cur = db.Vrems.FirstOrDefault(x1 => x1.Id == id)?.ParentId;
             if (!string.IsNullOrWhiteSpace(cur))
                 if (cur.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
                 {
@@ -66,7 +66,7 @@ namespace dip.Models.Domain
             // Получаем список значений, соответствующий данной характеристике
             List<Vrem> res = new List<Vrem>();
             using (var db = new ApplicationDbContext())
-                res = db.Vrems.Where(spec => spec.Parent == id).ToList();
+                res = db.Vrems.Where(spec => spec.ParentId == id).ToList();
             return res;
 
         }

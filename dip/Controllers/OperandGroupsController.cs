@@ -34,7 +34,7 @@ namespace dip.Controllers
 
                 var selectedFizVelses =
                     (from fizVel in db.FizVels
-                     where fizVel.Parent == parentValue
+                     where fizVel.ParentId == parentValue
                      select fizVel).ToList();
 
                 var newOperandGroupEntities = new List<OperandGroup>();

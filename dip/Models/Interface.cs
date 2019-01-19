@@ -18,7 +18,7 @@ namespace dip.Models
         [Key]
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Parent { get; set; }
+        public string ParentId { get; set; }
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace dip.Models
 public static List<string> GetQueueParent<T>(List<T> list) where T: Item
         {
             List<T> withOutCHild = null;
-            withOutCHild = list.Where(x1 => list.FirstOrDefault(x2 => x2.Parent == x1.Id) == null).ToList();
+            withOutCHild = list.Where(x1 => list.FirstOrDefault(x2 => x2.ParentId == x1.Id) == null).ToList();
             List<string> prosPath = new List<string>();
             foreach (var i in withOutCHild)
             {
@@ -39,7 +39,7 @@ public static List<string> GetQueueParent<T>(List<T> list) where T: Item
                 queue.Add(i);
 
                 // bool ex = false;
-                string prID = i.Parent;
+                string prID = i.ParentId;
 
 
 
@@ -50,7 +50,7 @@ public static List<string> GetQueueParent<T>(List<T> list) where T: Item
                     if (pr == null)
                         break;
                     queue.Add(pr);
-                    prID = pr.Parent;
+                    prID = pr.ParentId;
 
 
                 }

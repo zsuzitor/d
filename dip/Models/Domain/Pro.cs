@@ -18,7 +18,8 @@ namespace dip.Models.Domain
 
         public List<Action> Actions { get; set; }
 
-        [NotMapped]
+        public Pro Parent { get; set; }
+        //[NotMapped]
         public List<Pro> ProsChilds { get; set; }
 
         public Pro()
@@ -48,7 +49,7 @@ namespace dip.Models.Domain
             string res = "";
             var db = db_ ?? new ApplicationDbContext();
 
-            var cur = db.Pros.FirstOrDefault(x1 => x1.Id == id)?.Parent;
+            var cur = db.Pros.FirstOrDefault(x1 => x1.Id == id)?.ParentId;
             if (!string.IsNullOrWhiteSpace(cur))
                 if(cur.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
                 {
@@ -70,7 +71,7 @@ namespace dip.Models.Domain
             // Получаем список значений, соответствующий данной характеристике
             List<Pro> res = new List<Pro>();
             using (var db = new ApplicationDbContext())
-                res = db.Pros.Where(pros => pros.Parent == id).ToList();
+                res = db.Pros.Where(pros => pros.ParentId == id).ToList();
             return res;
 
         }

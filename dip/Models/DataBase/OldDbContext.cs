@@ -259,19 +259,21 @@ namespace dip.Models.DataBase
                     command.CommandText = "select * from Pros";
 
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                    List<Pro> prs = new List<Pro>();
                     foreach (var i in ldr)
                     {
                         var obj = new Domain.Pro();
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
-                        obj.Parent = i["parent"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Pros.Add(obj);
-                            db.SaveChanges();
-                        }
+                        obj.ParentId = i["parent"].ToString().Trim();
+                        prs.Add(obj);
+                        
                     }
-
+                    using (var db = new ApplicationDbContext())
+                    {
+                        db.Pros.AddRange(prs);
+                        db.SaveChanges();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -295,9 +297,9 @@ namespace dip.Models.DataBase
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
                         if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
-                            obj.Parent = null;
+                            obj.ParentId = null;
                         else
-                            obj.Parent = i["parent"].ToString().Trim();
+                            obj.ParentId = i["parent"].ToString().Trim();
                         using (var db = new ApplicationDbContext())
                         {
                             db.ActionTypes.Add(obj);
@@ -327,9 +329,9 @@ namespace dip.Models.DataBase
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
                         if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
-                            obj.Parent = null;
+                            obj.ParentId = null;
                         else
-                            obj.Parent = i["parent"].ToString().Trim();
+                            obj.ParentId = i["parent"].ToString().Trim();
                         using (var db = new ApplicationDbContext())
                         {
                             db.FizVels.Add(obj);
@@ -358,9 +360,9 @@ namespace dip.Models.DataBase
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
                         if (string.IsNullOrWhiteSpace(i["parent"].ToString().Trim()))
-                            obj.Parent = null;
+                            obj.ParentId = null;
                         else
-                            obj.Parent = i["parent"].ToString().Trim();
+                            obj.ParentId = i["parent"].ToString().Trim();
                         using (var db = new ApplicationDbContext())
                         {
                             db.AllActions.Add(obj);
@@ -480,7 +482,7 @@ namespace dip.Models.DataBase
                         var obj = new Domain.Spec();
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
-                        obj.Parent = i["parent"].ToString().Trim();
+                        obj.ParentId = i["parent"].ToString().Trim();
 
                         using (var db = new ApplicationDbContext())
                         {
@@ -555,7 +557,7 @@ namespace dip.Models.DataBase
                         
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
-                        obj.Parent = i["parent"].ToString().Trim();
+                        obj.ParentId = i["parent"].ToString().Trim();
                         
                         using (var db = new ApplicationDbContext())
                         {
@@ -947,7 +949,7 @@ namespace dip.Models.DataBase
                         
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
-                        obj.Parent = i["parent"].ToString().Trim();
+                        obj.ParentId = i["parent"].ToString().Trim();
                         
                         if (string.IsNullOrWhiteSpace(i["compatible"].ToString().Trim()))
                             obj.Compatible = null;

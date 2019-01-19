@@ -49,7 +49,7 @@ namespace dip.Controllers
 
                  selectedTheses =
                 (from thes in db.Thes
-                 where thes.Parent == parent
+                 where thes.ParentId == parent
                  select thes).ToList();
             }
             foreach (var thes in selectedTheses)

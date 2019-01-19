@@ -68,7 +68,7 @@ namespace dip.Controllers
                 }
                 else
                 {
-                    operationEntity.Parent = thes.Parent;
+                    operationEntity.Parent = thes.ParentId;
                 }
 
                 newOperationEntities.Add(operationEntity);

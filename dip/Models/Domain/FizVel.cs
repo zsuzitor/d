@@ -30,7 +30,7 @@ namespace dip.Models.Domain
             List<FizVel> res = new List<FizVel>();
             using (var db = new ApplicationDbContext())
             {
-                 res = db.FizVels.Where(x1 => x1.Parent == id).ToList();
+                 res = db.FizVels.Where(x1 => x1.ParentId == id).ToList();
 
                 //TODO ошибка? условие должно быть если записей 0?????
                 if (res.Count != 0)

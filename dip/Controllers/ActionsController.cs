@@ -114,12 +114,12 @@ namespace dip.Controllers
             using (var db = new ApplicationDbContext())
                 if (id != "VOZ11") // непараметрическое воздействие
                                    // Получаем обновленный список физических величин
-                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL") ||
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.ParentId == id + "_FIZVEL") ||
                                                                               (fizVel.Id == "NO_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
                 else
                     // Получаем обновленный список физических величин
-                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL"))
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.ParentId == id + "_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
 
             // Отправляем его в представление
@@ -145,7 +145,7 @@ namespace dip.Controllers
             List<Pro> prosList = new List<Pro>();
             if (!string.IsNullOrWhiteSpace(id))
                 using (var db = new ApplicationDbContext())
-                    prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
+                    prosList = db.Pros.Where(pros => pros.ParentId == id + "_PROS").ToList();
             // var listSelectedPros = GetListSelectedItem(prosList);
 
             // Отправляем его в представление
@@ -169,7 +169,7 @@ namespace dip.Controllers
             List<Spec> specList = new List<Spec>();
             if (!string.IsNullOrWhiteSpace(id))
                 using (var db = new ApplicationDbContext())
-                    specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
+                    specList = db.Specs.Where(spec => spec.ParentId == id + "_SPEC").ToList();
             //var listSelectedSpec = GetListSelectedItem(specList);
 
             // Отправляем его в представление
@@ -192,7 +192,7 @@ namespace dip.Controllers
             List<Vrem> vremList = new List<Vrem>();
             if (!string.IsNullOrWhiteSpace(id))
                 using (var db = new ApplicationDbContext())
-                    vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
+                    vremList = db.Vrems.Where(vrem => vrem.ParentId == id + "_VREM").ToList();
 
 
             // Отправляем его в представление
