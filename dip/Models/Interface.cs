@@ -21,6 +21,12 @@ namespace dip.Models
         public string Parent { get; set; }
 
 
+        /// <summary>
+        /// получаем список названий(name) item от родителя к ребенку
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
 public static List<string> GetQueueParent<T>(List<T> list) where T: Item
         {
             List<T> withOutCHild = null;

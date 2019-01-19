@@ -96,9 +96,15 @@ namespace dip.Models.ViewModel
 
 
         //возвращает форму(данные) для отображения
-        public static DescriptionForm GetFormObject(string actionId,string fizVelId)
+        public static DescriptionForm GetFormObject(string actionId,string fizVelId,string prosIds, string specIds, string vremIds)
         {
             DescriptionForm res = new DescriptionForm();
+
+            string[] inp_pros = prosIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] inp_spec = specIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] inp_vrem = vremIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+
 
 
             using (var db = new ApplicationDbContext())
@@ -128,6 +134,19 @@ namespace dip.Models.ViewModel
                                                                      .OrderBy(parametricFizVel => parametricFizVel.Id).ToList();
 
                 // Получаем список пространственных характеристик для выбранного воздействия
+                if ()
+                {
+
+                }
+                else
+                {
+                    prosI = db.Pros.Where(x1 => inp_pros.Contains(x1.Id)).ToList();
+                    specI = db.Specs.Where(x1 => inp_spec.Contains(x1.Id)).ToList();
+                    vremI = db.Vrems.Where(x1 => inp_vrem.Contains(x1.Id)).ToList();
+                    prosO = db.Pros.Where(x1 => outp_pros.Contains(x1.Id)).ToList();
+                    specO = db.Specs.Where(x1 => outp_spec.Contains(x1.Id)).ToList();
+                    vremO = db.Vrems.Where(x1 => outp_vrem.Contains(x1.Id)).ToList();
+                }
                 var prosList = db.Pros.Where(pros => pros.Parent == actionId + "_PROS").ToList();
                 //var listSelectedPros = GetListSelectedItem(prosList);
 
