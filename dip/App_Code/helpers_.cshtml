@@ -239,11 +239,14 @@
 
                                 <td>
                                     @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
-                                    @if (vrem.Id == param?.listSelectedVrem)
+                                    @{ 
+                                        bool? needSelected = param?.listSelectedVrem?.Split(new string[] {" " },StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+                                    }
+                                    @if (needSelected==true)
                                     {
                                         <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
-                                    @if (vrem.Id != param?.listSelectedVrem)
+                                    else
                                     {
                                         <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
@@ -292,11 +295,15 @@
                                     @: </tr> <tr>
                             }
                                 @:<td>
-                    if (spec.Id == param?.listSelectedSpec)
-                    {
+
+                    
+                        bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
+                    
+                        if (needSelected==true)
+                        {
                         <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                     }
-                                if (spec.Id != param?.listSelectedSpec)
+                                else
                                 {
                                     <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                                 }
@@ -342,12 +349,12 @@
                             }
                                 @: <td>
                                     @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
-
-                                if (pro.Id == param?.listSelectedPros)
-                                {
+                        bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                        if (needSelected==true)
+                        {
                                     <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" checked name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
                                 }
-                                if (pro.Id != param?.listSelectedPros)
+                               else
                                 {
                                     <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
                                 }

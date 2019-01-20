@@ -42,7 +42,7 @@ namespace dip.Models.Domain
             //this.LoadChild();
             foreach(var i in this.Childs)
             {
-                if (list.Contains(i))
+                if (list.FirstOrDefault(x1=>x1.Id== i.Id)!=null)
                     i.LoadPartialTree(list);
             }
            //foreach(var i in list)

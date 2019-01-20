@@ -148,8 +148,14 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage,  DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
-            
-            if(!obj.Validation())
+
+            //if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            //{
+            //    var pic = System.Web.HttpContext.Current.Request.Files["uploadImage[0]"];
+            //}
+
+
+            if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
             var list_img_byte = Get_photo_post(uploadImage);

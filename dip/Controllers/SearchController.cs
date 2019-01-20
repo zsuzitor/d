@@ -20,7 +20,7 @@ namespace dip.Controllers
         }
 
 
-
+        
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
         {
@@ -32,8 +32,21 @@ namespace dip.Controllers
             if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
             {
                 list_id = FEText.GetByDescr(inp, outp);
-                ViewBag.inputForm = inp;
-                ViewBag.outpForm = outp;
+                //TODO временный костыль пока не разберусь с типами DescrSearchIInput и DescrSearchI
+                {
+                    inp_.listSelectedProsI = inp.listSelectedPros;
+                    inp_.listSelectedSpecI = inp.listSelectedSpec;
+                    inp_.listSelectedVremI = inp.listSelectedVrem;
+
+                    outp_.listSelectedProsO = outp.listSelectedPros;
+                    outp_.listSelectedSpecO = outp.listSelectedSpec;
+                    outp_.listSelectedVremO = outp.listSelectedVrem;
+                    ViewBag.inputForm = inp_;
+                    ViewBag.outpForm = outp_;
+                }
+
+                //ViewBag.inputForm = inp;
+                //ViewBag.outpForm = outp;
             }
 
             else

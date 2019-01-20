@@ -96,13 +96,13 @@ namespace dip.Models.ViewModel
 
 
         //возвращает форму() для отображения
-        public static DescriptionForm GetFormObject(string actionId,string fizVelId,string prosIds, string specIds, string vremIds)
+        public static DescriptionForm GetFormObject(string actionId,string fizVelId,string prosIds="", string specIds="", string vremIds="")
         {
             DescriptionForm res = new DescriptionForm();
-
-            string[] prosIdList = prosIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            string[] specIdList = specIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            string[] vremIdList = vremIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            
+            string[] prosIdList = prosIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)??new string[0];
+            string[] specIdList = specIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+            string[] vremIdList = vremIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
 
             
 
@@ -155,7 +155,7 @@ namespace dip.Models.ViewModel
                     prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();                    
 
                 // Получаем список специальных характеристик для выбранного воздействия
-                if (specIdList.Count() > 0)
+                if ( specIdList.Count() > 0)
                 {
                     specList = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
                     var treeSpecBase = Item<Spec>.GetQueueParent(specList);
@@ -171,7 +171,7 @@ namespace dip.Models.ViewModel
 
                 
                 // Получаем список временных характеристик для выбранного воздействия
-                if (vremIdList.Count() > 0)
+                if ( vremIdList.Count() > 0)
                 {
                     vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
                     var treeVremBase = Item<Vrem>.GetQueueParent(vremList);

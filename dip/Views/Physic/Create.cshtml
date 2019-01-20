@@ -9,80 +9,81 @@
 
 
 
-<div>
+<div >
     
-    @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new {id= "FormPhysCreate", enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
     {
+        <div id="physCreateFormDescrDiv">
+            @Html.Action("DescriptionInput", "Actions")
+        </div>
 
-        @Html.Action("DescriptionInput", "Actions")
 
-        
-    
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayName("Название")
-        </dt>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Название")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayName("Описание")
-        </dt>
+                <dd>
+                    @Html.EditorFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayName("Описание")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.Text)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.Text)
+                </dd>
 
-        <dt>
-            @Html.DisplayName("Входное воздействие")
-        </dt>
+                <dt>
+                    @Html.DisplayName("Входное воздействие")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.TextInp)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.TextInp)
+                </dd>
 
-        <dt>
-            @Html.DisplayName("Выходное воздействие")
-        </dt>
+                <dt>
+                    @Html.DisplayName("Выходное воздействие")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.TextOut)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.TextOut)
+                </dd>
 
-        <dt>
-            @Html.DisplayName("Объект")
-        </dt>
+                <dt>
+                    @Html.DisplayName("Объект")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.TextObj)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.TextObj)
+                </dd>
 
-        <dt>
-            @Html.DisplayName("Применение")
-        </dt>
+                <dt>
+                    @Html.DisplayName("Применение")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.TextApp)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.TextApp)
+                </dd>
 
-        <dt>
-            @Html.DisplayName("Литература")
-        </dt>
+                <dt>
+                    @Html.DisplayName("Литература")
+                </dt>
 
-        <dd>
-            @Html.EditorFor(model => model.TextLit)
-        </dd>
+                <dd>
+                    @Html.EditorFor(model => model.TextLit)
+                </dd>
 
-    </dl>
-   
-    <input class="btn btn-default" type="file" multiple name="uploadImage" />
-    
+            </dl>
+       
+        <div id="physCreateFormIMGDiv">
+            <input class="btn btn-default" id="upLoadImagesId" type="file" multiple name="uploadImage" />
+        </div>
     }
     <input class="btn btn-default" onclick="CreatePhysFunc()" value="отправить" />
     
 
-
+   
 </div>
 
 
@@ -91,7 +92,69 @@
     function CreatePhysFunc() {
 
         data_descr_search.function_trigger = function () {
+            //document.getElementById('FormPhysCreate').submit();
+            //var imgEl = document.getElementById('upLoadImagesId');
+            //var dt = imgEl.files;
+            
+            //$.each(dt, function (key, value) {
+            //    //var k=key;
+            //    //var v = value;
+            //    data_descr_search['uploadImage[' + key+']'] = value;
+            //});
+            //goAjaxRequest({
+            //    url: '/Physic/Create',
+            //    func_success: function (data, status, jqXHR) {
+
+            //        if (data.trim()) {
+            //            div.innerHTML = data;
+            //        }
+            //        else {
+            //            div.remove();
+            //        }
+
+            //    }
+            //});
+
+
+
+
+            //$.ajax({
+            //    url: '/Physic/Create',
+            //    type: 'POST', // важно!
+            //    data: data_descr_search,
+            //    cache: false,
+            //    dataType: 'html',
+            //    // отключаем обработку передаваемых данных, пусть передаются как есть
+            //    processData: false,
+            //    // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+            //    contentType: false,
+            //    // функция успешного ответа сервера
+            //    success: function (respond, status, jqXHR) {
+
+            //        var g = 10;
+            //    },
+            //    // функция ошибки ответа сервера
+            //    error: function (jqXHR, status, errorThrown) {
+                  
+            //    }
+
+            //});
+
+
+            var divForm = document.getElementById('physCreateFormDescrDiv');
+            var divFormNewInner = '<H1>Отправляем</H1>';
+            for (key in data_descr_search) {
+                if (key != 'function_trigger' && key != 'search')
+                    divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
+            }
+           
+            divForm.innerHTML = divFormNewInner;
+            var divImgForm = document.getElementById('physCreateFormIMGDiv');
+            divImgForm.style.display = 'none';
             document.getElementById('FormPhysCreate').submit();
+
+            
+
         };
         Go_next_step();
     }
