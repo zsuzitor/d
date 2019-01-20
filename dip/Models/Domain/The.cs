@@ -6,14 +6,14 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class The: Item
+    public class The
     {
-        //[Key]
-        //public string Id { get; set; }
+        [Key]
+        public string Id { get; set; }
 
-        //public string Name { get; set; }
+        public string Name { get; set; }
 
-        //public string Parent { get; set; }
+        public string Parent { get; set; }
 
         public string Compatible { get; set; }
 

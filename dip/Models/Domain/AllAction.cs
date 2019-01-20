@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class AllAction: Item
+    public class AllAction//: Item
     { 
         public string Id { get; set; }
         public string Name { get; set; }

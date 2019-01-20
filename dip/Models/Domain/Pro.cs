@@ -7,7 +7,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Pro: Item
+    public class Pro: Item<Pro>
     {
         //[Key]
         //public string Id { get; set; }
@@ -16,17 +16,46 @@ namespace dip.Models.Domain
 
         //public string Parent { get; set; }
 
-        public List<Action> Actions { get; set; }
+        //public List<Action> Actions { get; set; }
 
-        [NotMapped]
-        public List<Pro> ProsChilds { get; set; }
+        //[NotMapped]
+        //public List<Pro> ProsChilds { get; set; }
 
         public Pro()
         {
             Actions = new List<Action>();
-            ProsChilds = new List<Pro>();
+            Childs = new List<Pro>();
         }
 
+
+
+        /// <summary>
+        /// загружает необходимое древо детей
+        /// </summary>
+        /// <param name="list">список детей</param>
+        /// <returns></returns>
+        public override bool LoadPartialTree(List<Pro> list)
+        {
+            this.LoadChild();
+            if (list == null || list.Count < 1)
+                return false;
+            //this.LoadChild();
+            foreach(var i in this.Childs)
+            {
+                if (list.Contains(i))
+                    i.LoadPartialTree(list);
+            }
+           //foreach(var i in list)
+           // {
+           //     if (i.Id == this.Id)
+           //         break;
+
+                    
+           // }
+
+
+            return true;
+        }
 
 
 
@@ -74,5 +103,19 @@ namespace dip.Models.Domain
             return res;
 
         }
+
+        public override void LoadChild()
+        {
+            if (this.Childs.Count < 1)
+                this.ReLoadChild();
+        }
+
+        public override void ReLoadChild()
+        {
+           
+                using (var db = new ApplicationDbContext())
+                    this.Childs = db.Pros.Where(x1 => x1.Parent == this.Id).ToList();
+        }
+
     }
 }

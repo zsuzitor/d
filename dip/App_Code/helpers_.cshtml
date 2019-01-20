@@ -248,9 +248,9 @@
                                         <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     <div id="@(vrem.Id+type)" name="0">
-                                        @if (vrem.VremChilds.Count > 0)
+                                        @if (vrem.Childs.Count > 0)
                                         {
-                                            @helpers_.DescrFormVrem(type, vrem.VremChilds, param)
+                                            @helpers_.DescrFormVrem(type, vrem.Childs, param)
                                         }
                                         
                                     </div>
@@ -304,9 +304,9 @@
 
                                 
                                     <div id="@(spec.Id+type)" name="0">
-@if (spec.SpecChilds.Count > 0)
+@if (spec.Childs.Count > 0)
 {
-                                        @helpers_.DescrFormSpec(type, spec.SpecChilds, param)
+                                        @helpers_.DescrFormSpec(type, spec.Childs, param)
 }
                                     </div>
                                 @:</td>
@@ -354,9 +354,9 @@
 
                                
                                     <div id="@(pro.Id+type)" name="0">
-@if (pro.ProsChilds.Count > 0)
+@if (pro.Childs.Count > 0)
 {
-                                        @helpers_.DescrFormPros(type, pro.ProsChilds, param)
+                                        @helpers_.DescrFormPros(type, pro.Childs, param)
 }
                                     </div>
                                @: </td>

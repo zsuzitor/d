@@ -36,8 +36,8 @@ namespace dip.Controllers
         public ActionResult DescriptionInput(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
 
-            ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI);
-            ViewBag.outpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO);
+            ViewBag.inputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI, inp?.listSelectedProsI, inp?.listSelectedSpecI, inp?.listSelectedVremI);
+            ViewBag.outpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO, outp?.listSelectedProsO, outp?.listSelectedSpecO, outp?.listSelectedVremO);
 
             var inp_ = new DescrSearchI(inp);
             var outp_ = new DescrSearchI(outp);

@@ -52,7 +52,7 @@ namespace dip.Models.ViewModel
         //type : 0-Vrems   1-spec
         public static List<SelectedItem> GetListSelectedItem<T>
             (List<T> list, Models.Domain.Action action, ApplicationDbContext db, int type) 
-            where T : Item
+            where T : Item<T>
         {
             // Сортируем список характеристик
             list = list.OrderBy(pros => pros.Parent).ToList();
@@ -105,7 +105,7 @@ namespace dip.Models.ViewModel
         //type : 0-Vrems   1-spec
         public static List<SelectedItem> GetListSelectedItem<T>
             (List<T> list, Models.Domain.Action action, int type)
-            where T : Item
+            where T : Item<T>
         {
             List<SelectedItem> res = new List<SelectedItem>();
             using (var db=new ApplicationDbContext())

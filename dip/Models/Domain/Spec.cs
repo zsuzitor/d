@@ -7,7 +7,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Spec: Item
+    public class Spec: Item<Spec>
     {
         //[Key]
         //public string Id { get; set; }
@@ -16,15 +16,15 @@ namespace dip.Models.Domain
 
         //public string Parent { get; set; }
 
-        public List<Action> Actions { get; set; }
+        //public List<Action> Actions { get; set; }
 
-        [NotMapped]
-        public List<Spec> SpecChilds { get; set; }
+        //[NotMapped]
+        //public List<Spec> SpecChilds { get; set; }
 
         public Spec()
         {
             Actions = new List<Action>();
-            SpecChilds = new List<Spec>();
+            Childs = new List<Spec>();
 
         }
 
@@ -73,7 +73,18 @@ namespace dip.Models.Domain
         }
 
 
+        public override void LoadChild()
+        {
+            if (this.Childs.Count < 1)
+                this.ReLoadChild();
+        }
 
+        public override void ReLoadChild()
+        {
+
+            using (var db = new ApplicationDbContext())
+                this.Childs = db.Specs.Where(x1 => x1.Parent == this.Id).ToList();
+        }
 
 
 

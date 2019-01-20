@@ -7,7 +7,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Vrem: Item
+    public class Vrem: Item<Vrem>
     {
         //[Key]
         //public string Id { get; set; }
@@ -16,15 +16,15 @@ namespace dip.Models.Domain
 
         //public string Parent { get; set; }
 
-        public List<Action> Actions { get; set; }
+        //public List<Action> Actions { get; set; }
 
-        [NotMapped]
-        public List<Vrem> VremChilds { get; set; }
+        //[NotMapped]
+        //public List<Vrem> VremChilds { get; set; }
 
         public Vrem()
         {
             Actions = new List<Action>();
-            VremChilds = new List<Vrem>();
+            Childs = new List<Vrem>();
 
         }
 
@@ -69,6 +69,19 @@ namespace dip.Models.Domain
                 res = db.Vrems.Where(spec => spec.Parent == id).ToList();
             return res;
 
+        }
+
+        public override void LoadChild()
+        {
+            if (this.Childs.Count < 1)
+                this.ReLoadChild();
+        }
+
+        public override void ReLoadChild()
+        {
+
+            using (var db = new ApplicationDbContext())
+                this.Childs = db.Vrems.Where(x1 => x1.Parent == this.Id).ToList();
         }
 
     }

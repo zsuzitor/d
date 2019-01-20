@@ -82,29 +82,35 @@ namespace dip.Models.ViewModel
             }
 
 
-            res["ProsI"] = string.Join(" ", Item.GetQueueParent(prosI));// ;
-            res["SpecsI"] = string.Join(" ", Item.GetQueueParent(specI));
-            res["VremsI"] = string.Join(" ", Item.GetQueueParent(vremI));
+            res["ProsI"] = string.Join(" ", Item<Pro>.GetQueueParentString(Item<Pro>.GetQueueParent(prosI)));// ;
+            res["SpecsI"] = string.Join(" ", Item<Spec>.GetQueueParentString(Item<Spec>.GetQueueParent(specI)));
+            res["VremsI"] = string.Join(" ", Item<Vrem>.GetQueueParentString(Item<Vrem>.GetQueueParent(vremI)));
 
 
-            res["ProsO"] = string.Join(" ", Item.GetQueueParent(prosO));
-            res["SpecsO"] = string.Join(" ", Item.GetQueueParent(specO));
-            res["VremsO"] = string.Join(" ", Item.GetQueueParent(vremO));
+            res["ProsO"] = string.Join(" ", Item<Pro>.GetQueueParentString(Item<Pro>.GetQueueParent(prosO)));
+            res["SpecsO"] = string.Join(" ", Item<Spec>.GetQueueParentString(Item<Spec>.GetQueueParent(specO)));
+            res["VremsO"] = string.Join(" ", Item<Vrem>.GetQueueParentString(Item<Vrem>.GetQueueParent(vremO)));
 
             return res;
         }
 
 
-        //возвращает форму(данные) для отображения
+        //возвращает форму() для отображения
         public static DescriptionForm GetFormObject(string actionId,string fizVelId,string prosIds, string specIds, string vremIds)
         {
             DescriptionForm res = new DescriptionForm();
 
-            string[] inp_pros = prosIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            string[] inp_spec = specIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            string[] inp_vrem = vremIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] prosIdList = prosIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] specIdList = specIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] vremIdList = vremIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
+            
 
+            List<Pro> prosList = null;
+            List<Spec> specList = null;
+            List<Vrem> vremList = null;
+
+          
 
 
             using (var db = new ApplicationDbContext())
@@ -134,28 +140,61 @@ namespace dip.Models.ViewModel
                                                                      .OrderBy(parametricFizVel => parametricFizVel.Id).ToList();
 
                 // Получаем список пространственных характеристик для выбранного воздействия
-                if ()
+                if (prosIdList.Count()>0)
                 {
-
+                    prosList = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                    var treeProBase = Item<Pro>.GetQueueParent(prosList);
+                    foreach(var i in treeProBase)
+                    {
+                        if (!i[0].LoadPartialTree(i))
+                            throw new Exception("TODO ошибка");
+                    }
                 }
                 else
-                {
-                    prosI = db.Pros.Where(x1 => inp_pros.Contains(x1.Id)).ToList();
-                    specI = db.Specs.Where(x1 => inp_spec.Contains(x1.Id)).ToList();
-                    vremI = db.Vrems.Where(x1 => inp_vrem.Contains(x1.Id)).ToList();
-                    prosO = db.Pros.Where(x1 => outp_pros.Contains(x1.Id)).ToList();
-                    specO = db.Specs.Where(x1 => outp_spec.Contains(x1.Id)).ToList();
-                    vremO = db.Vrems.Where(x1 => outp_vrem.Contains(x1.Id)).ToList();
-                }
-                var prosList = db.Pros.Where(pros => pros.Parent == actionId + "_PROS").ToList();
-                //var listSelectedPros = GetListSelectedItem(prosList);
+                
+                    prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();                    
 
                 // Получаем список специальных характеристик для выбранного воздействия
-                var specList = db.Specs.Where(spec => spec.Parent == actionId + "_SPEC").ToList();
-                // var listSelectedSpec = GetListSelectedItem(specList);
+                if (specIdList.Count() > 0)
+                {
+                    specList = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
+                    var treeSpecBase = Item<Spec>.GetQueueParent(specList);
+                    foreach (var i in treeSpecBase)
+                    {
+                        if (!i[0].LoadPartialTree(i))
+                            throw new Exception("TODO ошибка");
+                    }
+                }
+                else
+                
+                    specList = db.Specs.Where(x1 => x1.Parent == actionId + "_SPEC").ToList();
 
+                
                 // Получаем список временных характеристик для выбранного воздействия
-                var vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
+                if (vremIdList.Count() > 0)
+                {
+                    vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
+                    var treeVremBase = Item<Vrem>.GetQueueParent(vremList);
+                    foreach (var i in treeVremBase)
+                    {
+                        if (!i[0].LoadPartialTree(i))
+                            throw new Exception("TODO ошибка");
+                    }
+                }
+                else
+                
+                    vremList = db.Vrems.Where(x1 => x1.Parent == actionId + "_VREM").ToList();
+
+                
+
+                //vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
+                //var treeVremBase = Item<Vrem>.GetQueueParent(vremList);
+
+
+
+
+                
+                vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
                 //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление
