@@ -9,7 +9,7 @@ namespace dip.Models.ViewModel
 {
     public class DescriptionForm
     {
-       // public string Postfix { get; set; }
+        // public string Postfix { get; set; }
         public List<Domain.AllAction> actionId { get; set; }
         public List<Domain.ActionType> actionType { get; set; }
         public List<Domain.FizVel> fizVelId { get; set; }
@@ -96,31 +96,31 @@ namespace dip.Models.ViewModel
 
 
         //возвращает форму() для отображения
-        public static DescriptionForm GetFormObject(string actionId,string fizVelId,string prosIds="", string specIds="", string vremIds="")
+        public static DescriptionForm GetFormObject(string actionId, string fizVelId, string prosIds = "", string specIds = "", string vremIds = "")
         {
             DescriptionForm res = new DescriptionForm();
-            
-            string[] prosIdList = prosIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)??new string[0];
+
+            string[] prosIdList = prosIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
             string[] specIdList = specIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
             string[] vremIdList = vremIds?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
 
-            
+
 
             List<Pro> prosList = null;
             List<Spec> specList = null;
             List<Vrem> vremList = null;
 
-          
+
 
 
             using (var db = new ApplicationDbContext())
             {
                 // Получаем список всех воздействий 
                 var listOfActions = db.AllActions.OrderBy(action => action.Id).ToList();
-                
+
                 if (string.IsNullOrWhiteSpace(actionId))
                     actionId = listOfActions.First().Id;
-               
+
 
 
                 // Получаем список типов воздействий     
@@ -140,55 +140,70 @@ namespace dip.Models.ViewModel
                                                                      .OrderBy(parametricFizVel => parametricFizVel.Id).ToList();
 
                 // Получаем список пространственных характеристик для выбранного воздействия
-                if (prosIdList.Count()>0)
+                prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();
+
                 {
-                     var allPros= db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                    var allPros = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
                     var treeProBase = Item<Pro>.GetQueueParent(allPros);
-                    foreach(var i in treeProBase)
+                    foreach (var p in prosList)
                     {
-                        if (!i[0].LoadPartialTree(i))
-                            throw new Exception("TODO ошибка");
+                        foreach (var i in treeProBase)
+                        {
+                            if (p.Id == i[0].Id)
+                                if (!p.LoadPartialTree(i))
+                                    throw new Exception("TODO ошибка");
+                        }
                     }
-                    prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
+
+                    // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
                 }
-                else
-                
-                    prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();                    
+
+
+
 
                 // Получаем список специальных характеристик для выбранного воздействия
-                if ( specIdList.Count() > 0)
-                {
-                    var allSpec= db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
-                    var treeSpecBase = Item<Spec>.GetQueueParent(allSpec);
-                    foreach (var i in treeSpecBase)
-                    {
-                        if (!i[0].LoadPartialTree(i))
-                            throw new Exception("TODO ошибка");
-                    }
-                    specList = allSpec.Where(x1=>x1.Parent.Split(new string[] {"SPEC" },StringSplitOptions.RemoveEmptyEntries).Length==1).ToList();
-                }
-                else
-                
-                    specList = db.Specs.Where(x1 => x1.Parent == actionId + "_SPEC").ToList();
+                specList = db.Specs.Where(x1 => x1.Parent == actionId + "_SPEC").ToList();
 
-                
+                {
+                    var allSpec = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
+                    var treeSpecBase = Item<Spec>.GetQueueParent(allSpec);
+                    foreach (var s in specList)
+                    {
+                        foreach (var i in treeSpecBase)
+                        {
+                            if (!i[0].LoadPartialTree(i))
+                                throw new Exception("TODO ошибка");
+                        }
+                    }
+                    //specList = allSpec.Where(x1=>x1.Parent.Split(new string[] {"SPEC" },StringSplitOptions.RemoveEmptyEntries).Length==1).ToList();
+                }
+
+
+
+
+
                 // Получаем список временных характеристик для выбранного воздействия
-                if ( vremIdList.Count() > 0)
+                vremList = db.Vrems.Where(x1 => x1.Parent == actionId + "_VREM").ToList();
+
                 {
                     var allVrem = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
                     var treeVremBase = Item<Vrem>.GetQueueParent(allVrem);
-                    foreach (var i in treeVremBase)
+                    foreach (var v in vremList)
                     {
-                        if (!i[0].LoadPartialTree(i))
-                            throw new Exception("TODO ошибка");
-                    }
-                    vremList = allVrem.Where(x1 => x1.Parent.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
-                }
-                else
-                
-                    vremList = db.Vrems.Where(x1 => x1.Parent == actionId + "_VREM").ToList();
 
-                
+                        foreach (var i in treeVremBase)
+                        {
+                            if (!i[0].LoadPartialTree(i))
+                                throw new Exception("TODO ошибка");
+                        }
+                    }
+                    //vremList = allVrem.Where(x1 => x1.Parent.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
+                }
+
+
+
+
+
 
                 //vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
                 //var treeVremBase = Item<Vrem>.GetQueueParent(vremList);
@@ -196,8 +211,8 @@ namespace dip.Models.ViewModel
 
 
 
-                
-               // vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
+
+                // vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
                 //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление
