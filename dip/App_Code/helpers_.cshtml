@@ -104,17 +104,32 @@
         </div>
 
         @helpers_.DescrFormParamFizVels(type, a.parametricFizVelId, param )
-        <div id=@("prosGroup"+type)>
-            @*<div class="form-group" id=@("pros" + type)>*@
+        @if (a.pros.Count > 0)
+        {
+            <label class="control-label col-md-2">Пространственные характеристики</label>
+            <div id=@("prosGroup"+type)>
+                @*<div class="form-group" id=@("pros" + type)>*@
+
                 @helpers_.DescrFormPros(type, a.pros, param)
-            @*</div>*@
+                @*</div>*@
             </div>
-        <div id=@("specGroup"+type)>
-            @helpers_.DescrFormSpec(type, a.spec,param )
-        </div>
-        <div id=@("vremGroup"+type)>
-            @helpers_.DescrFormVrem(type, a.vrem, param )
-</div>
+        }
+        @if (a.spec.Count > 0)
+        {
+            <label class="control-label col-md-2">Специальные характеристики</label>
+            <div id=@("specGroup"+type)>
+
+                @helpers_.DescrFormSpec(type, a.spec, param)
+            </div>
+        }
+       @if (a.vrem.Count > 0)
+       {
+        <label class="control-label col-md-2">Временные характеристики</label>
+            <div id=@("vremGroup"+type)>
+                @helpers_.DescrFormVrem(type, a.vrem, param)
+            </div>
+       }
+
         @*<div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
@@ -220,50 +235,48 @@
 
 @helper DescrFormVrem(string type, List<Vrem> vrems, DescrSearchI param = null)
 {
-    <div class="form-group" @*id=@("vrem"+type)*@>
+    <div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
         @if (vrems!= null && vrems.Count != 0)
         {
             @*@Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <label class="control-label col-md-2">Временные характеристики</label>
+            @*<label class="control-label col-md-2">Временные характеристики</label>*@
             <div class="col-md-10">
-                <table class="descrFormGroupCheckBox">
-                    <tr>
+               
                         @{
-                            int cnt = 0;
+
                             foreach (var vrem in vrems)
                             {
-                                if (cnt++ % 3 == 0)
-                                {
-                                    @: </tr> <tr>
-                            }
+                                <div>
 
-                                <td>
+
                                     @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
                                     @{ 
-                                        bool? needSelected = param?.listSelectedVrem?.Split(new string[] {" " },StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+                                        bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+
                                     }
+                                    
                                     @if (needSelected==true)
                                     {
-                                        <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     else
                                     {
-                                        <input type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     <div id="@(vrem.Id+type)" name="0">
                                         @if (vrem.Childs.Count > 0)
                                         {
                                             @helpers_.DescrFormVrem(type, vrem.Childs, param)
                                         }
-                                        
+
                                     </div>
 
-                                </td>
+                                </div>
                             }
 
-                            @: </tr>
+
                         }
-                    </table>
+                    
                 </div>
                             }
     </div>
@@ -278,49 +291,46 @@
 
 @helper DescrFormSpec(string type,List<Spec> specs, DescrSearchI param = null)
 {
-    <div class="form-group" @*id=@("spec"+type)*@>
+    <div class="form-group descrCheckBoxChild" @*id=@("spec"+type)*@>
         @if (specs!= null && specs.Count != 0)
         {
             @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <label class="control-label col-md-2">Специальные характеристики</label>
+            @*<label class="control-label col-md-2">Специальные характеристики</label>*@
             <div class="col-md-10">
-                <table class="descrFormGroupCheckBox">
-                    <tr>
+                
                         @{
-                            int cnt = 0;
+
                             foreach (var spec in specs)
                             {
-                                if (cnt++ % 3 == 0)
-                                {
-                                    @: </tr> <tr>
-                            }
-                                @:<td>
+                                <div>
+                                    @{ 
+                                        bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
 
-                    
-                        bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
-                    
-                        if (needSelected==true)
-                        {
-                        <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
-                    }
-                                else
-                                {
-                                    <input type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
-                                }
+                                    }
+
+                                    
+                                    @if (needSelected==true)
+                                    {
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    }
+                                    else
+                                    {
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    }
 
 
-                                
+
                                     <div id="@(spec.Id+type)" name="0">
-@if (spec.Childs.Count > 0)
-{
-                                        @helpers_.DescrFormSpec(type, spec.Childs, param)
-}
+                                        @if (spec.Childs.Count > 0)
+                                        {
+                                            @helpers_.DescrFormSpec(type, spec.Childs, param)
+                                        }
                                     </div>
-                                @:</td>
+                                </div>
                             }
-                            @: </tr>
+
                         }
-                    </table>
+                   
                 </div>
                             }
     </div>
@@ -331,52 +341,49 @@
 
 @helper DescrFormPros(string type,List<Pro> pros, DescrSearchI param = null)
 {
-    <div class="form-group" @*id=@("pros" + type)*@>
-        @if (pros!=null&&pros.Count != 0)
-    {
+    <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
+        @if (pros != null && pros.Count != 0)
+        {
             @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <label class="control-label col-md-2">Пространственные характеристики</label>
+            @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
             <div class="col-md-10">
-                <table class="descrFormGroupCheckBox">
-                    <tr>
+               
                         @{
-                            int cnt = 0;
+
                             foreach (var pro in pros)
                             {
-                                if (cnt++ % 3 == 0)
-                                {
-                                    @:</tr><tr>
-                            }
-                                @: <td>
+                                <div>
                                     @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
-                        bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
-                        if (needSelected==true)
-                        {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" checked name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
-                                }
-                               else
-                                {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name
-                                }
+                                    @{
+                                        bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                                    }
+                                        @if (needSelected == true)
+                                    {
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    }
+                                    else
+                                    {
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    }
 
-                               
-                                    <div id="@(pro.Id+type)" name="0">
-@if (pro.Childs.Count > 0)
-{
-                                        @helpers_.DescrFormPros(type, pro.Childs, param)
-}
+
+                                    <div id="@(pro.Id + type)" name="0">
+                                        @if (pro.Childs.Count > 0)
+                                        {
+                                            @helpers_.DescrFormPros(type, pro.Childs, param)
+                                        }
                                     </div>
-                               @: </td>
+                                </div>
                             }
-                            @:</tr>
+
                         }
-                    </table>
+                  
                 </div>
                             }
     </div>
 
 
-}
+                            }
 
 
 
@@ -403,7 +410,7 @@
                             }
                                 
                                 <td>
-                                    <input type="checkbox" name=@("listSelected"+@name) value="@item.Id" /> @item.Name
+                                    <input type="checkbox" class="checkBoxClass" name=@("listSelected"+@name) value="@item.Id" /> @item.Name
                                     <div id="@item.Id" name="0"></div>
                                 </td>
                             }

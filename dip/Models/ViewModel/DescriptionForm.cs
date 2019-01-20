@@ -142,13 +142,14 @@ namespace dip.Models.ViewModel
                 // Получаем список пространственных характеристик для выбранного воздействия
                 if (prosIdList.Count()>0)
                 {
-                    prosList = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                    var treeProBase = Item<Pro>.GetQueueParent(prosList);
+                     var allPros= db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                    var treeProBase = Item<Pro>.GetQueueParent(allPros);
                     foreach(var i in treeProBase)
                     {
                         if (!i[0].LoadPartialTree(i))
                             throw new Exception("TODO ошибка");
                     }
+                    prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
                 }
                 else
                 
@@ -157,13 +158,14 @@ namespace dip.Models.ViewModel
                 // Получаем список специальных характеристик для выбранного воздействия
                 if ( specIdList.Count() > 0)
                 {
-                    specList = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
-                    var treeSpecBase = Item<Spec>.GetQueueParent(specList);
+                    var allSpec= db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
+                    var treeSpecBase = Item<Spec>.GetQueueParent(allSpec);
                     foreach (var i in treeSpecBase)
                     {
                         if (!i[0].LoadPartialTree(i))
                             throw new Exception("TODO ошибка");
                     }
+                    specList = allSpec.Where(x1=>x1.Parent.Split(new string[] {"SPEC" },StringSplitOptions.RemoveEmptyEntries).Length==1).ToList();
                 }
                 else
                 
@@ -173,13 +175,14 @@ namespace dip.Models.ViewModel
                 // Получаем список временных характеристик для выбранного воздействия
                 if ( vremIdList.Count() > 0)
                 {
-                    vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
-                    var treeVremBase = Item<Vrem>.GetQueueParent(vremList);
+                    var allVrem = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
+                    var treeVremBase = Item<Vrem>.GetQueueParent(allVrem);
                     foreach (var i in treeVremBase)
                     {
                         if (!i[0].LoadPartialTree(i))
                             throw new Exception("TODO ошибка");
                     }
+                    vremList = allVrem.Where(x1 => x1.Parent.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
                 }
                 else
                 
@@ -194,7 +197,7 @@ namespace dip.Models.ViewModel
 
 
                 
-                vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
+               // vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
                 //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление

@@ -29,6 +29,9 @@ textarea{
     width:100%;
 }
 
+.checkBoxClass{
+    width:20px !important;
+}
 
 /*при редактиваронии*/
 /*div.one_effect_img{
@@ -385,11 +388,15 @@ div.div_img_record_show_block{
 }
 
 
+div.descrCheckBoxChild{
+    padding-left:30px;
+}
 
-table.descrFormGroupCheckBox td{
+
+/*table.descrFormGroupCheckBox td{
     border: 1px solid black;
 
-}
+}*/
 
 
 
