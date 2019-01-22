@@ -14,47 +14,57 @@
     <h4>ФОРМА поиска</h4>
 
     @Html.Hidden(" ", Url.Action("DescriptionSearch", "Search"), new { id = "descr_search_href_id" })
-    <div id="">
+    
+        <div id="DescriptionFormMainAll" style="display:block;">
+        
         @*div_form_id*@
     <div>
         @Html.Action("DescriptionInput", "Actions",new {inp= ViewBag.inputForm,outp = ViewBag.outpForm })
-        <div>
-            <button class="btn btn-default" onclick="Go_next_step()">Поиск</button>
-        </div>
+        
     </div>
 
 </div>
-@*<button onclick="Go_next_step()">Поиск</button>*@
-<div id="search_content_div_id">
+    <div>
+        
+        <div>
+            <button class="btn btn-default" onclick="Go_next_step()">Поиск</button>
+        </div>
+        <div>
+            <button class="btn btn-default" onclick="clearForm()">Очистить форму</button>
+        </div>
+        <div id="showHideDescrForm" class="btn btn-primary" onclick="showHideDescrForm()">Скрыть форму</div>
+    </div>
+        @*<button onclick="Go_next_step()">Поиск</button>*@
+        <div id="search_content_div_id">
 
-    @if (Model != null)
-    {
-        @Html.Action("ListFeText", "Physic", new { listId = Model })
-    }
+            @if (Model != null)
+            {
+                @Html.Action("ListFeText", "Physic", new { listId = Model })
+            }
 
-</div>
+        </div>
 
-@*<div>
-        @if (ViewBag.search == true)
-        {
-            @Html.Action("ListFeText", "Actions", new {listId= ViewBag.listFeId })
-
-
+        @*<div>
+                @if (ViewBag.search == true)
+                {
+                    @Html.Action("ListFeText", "Actions", new {listId= ViewBag.listFeId })
 
 
-        }
 
 
-    </div>*@
-
-@*@Html.Label( "Название воздействия!!!!!", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = "___+__" })*@
+                }
 
 
-<div>
+            </div>*@
 
-    @Html.ActionLink("Назад на главную страницу", "Index", "Home")
-</div>
-</div>
+        @*@Html.Label( "Название воздействия!!!!!", htmlAttributes: new { id = "actionLabel", @class = "control-label col-md-2", value = "___+__" })*@
+
+
+        <div>
+
+            @Html.ActionLink("Назад на главную страницу", "Index", "Home")
+        </div>
+    </div>
 
 
 
@@ -121,6 +131,7 @@
                     //alert(data);
                     document.getElementById('search_content_div_id').innerHTML = data;
                     data_descr_search.function_trigger = go1;
+                    showHideDescrForm(false);
                 }
             });
 
@@ -168,7 +179,60 @@
             //xhr.send(data_descr_search);//formData
         }
 
+        //------------------------------------------------------
+        //action:true- показать
+        function showHideDescrForm(action) {
+            var form = document.getElementById('DescriptionFormMainAll');
+            var but = document.getElementById('showHideDescrForm');
+            if (action == null || action == undefined) {
+                if (form.style.display == 'block') {
+                    hideForm();
+                }
 
+                else {
+                    showForm();
+                }
+            }
+            else {
+                if (action) {
+                    showForm();
+                }
+                else {
+                    hideForm();
+                }
+            }
+            
+             
+
+            function showForm() {
+                form.style.display = 'block';
+                but.innerHTML = 'Скрыть форму';
+            }
+            function hideForm() {
+                form.style.display = 'none';
+                but.innerHTML = 'Показать форму';
+            }
+        }
+
+
+        //------------------------------------------------------
+
+        function clearForm() {
+            $("#actionI option[value='VOZ1']").prop("selected", true);
+            $("#actionO option[value='VOZ1']").prop("selected", true);
+            $("#actionTypeI option[value='NO_ACTIONS']").prop("selected", true);
+            $("#actionTypeO option[value='NO_ACTIONS']").prop("selected", true);
+            
+
+            changeParams('I');
+            
+            changeParams('O');
+
+            var url_ = document.getElementById("descr_search_href_id").value;
+            history.pushState(null, null, url_);
+
+
+        }
 
 
 

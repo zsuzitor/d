@@ -10,11 +10,13 @@
 
 
 <div >
-    
+    <div >@*id="physCreateFormDescrDiv"*@
+        @Html.Action("DescriptionInput", "Actions")
+    </div>
     @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
     {
-        <div id="physCreateFormDescrDiv">
-            @Html.Action("DescriptionInput", "Actions")
+        <div id="physCreateFormDescrRecDiv">
+           
         </div>
 
 
@@ -141,16 +143,16 @@
             //});
 
 
-            var divForm = document.getElementById('physCreateFormDescrDiv');
-            var divFormNewInner = '<H1>Отправляем</H1>';
+            var divForm = document.getElementById('physCreateFormDescrRecDiv');
+            var divFormNewInner = '';// '<H1>Отправляем</H1>';
             for (key in data_descr_search) {
                 if (key != 'function_trigger' && key != 'search')
                     divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
             }
            
             divForm.innerHTML = divFormNewInner;
-            var divImgForm = document.getElementById('physCreateFormIMGDiv');
-            divImgForm.style.display = 'none';
+            //var divImgForm = document.getElementById('physCreateFormIMGDiv');
+            //divImgForm.style.display = 'none';
             document.getElementById('FormPhysCreate').submit();
 
             

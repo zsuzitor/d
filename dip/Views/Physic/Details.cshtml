@@ -65,88 +65,90 @@
 
         </dl>
 
-
-        @foreach (var i in Model.Images)
-        {
-            <div class="div_img_record_show_block div_inline_block">
-                <div class="details_one_image">
-                    @helpers_.ImageLink(i)
-                </div>
-                </div>
-        }
-
-
-    </div>
-    @*<p>
-        @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
-    </p>*@
-    <p>
-        <button class="btn btn-default" onclick="loadDescrParam(@Model.IDFE)" id="show_descr_but">Показать дескрипторы</button>
-
-    </p>
-    <div id="DivDescriptionParams_id">
-       
-    </div>
-    <hr />
-
-    <div id="DivMoreSimilar_id">
-        <p>
-            <button class="btn btn-default" onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
-
-        </p>
-    </div>
-}
-
-
-
-
-<script>
-
-    function loadDescrParam(id) {
-        var but = document.getElementById('show_descr_but');
-        var div = document.getElementById('DivDescriptionParams_id');
-        if (div.innerHTML.trim() == '') {
-            //загрузить
-            goAjaxRequest({
-                url: '/Actions/LoadDescr',
-                type: 'POST',
-                data: { id: id },
-                func_success: function (data, status, jqXHR) {
-                    // Заменяем часть представления, отвечающего за отображение значений характеристики
-                    document.getElementById('DivDescriptionParams_id').innerHTML = data;
+        <div class="block_images">
+            <div class="inline">
+                @foreach (var i in Model.Images)
+                {
+                    <div class="div_img_record_show_block div_inline_block">
+                        <div class="details_one_image">
+                            @helpers_.ImageLink(i)
+                        </div>
+                    </div>
                 }
-            });
-            div.style.display = 'block';
-            but.innerHTML='Скрыть дескрипторы';
-        }
-        else {
-            //загружать не надо, надо показать\скрыть
-            if (div.style.display == 'block') {
-                //скрыть
-                div.style.display = 'none';
-                but.innerHTML='Показать дескрипторы';
+            </div>
+        </div>
+
+    </div>
+            @*<p>
+                    @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
+                </p>*@
+            <p>
+                <button class="btn btn-default" onclick="loadDescrParam(@Model.IDFE)" id="show_descr_but">Показать дескрипторы</button>
+
+            </p>
+            <div id="DivDescriptionParams_id">
+
+            </div>
+            <hr />
+
+            <div id="DivMoreSimilar_id">
+                <p>
+                    <button class="btn btn-default" onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
+
+                </p>
+            </div>
             }
-            else {
-                //показать
-                div.style.display = 'block';
-                but.innerHTML='Скрыть дескрипторы';
-            }
-        }
 
 
-    }
 
-    function loadSimilar(id){
-        document.getElementById('DivMoreSimilar_id').innerHTML= '';
-        goAjaxRequest({
-            url: '/Physic/ShowSimilar',
-            type:'POST',
-            data:{id:id},
-            func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
-                document.getElementById('DivMoreSimilar_id').innerHTML=data;
-            }
-        });
-    }
 
-</script>
+            <script>
+
+                function loadDescrParam(id) {
+                    var but = document.getElementById('show_descr_but');
+                    var div = document.getElementById('DivDescriptionParams_id');
+                    if (div.innerHTML.trim() == '') {
+                        //загрузить
+                        goAjaxRequest({
+                            url: '/Actions/LoadDescr',
+                            type: 'POST',
+                            data: { id: id },
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                document.getElementById('DivDescriptionParams_id').innerHTML = data;
+                            }
+                        });
+                        div.style.display = 'block';
+                        but.innerHTML='Скрыть дескрипторы';
+                    }
+                    else {
+                        //загружать не надо, надо показать\скрыть
+                        if (div.style.display == 'block') {
+                            //скрыть
+                            div.style.display = 'none';
+                            but.innerHTML='Показать дескрипторы';
+                        }
+                        else {
+                            //показать
+                            div.style.display = 'block';
+                            but.innerHTML='Скрыть дескрипторы';
+                        }
+                    }
+
+
+                }
+
+                function loadSimilar(id){
+                    document.getElementById('DivMoreSimilar_id').innerHTML= '';
+                    goAjaxRequest({
+                        url: '/Physic/ShowSimilar',
+                        type:'POST',
+                        data:{id:id},
+                        func_success: function (data, status, jqXHR) {
+                            // Заменяем часть представления, отвечающего за отображение значений характеристики
+                            document.getElementById('DivMoreSimilar_id').innerHTML=data;
+                        }
+                    });
+                }
+
+            </script>

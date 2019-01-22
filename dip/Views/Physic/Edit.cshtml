@@ -8,7 +8,7 @@
     function delete_img(but) {
         var id=but.id.split("_")[1];
         var div = document.getElementById("div_delete_img_id");
-        var str = "<input type='hidden' id='one_block_delete_img_id_" + num_delete_img++ + "' name='deleteImg_[" + num_delete_img + "]' value='" + id + "' />";
+        var str = "<input type='hidden' id='one_block_delete_img_id_" + num_delete_img + "' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
         div.innerHTML += str;
 
         //document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
@@ -25,7 +25,7 @@
         for (var i = 0; i < num_delete_img; ++i) {
             var del = document.getElementById('one_block_delete_img_id_' + i);
             if (del.value != id) {
-                res += "<input type='hidden' id='one_block_delete_img_id_" + cur_num++ + "' name='deleteImg_[" + cur_num + "]' value='" + del.value + "' />";
+                res += "<input type='hidden' id='one_block_delete_img_id_" + cur_num + "' name='deleteImg_[" + cur_num++ + "]' value='" + del.value + "' />";
             }
 
         }
@@ -63,6 +63,32 @@
 
     }
 
+
+    function EditPhysFunc() {
+
+        data_descr_search.function_trigger = function () {
+
+
+
+            var divForm = document.getElementById('physEditFormDescrRecDiv');
+            var divFormNewInner = '';//'<H1>Отправляем</H1>';
+            for (key in data_descr_search) {
+                if (key != 'function_trigger' && key != 'search')
+                    divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
+            }
+
+            divForm.innerHTML = divFormNewInner;
+            //var divImgForm = document.getElementById('physEditFormIMGDiv');
+            //divImgForm.style.display = 'none';
+            document.getElementById('FormPhysEdit').submit();
+
+
+
+        };
+        Go_next_step();
+    }
+
+
 </script>
 
 
@@ -79,14 +105,16 @@
 {
 
     <div>
-
-        @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        <div >@*id="physEditFormDescrDiv"*@
+            @Html.Action("DescriptionInput", "Actions", new { inp = ViewBag.inputForm, outp = ViewBag.outpForm })
+        </div>
+        @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
         {
 
             
-            @Html.Action("DescriptionInput", "Actions", new { inp = ViewBag.inputForm, outp = ViewBag.outpForm })
+            <div id="physEditFormDescrRecDiv">
 
-
+            </div>
 
 
 
@@ -160,55 +188,45 @@
             </div>
 
 
-
-            <input class="btn btn-default" type="file" multiple name="uploadImage" />
-            <input class="btn btn-default" type="submit" value="отправить" />
-        }
-        <div class="block_images">
-            <div class="inline">
-                @foreach (var i in Model.Images)
-                {
-                    @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                        <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
-                        </div>
-                        <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
-                    </div>*@
-                    <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                        <div id="div_img_hide_block_@i.Id">
-                            <div class="details_one_image">
-                                @helpers_.ImageLink(i)
-                            </div>
-                            <div class="edit_button_image_action">
-                                <button id="buttonDeleteId_@i.Id" class="btn btn-default" onclick="delete_img(this)">Удалить</button>
-                            </div>
-                        </div>
-                        <div class="edit_button_image_action" id="div_img_reset_block_@i.Id" style="display:none;">
-                            <button id="buttonResetId_@i.Id" class="btn btn-default" onclick="reset_img(this)">Восстановить</button>
-                        </div>
-                        </div>
-                }
+            <div id="physEditFormIMGDiv">
+                <input class="btn btn-default" type="file" multiple name="uploadImage" />
             </div>
-        </div>
-           
-        </div>
+                @*<input class="btn btn-default" type="submit" value="отправить" />*@
+                }
+                <input class="btn btn-default" onclick="EditPhysFunc()" value="отправить" />
+                <div class="block_images">
+                    <div class="inline">
+                        @foreach (var i in Model.Images)
+                        {
+                            @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
+                                    <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
+                                    </div>
+                                    <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
+                                </div>*@
+                            <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
+                                <div id="div_img_hide_block_@i.Id">
+                                    <div class="details_one_image">
+                                        @helpers_.ImageLink(i)
+                                    </div>
+                                    <div class="edit_button_image_action">
+                                        <button id="buttonDeleteId_@i.Id" class="btn btn-default" onclick="delete_img(this)">Удалить</button>
+                                    </div>
+                                </div>
+                                <div class="edit_button_image_action" id="div_img_reset_block_@i.Id" style="display:none;">
+                                    <button id="buttonResetId_@i.Id" class="btn btn-default" onclick="reset_img(this)">Восстановить</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-}
-
-
-
+        }
 
 
 
