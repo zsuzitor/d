@@ -54,22 +54,22 @@
 
                 <select name=@("actionId"+ type) class="form-control" id=@("action"+type)>
                     
-                    @foreach (var i in a.actionId)
+                    
+                    @for (var i=0;i< a.actionId.Count;++i)
                     {
-                        if (param?.actionId == i.Id)
+                        if (param?.actionId == a.actionId[i].Id)
                         {
-                            <option selected value="@i.Id">@i.Name</option>
+                            <option selected value="@a.actionId[i].Id">@a.actionId[i].Name</option>
                         }
                         else
                         {
-                            <option value="@i.Id">@i.Name</option>
+                            <option value="@a.actionId[i].Id">@a.actionId[i].Name</option>
                         }
 
                     }
                 </select>
 
 
-                @*@Html.ValidationMessageFor(model => model.Action.AllActionId, "", new { @class = "text-danger" })*@
             </div>
         </div>
         <div class="form-group">
@@ -77,25 +77,23 @@
             @*@Html.Label("Тип входа", new { @class = "control-label col-md-2" })*@
             <div class="col-md-10">
                 <select name=@("actionType"+ type) class="form-control" id=@("actionType"+type)>
-                    @foreach (var i in a.actionType)
+                    @for (var i=0;i<a.actionType.Count;++i)
                     {
-
-                        if (param?.actionType == i.Id)
+                        
+                        if (param?.actionType == a.actionType[i].Id)
                         {
-                            <option selected value="@i.Id">@i.Name</option>
+                            <option selected value="@a.actionType[i].Id">@a.actionType[i].Name</option>
                         }
                         else
                         {
-                            <option value="@i.Id">@i.Name</option>
+                            <option value="@a.actionType[i].Id">@a.actionType[i].Name</option>
                         }
 
 
-                        
+
                     }
                 </select>
 
-                @*@Html.DropDownList("actionType" + type, null, htmlAttributes: new { @class = "form-control" })*@
-                @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
             </div>
         </div>
         <div id=@("fizVelGroup"+ type)>
@@ -149,6 +147,7 @@
 
 @helper DescrFormFizVels(string type, List<FizVel> fizVelId, DescrSearchI param = null)
 {
+
     <div class="form-group" id=@("fizVel"+type)>
         @if (param?.actionId != "VOZ11")
     {
@@ -175,7 +174,7 @@
                         <option value="@i.Id">@i.Name</option>
                     }
 
-                    
+
                 }
 
             </select>
@@ -188,6 +187,47 @@
         </div>
     </div>
 
+
+
+@*TODO   тут ошибка из за которой было принято решение все хелперы переписать под отдельный контроллер
+        ошибка при выводе любого html кода - "Коллекция была изменена; невозможно выполнить операцию перечисления"
+        //{
+    //    System.Threading.Thread.Sleep(10000);
+    //}
+    //    {
+    //        FizVel[] fizVelId1 = fizVelId?.ToArray();
+    //    }
+    try
+    {
+            <div class="form-group" id=@("fizVel" + type)>
+
+                @if (param?.actionId != "VOZ11")
+            {
+
+                    <label class="control-label col-md-2">Название физической величины</label>
+                }
+                else
+                {
+
+                    <label class="control-label col-md-2">Раздел физики</label>
+                }
+
+
+                <div class="col-md-10">
+
+
+
+                </div>
+            </div>
+            <div></div>
+        }
+
+        catch
+        {
+            var th = fizVelId;
+            var hhg = th.ToArray();
+            var gg = 10;
+        }*@
 }
 
 
@@ -204,16 +244,17 @@
 
                 <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+ type)>
                     @*<option value="NO_FIZVEL">Не выбрано</option>*@
-                    @foreach (var i in parametricFizVelId)
+                    
+                    @for (var i =0;i< parametricFizVelId.Count;++i)
                     {
 
-                        if (param?.parametricFizVelId == i.Id)
+                        if (param?.parametricFizVelId == parametricFizVelId[i].Id)
                         {
-                            <option selected value="@i.Id">@i.Name</option>
+                            <option selected value="@parametricFizVelId[i].Id">@parametricFizVelId[i].Name</option>
                         }
                         else
                         {
-                            <option value="@i.Id">@i.Name</option>
+                            <option value="@parametricFizVelId[i].Id">@parametricFizVelId[i].Name</option>
                         }
 
                         
@@ -238,35 +279,34 @@
     <div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
         @if (vrems!= null && vrems.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Временные характеристики</label>*@
+          
             <div class="col-md-10">
                
                         @{
-
-                            foreach (var vrem in vrems)
+                            
+                            for (var vrem=0; vrem < vrems.Count;++vrem)
                             {
                                 <div>
 
 
                                     @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
                                     @{ 
-                                        bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+                                        bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrems[vrem].Id);
 
                                     }
                                     
                                     @if (needSelected==true)
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrems[vrem].Id" /> @vrems[vrem].Name
                                     }
                                     else
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrems[vrem].Id" /> @vrems[vrem].Name
                                     }
-                                    <div id="@(vrem.Id+type)" name="0">
-                                        @if (vrem.Childs.Count > 0)
+                                    <div id="@(vrems[vrem].Id+type)" name="0">
+                                        @if (vrems[vrem].Childs.Count > 0)
                                         {
-                                            @helpers_.DescrFormVrem(type, vrem.Childs, param)
+                                            @helpers_.DescrFormVrem(type, vrems[vrem].Childs, param)
                                         }
 
                                     </div>
@@ -294,36 +334,35 @@
     <div class="form-group descrCheckBoxChild" @*id=@("spec"+type)*@>
         @if (specs!= null && specs.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Специальные характеристики</label>*@
+           
             <div class="col-md-10">
                 
                         @{
-
-                            foreach (var spec in specs)
-                            {
+                                
+                            for (var spec = 0; spec < specs.Count;++spec)
+                                {
                                 <div>
-                                    @{ 
-                                        bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
+                                    @{
+                                        bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(specs[spec].Id);
 
                                     }
 
-                                    
+
                                     @if (needSelected==true)
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@specs[spec].Id" /> @specs[spec].Name
                                     }
                                     else
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@specs[spec].Id" /> @specs[spec].Name
                                     }
 
 
 
-                                    <div id="@(spec.Id+type)" name="0">
-                                        @if (spec.Childs.Count > 0)
+                                    <div id="@(specs[spec].Id+type)" name="0">
+                                        @if (specs[spec].Childs.Count > 0)
                                         {
-                                            @helpers_.DescrFormSpec(type, spec.Childs, param)
+                                            @helpers_.DescrFormSpec(type, specs[spec].Childs, param)
                                         }
                                     </div>
                                 </div>
@@ -344,33 +383,32 @@
     <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
         @if (pros != null && pros.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
+            
             <div class="col-md-10">
                
                         @{
-
-                            foreach (var pro in pros)
+                            
+                            for (var pro=0; pro< pros.Count;++pro)
                             {
                                 <div>
                                     @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
                                     @{
-                                        bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                                        bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pros[pro].Id);
                                     }
                                         @if (needSelected == true)
                                     {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pros[pro].Id" /> @pros[pro].Name
                                     }
                                     else
                                     {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pros[pro].Id" /> @pros[pro].Name
                                     }
 
 
-                                    <div id="@(pro.Id + type)" name="0">
-                                        @if (pro.Childs.Count > 0)
+                                    <div id="@(pros[pro].Id + type)" name="0">
+                                        @if (pros[pro].Childs.Count > 0)
                                         {
-                                            @helpers_.DescrFormPros(type, pro.Childs, param)
+                                            @helpers_.DescrFormPros(type, pros[pro].Childs, param)
                                         }
                                     </div>
                                 </div>
@@ -433,13 +471,13 @@
 
 @helper ImageLink(Image a)
 {
-    @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@a.Id">*@
+  
 if (a?.Id != null)
 {
     <div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">@*@a.Id*@
-        @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
+        
         @helpers_.Image(a, true)
-        @*</a>*@
+        
     </div>
 }
 if (a?.Id == null)
@@ -457,11 +495,10 @@ if (a?.Data != null)
 {
     //TODO сейчас  не полностью картинки влезают
     <div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@a.Id">
-        @*<img id="main_tag_one_img_id_@a.Id" class="class_image_standart" src="data:image/jpeg;base64,@Convert.ToBase64String(a.Data)" style="background: no-repeat;background-size: cover;">*@
-        @*;background-size: cover;*@
+       
         <div id="main_tag_one_img_id_@a.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(a.Data))
               no-repeat; background-position: center;background-size: contain;">
-            @*background-size: 100% 100%;*@
+            
         </div>
     </div>
 }
