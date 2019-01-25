@@ -1,0 +1,42 @@
+﻿
+
+
+@{
+    List<dip.Models.Domain.FizVel> parametricFizVelId = ViewBag.parametricFizVelId;
+    string type = ViewBag.type;
+    dip.Models.Domain.DescrSearchI param = ViewBag.param;
+
+}
+
+
+<div class="form-group" id=@("parametricFizVel"+type)>
+    @if (parametricFizVelId != null && parametricFizVelId.Count != 0)
+    {
+        @*@Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <label class="control-label col-md-2">Название физической величины</label>
+            <div class="col-md-10">
+                @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
+
+                <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+ type)>
+                    @*<option value="NO_FIZVEL">Не выбрано</option>*@
+                    @foreach (var i in parametricFizVelId)
+                    {
+
+                        if (param?.parametricFizVelId == i.Id)
+                        {
+                            <option selected value="@i.Id">@i.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+
+
+                    }
+
+                </select>
+
+            </div>
+    }
+</div>
+

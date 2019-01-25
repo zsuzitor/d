@@ -5,7 +5,10 @@
 
 @if (ViewBag.ProsShildList != null)
 {
-    @helpers_.DescrFormPros(ViewBag.type, ViewBag.ProsShildList)
+   
+
+    @Html.Action("DescrFormPros", "Helpers", new { pros = ViewBag.ProsShildList, type = (string)ViewBag.type })
+
 }
 
 

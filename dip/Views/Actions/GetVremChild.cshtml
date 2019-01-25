@@ -3,7 +3,9 @@
 
 @if (ViewBag.ProsShildList != null)
 {
-    @helpers_.DescrFormVrem(ViewBag.type, ViewBag.VremShildList)
+   
+    @Html.Action("DescrFormVrem", "Helpers", new { vrems = ViewBag.VremShildList, type = ViewBag.type })
+
 }
 
 

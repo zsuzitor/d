@@ -1,0 +1,31 @@
+﻿
+@{
+    dip.Models.Domain.Image a = ViewBag.a;
+    bool show_empty_img = ViewBag.show_empty_img;
+
+}
+
+
+
+@if (a?.Data != null)
+{
+    //TODO сейчас  не полностью картинки влезают
+<div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@a.Id">
+    @*<img id="main_tag_one_img_id_@a.Id" class="class_image_standart" src="data:image/jpeg;base64,@Convert.ToBase64String(a.Data)" style="background: no-repeat;background-size: cover;">*@
+    @*;background-size: cover;*@
+    <div id="main_tag_one_img_id_@a.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(a.Data))
+              no-repeat; background-position: center;background-size: contain;">
+        @*background-size: 100% 100%;*@
+    </div>
+</div>
+}
+
+    if (show_empty_img)
+    {
+
+
+        if (a?.Data == null)
+        {
+<img src="~/Content/images/camera_200.png" />
+            }
+        }

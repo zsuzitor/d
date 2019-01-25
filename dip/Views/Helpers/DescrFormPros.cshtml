@@ -1,0 +1,56 @@
+﻿
+@{
+    List<dip.Models.Domain.Pro> pros = ViewBag.pros;
+    string type = ViewBag.type;
+    dip.Models.Domain.DescrSearchI param = ViewBag.param;
+
+}
+
+<div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
+    @if (pros != null && pros.Count != 0)
+    {
+        @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+        @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
+        <div class="col-md-10">
+
+            @{
+
+                foreach (var pro in pros)
+                {
+                    <div>
+                        @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
+                        @{
+                            bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                        }
+                        @if (needSelected == true)
+                        {
+                            <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                        }
+                        else
+                        {
+                            <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                        }
+
+
+                        <div id="@(pro.Id + type)" name="0">
+                            @if (pro.Childs.Count > 0)
+                            {
+                                @Html.Action("DescrFormPros", "Helpers", new { type = type, pros = pro.Childs, param = param })
+                                
+                            }
+                        </div>
+                    </div>
+                            }
+
+            }
+
+        </div>
+                            }
+</div>
+
+
+
+
+
+
+

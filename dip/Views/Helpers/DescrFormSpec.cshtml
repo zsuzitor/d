@@ -1,0 +1,62 @@
+﻿
+@{
+    List<dip.Models.Domain.Spec> specs = ViewBag.specs;
+    string type = ViewBag.type;
+    dip.Models.Domain.DescrSearchI param = ViewBag.param;
+
+}
+
+
+<div class="form-group descrCheckBoxChild" @*id=@("spec"+type)*@>
+    @if (specs != null && specs.Count != 0)
+    {
+        @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+        @*<label class="control-label col-md-2">Специальные характеристики</label>*@
+        <div class="col-md-10">
+
+            @{
+
+                foreach (var spec in specs)
+                {
+                    <div>
+                        @{
+                            bool? needSelected = param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
+
+                        }
+
+
+                        @if (needSelected == true)
+                        {
+                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                        }
+                        else
+                        {
+                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                        }
+
+
+
+                        <div id="@(spec.Id+type)" name="0">
+                            @if (spec.Childs.Count > 0)
+                            {
+                                @Html.Action("DescrFormSpec", "Helpers", new { type = type, specs = spec.Childs, param = param })
+                                
+                            }
+                        </div>
+                    </div>
+                            }
+
+            }
+
+        </div>
+                            }
+</div>
+
+
+
+
+
+
+
+
+

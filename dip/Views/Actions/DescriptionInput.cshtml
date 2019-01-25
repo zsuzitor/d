@@ -22,11 +22,15 @@
 
 
     @*@if(ViewBag.inputForm)*@
-    @helpers_.PartFormDescrSearch(ViewBag.inputForm, "I", ViewBag.inputFormData)
     
+    @Html.Action("PartFormDescrSearch", "Helpers",new {a= ViewBag.inputForm,type="I", param= ViewBag.inputFormData })
+
     <hr />
     <h1>Выход</h1>
-    @helpers_.PartFormDescrSearch(ViewBag.outpForm, "O", ViewBag.outpFormData)
+    
+    @Html.Action("PartFormDescrSearch", "Helpers", new { a = ViewBag.outpForm, type = "O", param = ViewBag.outpFormData })
+
+
 </div>
 
 

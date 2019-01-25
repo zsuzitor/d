@@ -1,0 +1,41 @@
+﻿
+@{
+
+    string label =ViewBag.label ;
+    string id= ViewBag.id  ;
+    string name= ViewBag.name  ;
+    dynamic a = ViewBag.a;
+
+}
+
+
+
+<div class="form-group" id="@id">
+    @if (a.Count != 0)
+    {
+        <label id="" class="control-label col-md-2">@label</label>
+            @*@Html.Label(label, new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <table class="descrFormGroupCheckBox">
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var item in a)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @: </tr> <tr>
+                            }
+
+                                <td>
+                                    <input type="checkbox" class="checkBoxClass" name=@("listSelected"+@name) value="@item.Id" /> @item.Name
+                                    <div id="@item.Id" name="0"></div>
+                                </td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+                            }
+</div>
+

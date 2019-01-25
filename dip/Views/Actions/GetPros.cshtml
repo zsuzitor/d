@@ -5,4 +5,8 @@
 @model dip.Models.Domain.Action
 
 @*@MyHelpers.selectList(ViewBag.pros, "Пространственные характеристики", "pros", "Pros")*@
-@helpers_.DescrFormPros((string)ViewBag.type, (List <dip.Models.Domain.Pro >) ViewBag.pros)
+
+
+@Html.Action("DescrFormPros", "Helpers", new { pros = (List<dip.Models.Domain.Pro>)ViewBag.pros, type = (string)ViewBag.type })
+
+

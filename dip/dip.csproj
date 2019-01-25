@@ -189,6 +189,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionsController.cs" />
     <Compile Include="Controllers\DescriptionQueriesController.cs" />
+    <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexesController.cs" />
     <Compile Include="Controllers\LimitsController.cs" />
@@ -352,6 +353,15 @@
     <Content Include="Views\Search\TextSearchPartial.cshtml" />
     <Content Include="Views\Physic\ShowSimilar.cshtml" />
     <Content Include="Views\Actions\LoadDescr.cshtml" />
+    <Content Include="Views\Helpers\PartFormDescrSearch.cshtml" />
+    <Content Include="Views\Helpers\DescrFormFizVels.cshtml" />
+    <Content Include="Views\Helpers\DescrFormParamFizVels.cshtml" />
+    <Content Include="Views\Helpers\DescrFormVrem.cshtml" />
+    <Content Include="Views\Helpers\DescrFormSpec.cshtml" />
+    <Content Include="Views\Helpers\DescrFormPros.cshtml" />
+    <Content Include="Views\Helpers\selectList.cshtml" />
+    <Content Include="Views\Helpers\ImageLink.cshtml" />
+    <Content Include="Views\Helpers\Image.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

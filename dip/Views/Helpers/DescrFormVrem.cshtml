@@ -1,0 +1,57 @@
+﻿
+
+@{
+    List<dip.Models.Domain.Vrem> vrems = ViewBag.vrems;
+    string type = ViewBag.type;
+    dip.Models.Domain.DescrSearchI param = ViewBag.param;
+
+}
+
+
+
+<div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
+    @if (vrems != null && vrems.Count != 0)
+    {
+
+        <div class="col-md-10">
+
+            @{
+
+                foreach (var vrem in vrems)
+                {
+                    <div>
+
+
+                        @{
+                            bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+
+                        }
+
+                        @if (needSelected == true)
+                        {
+                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                        }
+                        else
+                        {
+                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                        }
+                        <div id="@(vrem.Id+type)" name="0">
+                            @if (vrem.Childs.Count > 0)
+                            {
+                                @Html.Action("DescrFormVrem", "Helpers", new { type=type,vrems= vrem.Childs,param=param })
+                               
+                            }
+
+                        </div>
+
+                    </div>
+                            }
+
+
+            }
+
+        </div>
+                            }
+</div>
+
+

@@ -1,0 +1,21 @@
+﻿
+@{
+   dip.Models.Domain.Image a = ViewBag.a;
+    
+}
+
+
+@if (a?.Id != null)
+{
+<div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">
+    @*@a.Id*@
+@*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
+@Html.Action("Image", "Helpers",new {a=a, show_empty_img=true })
+@*</a>*@
+</div>
+}
+@if (a?.Id == null)
+{
+@Html.Action("Image", "Helpers", new { a = a, show_empty_img = true })
+}
+

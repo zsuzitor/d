@@ -1,0 +1,50 @@
+﻿
+
+@{
+    List<dip.Models.Domain.FizVel > fizVelId = ViewBag.fizVelId;
+    string type = ViewBag.type;
+    dip.Models.Domain.DescrSearchI param = ViewBag.param;
+
+}
+
+
+
+<div class="form-group" id=@("fizVel"+type)>
+    @if (param?.actionId != "VOZ11")
+    {
+        @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <label class="control-label col-md-2">Название физической величины</label>
+    }
+    else
+    {
+        @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <label class="control-label col-md-2">Раздел физики</label>
+    }
+    <div class="col-md-10">
+        @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
+        <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+ type)>
+
+            @foreach (var i in fizVelId)
+            {
+                if (param?.FizVelId == i.Id)
+                {
+                    <option selected value="@i.Id">@i.Name</option>
+                }
+                else
+                {
+                    <option value="@i.Id">@i.Name</option>
+                }
+
+
+            }
+
+        </select>
+
+
+
+
+
+        @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
+    </div>
+</div>
+

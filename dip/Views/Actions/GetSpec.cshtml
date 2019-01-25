@@ -3,4 +3,7 @@
 
 
 @model dip.Models.Domain.Action
-@helpers_.DescrFormSpec((string)ViewBag.type, (List<dip.Models.Domain.Spec>)ViewBag.spec)
+
+@Html.Action("DescrFormSpec", "Helpers", new { specs = (List<dip.Models.Domain.Spec>)ViewBag.spec, type = (string)ViewBag.type })
+
+

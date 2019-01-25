@@ -206,7 +206,8 @@
                             <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
                                 <div id="div_img_hide_block_@i.Id">
                                     <div class="details_one_image">
-                                        @helpers_.ImageLink(i)
+                                        @Html.Action("ImageLink", "Helpers", new { a = i })
+
                                     </div>
                                     <div class="edit_button_image_action">
                                         <button id="buttonDeleteId_@i.Id" class="btn btn-default" onclick="delete_img(this)">Удалить</button>

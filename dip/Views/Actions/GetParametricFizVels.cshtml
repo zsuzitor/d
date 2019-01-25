@@ -3,4 +3,5 @@
 
 
 @model dip.Models.Domain.Action
-@helpers_.DescrFormParamFizVels((string)ViewBag.type, (List<dip.Models.Domain.FizVel>)ViewBag.parametricFizVelId)
+
+@Html.Action("DescrFormParamFizVels", "Helpers", new { type = (string)ViewBag.type, parametricFizVelId = (List<dip.Models.Domain.FizVel>)ViewBag.parametricFizVelId,})

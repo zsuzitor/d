@@ -14,13 +14,13 @@
     }
 }*@
 
-@helper HelperName(string name)
+@*@helper HelperName(string name)
 {
 // your helper can contain code and/or markup, e.g.
 // var msg = "Hello " + name;
 // <p>@msg</p>
 // For more information, visit http://go.microsoft.com/fwlink/?LinkID=204658
-}
+}*@
 
 
 @*@helper PrintAsRaw(string htmlString)
@@ -33,24 +33,22 @@
 @*dynamic*@
 @*HtmlHelper*@
 @* отрисовывает форму(a) для дескрипторного поиска, форма уже заполнена и выбраны нужные параметры(param) *@
-@helper PartFormDescrSearch(dip.Models.ViewModel.DescriptionForm a, string type = "", DescrSearchI param=null)
+@*@helper PartFormDescrSearch(dip.Models.ViewModel.DescriptionForm a, string type = "", DescrSearchI param=null)
 {
 //using System.Web.Mvc ;
     <div class="form-horizontal">
 
         <hr />
-        @*@( +a.Postfix)*@
+       
         <div class="form-group">
             <label id=@("actionLabel"+type) class="control-label col-md-2" value="@a.currentActionId">Название воздействия</label>
-            @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
-
+           
            
 
 
             <div class="col-md-10">
 
-                @*@Html.DropDownList("actionId" + type, null, htmlAttributes: new { id = "action" + type, @class = "form-control" })*@
-
+               
 
                 <select name=@("actionId"+ type) class="form-control" id=@("action"+type)>
                     
@@ -69,12 +67,12 @@
                 </select>
 
 
-                @*@Html.ValidationMessageFor(model => model.Action.AllActionId, "", new { @class = "text-danger" })*@
+             
             </div>
         </div>
         <div class="form-group">
             <label id="" class="control-label col-md-2">Тип входа</label>
-            @*@Html.Label("Тип входа", new { @class = "control-label col-md-2" })*@
+           
             <div class="col-md-10">
                 <select name=@("actionType"+ type) class="form-control" id=@("actionType"+type)>
                     @foreach (var i in a.actionType)
@@ -94,8 +92,7 @@
                     }
                 </select>
 
-                @*@Html.DropDownList("actionType" + type, null, htmlAttributes: new { @class = "form-control" })*@
-                @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
+               
             </div>
         </div>
         <div id=@("fizVelGroup"+ type)>
@@ -108,10 +105,10 @@
         {
             <label class="control-label col-md-2">Пространственные характеристики</label>
             <div id=@("prosGroup"+type)>
-                @*<div class="form-group" id=@("pros" + type)>*@
+               
 
                 @helpers_.DescrFormPros(type, a.pros, param)
-                @*</div>*@
+              
             </div>
         }
         @if (a.spec.Count > 0)
@@ -130,12 +127,7 @@
             </div>
        }
 
-        @*<div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
-                    <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
-                </div>
-            </div>*@
+     
     </div>
 
 
@@ -144,24 +136,24 @@
 
 
 
-}
+}*@
 
 
-@helper DescrFormFizVels(string type, List<FizVel> fizVelId, DescrSearchI param = null)
+@*@helper DescrFormFizVels(string type, List<FizVel> fizVelId, DescrSearchI param = null)
 {
     <div class="form-group" id=@("fizVel"+type)>
         @if (param?.actionId != "VOZ11")
     {
-            @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+           
             <label class="control-label col-md-2">Название физической величины</label>
         }
         else
         {
-            @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
+           
             <label class="control-label col-md-2">Раздел физики</label>
         }
         <div class="col-md-10">
-            @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
+           
             <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+ type)>
 
                 @foreach (var i in fizVelId)
@@ -184,26 +176,24 @@
 
 
 
-            @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
         </div>
     </div>
 
-}
+}*@
 
 
 
-@helper DescrFormParamFizVels(string type, List<FizVel> parametricFizVelId, DescrSearchI param = null)
+@*@helper DescrFormParamFizVels(string type, List<FizVel> parametricFizVelId, DescrSearchI param = null)
 {
     <div class="form-group" id=@("parametricFizVel"+type)>
         @if (parametricFizVelId != null && parametricFizVelId.Count != 0)
         {
-            @*@Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            
             <label class="control-label col-md-2">Название физической величины</label>
             <div class="col-md-10">
-                @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
-
+               
                 <select name=@("parametricFizVelId"+ type) class="form-control" id=@("parametricFizVelId"+ type)>
-                    @*<option value="NO_FIZVEL">Не выбрано</option>*@
+                   
                     @foreach (var i in parametricFizVelId)
                     {
 
@@ -224,7 +214,7 @@
             </div>
         }
     </div>
-}
+}*@
 
 @*@helper DescrFormVremCheckBoxes(string type, List<Vrem> vrems, DescrSearchI param = null)
 {
@@ -233,13 +223,12 @@
 
 }*@
 
-@helper DescrFormVrem(string type, List<Vrem> vrems, DescrSearchI param = null)
+@*@helper DescrFormVrem(string type, List<Vrem> vrems, DescrSearchI param = null)
 {
-    <div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
+    <div class="form-group descrCheckBoxChild" >
         @if (vrems!= null && vrems.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Vrems, "Временные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Временные характеристики</label>*@
+           
             <div class="col-md-10">
                
                         @{
@@ -249,19 +238,18 @@
                                 <div>
 
 
-                                    @*<input id=@("listSelectedVrem"+((string)ViewBag.type)+cnt) type="checkbox" name=@("listSelectedVrem"+((string)ViewBag.type)) value="@vrem.Id" /> @vrem.Name*@
-                                    @{ 
+                                     @{ 
                                         bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
 
                                     }
                                     
                                     @if (needSelected==true)
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox" checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     else
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
+                                    <input class="checkBoxClass" type="checkbox"  name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
                                     }
                                     <div id="@(vrem.Id+type)" name="0">
                                         @if (vrem.Childs.Count > 0)
@@ -283,20 +271,18 @@
 
 
 
-}
+}*@
 
 
 
 
 
-@helper DescrFormSpec(string type,List<Spec> specs, DescrSearchI param = null)
+@*@helper DescrFormSpec(string type,List<Spec> specs, DescrSearchI param = null)
 {
-    <div class="form-group descrCheckBoxChild" @*id=@("spec"+type)*@>
+    <div class="form-group descrCheckBoxChild" >
         @if (specs!= null && specs.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Specs, "Специальные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Специальные характеристики</label>*@
-            <div class="col-md-10">
+           <div class="col-md-10">
                 
                         @{
 
@@ -311,11 +297,11 @@
                                     
                                     @if (needSelected==true)
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    <input class="checkBoxClass" type="checkbox"  checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                                     }
                                     else
                                     {
-                                    <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
+                                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
                                     }
 
 
@@ -334,18 +320,17 @@
                 </div>
                             }
     </div>
-}
+}*@
 
 
 
 
-@helper DescrFormPros(string type,List<Pro> pros, DescrSearchI param = null)
+@*@helper DescrFormPros(string type,List<Pro> pros, DescrSearchI param = null)
 {
-    <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
+    <div class="form-group descrCheckBoxChild" >
         @if (pros != null && pros.Count != 0)
         {
-            @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
+          
             <div class="col-md-10">
                
                         @{
@@ -353,17 +338,17 @@
                             foreach (var pro in pros)
                             {
                                 <div>
-                                    @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
+                                   
                                     @{
                                         bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
                                     }
                                         @if (needSelected == true)
                                     {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    <input  class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
                                     }
                                     else
                                     {
-                                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
+                                    <input  class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" /> @pro.Name
                                     }
 
 
@@ -383,20 +368,20 @@
     </div>
 
 
-                            }
+                            }*@
 
 
 
 
 @*TODO     не помню зачем это нужно и нужно ли вообще*@
-@helper selectList(dynamic a, string label, string id, string name)
+@*@helper selectList(dynamic a, string label, string id, string name)
 {
 
     <div class="form-group" id="@id">
         @if (a.Count != 0)
     {
             <label id="" class="control-label col-md-2">@label</label>
-            @*@Html.Label(label, new { @class = "control-label col-md-2" })*@
+          
             <div class="col-md-10">
                 <table class="descrFormGroupCheckBox">
                     <tr>
@@ -422,7 +407,7 @@
     </div>
 
 
-}
+}*@
 
 
 
@@ -431,15 +416,15 @@
 
 
 
-@helper ImageLink(Image a)
+@*@helper ImageLink(Image a)
 {
-    @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@a.Id">*@
+    
 if (a?.Id != null)
 {
-    <div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">@*@a.Id*@
-        @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
+    <div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">
+       
         @helpers_.Image(a, true)
-        @*</a>*@
+       
     </div>
 }
 if (a?.Id == null)
@@ -447,21 +432,20 @@ if (a?.Id == null)
     @helpers_.Image(a, true)
 }
 
-}
+}*@
 
 
 
-@helper Image(Image a, bool show_empty_img)
+@*@helper Image(Image a, bool show_empty_img)
         {
 if (a?.Data != null)
 {
     //TODO сейчас  не полностью картинки влезают
     <div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@a.Id">
-        @*<img id="main_tag_one_img_id_@a.Id" class="class_image_standart" src="data:image/jpeg;base64,@Convert.ToBase64String(a.Data)" style="background: no-repeat;background-size: cover;">*@
-        @*;background-size: cover;*@
+       
         <div id="main_tag_one_img_id_@a.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(a.Data))
               no-repeat; background-position: center;background-size: contain;">
-            @*background-size: 100% 100%;*@
+           
         </div>
     </div>
 }
@@ -475,7 +459,7 @@ if (a?.Data != null)
             <img src="~/Content/images/camera_200.png" />
             }
         }
-    }
+    }*@
 
 
 

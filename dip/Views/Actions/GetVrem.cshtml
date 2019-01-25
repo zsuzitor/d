@@ -3,4 +3,5 @@
 
 
 @model dip.Models.Domain.Action
-@helpers_.DescrFormVrem((string)ViewBag.type, (List<dip.Models.Domain.Vrem>)ViewBag.vrem)
+
+@Html.Action("DescrFormVrem", "Helpers", new { vrems = (List<dip.Models.Domain.Vrem>)ViewBag.vrem, type = (string)ViewBag.type })

@@ -3,10 +3,11 @@
 
 @if (ViewBag.SpecShildList != null)
 {
-    @helpers_.DescrFormSpec(ViewBag.type, ViewBag.SpecShildList)
+
+@Html.Action("DescrFormSpec", "Helpers", new { type = ViewBag.type, specs = ViewBag.SpecShildList })
 }
 
- 
+
 
 @*@model dip.Models.Domain.Action
 @if (ViewBag.specChild.Count != 0)
