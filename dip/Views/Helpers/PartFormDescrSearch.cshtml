@@ -1,17 +1,14 @@
 ﻿
-@{ 
-    dip.Models.ViewModel.DescriptionForm a= ViewBag.form;
-    string type=ViewBag.type ;
-    dip.Models.Domain.DescrSearchI param =ViewBag.param ;
 
-}
+
+@model dip.Models.ViewModel.Helpers.PartFormDescrSearchV
 
 <div class="form-horizontal">
 
     <hr />
     @*@( +a.Postfix)*@
     <div class="form-group">
-        <label id=@("actionLabel"+type) class="control-label col-md-2" value="@a.currentActionId" for="@("action"+type)">Название воздействия</label>
+        <label id=@("actionLabel"+Model.Type) class="control-label col-md-2" value="@Model.Form.currentActionId" for="@("action"+Model.Type)">Название воздействия</label>
         @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
 
 
@@ -22,11 +19,11 @@
             @*@Html.DropDownList("actionId" + type, null, htmlAttributes: new { id = "action" + type, @class = "form-control" })*@
 
 
-            <select name=@("actionId"+ type) class="form-control" id=@("action"+type)>
+            <select name=@("actionId"+ Model.Type) class="form-control" id=@("action"+Model.Type)>
 
-                @foreach (var i in a.actionId)
+                @foreach (var i in Model.Form.actionId)
                 {
-                    if (param?.actionId == i.Id)
+                    if (Model.Param?.actionId == i.Id)
                     {
                         <option selected value="@i.Id">@i.Name</option>
                     }
@@ -43,14 +40,14 @@
         </div>
     </div>
     <div class="form-group">
-        <label id="" class="control-label col-md-2" for="@("actionType"+type)">Тип входа</label>
+        <label id="" class="control-label col-md-2" for="@("actionType"+Model.Type)">Тип входа</label>
         @*@Html.Label("Тип входа", new { @class = "control-label col-md-2" })*@
         <div class="col-md-10">
-            <select name=@("actionType"+ type) class="form-control" id=@("actionType"+type)>
-                @foreach (var i in a.actionType)
+            <select name=@("actionType"+ Model.Type) class="form-control" id=@("actionType"+Model.Type)>
+                @foreach (var i in Model.Form.actionType)
                 {
 
-                    if (param?.actionType == i.Id)
+                    if (Model.Param?.actionType == i.Id)
                     {
                         <option selected value="@i.Id">@i.Name</option>
                     }
@@ -68,23 +65,23 @@
             @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
         </div>
     </div>
-    <div id=@("fizVelGroup"+ type)>
+    <div id=@("fizVelGroup"+ Model.Type)>
 
-        @Html.Action("DescrFormFizVels", "Helpers", new { type = type, fizVelId = a.fizVelId, param = param })
+        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.fizVelId, param = Model.Param })
 
 
     </div>
-    @Html.Action("DescrFormParamFizVels", "Helpers", new { type = type, parametricFizVelId = a.parametricFizVelId, param = param })
+    @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.parametricFizVelId, param = Model.Param })
 
 
     @*@if (a.pros.Count > 0)
     {*@
         <label class="control-label col-md-2">Пространственные характеристики</label>
         @*}*@
-            <div id=@("prosGroup"+type)>
+            <div id=@("prosGroup"+Model.Type)>
                 @*<div class="form-group" id=@("pros" + type)>*@
 
-                @Html.Action("DescrFormPros", "Helpers", new { type = type, pros = a.pros, param = param })
+                @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = Model.Form.pros, param = Model.Param })
 
 
                 @*</div>*@
@@ -94,9 +91,9 @@
     {*@
         <label class="control-label col-md-2">Специальные характеристики</label>
     @*}*@
-            <div id=@("specGroup"+type)>
+            <div id=@("specGroup"+Model.Type)>
 
-                @Html.Action("DescrFormSpec", "Helpers", new { type = type, specs = a.spec, param = param })
+                @Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.Form.spec, param = Model.Param })
 
 
 
@@ -107,8 +104,8 @@
     {*@
         <label class="control-label col-md-2">Временные характеристики</label>
     @*}*@
-        <div id=@("vremGroup"+type)>
-            @Html.Action("DescrFormVrem", "Helpers", new { type = type, vrems = a.vrem, param = param })
+        <div id=@("vremGroup"+Model.Type)>
+            @Html.Action("DescrFormVrem", "Helpers", new { type = Model.Type, vrems = Model.Form.vrem, param = Model.Param })
 
 
 

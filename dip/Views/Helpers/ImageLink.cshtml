@@ -1,21 +1,19 @@
 ﻿
-@{
-   dip.Models.Domain.Image a = ViewBag.a;
-    
-}
+
+@model dip.Models.ViewModel.Helpers.ImageV
 
 
-@if (a?.Id != null)
+@if (Model.Image?.Id != null)
 {
-<div id="LinkImageForLoad_id_@a.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@a.Id)">
+<div id="LinkImageForLoad_id_@Model.Image.Id" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX(@Model.Image.Id)">
     @*@a.Id*@
 @*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
-@Html.Action("Image", "Helpers",new {a=a, show_empty_img=true })
+@Html.Action("Image", "Helpers",new {a= Model.Image, show_empty_img=true })
 @*</a>*@
 </div>
 }
-@if (a?.Id == null)
+@if (Model.Image?.Id == null)
 {
-@Html.Action("Image", "Helpers", new { a = a, show_empty_img = true })
+@Html.Action("Image", "Helpers", new { a = Model.Image, show_empty_img = true })
 }
 

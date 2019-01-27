@@ -1,5 +1,7 @@
 ﻿
 
+@model dip.Models.ViewModel.Physic.ShowSimilarV
+
 
 <div>
 
@@ -8,6 +10,6 @@
         <p>@Html.ActionLink(i.ToString(), "Details", "Physic", new { id = i}, new { })</p>
     }*@
     <p>Похожие записи:</p>
-    @Html.Action("ListFeText", "Physic",new { listId=((List<int>)ViewBag.listSimilar).ToArray() })
+    @Html.Action("ListFeText", "Physic",new { listId=Model.ListSimilarIds.ToArray() })
 
 </div>

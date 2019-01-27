@@ -1,5 +1,8 @@
 ﻿
-@model IEnumerable<int>
+
+
+@model dip.Models.ViewModel.Search.TextSearchV
+
 
 @{
     ViewBag.Title = "TextSearch";
@@ -7,16 +10,14 @@
 
 <h2>TextSearch</h2>
 
-@{ 
-    var g = Model;
-}
+
 
 <div id="div_search_ft_result_id">
-    @Html.Action("ListFeText", "Physic", new { listId = Model })
+    @Html.Action("ListFeText", "Physic", new { listId = Model.ListPhysId })
 
 
 </div>
-@if (ViewBag.ShowBtLoad != false)
+@if (Model.ShowBtLoad != false)
 {
     <div class="div_search_ft_but" id="div_search_ft_but_id">
         <button class="btn btn-default" onclick="loadMoreFT()">загрузить еще</button>

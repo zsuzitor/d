@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using dip.Models.Domain;
 using dip.Models;
+using dip.Models.ViewModel.Home;
 
 namespace dip.Controllers
 {
@@ -35,11 +36,14 @@ namespace dip.Controllers
 
         public ActionResult MainHeader()//string textSearchStr, string textSearchType
         {
-            ViewBag.searchList = new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
+             
+
+            MainHeaderV res = new MainHeaderV();
+            res.SearchList= new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
 
             //ViewBag.textSearchStr = textSearchStr;
             //ViewBag.textSearchType = ViewBag;
-            return PartialView();
+            return PartialView(res);
         }
 
         public ActionResult MainFooter()

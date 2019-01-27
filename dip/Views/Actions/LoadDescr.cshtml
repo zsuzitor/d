@@ -1,45 +1,45 @@
 ﻿@using dip.Models.Domain;
-
+@model dip.Models.ViewModel.Actions.LoadDescrV
 
 <div>
     <div>
         <p>Входные</p>
         <p>
             <label>Название воздействия:</label>
-            <label>@(((Dictionary<string, string>)ViewBag.dict)["NameI"])</label>
+            <label>@(Model.DictDescrData["NameI"])</label>
         </p>
         <p>
             <label>Тип входа:</label>
-            <label>@(((Dictionary<string, string>)ViewBag.dict)["TypeI"])</label>
+            <label>@(Model.DictDescrData["TypeI"])</label>
         </p>
-        @if (string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"]))
+        @if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI"]))
         {
             <p>
                 <label>Название физической величины:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdI"])</label>
+                <label>@(Model.DictDescrData["FizVelIdI"])</label>
             </p>
             <p>
                 <label>Пространственные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["ProsI"])</label>
+                <label>@(Model.DictDescrData["ProsI"])</label>
             </p>
             <p>
                 <label>Специальные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["SpecsI"])</label>
+                <label>@(Model.DictDescrData["SpecsI"])</label>
             </p>
             <p>
                 <label>Временные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["VremsI"])</label>
+                <label>@(Model.DictDescrData["VremsI"])</label>
             </p>
         }
-@if (!string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"]))
+@if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI"]))
 {
     <p>
         <label>Раздел физики:</label>
-        <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdI"])</label>
+        <label>@(Model.DictDescrData["FizVelIdI"])</label>
     </p>
     <p>
         <label>Название физической величины:</label>
-        <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelparamI"])</label>
+        <label>@(Model.DictDescrData["FizVelparamI"])</label>
     </p>
 }
 
@@ -48,40 +48,40 @@
         <p>Выходные</p>
         <p>
             <label>Название воздействия:</label>
-            <label>@(((Dictionary<string, string>)ViewBag.dict)["NameO"])</label>
+            <label>@(Model.DictDescrData["NameO"])</label>
         </p>
         <p>
             <label>Тип входа:</label>
-            <label>@(((Dictionary<string, string>)ViewBag.dict)["TypeO"])</label>
+            <label>@(Model.DictDescrData["TypeO"])</label>
         </p>
-        @if (string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"]))
+        @if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO"]))
         {
             <p>
                 <label>Название физической величины:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdO"])</label>
+                <label>@(Model.DictDescrData["FizVelIdO"])</label>
             </p>
             <p>
                 <label>Пространственные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["ProsO"])</label>
+                <label>@(Model.DictDescrData["ProsO"])</label>
             </p>
             <p>
                 <label>Специальные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["SpecsO"])</label>
+                <label>@(Model.DictDescrData["SpecsO"])</label>
             </p>
             <p>
                 <label>Временные характеристики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["VremsO"])</label>
+                <label>@(Model.DictDescrData["VremsO"])</label>
             </p>
         }
-        @if (!string.IsNullOrWhiteSpace(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"]))
+        @if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO"]))
         {
             <p>
                 <label>Раздел физики:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelIdO"])</label>
+                <label>@(Model.DictDescrData["FizVelIdO"])</label>
             </p>
             <p>
                 <label>Название физической величины:</label>
-                <label>@(((Dictionary<string, string>)ViewBag.dict)["FizVelparamO"])</label>
+                <label>@(Model.DictDescrData["FizVelparamO"])</label>
             </p>
         }
 

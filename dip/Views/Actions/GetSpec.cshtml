@@ -2,8 +2,8 @@
 
 
 
-@model dip.Models.Domain.Action
+@model dip.Models.ViewModel.Actions.GetListSomethingV<dip.Models.Domain.Spec>
 
-@Html.Action("DescrFormSpec", "Helpers", new { specs = (List<dip.Models.Domain.Spec>)ViewBag.spec, type = (string)ViewBag.type })
+@Html.Action("DescrFormSpec", "Helpers", new { specs = Model.List, type = Model.Type })
 
 

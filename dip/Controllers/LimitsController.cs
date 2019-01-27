@@ -11,6 +11,9 @@ using System.Web.Mvc;
 namespace dip.Controllers
 {
     // [RequireHttps]
+    //TODO чужой контроллер, не используется
+    // [RequireHttps]
+    [Authorize(Roles = "close")]//такой роли нет, закрываем контроллер
     public class LimitsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();

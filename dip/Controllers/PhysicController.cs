@@ -1,6 +1,7 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel;
+using dip.Models.ViewModel.Physic;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -28,14 +29,16 @@ namespace dip.Controllers
 
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
-            FEText effect= FEText.Get(id);
-            if(effect==null)
+            DetailsV res = new DetailsV();
+            res.Effect = FEText.Get(id);
+            if(res.Effect == null)
                 return new HttpStatusCodeResult(404);
             string check_id = ApplicationUser.GetUserId();
 
-            effect.LoadImage();
-            ViewBag.EffectName = effect.Name;
-            ViewBag.TechnicalFunctionId = Request.Params.GetValues(0).First();
+            res.Effect.LoadImage();
+            res.EffectName = res.Effect.Name;
+            //TODO почему именно так?
+            res.TechnicalFunctionId = Request.Params.GetValues(0).First();
 
             if (check_id != null)
             {
@@ -44,33 +47,34 @@ namespace dip.Controllers
                 IList<string> roles = userManager?.GetRoles(check_id);
                 if (roles != null)
                     if (roles.Contains("admin"))
-                        ViewBag.Admin = true;
+                        res.Admin = true;
             }
          
 
 
-            return View(effect);
+            return View(res);
         }
 
         public ActionResult ShowSimilar(int id)//, string technicalFunctionId
         {
-           var list= FEText.GetListSimilar(id);
+            ShowSimilarV res = new ShowSimilarV();
+            res.ListSimilarIds = FEText.GetListSimilar(id);
 
-            ViewBag.listSimilar = list;
-            return PartialView();
+            
+            return PartialView(res);
         }
 
 
         public ActionResult ListFeText(int[] listId=null,int numLoad=1)
         {
-
-            List<FEText> res = new List<FEText>();
+            ListFeTextV res = new ListFeTextV();
+            
             if (listId == null)
             {
                 listId = (int[])TempData["list_fe_id"];
             }
-            res = FEText.GetList(listId);
-            ViewBag.numLoad = numLoad;
+            res.FeTexts = FEText.GetList(listId);
+            res.NumLoad = numLoad;
 
 
             return PartialView(res);
@@ -80,8 +84,8 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
-            
-            FEText res = res = FEText.Get(id);
+            EditV res = new EditV();
+            res.FeText = FEText.Get(id);
             
             if(res==null)
                 return new HttpStatusCodeResult(404);
@@ -90,10 +94,10 @@ namespace dip.Controllers
             FEAction outp = null;
             FEAction.Get((int)id, ref inp, ref outp);
 
-            ViewBag.inputForm = new DescrSearchIInput(inp);
-            ViewBag.outpForm = new DescrSearchIOut(outp); 
+            res.FormInput = new DescrSearchIInput(inp);
+            res.FormOutput = new DescrSearchIOut(outp); 
 
-            res.LoadImage();
+            res.FeText.LoadImage();
 
 
             

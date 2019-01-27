@@ -1,5 +1,6 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
+using dip.Models.ViewModel.Search;
 using Lucene.Net.Analysis.Ru;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace dip.Controllers
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
         {
-
+            DescriptionSearchV res = new DescriptionSearchV();
 
             int[] list_id = null;
             var inp = new DescrSearchI(inp_);
@@ -41,22 +42,20 @@ namespace dip.Controllers
                     outp_.listSelectedProsO = outp.listSelectedPros;
                     outp_.listSelectedSpecO = outp.listSelectedSpec;
                     outp_.listSelectedVremO = outp.listSelectedVrem;
-                    ViewBag.inputForm = inp_;
-                    ViewBag.outpForm = outp_;
+                    res.FormInput = inp_;
+                    res.FormOutput = outp_;
                 }
-
-                //ViewBag.inputForm = inp;
-                //ViewBag.outpForm = outp;
+                
             }
 
             else
-                ViewBag.itsSearch = true;
+                res.ItsSearch = true;
 
 
             if (search != null)
             {
 
-                ViewBag.search = true;
+                res.Search = true;
                 TempData["list_fe_id"] = list_id;
 
 
@@ -74,25 +73,25 @@ namespace dip.Controllers
 
             }
 
-            return View(list_id);
+            return View(res);
         }
 
         public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int countLoad = 1)
         {
             //str = "газ";
-
-            var res = Search.GetListPhys(type, str, lastId, countLoad);
-            if (res.Count == 0)
+            TextSearchPartialV res = new TextSearchPartialV();
+            res.ListPhysId = Search.GetListPhys(type, str, lastId, countLoad);
+            if (res.ListPhysId.Count == 0)
             {
                 Response.StatusCode = 204;
                 return Content("", "text/html");//Emty
             }
-            ViewBag.countLoad = countLoad;
+            res.CountLoad = countLoad;
 
             Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
                ApplicationUser.GetUserId(), true, null, type, str, lastId.ToString(), countLoad.ToString());
             log.AddLogDb();
-            return PartialView(res.ToArray());
+            return PartialView(res);
         }
 
 
@@ -104,6 +103,8 @@ namespace dip.Controllers
         {
             //TODO валидация строки от sql иньекций и тд
             //TODO полнотекстовый поиск
+
+            TextSearchV res = new TextSearchV();
 
             //устанавливаем параметры для представления mainHeader
 
@@ -121,15 +122,15 @@ namespace dip.Controllers
 
 
 
-            var res = new List<int>();
+            
             if (!string.IsNullOrWhiteSpace(str))
 
-                res = Search.GetListPhys(type, str, 0, 1);
+                res.ListPhysId = Search.GetListPhys(type, str, 0, 1);
 
-            if (res.Count < Constants.CountForLoad)
-                ViewBag.ShowBtLoad = false;
+            if (res.ListPhysId.Count < Constants.CountForLoad)
+                res.ShowBtLoad = false;
             //TODO если произошла ошибка, надо найти лог и поменять флаг
-            return View(res.ToArray());//.Select(x1=>x1.IDFE)
+            return View(res);//.Select(x1=>x1.IDFE)
         }
         //create fulltext catalog DbaLogParamsCatalog;
 

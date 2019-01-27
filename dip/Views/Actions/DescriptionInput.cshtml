@@ -1,4 +1,6 @@
 ﻿
+@model dip.Models.ViewModel.Actions.DescriptionInputV
+
 @*@model dip.Models.ViewModel.DescriptionForm*@
 
 @*@{
@@ -23,12 +25,12 @@
 
     @*@if(ViewBag.inputForm)*@
     
-    @Html.Action("PartFormDescrSearch", "Helpers",new {a= ViewBag.inputForm,type="I", param= ViewBag.inputFormData })
+    @Html.Action("PartFormDescrSearch", "Helpers",new {a= Model.InputForm,type="I", param= Model.InputFormData })
 
     <hr />
     <h1>Выход</h1>
     
-    @Html.Action("PartFormDescrSearch", "Helpers", new { a = ViewBag.outpForm, type = "O", param = ViewBag.outpFormData })
+    @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForm, type = "O", param = Model.OutputFormData })
 
 
 </div>

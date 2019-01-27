@@ -1,9 +1,11 @@
 ﻿
-@model IEnumerable<dip.Models.Domain.FEText>
+
+
+@model dip.Models.ViewModel.Physic.ListFeTextV
 
 @*<hr />*@
 @{
-    int count = Model.Count();
+    int count = Model.FeTexts.Count();
 }
 @if (count < 1)
 {
@@ -13,8 +15,8 @@
 {
     <h1>Всего найдено записей @count</h1>
 }*@
-    <div id="one_load_block_fetext_list_id_@((int)ViewBag.numLoad)">
-    @foreach (var i in Model)
+    <div id="one_load_block_fetext_list_id_@(Model.NumLoad)">
+    @foreach (var i in Model.FeTexts)
     {
         <div class="one_block_fetext_list_external">
             <div class="one_block_fetext_list" id="one_block_fetext_list_id_@i.IDFE">

@@ -1,6 +1,9 @@
-﻿@model IEnumerable<int>
+﻿
 
 
-@Html.Action("ListFeText", "Physic", new { listId = Model, numLoad=((int)ViewBag.countLoad) })
+@model dip.Models.ViewModel.Search.TextSearchPartialV
+
+
+@Html.Action("ListFeText", "Physic", new { listId = Model.ListPhysId.ToArray(), numLoad=Model.CountLoad })
 
 

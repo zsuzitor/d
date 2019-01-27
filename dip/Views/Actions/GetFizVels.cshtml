@@ -1,9 +1,9 @@
 ﻿
 
-@model dip.Models.Domain.Action
+@model dip.Models.ViewModel.Actions.GetListSomethingV<dip.Models.Domain.FizVel>
 
 
-@Html.Action("DescrFormFizVels", "Helpers", new { fizVelId = (List<dip.Models.Domain.FizVel>)ViewBag.fizVelId, type = (string)ViewBag.type, param = new dip.Models.Domain.DescrSearchI() { actionId = (string)ViewBag.currentActionId } })
+@Html.Action("DescrFormFizVels", "Helpers", new { fizVelId = Model.List, type = Model.Type, param = new dip.Models.Domain.DescrSearchI() { actionId =Model.CurrentActionId } })
 
 
 

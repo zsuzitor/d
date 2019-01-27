@@ -1,4 +1,5 @@
-﻿@model dip.Models.Domain.FEText
+﻿
+@model dip.Models.ViewModel.Physic.DetailsV
 
 @{
     ViewBag.Title = "Сведения о физическом эффекте";
@@ -8,10 +9,10 @@
 
 @{
     <div>
-        <h4>@ViewBag.EffectName</h4>
-        @if (ViewBag.Admin == true)
+        <h4>@Model.EffectName</h4>
+        @if (Model.Admin == true)
         {
-            @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.IDFE }, new { })
+            @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })
         }
         <hr />
         <dl class="dl-horizontal">
@@ -20,7 +21,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Text)
+                @Html.DisplayFor(model => model.Effect.Text)
             </dd>
 
             <dt>
@@ -28,7 +29,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.TextInp)
+                @Html.DisplayFor(model => model.Effect.TextInp)
             </dd>
 
             <dt>
@@ -36,7 +37,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.TextOut)
+                @Html.DisplayFor(model => model.Effect.TextOut)
             </dd>
 
             <dt>
@@ -44,7 +45,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.TextObj)
+                @Html.DisplayFor(model => model.Effect.TextObj)
             </dd>
 
             <dt>
@@ -52,7 +53,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.TextApp)
+                @Html.DisplayFor(model => model.Effect.TextApp)
             </dd>
 
             <dt>
@@ -60,14 +61,14 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.TextLit)
+                @Html.DisplayFor(model => model.Effect.TextLit)
             </dd>
 
         </dl>
 
         <div class="block_images">
             <div class="inline">
-                @foreach (var i in Model.Images)
+                @foreach (var i in Model.Effect.Images)
                 {
                     <div class="div_img_record_show_block div_inline_block">
                         <div class="details_one_image">
@@ -84,7 +85,7 @@
                     @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
                 </p>*@
             <p>
-                <button class="btn btn-default" onclick="loadDescrParam(@Model.IDFE)" id="show_descr_but">Показать дескрипторы</button>
+                <button class="btn btn-default" onclick="loadDescrParam(@Model.Effect.IDFE)" id="show_descr_but">Показать дескрипторы</button>
 
             </p>
             <div id="DivDescriptionParams_id">
@@ -94,7 +95,7 @@
 
             <div id="DivMoreSimilar_id">
                 <p>
-                    <button class="btn btn-default" onclick="loadSimilar(@Model.IDFE)">Показать похожие</button>
+                    <button class="btn btn-default" onclick="loadSimilar(@Model.Effect.IDFE)">Показать похожие</button>
 
                 </p>
             </div>

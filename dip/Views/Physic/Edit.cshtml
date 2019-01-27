@@ -1,4 +1,8 @@
-﻿@model dip.Models.Domain.FEText
+﻿
+
+
+@model dip.Models.ViewModel.Physic.EditV
+
 @{
     ViewBag.Title = "Edit";
 }
@@ -95,7 +99,7 @@
 
 
 <h2>Edit</h2>
-@Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.IDFE }, new { })
+@Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.FeText.IDFE }, new { })
 @if(Model== null)
 {
     <p>запись не найдена</p>
@@ -106,7 +110,7 @@
 
     <div>
         <div >@*id="physEditFormDescrDiv"*@
-            @Html.Action("DescriptionInput", "Actions", new { inp = ViewBag.inputForm, outp = ViewBag.outpForm })
+            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput})
         </div>
         @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
         {
@@ -119,7 +123,7 @@
 
 
 
-            @Html.HiddenFor(x1 => x1.IDFE)
+            @Html.HiddenFor(x1 => x1.FeText.IDFE)
 
             <dl class="dl-horizontal">
                 <dt>
@@ -127,14 +131,14 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.Name)
+                    @Html.EditorFor(model => model.FeText.Name)
                 </dd>
                 <dt>
                     @Html.DisplayName("Описание")
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.Text)
+                    @Html.EditorFor(model => model.FeText.Text)
                 </dd>
 
                 <dt>
@@ -142,7 +146,7 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.TextInp)
+                    @Html.EditorFor(model => model.FeText.TextInp)
                 </dd>
 
                 <dt>
@@ -150,7 +154,7 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.TextOut)
+                    @Html.EditorFor(model => model.FeText.TextOut)
                 </dd>
 
                 <dt>
@@ -158,7 +162,7 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.TextObj)
+                    @Html.EditorFor(model => model.FeText.TextObj)
                 </dd>
 
                 <dt>
@@ -166,7 +170,7 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.TextApp)
+                    @Html.EditorFor(model => model.FeText.TextApp)
                 </dd>
 
                 <dt>
@@ -174,7 +178,7 @@
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.TextLit)
+                    @Html.EditorFor(model => model.FeText.TextLit)
                 </dd>
 
             </dl>
@@ -196,7 +200,7 @@
                 <input class="btn btn-default" onclick="EditPhysFunc()" value="отправить" />
                 <div class="block_images">
                     <div class="inline">
-                        @foreach (var i in Model.Images)
+                        @foreach (var i in Model.FeText.Images)
                         {
                             @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
                                     <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">

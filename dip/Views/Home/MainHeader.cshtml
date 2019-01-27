@@ -1,5 +1,9 @@
 ﻿
 
+
+@model dip.Models.ViewModel.Home.MainHeaderV
+
+
 <div id="Main_preloader_id" class="Main_preloader div_display_none"></div>
 @*<div class="navbar navbar-inverse navbar-fixed-top">*@
 
@@ -37,7 +41,7 @@
                         <select name="type" id="full_text_search_type" class="cursor_pointer form-control">
 
                             @*selected="selected"          атрибут для проставления активной строки*@
-                            @foreach (var itemSearchType in (List<string>)ViewBag.searchList)
+                            @foreach (var itemSearchType in Model.SearchList)
                             {
                                 //string selected = "";
 

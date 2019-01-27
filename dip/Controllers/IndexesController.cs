@@ -11,7 +11,10 @@ using dip.Models;
 
 namespace dip.Controllers
 {
+
+    //TODO чужой контроллер, не используется
     // [RequireHttps]
+    [Authorize(Roles = "close")]//такой роли нет, закрываем контроллер
     public class IndexesController : Controller
     {
         //private readonly db _TechnicalFunctionsDb = new TechnicalFunctionsEntities();

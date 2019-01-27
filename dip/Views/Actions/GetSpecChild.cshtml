@@ -1,42 +1,10 @@
 ﻿
+@model dip.Models.ViewModel.Actions.GetListSomethingV<dip.Models.Domain.Spec>
 
-
-@if (ViewBag.SpecShildList != null)
+@if (Model.List != null)
 {
 
-@Html.Action("DescrFormSpec", "Helpers", new { type = ViewBag.type, specs = ViewBag.SpecShildList })
+@Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.List })
 }
 
 
-
-@*@model dip.Models.Domain.Action
-@if (ViewBag.specChild.Count != 0)
-{
-    <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
-        <table>
-            <tr>
-                @{
-                    int cnt = 0;
-                    foreach (var spec in ViewBag.specChild)
-                    {
-                        if (cnt++ % 3 == 0)
-                        {
-                            @:</tr><tr>
-                    }
-                        @:<td>
-                        if (spec.IsSelected == true)
-                        {
-                            <input type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" checked /> @spec.name
-                        }
-                        else
-                        {
-                            <input type="checkbox" name=@("listSelectedSpec"+((string)ViewBag.type)) value="@spec.Id" /> @spec.name
-                        }
-                        <div id=@(spec.Id+((string)ViewBag.type)) name="0"></div>
-                        @:</td>
-                }
-                    @:</tr>
-                }
-            </table>
-        </div>
-                    }*@

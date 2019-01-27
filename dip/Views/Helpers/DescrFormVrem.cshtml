@@ -1,48 +1,44 @@
 ﻿
 
-@{
-    List<dip.Models.Domain.Vrem> vrems = ViewBag.vrems;
-    string type = ViewBag.type;
-    dip.Models.Domain.DescrSearchI param = ViewBag.param;
 
-}
+@model dip.Models.ViewModel.Helpers.DescrFormListDataV<dip.Models.Domain.Vrem>
 
 
 
 <div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
-    @if (vrems != null && vrems.Count != 0)
+    @if (Model.List!= null && Model.List.Count != 0)
     {
 
         <div class="col-md-10">
 
             @{
 
-                foreach (var vrem in vrems)
+                foreach (var vrem in Model.List)
                 {
                     <div>
 
 
                         @{
-                            bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+                            bool? needSelected = Model.Param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
 
                         }
                         <label>
                             @if (needSelected == true)
                             {
-                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" />
+                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" />
 
                             }
                             else
                             {
-                               <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> 
+                               <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" /> 
 
                             }
                             @vrem.Name
                         </label>
-                        <div id="@(vrem.Id+type)" name="0">
+                        <div id="@(vrem.Id+Model.Type)" name="0">
                             @if (vrem.Childs.Count > 0)
                             {
-                                @Html.Action("DescrFormVrem", "Helpers", new { type=type,vrems= vrem.Childs,param=param })
+                                @Html.Action("DescrFormVrem", "Helpers", new { type= Model.Type,vrems= vrem.Childs,param= Model.Param })
                                
                             }
 

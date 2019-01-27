@@ -10,7 +10,9 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
+    //TODO чужой контроллер, не используется
     // [RequireHttps]
+    [Authorize(Roles = "close")]//такой роли нет, закрываем контроллер
     public class OperationsController : Controller
     {
         //private readonly TechnicalFunctionsEntities _TechnicalFunctionsDb = new TechnicalFunctionsEntities();

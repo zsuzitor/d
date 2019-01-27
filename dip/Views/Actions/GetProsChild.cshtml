@@ -1,46 +1,13 @@
 ﻿
 
 
+@model dip.Models.ViewModel.Actions.GetListSomethingV<dip.Models.Domain.Pro>
 
-
-@if (ViewBag.ProsShildList != null)
+@if (Model.List != null)
 {
    
 
-    @Html.Action("DescrFormPros", "Helpers", new { pros = ViewBag.ProsShildList, type = (string)ViewBag.type })
+    @Html.Action("DescrFormPros", "Helpers", new { pros = Model.List, type = Model.Type })
 
 }
 
-
-
-@*@model dip.Models.Domain.Action
-@if (ViewBag.prosChild.Count != 0)
-{
-    <div id=@(ViewBag.parent+((string)ViewBag.type)) name="1">
-        <table>
-            <tr>
-                @{
-                    int cnt = 0;
-                    foreach (var pros in ViewBag.prosChild)
-                    {
-                        if (cnt++ % 3 == 0)
-                        {
-                            @:</tr><tr>
-                    }
-                        @:<td>
-                        if (pros.IsSelected == true)
-                        {
-                            <input type="checkbox" name=@("listSelectedPros"+((string)ViewBag.type)) value="@pros.Id" checked /> @pros.Name
-                        }
-                        else
-                        {
-                            <input type="checkbox" name=@("listSelectedPros"+((string)ViewBag.type)) value="@pros.Id" /> @pros.Name
-                        }
-                        <div id=@(pros.Id+((string)ViewBag.type)) name="0"></div>
-                        @:</td>
-                }
-                    @:</tr>
-                }
-            </table>
-        @*</div>
-                    }*@

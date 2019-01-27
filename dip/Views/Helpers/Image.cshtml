@@ -1,19 +1,15 @@
 ﻿
-@{
-    dip.Models.Domain.Image a = ViewBag.a;
-    bool show_empty_img = ViewBag.show_empty_img;
 
-}
+@model dip.Models.ViewModel.Helpers.ImageV
 
 
-
-@if (a?.Data != null)
+@if (Model.Image?.Data != null)
 {
     //TODO сейчас  не полностью картинки влезают
-<div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@a.Id">
+<div class="out_main_tag_one_img_cl" id="out_main_tag_one_img_id_@Model.Image.Id">
     @*<img id="main_tag_one_img_id_@a.Id" class="class_image_standart" src="data:image/jpeg;base64,@Convert.ToBase64String(a.Data)" style="background: no-repeat;background-size: cover;">*@
     @*;background-size: cover;*@
-    <div id="main_tag_one_img_id_@a.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(a.Data))
+    <div id="main_tag_one_img_id_@Model.Image.Id" class="class_image_standart" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(Model.Image.Data))
               no-repeat; background-position: center;background-size: contain;">
         @*background-size: 100% 100%;*@
     </div>

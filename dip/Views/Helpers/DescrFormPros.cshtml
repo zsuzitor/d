@@ -1,13 +1,11 @@
 ﻿
-@{
-    List<dip.Models.Domain.Pro> pros = ViewBag.pros;
-    string type = ViewBag.type;
-    dip.Models.Domain.DescrSearchI param = ViewBag.param;
 
-}
+
+@model dip.Models.ViewModel.Helpers.DescrFormListDataV<dip.Models.Domain.Pro>
+
 
 <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
-    @if (pros != null && pros.Count != 0)
+    @if (Model.List != null && Model.List.Count != 0)
     {
         @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
         @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
@@ -15,33 +13,33 @@
 
             @{
 
-                foreach (var pro in pros)
+                foreach (var pro in Model.List)
                 {
                     <div>
                         @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
                         @{
-                            bool? needSelected = param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                            bool? needSelected = Model.Param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
                         }
                         <label>
                             @if (needSelected == true)
                             {
 
-                                <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + type) value="@pro.Id" />
+                                <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
                             }
                             else
                             {
                                 @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
-                               <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + type) value="@pro.Id" />
+                               <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
 
                             }
                             @pro.Name
                         </label>
                         @*<label class="">@pro.Name</label>*@
 
-                        <div id="@(pro.Id + type)" name="0">
+                        <div id="@(pro.Id + Model.Type)" name="0">
                             @if (pro.Childs.Count > 0)
                             {
-                                @Html.Action("DescrFormPros", "Helpers", new { type = type, pros = pro.Childs, param = param })
+                                @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = pro.Childs, param = Model.Param })
                                 
                             }
                         </div>

@@ -1,6 +1,7 @@
 ﻿
 
-@model IEnumerable<int>
+
+@model dip.Models.ViewModel.Search.DescriptionSearchV
 
 
 @{
@@ -19,7 +20,7 @@
         
         @*div_form_id*@
     <div>
-        @Html.Action("DescriptionInput", "Actions",new {inp= ViewBag.inputForm,outp = ViewBag.outpForm })
+        @Html.Action("DescriptionInput", "Actions",new {inp= Model.FormInput,outp = Model.FormOutput})
         
     </div>
 

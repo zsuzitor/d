@@ -1,24 +1,25 @@
 ﻿
+@model dip.Models.ViewModel.Actions.ChangeActionV
 
 @*это представление сплитится по <hr />   => не менять*@
-@((string)ViewBag.type)
+@(Model.Type)
 <hr />
-@Html.Action("GetFizVels","Actions",new {id=(string)ViewBag.fizVelId,type=(string)ViewBag.type })
-
-<hr />
-
-@Html.Action("GetPros", "Actions", new { id = (string)ViewBag.CheckboxParamsId, type = (string)ViewBag.type })
+@Html.Action("GetFizVels","Actions",new {id=Model.FizVelId,type= Model.Type })
 
 <hr />
 
-@Html.Action("GetSpec", "Actions", new { id = (string)ViewBag.CheckboxParamsId, type = (string)ViewBag.type })
+@Html.Action("GetPros", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
 
 <hr />
 
-@Html.Action("GetVrem", "Actions", new { id = (string)ViewBag.CheckboxParamsId, type = (string)ViewBag.type })
+@Html.Action("GetSpec", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
 
 <hr />
 
-@Html.Action("GetParametricFizVels", "Actions", new { id = (string)ViewBag.ParametricFizVelsId, type = (string)ViewBag.type })
+@Html.Action("GetVrem", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
+
+<hr />
+
+@Html.Action("GetParametricFizVels", "Actions", new { id = Model.ParametricFizVelsId, type = Model.Type })
 
 

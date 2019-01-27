@@ -1,32 +1,29 @@
 ﻿
-
-@{
-    List<dip.Models.Domain.FizVel > fizVelId = ViewBag.fizVelId;
-    string type = ViewBag.type;
-    dip.Models.Domain.DescrSearchI param = ViewBag.param;
-
-}
+@model dip.Models.ViewModel.Helpers.DescrFormListDataV<dip.Models.Domain.FizVel>
 
 
 
-<div class="form-group" id=@("fizVel"+type)>
-    @if (param?.actionId != "VOZ11")
+
+
+
+<div class="form-group" id=@("fizVel"+Model.Type)>
+    @if (Model.Param?.actionId != "VOZ11")
     {
         @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <label class="control-label col-md-2" for="@("fizVelId"+ type)">Название физической величины</label>
+        <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type )">Название физической величины</label>
     }
     else
     {
         @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <label class="control-label col-md-2" for="@("fizVelId"+ type)">Раздел физики</label>
+        <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type)">Раздел физики</label>
     }
     <div class="col-md-10">
         @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
-        <select name=@("fizVelId"+ type) class="form-control" id=@("fizVelId"+ type)>
+        <select name=@("fizVelId"+ Model.Type) class="form-control" id=@("fizVelId"+ Model.Type)>
 
-            @foreach (var i in fizVelId)
+            @foreach (var i in Model.List)
             {
-                if (param?.FizVelId == i.Id)
+                if (Model.Param?.FizVelId == i.Id)
                 {
                     <option selected value="@i.Id">@i.Name</option>
                 }
