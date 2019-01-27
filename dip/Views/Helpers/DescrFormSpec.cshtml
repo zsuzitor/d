@@ -24,16 +24,20 @@
 
                         }
 
+                        <label>
+                            @if (needSelected == true)
+                            {
+                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" />
 
-                        @if (needSelected == true)
-                        {
-                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ checked name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
-                        }
-                        else
-                        {
-                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> @spec.Name
-                        }
 
+                            }
+                            else
+                            {
+                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedSpec"+type+cnt)*@ name=@("listSelectedSpec"+type) value="@spec.Id" /> 
+
+                            }
+                            @spec.Name
+                        </label>
 
 
                         <div id="@(spec.Id+type)" name="0">

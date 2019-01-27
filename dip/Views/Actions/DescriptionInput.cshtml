@@ -227,21 +227,24 @@
                 });
             }
             else {
-                //уже загружен, надо снять чекбоксы при снятии на родители
-                if (!$(ch).prop("checked")) {
-                    //галка снята, снимаем у детей и прячем
-                    
-                    $('#' + ch.value + type + ' input:checkbox:checked').each(function () {//[type=checkbox]
-                        $(this).removeAttr("checked")
-                    });
-                    document.getElementById(ch.value + type).style.display = 'none';
+                //уже загружен либо не существует, надо снять чекбоксы при снятии на родителе
+                if (div) {
+                    if (!$(ch).prop("checked")) {
+                        //галка снята, снимаем у детей и прячем
+
+                        $('#' + ch.value + type + ' input:checkbox:checked').each(function () {//[type=checkbox]
+                            $(this).removeAttr("checked")
+                        });
+                        document.getElementById(ch.value + type).style.display = 'none';
+                    }
+                    else {
+                        document.getElementById(ch.value + type).style.display = 'block';
+                    }
+                    //else {
+
+                    //}
                 }
-                else {
-                    document.getElementById(ch.value + type).style.display = 'block';
-                }
-                //else {
-                   
-                //}
+               
                
 
             }

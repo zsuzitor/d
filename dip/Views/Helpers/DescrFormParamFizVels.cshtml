@@ -13,7 +13,7 @@
     @if (parametricFizVelId != null && parametricFizVelId.Count != 0)
     {
         @*@Html.Label("Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <label class="control-label col-md-2">Название физической величины</label>
+        <label class="control-label col-md-2" for="@("parametricFizVelId"+ type)">Название физической величины</label>
             <div class="col-md-10">
                 @*@Html.DropDownList("parametricFizVelId"+ ((string)ViewBag.type), ViewBag.parametricFizVelId as SelectList, htmlAttributes: new { @class = "form-control" })*@
 

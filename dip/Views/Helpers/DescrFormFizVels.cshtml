@@ -13,12 +13,12 @@
     @if (param?.actionId != "VOZ11")
     {
         @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <label class="control-label col-md-2">Название физической величины</label>
+        <label class="control-label col-md-2" for="@("fizVelId"+ type)">Название физической величины</label>
     }
     else
     {
         @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <label class="control-label col-md-2">Раздел физики</label>
+        <label class="control-label col-md-2" for="@("fizVelId"+ type)">Раздел физики</label>
     }
     <div class="col-md-10">
         @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@

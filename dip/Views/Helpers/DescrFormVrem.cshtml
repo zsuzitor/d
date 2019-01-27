@@ -26,15 +26,19 @@
                             bool? needSelected = param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
 
                         }
+                        <label>
+                            @if (needSelected == true)
+                            {
+                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" />
 
-                        @if (needSelected == true)
-                        {
-                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
-                        }
-                        else
-                        {
-                            <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> @vrem.Name
-                        }
+                            }
+                            else
+                            {
+                               <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+type) value="@vrem.Id" /> 
+
+                            }
+                            @vrem.Name
+                        </label>
                         <div id="@(vrem.Id+type)" name="0">
                             @if (vrem.Childs.Count > 0)
                             {

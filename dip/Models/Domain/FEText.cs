@@ -181,30 +181,41 @@ from
 order by data.score desc";
 
 
-            var connection1 = new SqlConnection();
-            connection1.ConnectionString = Constants.sql_0;
-            var command1 = new SqlCommand();
-            command1.Connection = connection1;
-            command1.CommandType = CommandType.Text;
+            //var connection1 = new SqlConnection();
+            //connection1.ConnectionString = Constants.sql_0;
+            //var command1 = new SqlCommand();
+            //command1.Connection = connection1;
+            //command1.CommandType = CommandType.Text;
 
-            connection1.Open();
-            command1.CommandText = quer;
-            using (SqlDataReader reader = command1.ExecuteReader())
-            {
+            //connection1.Open();
+            //command1.CommandText = quer;
+            //using (SqlDataReader reader = command1.ExecuteReader())
+            //{
 
-                //SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
+            //    //SqlDataReader reader = command.ExecuteReader();
+            //    if (reader.HasRows)
+            //    {
+            //        while (reader.Read())
+            //        {
 
 
-                        res.Add(Convert.ToInt32( reader["IDFE"]));
+            //            res.Add(Convert.ToInt32( reader["IDFE"]));
                         
-                    }
-                }
+            //        }
+            //    }
 
+            //}
+
+
+
+           var dict= DataBase.DataBase.ExecuteQuery(quer,null, "IDFE");
+            foreach (var i in dict)
+            {
+                res.Add(Convert.ToInt32(i["IDFE"]));
             }
+
+
+
             return res;
         }
         //public  List<int> GetListSimilar(int count = 5)

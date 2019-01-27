@@ -115,7 +115,7 @@ namespace dip.Controllers
             Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
                ApplicationUser.GetUserId(), true, null, type, str);
             var listmaramslog = log.AddLogDb();
-
+            
             if (str.Length > 10)
                 str = Search.StringSemanticParse(listmaramslog[1]);
 
