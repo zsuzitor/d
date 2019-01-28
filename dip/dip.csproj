@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionsController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\DescriptionQueriesController.cs" />
     <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -250,22 +251,22 @@
     <Compile Include="Models\TechnicalFunctions\Operand.cs" />
     <Compile Include="Models\TechnicalFunctions\OperandGroup.cs" />
     <Compile Include="Models\TechnicalFunctions\Operation.cs" />
-    <Compile Include="Models\ViewModel\Actions\ChangeActionV.cs" />
-    <Compile Include="Models\ViewModel\Actions\DescriptionInputV.cs" />
-    <Compile Include="Models\ViewModel\Actions\GetListSomethingV.cs" />
-    <Compile Include="Models\ViewModel\Actions\LoadDescrV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
     <Compile Include="Models\ViewModel\DescriptionForm.cs" />
-    <Compile Include="Models\ViewModel\Helpers\DescrFormListDataV.cs" />
-    <Compile Include="Models\ViewModel\Helpers\ImageV.cs" />
-    <Compile Include="Models\ViewModel\Helpers\PartFormDescrSearchV.cs" />
-    <Compile Include="Models\ViewModel\Home\MainHeaderV.cs" />
-    <Compile Include="Models\ViewModel\Physic\DetailsV.cs" />
-    <Compile Include="Models\ViewModel\Physic\EditV.cs" />
-    <Compile Include="Models\ViewModel\Physic\ListFeTextV.cs" />
-    <Compile Include="Models\ViewModel\Physic\ShowSimilarV.cs" />
-    <Compile Include="Models\ViewModel\Search\DescriptionSearchV.cs" />
-    <Compile Include="Models\ViewModel\Search\TextSearchPartialV.cs" />
-    <Compile Include="Models\ViewModel\Search\TextSearchV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />
+    <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\EditV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\ListFeTextV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\ShowSimilarV.cs" />
+    <Compile Include="Models\ViewModel\SearchV\DescriptionSearchV.cs" />
+    <Compile Include="Models\ViewModel\SearchV\TextSearchPartialV.cs" />
+    <Compile Include="Models\ViewModel\SearchV\TextSearchV.cs" />
     <Compile Include="Models\ViewModel\SelectedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -380,6 +381,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

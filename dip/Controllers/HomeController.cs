@@ -11,7 +11,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using dip.Models.Domain;
 using dip.Models;
-using dip.Models.ViewModel.Home;
+using dip.Models.ViewModel.HomeV;
 
 namespace dip.Controllers
 {

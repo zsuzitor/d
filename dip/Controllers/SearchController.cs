@@ -1,6 +1,6 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
-using dip.Models.ViewModel.Search;
+using dip.Models.ViewModel.SearchV;
 using Lucene.Net.Analysis.Ru;
 using System;
 using System.Collections.Generic;

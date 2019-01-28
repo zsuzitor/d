@@ -1,7 +1,7 @@
 ﻿using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel;
-using dip.Models.ViewModel.Physic;
+using dip.Models.ViewModel.PhysicV;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -109,6 +109,9 @@ namespace dip.Controllers
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
             
+            if(!ModelState.IsValid)
+                return new HttpStatusCodeResult(404);
+
             var list_img_byte = Get_photo_post(uploadImage);
             
             List<int> deleteImg = null;
@@ -157,7 +160,8 @@ namespace dip.Controllers
             //{
             //    var pic = System.Web.HttpContext.Current.Request.Files["uploadImage[0]"];
             //}
-
+            if (!ModelState.IsValid)
+                return new HttpStatusCodeResult(404);
 
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);

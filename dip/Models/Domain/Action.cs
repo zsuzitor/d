@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace dip.Models.Domain
 {
@@ -11,6 +12,7 @@ namespace dip.Models.Domain
     public class Action
     {
         [Key]
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
 

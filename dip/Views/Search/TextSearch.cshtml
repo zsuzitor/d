@@ -1,7 +1,7 @@
 ﻿
 
 
-@model dip.Models.ViewModel.Search.TextSearchV
+@model dip.Models.ViewModel.SearchV.TextSearchV
 
 
 @{
@@ -13,7 +13,7 @@
 
 
 <div id="div_search_ft_result_id">
-    @Html.Action("ListFeText", "Physic", new { listId = Model.ListPhysId })
+    @Html.Action("ListFeText", "Physic", new { listId = Model.ListPhysId.ToArray() })
 
 
 </div>

@@ -1,6 +1,6 @@
 ﻿
 
-@model dip.Models.ViewModel.Actions.GetListSomethingV<dip.Models.Domain.FizVel>
+@model dip.Models.ViewModel.ActionsV.GetListSomethingV<dip.Models.Domain.FizVel>
 
 
 @Html.Action("DescrFormFizVels", "Helpers", new { fizVelId = Model.List, type = Model.Type, param = new dip.Models.Domain.DescrSearchI() { actionId =Model.CurrentActionId } })

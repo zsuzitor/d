@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 
 namespace dip.Models.Domain
 {
@@ -15,21 +16,44 @@ namespace dip.Models.Domain
     {
         // [Index("PK_FeTexts_cons", IsClustered = true,IsUnique =true)]//,IsClustered =true
         //index должен быть PK_dbo.FeTexts, если менять то менять и в oldDbContext.cs
+
         [Key]
+        [HiddenInput(DisplayValue = false)]
         public int IDFE { get; set; }
+
+        [Display(Name = "Название")]
         [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage = "Название должно быть установлено")]
         public string Name { get; set; }
+
+        [Display(Name = "Описание")]
         [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage = "Описание должно быть установлено")]
         public string Text { get; set; }
+
+        [Display(Name = "Входное воздействие")]
         [DataType(DataType.MultilineText)]
+        //[Required(ErrorMessage = "Входное воздействие должно быть установлено")]
         public string TextInp { get; set; }
+
+        [Display(Name = "Выходное воздействие")]
         [DataType(DataType.MultilineText)]
+        //[Required(ErrorMessage = "Выходное воздействие должно быть установлено")]
         public string TextOut { get; set; }
+
+        [Display(Name = "Объект")]
         [DataType(DataType.MultilineText)]
+        //[Required(ErrorMessage = "Объект должн быть установлен")]
         public string TextObj { get; set; }
+
+        [Display(Name = "Применение")]
         [DataType(DataType.MultilineText)]
+        //[Required(ErrorMessage = "Применение должно быть установлено")]
         public string TextApp { get; set; }
+
+        [Display(Name = "Литература")]
         [DataType(DataType.MultilineText)]
+        //[Required(ErrorMessage = "Литература должна быть установлено")]
         public string TextLit { get; set; }
 
 
