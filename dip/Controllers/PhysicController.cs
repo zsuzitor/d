@@ -112,6 +112,14 @@ namespace dip.Controllers
             if(!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
 
+           
+                DescrSearchIInput.ValidationIfNeed(inp);
+            
+                DescrSearchIOut.ValidationIfNeed(outp);
+            if (inp.Valide == false || outp.Valide == false)
+                return new HttpStatusCodeResult(404);
+
+
             var list_img_byte = Get_photo_post(uploadImage);
             
             List<int> deleteImg = null;
@@ -165,6 +173,15 @@ namespace dip.Controllers
 
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
+
+            
+                DescrSearchIInput.ValidationIfNeed(inp);
+            
+                DescrSearchIOut.ValidationIfNeed(outp);
+            if (inp.Valide == false || outp.Valide == false)
+                return new HttpStatusCodeResult(404);
+
+
 
             var list_img_byte = Get_photo_post(uploadImage);
             

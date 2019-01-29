@@ -198,6 +198,7 @@
     <Compile Include="Controllers\OperandGroupsController.cs" />
     <Compile Include="Controllers\OperandsController.cs" />
     <Compile Include="Controllers\OperationsController.cs" />
+    <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\PhysicController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
@@ -255,11 +256,13 @@
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
+    <Compile Include="Models\ViewModel\AdminV\ChangeRoleV.cs" />
     <Compile Include="Models\ViewModel\DescriptionForm.cs" />
     <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />
     <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
+    <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\EditV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\ListFeTextV.cs" />
@@ -378,10 +381,12 @@
     <Content Include="Views\Helpers\selectList.cshtml" />
     <Content Include="Views\Helpers\ImageLink.cshtml" />
     <Content Include="Views\Helpers\Image.cshtml" />
+    <Content Include="Views\Person\PersonalRecord.cshtml" />
+    <Content Include="Views\Admin\AddRole.cshtml" />
+    <Content Include="Views\Admin\DeleteRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

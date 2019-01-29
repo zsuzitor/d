@@ -17,15 +17,20 @@ namespace dip.Models.DataBase
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            // создаем две роли
-            var roleAdmin = new IdentityRole { Name = "admin" };
-            var roleUser = new IdentityRole { Name = "user" };
-            var roleVip = new IdentityRole { Name = "vip" };
+            // создаем  роли
+            //var roleAdmin = new IdentityRole { Name = Roles.admin.ToString() };
+            //var roleUser = new IdentityRole { Name = Roles.user.ToString() };
+            //var roleVip = new IdentityRole { Name = Roles.vip.ToString() };
 
+            foreach (RolesProject roleName in (RolesProject[])Enum.GetValues(typeof(RolesProject)))
+            {
+                var role = new IdentityRole { Name = roleName.ToString() };
+                roleManager.Create(role);
+            }
             // добавляем роли в бд
-            roleManager.Create(roleAdmin);
-            roleManager.Create(roleUser);
-            roleManager.Create(roleVip);
+            //roleManager.Create(roleAdmin);
+            //roleManager.Create(roleUser);
+            //roleManager.Create(roleVip);
 
             // создаем пользователей
 
@@ -42,18 +47,20 @@ namespace dip.Models.DataBase
             if (result.Succeeded)
             {
                 // добавляем для пользователя роль
-                userManager.AddToRole(admin.Id, roleAdmin.Name);
-                userManager.AddToRole(admin.Id, roleUser.Name);
-                userManager.AddToRole(admin.Id, roleVip.Name);
+                userManager.AddToRole(admin.Id, RolesProject.admin.ToString());
+                userManager.AddToRole(admin.Id, RolesProject.user.ToString());
+                userManager.AddToRole(admin.Id, RolesProject.vip.ToString());
                 //
-                userManager.AddToRole(Nadmin.Id, roleUser.Name);
+                userManager.AddToRole(Nadmin.Id, RolesProject.user.ToString());
             }
 
 
             //load old db 
             
             OldData.ReloadDataBase();
+            //строим индексы lucene
             Lucene_.BuildIndex();
+            //строим индексы sql server
             FullTextSearch_.Create();
 
             base.Seed(context);

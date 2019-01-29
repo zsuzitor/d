@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "DeleteRole";
+}
+
+<h2>DeleteRole</h2>
+
+
+@using (Html.BeginForm("DeleteRole", "Admin"))
+{
+    <input name="userId" type="text" />
+    <input name="roleName" type="text" />
+    <input type="submit" value="выдать роль" />
+}

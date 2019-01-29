@@ -24,6 +24,10 @@ using System.Web.Hosting;
 
 namespace dip.Models.Domain
 {
+    enum RolesProject { admin, vip, user };
+    //var a = (RolesProject)Enum.Parse(typeof(RolesProject), "", true);
+
+
 
     public class test
     {
@@ -55,10 +59,15 @@ namespace dip.Models.Domain
         public string listSelectedProsI { get; set; }
         public string listSelectedSpecI { get; set; }
         public string listSelectedVremI { get; set; }
-        
+
+        [ScaffoldColumn(false)]
+        public bool? Valide { get;private set; }
+
         public DescrSearchIInput()
         {
 
+
+            Valide = null;
         }
         public DescrSearchIInput(FEAction a)
         {
@@ -74,33 +83,59 @@ namespace dip.Models.Domain
         }
 
 
-        //public static bool Validation(DescrSearchIInput a)
-        //{
-        //    if (a != null)
-        //    {
-        //        a.actionIdI = NullToEmpryStr(a.actionIdI);
-        //        a.actionTypeI = NullToEmpryStr(a.actionTypeI);
-        //        a.FizVelIdI = NullToEmpryStr(a.FizVelIdI);
-        //        a.parametricFizVelIdI = NullToEmpryStr(a.parametricFizVelIdI);
-        //        a.listSelectedProsI = NullToEmpryStr(a.listSelectedProsI);
-        //        a.listSelectedSpecI = NullToEmpryStr(a.listSelectedSpecI);
-        //        a.listSelectedVremI = NullToEmpryStr(a.listSelectedVremI);
-        //        return true;
-        //    }
-        //    return false;
-        //}
-        //public static bool IsNull(DescrSearchIInput a)
-        //{
-        //    if (a == null)
-        //        return true;
-        //    if (a.actionIdI == null && a.actionTypeI == null && a.FizVelIdI == null
-        //        && a.parametricFizVelIdI == null && a.listSelectedProsI == null
-        //        && a.listSelectedSpecI == null && a.listSelectedVremI == null)
-        //        return true;
+        public static bool ValidationIfNeed(DescrSearchIInput a)
+        {
+            var res = a.Valide;
+            if (a.Valide == null)
+                res = DescrSearchIInput.Validation(a);
+            return (bool)res;
+        }
+
+        public static bool Validation(DescrSearchIInput a)
+        {
+
+            if (a != null)
+            {
+                a.actionIdI = NullToEmpryStr(a.actionIdI);
+                a.actionTypeI = NullToEmpryStr(a.actionTypeI);
+                a.FizVelIdI = NullToEmpryStr(a.FizVelIdI);
+                a.parametricFizVelIdI = NullToEmpryStr(a.parametricFizVelIdI);
+                a.listSelectedProsI = NullToEmpryStr(a.listSelectedProsI);
+                a.listSelectedSpecI = NullToEmpryStr(a.listSelectedSpecI);
+                a.listSelectedVremI = NullToEmpryStr(a.listSelectedVremI);
 
 
-        //    return false;
-        //}
+                a.listSelectedProsI = Pro.SortIds(a?.listSelectedProsI);
+                //if (a?.listSelectedProsI != null)
+                //    this.listSelectedPros = string.Join(" ", (a.listSelectedProsI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 =>int.Parse( x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedPros = null;
+
+                a.listSelectedSpecI = Spec.SortIds(a?.listSelectedSpecI);
+                //if (a?.listSelectedSpecI != null)
+                //    this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedSpec = null;
+
+                a.listSelectedVremI = Vrem.SortIds(a?.listSelectedVremI);
+                //if (a?.listSelectedVremI != null)
+                //    this.listSelectedVrem = string.Join(" ", (a.listSelectedVremI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedVrem = null;
+
+
+                a.Valide = true;
+                return true;
+            }
+            a.Valide = false;
+            return false;
+        }
+
+
+        
 
 
     }
@@ -121,88 +156,56 @@ namespace dip.Models.Domain
         {
 
         }
+        /// <summary>
+        /// параметр может измениться
+        /// </summary>
+        /// <param name="a"></param>
         public  DescrSearchI(DescrSearchIInput a)
         {
-            //TODO чекбоксы отсортировать по числам
-            
+
+            var valid = false;
+            if (a?.Valide == null)
+                valid = DescrSearchIInput.Validation(a);
+            //TODO
+            //if (!valid)
+            //    throw new Exception("валидация");
+
             this.actionId = a?.actionIdI;
             this.actionType = a?.actionTypeI;
             this.FizVelId = a?.FizVelIdI;
             this.parametricFizVelId = a?.parametricFizVelIdI;
-            this.listSelectedPros = Pro.SortIds(a?.listSelectedProsI);
-            //if (a?.listSelectedProsI != null)
-            //    this.listSelectedPros = string.Join(" ", (a.listSelectedProsI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 =>int.Parse( x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedPros = null;
+            this.listSelectedPros = a?.listSelectedProsI;
+            this.listSelectedSpec = a?.listSelectedSpecI;
+            this.listSelectedVrem = a?.listSelectedVremI;
 
-            this.listSelectedSpec = Spec.SortIds(a?.listSelectedSpecI);
-            //if (a?.listSelectedSpecI != null)
-            //    this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedSpec = null;
 
-            this.listSelectedVrem = Vrem.SortIds(a?.listSelectedVremI);
-            //if (a?.listSelectedVremI != null)
-            //    this.listSelectedVrem = string.Join(" ", (a.listSelectedVremI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedVrem = null;
-            
-            DescrSearchI.Validation(this);
         }
 
+        /// <summary>
+        /// параметр может измениться
+        /// </summary>
+        /// <param name="a"></param>
         public DescrSearchI(DescrSearchIOut a)
         {
-
+            var valid = false;
+            if (a?.Valide == null)
+                valid=DescrSearchIOut.Validation(a);
+            //TODO
+            //if (!valid)
+            //    throw new Exception("валидация");
 
             this.actionId = a?.actionIdO;
             this.actionType = a?.actionTypeO;
             this.FizVelId = a?.FizVelIdO;
             this.parametricFizVelId = a?.parametricFizVelIdO;
+            this.listSelectedPros = a?.listSelectedProsO;
+            this.listSelectedSpec = a?.listSelectedSpecO;
+            this.listSelectedVrem = a?.listSelectedVremO;
 
-            this.listSelectedPros = Pro.SortIds(a?.listSelectedProsO);
-            //if (a?.listSelectedProsO != null)
-            //    this.listSelectedPros = string.Join(" ", (a.listSelectedProsO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedPros = null;
-
-            this.listSelectedSpec = Spec.SortIds(a?.listSelectedSpecO);
-            //if (a?.listSelectedSpecO != null)
-            //    this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedSpec = null;
-
-            this.listSelectedVrem = Vrem.SortIds(a?.listSelectedVremO);
-            //if (a?.listSelectedVremO != null)
-            //    this.listSelectedVrem = string.Join(" ", (a.listSelectedVremO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
-            //else
-            //    this.listSelectedVrem = null;
-            
-            DescrSearchI.Validation(this);
         }
 
 
-        public static bool Validation(DescrSearchI a)
-        {
-
-            if (a != null)
-            {
-                a.actionId = NullToEmpryStr(a.actionId);
-                a.actionType = NullToEmpryStr(a.actionType);
-                a.FizVelId = NullToEmpryStr(a.FizVelId);
-                a.parametricFizVelId = NullToEmpryStr(a.parametricFizVelId);
-                a.listSelectedPros = NullToEmpryStr(a.listSelectedPros);
-                a.listSelectedSpec = NullToEmpryStr(a.listSelectedSpec);
-                a.listSelectedVrem = NullToEmpryStr(a.listSelectedVrem);
-                return true;
-            }
-            return false;
-        }
+       
 
         public static bool IsNull(DescrSearchI a)
         {
@@ -217,35 +220,7 @@ namespace dip.Models.Domain
             return false;
         }
 
-        //public static DescrSearchI Set(DescrSearchIInput a)
-        //{
-        //    if (a == null)
-        //        return null;
-        //    DescrSearchI res = new DescrSearchI();
-        //    res.actionId = a.actionIdI;
-        //    res.actionType = a.actionTypeI;
-        //    res.FizVelId = a.FizVelIdI;
-        //    res.parametricFizVelId = a.parametricFizVelIdI;
-        //    res.listSelectedPros = a.listSelectedProsI;
-        //    res.listSelectedSpec = a.listSelectedSpecI;
-        //    res.listSelectedVrem = a.listSelectedVremI;
-        //    return res;
-        //}
-
-        //public static DescrSearchI Set(DescrSearchIOut a)
-        //{
-        //    if (a == null)
-        //        return null;
-        //    DescrSearchI res = new DescrSearchI();
-        //    res.actionId = a.actionIdO;
-        //    res.actionType = a.actionTypeO;
-        //    res.FizVelId = a.FizVelIdO;
-        //    res.parametricFizVelId = a.parametricFizVelIdO;
-        //    res.listSelectedPros = a.listSelectedProsO;
-        //    res.listSelectedSpec = a.listSelectedSpecO;
-        //    res.listSelectedVrem = a.listSelectedVremO;
-        //    return res;
-        //}
+        
 
     }
 
@@ -259,10 +234,14 @@ namespace dip.Models.Domain
         public string listSelectedSpecO { get; set; }
         public string listSelectedVremO { get; set; }
 
+        [ScaffoldColumn(false)]
+        public bool? Valide { get; private set; }
 
         public DescrSearchIOut()
         {
 
+
+            Valide = null;
         }
         public DescrSearchIOut(FEAction a)
         {
@@ -277,22 +256,64 @@ namespace dip.Models.Domain
 
         }
 
-        //public static bool Validation(DescrSearchIOut a)
-        //{
 
-        //    if (a != null)
-        //    {
-        //        a.actionIdO = NullToEmpryStr(a.actionIdO);
-        //        a.actionTypeO = NullToEmpryStr(a.actionTypeO);
-        //        a.FizVelIdO = NullToEmpryStr(a.FizVelIdO);
-        //        a.parametricFizVelIdO = NullToEmpryStr(a.parametricFizVelIdO);
-        //        a.listSelectedProsO = NullToEmpryStr(a.listSelectedProsO);
-        //        a.listSelectedSpecO = NullToEmpryStr(a.listSelectedSpecO);
-        //        a.listSelectedVremO = NullToEmpryStr(a.listSelectedVremO);
-        //        return true;
-        //    }
-        //    return false;
-        //}
+
+        public static bool ValidationIfNeed(DescrSearchIOut a)
+        {
+            var res = a.Valide;
+            if (a.Valide == null)
+                res = DescrSearchIOut.Validation(a);
+            return (bool)res;
+        }
+
+
+        public static bool Validation(DescrSearchIOut a)
+        {
+
+            if (a != null)
+            {
+                a.actionIdO = NullToEmpryStr(a.actionIdO);
+                a.actionTypeO = NullToEmpryStr(a.actionTypeO);
+                a.FizVelIdO = NullToEmpryStr(a.FizVelIdO);
+                a.parametricFizVelIdO = NullToEmpryStr(a.parametricFizVelIdO);
+                a.listSelectedProsO = NullToEmpryStr(a.listSelectedProsO);
+                a.listSelectedSpecO = NullToEmpryStr(a.listSelectedSpecO);
+                a.listSelectedVremO = NullToEmpryStr(a.listSelectedVremO);
+
+
+                a.listSelectedProsO = Pro.SortIds(a?.listSelectedProsO);
+                //if (a?.listSelectedProsO != null)
+                //    this.listSelectedPros = string.Join(" ", (a.listSelectedProsO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedPros = null;
+
+                a.listSelectedSpecO = Spec.SortIds(a?.listSelectedSpecO);
+                //if (a?.listSelectedSpecO != null)
+                //    this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedSpec = null;
+
+                a.listSelectedVremO = Vrem.SortIds(a?.listSelectedVremO);
+                //if (a?.listSelectedVremO != null)
+                //    this.listSelectedVrem = string.Join(" ", (a.listSelectedVremO).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                //else
+                //    this.listSelectedVrem = null;
+
+              
+
+
+                
+
+
+                a.Valide = true;
+                return true;
+            }
+            a.Valide = false;
+            return false;
+        }
 
         //public static bool IsNull(DescrSearchIOut a)
         //{

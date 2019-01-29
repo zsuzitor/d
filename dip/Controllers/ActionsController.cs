@@ -36,6 +36,12 @@ namespace dip.Controllers
 
         public ActionResult DescriptionInput(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
         {
+            
+                DescrSearchIInput.ValidationIfNeed(inp);
+            
+                DescrSearchIOut.ValidationIfNeed(outp);
+            if(inp.Valide==false|| outp.Valide==false)
+                return new HttpStatusCodeResult(404);
             DescriptionInputV res = new DescriptionInputV();
             res.InputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI, inp?.listSelectedProsI, inp?.listSelectedSpecI, inp?.listSelectedVremI);
             res.OutpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO, outp?.listSelectedProsO, outp?.listSelectedSpecO, outp?.listSelectedVremO);

@@ -18,7 +18,8 @@ namespace dip.Models
         public string Surname { get; set; }
         public DateTime? Birthday { get; set; }
         public DateTime Dateregistration { get; set; }
-
+        //TODO раскомментить
+        public bool CloseProfile { get; set; }
 
         //1--many
         public ICollection<Log> UserLogs { get; set; }
@@ -33,6 +34,7 @@ namespace dip.Models
             Surname = null;
             Birthday = null;
                 Dateregistration = DateTime.Now;
+            CloseProfile = false;
 
         }
 

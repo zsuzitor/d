@@ -1,0 +1,18 @@
+﻿@model dip.Models.ViewModel.PersonV.PersonalRecordV
+
+@{
+    ViewBag.Title = "PersonalRecord";
+}
+
+<h2>PersonalRecord</h2>
+
+
+@Html.Label("id пользователя")
+@Html.DisplayFor(x1=>x1.User.Id)
+
+
+<hr />
+
+@Html.Action("Index", "Manage",new {partial=true })
+
+

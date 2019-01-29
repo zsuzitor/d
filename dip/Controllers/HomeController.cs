@@ -24,7 +24,7 @@ namespace dip.Controllers
                 //db.Database.ExecuteSqlCommand(@"EXEC initFullTextSearch;");
                 //db.SaveChanges();
             }
-               
+         
 
 
             return View();

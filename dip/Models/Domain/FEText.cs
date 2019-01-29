@@ -57,11 +57,18 @@ namespace dip.Models.Domain
         public string TextLit { get; set; }
 
 
+        //TODO раскомментить
+        [ScaffoldColumn(false)]
+        public bool NotApprove { get; set; }
+
+
         public ICollection<Image> Images { get; set; }
 
         public FEText()
         {
             this.Images = new List<Image>();
+
+            NotApprove = true;
         }
 
         public bool Equal (FEText a)
@@ -129,8 +136,8 @@ namespace dip.Models.Domain
         public static int[] GetByDescr(DescrSearchI inp, DescrSearchI outp)
         {
             int[] list_id = null;
-            if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
-            {
+            //if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
+            //{
                 //поиск
                 //List<int> list_id = new List<int>();
 
@@ -162,7 +169,7 @@ namespace dip.Models.Domain
                     //ViewBag.listFeId = list_id;
 
                 }
-            }
+            //}
             return list_id;
         }
 

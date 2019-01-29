@@ -25,6 +25,14 @@ namespace dip.Controllers
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
         {
+
+            
+                DescrSearchIInput.ValidationIfNeed(inp_);
+           
+                DescrSearchIOut.ValidationIfNeed(outp_);
+            if (inp_.Valide == false || outp_.Valide == false)
+                return new HttpStatusCodeResult(404);
+
             DescriptionSearchV res = new DescriptionSearchV();
 
             int[] list_id = null;
@@ -33,19 +41,11 @@ namespace dip.Controllers
             if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
             {
                 list_id = FEText.GetByDescr(inp, outp);
-                //TODO временный костыль пока не разберусь с типами DescrSearchIInput и DescrSearchI
-                {
-                    inp_.listSelectedProsI = inp.listSelectedPros;
-                    inp_.listSelectedSpecI = inp.listSelectedSpec;
-                    inp_.listSelectedVremI = inp.listSelectedVrem;
 
-                    outp_.listSelectedProsO = outp.listSelectedPros;
-                    outp_.listSelectedSpecO = outp.listSelectedSpec;
-                    outp_.listSelectedVremO = outp.listSelectedVrem;
-                    res.FormInput = inp_;
-                    res.FormOutput = outp_;
-                }
-                
+                res.FormInput = inp_;
+                res.FormOutput = outp_;
+
+
             }
 
             else
@@ -72,7 +72,7 @@ namespace dip.Controllers
                 //return RedirectToAction("ListFeText", "Physic", new { listId = list_id });
 
             }
-
+            //DescrSearchIInput.Validation(res.FormInput);
             return View(res);
         }
 
