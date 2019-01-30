@@ -33,12 +33,12 @@ namespace dip.Models.DataBase
             //roleManager.Create(roleVip);
 
             // создаем пользователей
-
-            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin@mail.ru", Name = "zsuz", Surname = "zsuzSUR", Birthday = DateTime.Now };
+            //TODO ,EmailConfirmed=true  для пользователей убрать
+            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin@mail.ru", Name = "zsuz", Surname = "zsuzSUR", Birthday = DateTime.Now,EmailConfirmed=true };
             string password = "Admin1!";
             var result = userManager.Create(admin, password);
             //
-            var Nadmin = new ApplicationUser { Email = "asa123A@mail.ru", UserName = "asa123A@mail.ru", Name = "zsuz11", Surname = "zsuzSUR111", Birthday = DateTime.Now };
+            var Nadmin = new ApplicationUser { Email = "asa123A@mail.ru", UserName = "asa123A@mail.ru", Name = "zsuz11", Surname = "zsuzSUR111", Birthday = DateTime.Now, EmailConfirmed = true };
             string Npassword = "Admin1!";
             var resultN = userManager.Create(Nadmin, Npassword);
             //
