@@ -75,15 +75,16 @@ namespace dip.Controllers
                 var user = await UserManager.FindAsync(model.Email, model.Password);
                 if (user != null)
                 {
-                    if (user.EmailConfirmed == true)
+                    //TODO раскомментить проверку
+                   // if (user.EmailConfirmed == true)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Не подтвержден email.");
-                    }
+                    //else
+                    //{
+                    //    ModelState.AddModelError("", "Не подтвержден email.");
+                    //}
                 }
                 else
                 {

@@ -660,11 +660,9 @@ namespace dip.Models.DataBase
 
                         //
                         {
+                            //TODO
                             obj.Pros = i["pros"].ToString().Trim();
-                            //if (obj.Pros.Contains("VOZ8_PROS1")||obj.Pros.Contains("VOZ8_PROS8"))
-                            //{
-                            //    var gh = "213";
-                            //}
+                            //obj.Pros = Pro.SortIds(obj.Pros);
                             string prs = "";
                             string prsRes = "";
                             if (!string.IsNullOrWhiteSpace(obj.Pros))
@@ -682,7 +680,9 @@ namespace dip.Models.DataBase
                         }
                         //
                         {
+                            //TODO
                             obj.Spec = i["spec"].ToString().Trim();
+                            //obj.Spec = Spec.SortIds(obj.Spec);
                             string spc = "";
                             string spcRes = "";
                             if (!string.IsNullOrWhiteSpace(obj.Spec))
@@ -700,6 +700,7 @@ namespace dip.Models.DataBase
                        
                         {
                             obj.Vrem = i["vrem"].ToString().Trim();
+                            //obj.Vrem = Vrem.SortIds(obj.Vrem);
                             string vrm = "";
                             string vrmRes = "";
                             if (!string.IsNullOrWhiteSpace(obj.Vrem))
