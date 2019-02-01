@@ -1,4 +1,29 @@
-﻿body {
+﻿/*@media (min-width: 500px) {
+  .container {
+    max-width: 750px;
+  }}*/
+
+/*@media only handheld {
+    .container {
+        max-width: 750px !important;
+    }
+}*/
+
+@media (max-width:850px) {
+    .container {
+        max-width: 750px !important;
+    }
+
+    .login_partial_ul{
+        float: right !important;
+    }
+    .login_partial_ul .login_partial_ul_li{
+        float: left;
+    }
+}
+
+
+body {
     /*padding-top: 50px;*/
     padding-bottom: 20px;
     min-width:960px;
@@ -452,5 +477,14 @@ div.descrCheckBoxChild{
 
 
 
+div.descrForm_div_search_but{
+    width:60%;
+}
+div.descrForm_div_clear_but{
+    width:18%;
+}
 
+div.descrForm_div_shwh_but{
+     width:18%;
+}
 

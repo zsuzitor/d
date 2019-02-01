@@ -40,7 +40,7 @@ namespace dip.Controllers
                 DescrSearchIInput.ValidationIfNeed(inp);
             
                 DescrSearchIOut.ValidationIfNeed(outp);
-            if(inp.Valide==false|| outp.Valide==false)
+            if(inp?.Valide==false|| outp?.Valide==false)
                 return new HttpStatusCodeResult(404);
             DescriptionInputV res = new DescriptionInputV();
             res.InputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI, inp?.listSelectedProsI, inp?.listSelectedSpecI, inp?.listSelectedVremI);
@@ -316,7 +316,7 @@ namespace dip.Controllers
             res.List = res.List.Count > 0 ? res.List : null;
             res.Type = type;
 
-            return PartialView();
+            return PartialView(res);
         }
 
 

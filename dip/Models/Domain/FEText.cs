@@ -138,9 +138,10 @@ namespace dip.Models.Domain
             int[] list_id = null;
             //if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
             //{
-                //поиск
-                //List<int> list_id = new List<int>();
-
+            //поиск
+            //List<int> list_id = new List<int>();
+            inp.DeleteNotChildCheckbox();
+            outp.DeleteNotChildCheckbox();
                 using (var db = new ApplicationDbContext())
                 {
                     //TODO оптимизация? разница только в  x1.Input == 1\0
@@ -204,12 +205,27 @@ namespace dip.Models.Domain
         public static List<int> GetListSimilar(int id, int count = 5)
         {
             List<int> res = new List<int>();
-            var quer=$@"select top({count})IDFE
+
+            //этот запрос может возвращать дублирующиеся id тк сравниват не записи в целом а отдельно столбцы
+            //            var quer=$@"select top({count})IDFE
+            //from
+            //       semanticsimilaritytable (FETexts, *, {id} ) data
+            //            inner join dbo.FETexts
+            //            txt on data.matched_document_key = txt.IDFE
+            //order by data.score desc";
+
+            var quer = $@"
+select   [txt].IDFE
 from
-       semanticsimilaritytable (FETexts, *, {id} ) data
-            inner join dbo.FETexts
-            txt on data.matched_document_key = txt.IDFE
-order by data.score desc";
+       semanticsimilaritytable (FETexts, *, {id}  ) as data
+            inner join dbo.FETexts as
+            txt on data.matched_document_key = [txt].IDFE
+order by [data].score desc
+";
+
+
+
+
 
 
             //var connection1 = new SqlConnection();
@@ -242,7 +258,11 @@ order by data.score desc";
            var dict= DataBase.DataBase.ExecuteQuery(quer,null, "IDFE");
             foreach (var i in dict)
             {
-                res.Add(Convert.ToInt32(i["IDFE"]));
+                if (res.Count == count)
+                    break;
+                int idRec = Convert.ToInt32(i["IDFE"]);
+                if(!res.Contains(idRec))
+                res.Add(idRec);
             }
 
 
@@ -292,12 +312,18 @@ order by data.score desc";
             return true;
         }
 
-        public bool AddToDb(DescrSearchIInput inp , DescrSearchIOut outp, List<byte[]> addImgs = null)
+        public bool AddToDb(DescrSearchI inp , DescrSearchI outp, List<byte[]> addImgs = null)
         {
             //if (!this.Validation())
             //    return false;
-            DescrSearchI inp_ = new DescrSearchI(inp);
-            DescrSearchI outp_ = new DescrSearchI(outp);
+           
+
+
+
+
+
+
+
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.FEText.Add(this);
@@ -311,7 +337,7 @@ order by data.score desc";
                     Input = 1,
                     
                 };
-                inpa.SetFromInput(inp_);
+                inpa.SetFromInput(inp);
                 db.FEActions.Add(inpa);
 
                 FEAction outpa=new FEAction()
@@ -320,7 +346,7 @@ order by data.score desc";
                     Input = 0,
                     
                 };
-                outpa.SetFromInput(outp_);
+                outpa.SetFromInput(outp);
                 db.FEActions.Add(outpa);
                 this.AddImages(addImgs, db);
 
@@ -330,7 +356,7 @@ order by data.score desc";
             return true;
         }
 
-        public bool ChangeDb(FEText new_obj,List<int> deleteImg=null, List<byte[]> addImgs=null, DescrSearchIInput inp = null, DescrSearchIOut outp=null)
+        public bool ChangeDb(FEText new_obj,List<int> deleteImg=null, List<byte[]> addImgs=null, DescrSearchI inp = null, DescrSearchI outp=null)
         {
             
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -352,8 +378,8 @@ order by data.score desc";
                 var outpdb = descrdb.FirstOrDefault(x1 => x1.Input == 0);
                 if (inpdb == null || outpdb == null)
                     return false;
-                inpdb.SetFromInput(new DescrSearchI(inp));
-                outpdb.SetFromInput(new DescrSearchI(outp));
+                inpdb.SetFromInput(inp);
+                outpdb.SetFromInput(outp);
 
                 db.SaveChanges();
             }

@@ -662,57 +662,57 @@ namespace dip.Models.DataBase
                         {
                             //TODO
                             obj.Pros = i["pros"].ToString().Trim();
-                            //obj.Pros = Pro.SortIds(obj.Pros);
-                            string prs = "";
-                            string prsRes = "";
-                            if (!string.IsNullOrWhiteSpace(obj.Pros))
-                            {
-                                foreach (var pr in obj.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                                {
-                                    prs = pr + " " + Pro.GetParents(pr);
-                                    prsRes += prs + " ";
-                                }
+                            obj.Pros = Pro.SortIds(obj.Pros);
+                            //string prs = "";
+                            //string prsRes = "";
+                            //if (!string.IsNullOrWhiteSpace(obj.Pros))
+                            //{
+                            //    foreach (var pr in obj.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                            //    {
+                            //        prs = pr + " " + Pro.GetParents(pr);
+                            //        prsRes += prs + " ";
+                            //    }
 
-                            }
+                            //}
 
 
-                            obj.Pros = Pro.SortIds(prsRes);
+                            //obj.Pros = Pro.SortIds(prsRes);
                         }
                         //
                         {
                             //TODO
                             obj.Spec = i["spec"].ToString().Trim();
-                            //obj.Spec = Spec.SortIds(obj.Spec);
-                            string spc = "";
-                            string spcRes = "";
-                            if (!string.IsNullOrWhiteSpace(obj.Spec))
-                            {
-                                foreach (var sp in obj.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                                {
-                                    spc = sp + " " + Spec.GetParents(sp);
-                                    spcRes += spc + " ";
-                                }
+                            obj.Spec = Spec.SortIds(obj.Spec);
+                            //string spc = "";
+                            //string spcRes = "";
+                            //if (!string.IsNullOrWhiteSpace(obj.Spec))
+                            //{
+                            //    foreach (var sp in obj.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                            //    {
+                            //        spc = sp + " " + Spec.GetParents(sp);
+                            //        spcRes += spc + " ";
+                            //    }
 
-                            }
-                            obj.Spec = Spec.SortIds(spcRes);
+                            //}
+                            //obj.Spec = Spec.SortIds(spcRes);
                         }
                         //
                        
                         {
                             obj.Vrem = i["vrem"].ToString().Trim();
-                            //obj.Vrem = Vrem.SortIds(obj.Vrem);
-                            string vrm = "";
-                            string vrmRes = "";
-                            if (!string.IsNullOrWhiteSpace(obj.Vrem))
-                            {
-                                foreach (var vr in obj.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                                {
-                                    vrm = vr + " " + Vrem.GetParents(vr);
-                                    vrmRes += vrm + " ";
-                                }
+                            obj.Vrem = Vrem.SortIds(obj.Vrem);
+                            //string vrm = "";
+                            //string vrmRes = "";
+                            //if (!string.IsNullOrWhiteSpace(obj.Vrem))
+                            //{
+                            //    foreach (var vr in obj.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                            //    {
+                            //        vrm = vr + " " + Vrem.GetParents(vr);
+                            //        vrmRes += vrm + " ";
+                            //    }
 
-                            }
-                            obj.Vrem = Vrem.SortIds(vrmRes);
+                            //}
+                            //obj.Vrem = Vrem.SortIds(vrmRes);
                         }
 
                         //

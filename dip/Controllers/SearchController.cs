@@ -30,17 +30,18 @@ namespace dip.Controllers
                 DescrSearchIInput.ValidationIfNeed(inp_);
            
                 DescrSearchIOut.ValidationIfNeed(outp_);
-            if (inp_.Valide == false || outp_.Valide == false)
+            if (inp_?.Valide == false || outp_?.Valide == false)
                 return new HttpStatusCodeResult(404);
 
             DescriptionSearchV res = new DescriptionSearchV();
 
-            int[] list_id = null;
+            
             var inp = new DescrSearchI(inp_);
             var outp = new DescrSearchI(outp_);
             if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
             {
-                list_id = FEText.GetByDescr(inp, outp);
+
+                res.SearchList = FEText.GetByDescr(inp, outp);
 
                 res.FormInput = inp_;
                 res.FormOutput = outp_;
@@ -56,7 +57,7 @@ namespace dip.Controllers
             {
 
                 res.Search = true;
-                TempData["list_fe_id"] = list_id;
+                TempData["list_fe_id"] = res.SearchList;
 
 
 

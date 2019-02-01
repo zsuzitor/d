@@ -12,13 +12,13 @@
         <div class="col-md-10">
 
             @{
-
+                string[] needSelectedList = Model.Param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var pro in Model.List)
                 {
                     <div>
                         @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
                         @{
-                            bool? needSelected = Model.Param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(pro.Id);
+                            bool? needSelected = needSelectedList?.Contains(pro.Id);
                         }
                         <label>
                             @if (needSelected == true)

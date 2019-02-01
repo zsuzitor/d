@@ -85,10 +85,10 @@ namespace dip.Models.Domain
 
         public static bool ValidationIfNeed(DescrSearchIInput a)
         {
-            var res = a.Valide;
-            if (a.Valide == null)
-                res = DescrSearchIInput.Validation(a);
-            return (bool)res;
+            var res = a?.Valide?? DescrSearchIInput.Validation(a);
+            //if (res == null)
+            //    res = DescrSearchIInput.Validation(a);
+            return res;
         }
 
         public static bool Validation(DescrSearchIInput a)
@@ -128,10 +128,10 @@ namespace dip.Models.Domain
 
 
                 a.Valide = true;
-                return true;
+                
             }
-            a.Valide = false;
-            return false;
+            //a.Valide = false;
+            return true;
         }
 
 
@@ -220,9 +220,35 @@ namespace dip.Models.Domain
             return false;
         }
 
-        
+
+        public void DeleteNotChildCheckbox()
+        {
+
+            //pro
+            this.listSelectedPros = Pro.DeleteNotChildCheckbox(this.listSelectedPros);
+
+
+
+            //spec
+            this.listSelectedSpec = Spec.DeleteNotChildCheckbox(this.listSelectedSpec);
+
+
+
+            //vrem
+            this.listSelectedVrem = Vrem.DeleteNotChildCheckbox(this.listSelectedVrem);
+
+
+        }
+
+
+
 
     }
+
+
+    
+
+
 
     public class DescrSearchIOut
     {
@@ -260,10 +286,11 @@ namespace dip.Models.Domain
 
         public static bool ValidationIfNeed(DescrSearchIOut a)
         {
-            var res = a.Valide;
-            if (a.Valide == null)
-                res = DescrSearchIOut.Validation(a);
-            return (bool)res;
+            var res = a?.Valide ?? DescrSearchIOut.Validation(a);
+            //var res = a.Valide;
+            //if (a.Valide == null)
+            //    res = DescrSearchIOut.Validation(a);
+            return res;
         }
 
 
@@ -309,10 +336,10 @@ namespace dip.Models.Domain
 
 
                 a.Valide = true;
-                return true;
+                
             }
-            a.Valide = false;
-            return false;
+            //a.Valide = false;
+            return true;
         }
 
         //public static bool IsNull(DescrSearchIOut a)

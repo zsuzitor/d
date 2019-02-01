@@ -17,7 +17,7 @@ namespace dip.Models.ViewModel.SearchV
         public TextSearchV()
         {
             CountLoad = 0;
-            ListPhysId = null;
+            ListPhysId = new List<int>();
             ShowBtLoad = null;
         }
     }

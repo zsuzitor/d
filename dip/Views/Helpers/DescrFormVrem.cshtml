@@ -12,19 +12,19 @@
         <div class="col-md-10">
 
             @{
-
-                foreach (var vrem in Model.List)
-                {
+                    string[] needSelectedList = Model.Param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var vrem in Model.List)
+                    {
                     <div>
-
+    
 
                         @{
-                            bool? needSelected = Model.Param?.listSelectedVrem?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(vrem.Id);
+                            bool? needSelected = needSelectedList?.Contains(vrem.Id);
 
                         }
                         <label>
                             @if (needSelected == true)
-                            {
+                                {
                                 <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" />
 
                             }

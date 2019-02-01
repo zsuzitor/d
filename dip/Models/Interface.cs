@@ -37,6 +37,14 @@ namespace dip.Models
         public abstract void ReLoadChild();
 
         //public abstract bool LoadPartialTree(List<T> list);
+        public abstract List<T> GetParentsList(ApplicationDbContext db_ = null); 
+
+
+        /// <summary>
+        /// загружает необходимое древо детей
+        /// </summary>
+        /// <param name="list">список детей</param>
+        /// <returns></returns>
         public virtual bool LoadPartialTree(List<T> list)
         {
             this.LoadChild();
@@ -45,7 +53,7 @@ namespace dip.Models
             //this.LoadChild();
             foreach (var i in this.Childs)
             {
-                if (list.Contains(i))
+                if (list.FirstOrDefault(x1 => x1.Id == i.Id) != null) //if (list.Contains(i))
                     i.LoadPartialTree(list);
             }
             //foreach(var i in list)
@@ -62,7 +70,7 @@ namespace dip.Models
 
 
         /// <summary>
-        /// получаем списки  item от родителя к ребенку
+        /// получаем списки  item от родителя к ребенку(просто выстроены по порядку)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list">обычный список из которого надо построить древо родители\дети, содержит и детей и родителей, древо будет построено ТОЛЬКО по item из этого списка</param>
@@ -121,8 +129,10 @@ namespace dip.Models
             
         }
 
+        
 
-    }
+
+        }
 
 
     //public interface CheckBoxForm
@@ -134,5 +144,9 @@ namespace dip.Models
 
 
 
+    interface Idsf
+    {
+        
+    }
 
 }

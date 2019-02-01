@@ -99,7 +99,7 @@
 
 
 <h2>Edit</h2>
-@Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.FeText.IDFE }, new { })
+@Html.ActionLink("Вернуться к просмотру", "Details", "Physic", new { id = Model.Obj.IDFE }, new { })
 @if(Model== null)
 {
     <p>запись не найдена</p>
@@ -123,62 +123,62 @@
 
 
 
-            @Html.HiddenFor(x1 => x1.FeText.IDFE)
+            @Html.HiddenFor(x1 => x1.Obj.IDFE)
 
             <dl class="dl-horizontal">
                 <dt>
-                    @Html.LabelFor(x1=>x1.FeText.Name)
+                    @Html.LabelFor(x1=>x1.Obj.Name)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.Name)
+                    @Html.EditorFor(model => Model.Obj.Name)
                 </dd>
                 <dt>
-                    @Html.LabelFor(x1=>x1.FeText.Text)
+                    @Html.LabelFor(x1=>x1.Obj.Text)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.Text)
-                </dd>
-
-                <dt>
-                    @Html.LabelFor(x1 => x1.FeText.TextInp)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.FeText.TextInp)
+                    @Html.EditorFor(model => model.Obj.Text)
                 </dd>
 
                 <dt>
-                   @Html.LabelFor(x1 => x1.FeText.TextOut)
+                    @Html.LabelFor(x1 => x1.Obj.TextInp)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.TextOut)
+                    @Html.EditorFor(model => model.Obj.TextInp)
                 </dd>
 
                 <dt>
-                    @Html.LabelFor(x1 => x1.FeText.TextObj)
+                   @Html.LabelFor(x1 => x1.Obj.TextOut)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.TextObj)
+                    @Html.EditorFor(model => model.Obj.TextOut)
                 </dd>
 
                 <dt>
-                   @Html.LabelFor(x1 => x1.FeText.TextApp)
+                    @Html.LabelFor(x1 => x1.Obj.TextObj)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.TextApp)
+                    @Html.EditorFor(model => model.Obj.TextObj)
                 </dd>
 
                 <dt>
-                    @Html.LabelFor(x1 => x1.FeText.TextLit)
+                   @Html.LabelFor(x1 => x1.Obj.TextApp)
                 </dt>
 
                 <dd>
-                    @Html.EditorFor(model => model.FeText.TextLit)
+                    @Html.EditorFor(model => model.Obj.TextApp)
+                </dd>
+
+                <dt>
+                    @Html.LabelFor(x1 => x1.Obj.TextLit)
+                </dt>
+
+                <dd>
+                    @Html.EditorFor(model => model.Obj.TextLit)
                 </dd>
 
             </dl>
@@ -200,7 +200,7 @@
                 <input class="btn btn-default" onclick="EditPhysFunc()" value="отправить" />
                 <div class="block_images">
                     <div class="inline">
-                        @foreach (var i in Model.FeText.Images)
+                        @foreach (var i in Model.Obj.Images)
                         {
                             @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
                                     <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">

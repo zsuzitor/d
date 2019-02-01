@@ -85,7 +85,7 @@ namespace dip.Controllers
         public ActionResult Edit(int? id)
         {
             EditV res = new EditV();
-            res.FeText = FEText.Get(id);
+            res.Obj = FEText.Get(id);
             
             if(res==null)
                 return new HttpStatusCodeResult(404);
@@ -95,9 +95,21 @@ namespace dip.Controllers
             FEAction.Get((int)id, ref inp, ref outp);
 
             res.FormInput = new DescrSearchIInput(inp);
-            res.FormOutput = new DescrSearchIOut(outp); 
+            res.FormOutput = new DescrSearchIOut(outp);
 
-            res.FeText.LoadImage();
+            //TODO
+            res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
+            res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);
+            res.FormInput.listSelectedSpecI = Spec.GetAllIdsFor(res.FormInput.listSelectedSpecI);
+
+            res.FormOutput.listSelectedProsO = Pro.GetAllIdsFor(res.FormOutput.listSelectedProsO);
+            res.FormOutput.listSelectedVremO = Vrem.GetAllIdsFor(res.FormOutput.listSelectedVremO);
+            res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
+
+
+            
+
+            res.Obj.LoadImage();
 
 
             
@@ -116,7 +128,7 @@ namespace dip.Controllers
                 DescrSearchIInput.ValidationIfNeed(inp);
             
                 DescrSearchIOut.ValidationIfNeed(outp);
-            if (inp.Valide == false || outp.Valide == false)
+            if (inp?.Valide == false || outp?.Valide == false)
                 return new HttpStatusCodeResult(404);
 
 
@@ -133,7 +145,13 @@ namespace dip.Controllers
             FEText oldObj = FEText.Get(obj.IDFE);
             if (oldObj == null)
                 return new HttpStatusCodeResult(404);
-            if(!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp, outp))
+
+            DescrSearchI inp_ = new DescrSearchI(inp);
+            inp_.DeleteNotChildCheckbox();
+            DescrSearchI outp_ = new DescrSearchI(outp);
+            outp_.DeleteNotChildCheckbox();
+
+            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp_, outp_))
                 return new HttpStatusCodeResult(404);
             Lucene_.UpdateDocument(obj.IDFE.ToString(),obj);
 
@@ -178,16 +196,19 @@ namespace dip.Controllers
                 DescrSearchIInput.ValidationIfNeed(inp);
             
                 DescrSearchIOut.ValidationIfNeed(outp);
-            if (inp.Valide == false || outp.Valide == false)
+            if (inp?.Valide == false || outp?.Valide == false)
                 return new HttpStatusCodeResult(404);
 
-
+            DescrSearchI inp_ = new DescrSearchI(inp);
+            inp_.DeleteNotChildCheckbox();
+            DescrSearchI outp_ = new DescrSearchI(outp);
+            outp_.DeleteNotChildCheckbox();
 
             var list_img_byte = Get_photo_post(uploadImage);
             
            
                 //новая
-                obj.AddToDb(inp, outp, list_img_byte);
+                obj.AddToDb(inp_, outp_, list_img_byte);
 
 
 

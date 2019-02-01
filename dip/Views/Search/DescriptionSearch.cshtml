@@ -27,20 +27,23 @@
 </div>
     <div>
         
-        <div>
+        <div class="div_inline_block descrForm_div_search_but">
             <button class="btn btn-default" onclick="Go_next_step()">Поиск</button>
         </div>
-        <div>
+        <div class="div_inline_block descrForm_div_clear_but">
             <button class="btn btn-default" onclick="clearForm()">Очистить форму</button>
         </div>
-        <div id="showHideDescrForm" class="btn btn-primary" onclick="showHideDescrForm()">Скрыть форму</div>
+        <div class="div_inline_block descrForm_div_shwh_but">
+            <div id="showHideDescrForm" class="btn btn-primary" onclick="showHideDescrForm()">Скрыть форму</div>
+        </div>
+       
     </div>
         @*<button onclick="Go_next_step()">Поиск</button>*@
         <div id="search_content_div_id">
 
-            @if (Model != null)
+            @if (Model?.SearchList != null)
             {
-                @Html.Action("ListFeText", "Physic", new { listId = Model })
+                @Html.Action("ListFeText", "Physic", new { listId = Model?.SearchList })
             }
 
         </div>

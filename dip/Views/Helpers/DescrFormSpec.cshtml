@@ -11,12 +11,12 @@
         <div class="col-md-10">
 
             @{
-
+                string[] needSelectedList = Model.Param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var spec in Model.List)
                 {
                     <div>
                         @{
-                            bool? needSelected = Model.Param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Contains(spec.Id);
+                            bool? needSelected = needSelectedList?.Contains(spec.Id);
 
                         }
 
