@@ -25,6 +25,8 @@ namespace dip.Models
         public ICollection<Log> UserLogs { get; set; }
 
 
+        public ICollection<FEText> FavouritedPhysics { get; set; }
+
 
 
         public ApplicationUser() : base()
@@ -35,6 +37,8 @@ namespace dip.Models
             Birthday = null;
                 Dateregistration = DateTime.Now;
             CloseProfile = false;
+
+            FavouritedPhysics = new List<FEText>();
 
         }
 
@@ -71,7 +75,16 @@ namespace dip.Models
             return res;
         }
 
+        public  void LoadFavouritedList()
+        {
 
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.FavouritedPhysics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.FavouritedPhysics).Load();
+            }
+        }
 
 
 
@@ -174,8 +187,12 @@ namespace dip.Models
                .ToTable("ActionVrem"));//название таблицы
 
 
-
-
+            modelBuilder.Entity<ApplicationUser>().HasMany(c => c.FavouritedPhysics)//1 класс и свойство который связываем
+              .WithMany(s => s.FavouritedUser)//2 класс и свойство с которым связываем
+              .Map(t => t.MapLeftKey("ApplicationUserId")//id 1 которое в таблице будет
+              .MapRightKey("FETextId")//id 2
+              .ToTable("ApplicationUserFETextFavourite"));//название таблицы
+            
             base.OnModelCreating(modelBuilder);//инициализация что бы роли и все остальное добавилось нормально
         }
 

@@ -15,6 +15,9 @@ using static dip.Models.Functions;
 
 namespace dip.Controllers
 {
+
+
+    //TODO везде проверка на закрытый профиль
     public class PhysicController : Controller
     {
         // GET: Physic
@@ -48,6 +51,7 @@ namespace dip.Controllers
                 if (roles != null)
                     if (roles.Contains("admin"))
                         res.Admin = true;
+                res.Favourited=res.Effect.Favourited(check_id);
             }
          
 

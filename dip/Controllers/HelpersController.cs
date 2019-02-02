@@ -1,5 +1,6 @@
 ﻿using dip.Models.Domain;
 using dip.Models.ViewModel.HelpersV;
+using dip.Models.ViewModel.PhysicV;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,7 +103,21 @@ namespace dip.Controllers
 
             return PartialView(res);
         }
-        
+        public ActionResult Favourite(bool? favourite)
+        {
+            return PartialView(favourite);
+        }
+
+
+
+        public ActionResult ListFeText(ListFeTextV model)
+        {
+            
+
+
+            return PartialView(model);
+        }
+
 
     }
 }

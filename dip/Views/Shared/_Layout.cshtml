@@ -155,6 +155,27 @@
         }
 
 
+
+        function favouritePhysic(id) {
+
+            var div = document.getElementById('favourite_div_but_'+id);
+            div.innerHTML = '';
+            goAjaxRequest({
+                url: '/Person/FavouritePhysics',
+                type: 'POST',
+                data: { id: id },
+                func_success: function (data, status, jqXHR) {
+
+                    div.innerHTML = data;
+                }
+            });
+        }
+
+
+
+
+
+        ;;;
     </script>
 
 

@@ -62,16 +62,26 @@ namespace dip.Models.Domain
         public bool NotApprove { get; set; }
 
 
+
+        [NotMapped]
+        public bool? FavouritedCurrentUser { get; set; }//зафоловил ли текущий пользователь эту запись
+
+
         public ICollection<Image> Images { get; set; }
+
+        public ICollection<ApplicationUser> FavouritedUser { get; set; }
+
+
 
         public FEText()
         {
             this.Images = new List<Image>();
-
+            FavouritedUser = new List<ApplicationUser>();
             NotApprove = true;
+            FavouritedCurrentUser = null;
         }
 
-        public bool Equal (FEText a)
+        public bool Equal(FEText a)
         {
             this.Name = a.Name;
             this.Text = a.Text;
@@ -80,8 +90,8 @@ namespace dip.Models.Domain
             this.TextObj = a.TextObj;
             this.TextApp = a.TextApp;
             this.TextLit = a.TextLit;
+            this.FavouritedCurrentUser = a.FavouritedCurrentUser;
 
-            
             return true;
         }
 
@@ -96,29 +106,29 @@ namespace dip.Models.Domain
         public void ChangeForMap()
         {
             //TODO pattern?
-            Text=Lucene_.ChangeForMap(Text);
+            Text = Lucene_.ChangeForMap(Text);
             Name = Lucene_.ChangeForMap(Name);
             TextApp = Lucene_.ChangeForMap(TextApp);
             TextInp = Lucene_.ChangeForMap(TextInp);
             TextLit = Lucene_.ChangeForMap(TextLit);
             TextObj = Lucene_.ChangeForMap(TextObj);
             TextOut = Lucene_.ChangeForMap(TextOut);
-            
+
 
         }
 
 
         public static List<string> GetPropTextSearch()
         {
-            var res= new List<string>();
-            var listNM=new List<string>() { "IDFE" };//исключаем
+            var res = new List<string>();
+            var listNM = new List<string>() { "IDFE" };//исключаем
 
 
             PropertyInfo[] myPropertyInfo;
             Type myType = typeof(FEText);
             // Get the type and fields of FieldInfoClass.
             myPropertyInfo = myType.GetProperties();
-            res = myPropertyInfo.Where(x1=>listNM.FirstOrDefault(x2=>x2== x1.Name)==null).Select(x1=>x1.Name).ToList();
+            res = myPropertyInfo.Where(x1 => listNM.FirstOrDefault(x2 => x2 == x1.Name) == null).Select(x1 => x1.Name).ToList();
 
             return res;
         }
@@ -142,34 +152,34 @@ namespace dip.Models.Domain
             //List<int> list_id = new List<int>();
             inp.DeleteNotChildCheckbox();
             outp.DeleteNotChildCheckbox();
-                using (var db = new ApplicationDbContext())
-                {
-                    //TODO оптимизация? разница только в  x1.Input == 1\0
-                    //находим все записи которые подходят по входным параметрам
-                    var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
-                    x1.Name == inp.actionId &&
-                      x1.Type == inp.actionType &&
-                      x1.FizVelId == inp.FizVelId &&
-                      x1.Pros == inp.listSelectedPros &&
-                      x1.Spec == inp.listSelectedSpec &&
-                      x1.Vrem == inp.listSelectedVrem &&
-                      x1.FizVelSection == inp.parametricFizVelId);
+            using (var db = new ApplicationDbContext())
+            {
+                //TODO оптимизация? разница только в  x1.Input == 1\0
+                //находим все записи которые подходят по входным параметрам
+                var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
+                x1.Name == inp.actionId &&
+                  x1.Type == inp.actionType &&
+                  x1.FizVelId == inp.FizVelId &&
+                  x1.Pros == inp.listSelectedPros &&
+                  x1.Spec == inp.listSelectedSpec &&
+                  x1.Vrem == inp.listSelectedVrem &&
+                  x1.FizVelSection == inp.parametricFizVelId);
 
-                    //находим все записи которые подходят по выходным параметрам
-                    var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
-                     x1.Name == outp.actionId &&
-                    x1.Type == outp.actionType &&
-                    x1.FizVelId == outp.FizVelId &&
-                    x1.Pros == outp.listSelectedPros &&
-                    x1.Spec == outp.listSelectedSpec &&
-                    x1.Vrem == outp.listSelectedVrem &&
-                    x1.FizVelSection == outp.parametricFizVelId);
+                //находим все записи которые подходят по выходным параметрам
+                var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
+                 x1.Name == outp.actionId &&
+                x1.Type == outp.actionType &&
+                x1.FizVelId == outp.FizVelId &&
+                x1.Pros == outp.listSelectedPros &&
+                x1.Spec == outp.listSelectedSpec &&
+                x1.Vrem == outp.listSelectedVrem &&
+                x1.FizVelSection == outp.parametricFizVelId);
 
-                    //записи которые подходят по всем параметрам
-                    list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();
-                    //ViewBag.listFeId = list_id;
+                //записи которые подходят по всем параметрам
+                list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();
+                //ViewBag.listFeId = list_id;
 
-                }
+            }
             //}
             return list_id;
         }
@@ -198,7 +208,7 @@ namespace dip.Models.Domain
                 if (!db.Entry(this).Collection(x1 => x1.Images).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.Images).Load();
             }
-                
+
         }
 
 
@@ -247,7 +257,7 @@ order by [data].score desc
 
 
             //            res.Add(Convert.ToInt32( reader["IDFE"]));
-                        
+
             //        }
             //    }
 
@@ -255,14 +265,14 @@ order by [data].score desc
 
 
 
-           var dict= DataBase.DataBase.ExecuteQuery(quer,null, "IDFE");
+            var dict = DataBase.DataBase.ExecuteQuery(quer, null, "IDFE");
             foreach (var i in dict)
             {
                 if (res.Count == count)
                     break;
                 int idRec = Convert.ToInt32(i["IDFE"]);
-                if(!res.Contains(idRec))
-                res.Add(idRec);
+                if (!res.Contains(idRec))
+                    res.Add(idRec);
             }
 
 
@@ -271,29 +281,37 @@ order by [data].score desc
         }
         //public  List<int> GetListSimilar(int count = 5)
         //{
-            
+
         //    return FEText.GetListSimilarS(this.IDFE,count);
         //}
 
 
-        public static List<FEText> GetList(params int[]id)
+        public static List<FEText> GetList(params int[] id)
         {
             var res = new List<FEText>();
             if (id != null)
                 using (var db = new ApplicationDbContext())
-
+                {
                     res = db.FEText.Join(id, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
+                    string check_id = ApplicationUser.GetUserId();
+                    foreach(var i in res)
+                    {
+                        i.FavouritedCurrentUser = i.Favourited(check_id);
+                    }
+                }
+            
+                    
             return res;
         }
 
-        public void GetDescrFrom(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
+        public void GetDescrFrom(DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
             List<FEAction> lst = null;
             using (var db = new ApplicationDbContext())
             {
-                 lst = db.FEActions.Where(x1 => x1.Idfe == this.IDFE).ToList();
+                lst = db.FEActions.Where(x1 => x1.Idfe == this.IDFE).ToList();
             }
-            inp = new DescrSearchIInput(lst.First(x1=>x1.Input==1));
+            inp = new DescrSearchIInput(lst.First(x1 => x1.Input == 1));
 
 
         }
@@ -312,15 +330,10 @@ order by [data].score desc
             return true;
         }
 
-        public bool AddToDb(DescrSearchI inp , DescrSearchI outp, List<byte[]> addImgs = null)
+        public bool AddToDb(DescrSearchI inp, DescrSearchI outp, List<byte[]> addImgs = null)
         {
             //if (!this.Validation())
             //    return false;
-           
-
-
-
-
 
 
 
@@ -335,16 +348,16 @@ order by [data].score desc
                 {
                     Idfe = this.IDFE,
                     Input = 1,
-                    
+
                 };
                 inpa.SetFromInput(inp);
                 db.FEActions.Add(inpa);
 
-                FEAction outpa=new FEAction()
+                FEAction outpa = new FEAction()
                 {
                     Idfe = this.IDFE,
                     Input = 0,
-                    
+
                 };
                 outpa.SetFromInput(outp);
                 db.FEActions.Add(outpa);
@@ -356,9 +369,9 @@ order by [data].score desc
             return true;
         }
 
-        public bool ChangeDb(FEText new_obj,List<int> deleteImg=null, List<byte[]> addImgs=null, DescrSearchI inp = null, DescrSearchI outp=null)
+        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, DescrSearchI inp = null, DescrSearchI outp = null)
         {
-            
+
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<FEText>().Attach(this);
@@ -370,11 +383,11 @@ order by [data].score desc
                     db.Images.RemoveRange(imgs);
                     db.SaveChanges();
                 }
-                this.AddImages(addImgs,db);
+                this.AddImages(addImgs, db);
 
-                
+
                 var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//&&x1.Input==1
-                var inpdb = descrdb.FirstOrDefault(x1=>x1.Input==1);
+                var inpdb = descrdb.FirstOrDefault(x1 => x1.Input == 1);
                 var outpdb = descrdb.FirstOrDefault(x1 => x1.Input == 0);
                 if (inpdb == null || outpdb == null)
                     return false;
@@ -390,13 +403,13 @@ order by [data].score desc
 
 
         //не загружает картинки, только добавляет в бд
-        public void AddImages(List<byte[]>imgs)
+        public void AddImages(List<byte[]> imgs)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 //db.Set<FEText>().Attach(this);
                 //this.
-                this.AddImages(imgs,db);
+                this.AddImages(imgs, db);
             }
         }
         public void AddImages(List<byte[]> imgs, ApplicationDbContext db)
@@ -409,7 +422,74 @@ order by [data].score desc
         }
 
 
+        //res-true- теперь добавлено , без проверки на null
+        public bool ChangeFavourite(string personId)
+        {
+            bool res = false;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<FEText>().Attach(this);
+                var userFav = db.Entry(this).Collection(x1 => x1.FavouritedUser).Query().FirstOrDefault(x1 => x1.Id == personId);
+                
+                if (userFav != null)
+                {
+                    db.Entry(this).Collection(x1 => x1.FavouritedUser).Load();
+
+                    this.FavouritedUser.Remove(userFav);
+                }
+                else
+                {
+                    var user = ApplicationUser.GetUser(personId);
+                    db.Set<ApplicationUser>().Attach(user);
+                    this.FavouritedUser.Add(user);
+                    res = true;
+                }
+                db.SaveChanges();
+            }
 
 
+
+            return res;
         }
+        public bool Favourited(string personId)
+        {
+            bool res = false;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                res=this.Favourited(personId,db);
+
+
+            }
+            
+            return res;
+        }
+        public bool Favourited(string personId, ApplicationDbContext db)
+        {
+            bool res = false;
+
+            db.Set<FEText>().Attach(this);
+            var userFav = db.Entry(this).Collection(x1 => x1.FavouritedUser).Query().FirstOrDefault(x1 => x1.Id == personId);
+
+            if (userFav != null)
+            {
+                res = true;
+            }
+
+
+
+            return res;
+        }
+
+
+        public static FEText Get(int id)
+        {
+            FEText res = null;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                res=db.FEText.FirstOrDefault(x1=>x1.IDFE==id);
+            }
+
+            return res;
+        }
+    }
 }

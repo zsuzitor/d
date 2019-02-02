@@ -12,11 +12,14 @@
 @{
     <div>
         <h4>@Model.EffectName</h4>
-        @if (Model.Admin == true)
+        @if (Model.Admin)
         {
             @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })
         }
         <hr />
+        <div class="details_favourite_star" id="favourite_div_but_@Model.Effect.IDFE" onclick="favouritePhysic(@Model.Effect.IDFE)">
+            @Html.Action("Favourite", "Helpers", new { favourite = Model.Favourited })
+        </div>
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayName("Описание")
@@ -107,7 +110,7 @@
 
 
             <script>
-
+    ;;;;
                 function loadDescrParam(id) {
                     var but = document.getElementById('show_descr_but');
                     var div = document.getElementById('DivDescriptionParams_id');
@@ -155,4 +158,16 @@
                     });
                 }
 
+
+
+
+
+
+
+
+                
+
+
+
+                ;;;;
             </script>

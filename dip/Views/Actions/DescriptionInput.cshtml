@@ -163,51 +163,7 @@
         //}
 
 
-        //function loadSpecChild(ch) {
-        //    var type = ch.id.split('Spec')[1][0];
-        //    var div = document.getElementById((ch.value + type));
-
-        //    if (div && !div.innerHTML.trim()) {
-        //        goAjaxRequest({
-        //            url: '/Actions/GetSpecChild?id=' + ch.value + '&type=' + type,
-        //            func_success: function (data, status, jqXHR) {
-
-        //                if (data.trim()) {
-        //                    div.innerHTML = data;
-        //                }
-        //                else {
-        //                    div.remove();
-        //                }
-
-        //            }
-        //        });
-        //    }
-
-        //}
-
-
-        //function loadVremChild(ch) {
-        //    var type = ch.id.split('Vrem')[1][0];
-        //    var div = document.getElementById((ch.value + type));
-
-        //    if (div && !div.innerHTML.trim()) {
-        //        goAjaxRequest({
-        //            url: '/Actions/GetSpecChild?id=' + ch.value + '&type=' + type,
-        //            func_success: function (data, status, jqXHR) {
-
-        //                if (data.trim()) {
-        //                    div.innerHTML = data;
-        //                }
-        //                else {
-        //                    div.remove();
-        //                }
-
-        //            }
-        //        });
-        //    }
-
-        //}
-
+     
 
         function loadCheckBoxChild(ch,meth,key) {
             var type = ch.name.split(key)[1][0];
@@ -219,7 +175,8 @@
                     func_success: function (data, status, jqXHR) {
 
                         if (data.trim()) {
-                            div.innerHTML = data;
+                                div.innerHTML = data;
+                                loadCheckBoxChild(ch, meth, key);
                         }
                         else {
                             div.remove();
@@ -242,9 +199,7 @@
                     else {
                         document.getElementById(ch.value + type).style.display = 'block';
                     }
-                    //else {
-
-                    //}
+                    
                 }
                
                

@@ -15,22 +15,5 @@
 {
     <h1>Всего найдено записей @count</h1>
 }*@
-    <div id="one_load_block_fetext_list_id_@(Model.NumLoad)">
-    @foreach (var i in Model.FeTexts)
-    {
-        <div class="one_block_fetext_list_external" id="one_block_fetext_listexternal_id_@i.IDFE">  @*див с с id с такой структурой(5 подчеркиваний и потом id) должен быть внешним*@
-            <div class="one_block_fetext_list" id="one_block_fetext_list_id_@i.IDFE">
-                <p>@Html.ActionLink(i.Name, "Details", "Physic", new { id = i.IDFE }, new { })</p>
-                @{
-                    int countInStr = (int)(i.Text.Length * 0.3);
-                    countInStr = countInStr > 150 ? 150 : countInStr;
-                    countInStr = countInStr < 30 ? i.Text.Length : countInStr;
-                }
-                <p>@i.Text.Substring(0, countInStr) ...</p>
-            </div>
-        </div>
-
-
-                    }
-</div>
-
+ 
+@Html.Action("ListFeText","Helpers",new {model=Model })

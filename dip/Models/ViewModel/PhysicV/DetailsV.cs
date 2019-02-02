@@ -10,14 +10,16 @@ namespace dip.Models.ViewModel.PhysicV
     {
         public string EffectName { get; set; }
         public string TechnicalFunctionId { get; set; }
-        public bool? Admin { get; set; }
+        public bool Admin { get; set; }
         public FEText Effect { get; set; }
+        public bool? Favourited { get; set; }
 
         public DetailsV()
         {
+            Favourited = null;
             EffectName = null;
             TechnicalFunctionId = null;
-            Admin = null;
+            Admin = false;
             Effect = null;
         }
     }

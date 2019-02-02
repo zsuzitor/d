@@ -18,3 +18,38 @@
 @Html.Action("Index", "Manage",new {partial=true })
 
 
+
+
+
+<div>
+    <p>Избранное</p>
+    <div id="FavouritePhysic_div_but_id">
+        <button onclick="loadFavouritePhysic('@Model.User.Id')">Загрузить все</button>
+    </div>
+    <div id="FavouritePhysic_div_id"></div>
+
+</div>
+
+
+
+<script>
+
+
+
+    function loadFavouritePhysic(id) {
+
+        document.getElementById('FavouritePhysic_div_but_id').innerHTML = '';
+        goAjaxRequest({
+            url: '/Person/ListFavouritePhysics',
+            type: 'POST',
+            data: { id: id },
+            func_success: function (data, status, jqXHR) {
+                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                document.getElementById('FavouritePhysic_div_id').innerHTML = data;
+            }
+        });
+
+
+    }
+
+</script>

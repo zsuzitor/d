@@ -52,6 +52,8 @@ input,
 select,
 textarea{
     width:100%;
+    max-width:100%;
+    min-width:50px;
 }
 
 .checkBoxClass{
@@ -70,7 +72,21 @@ body{
 }
 
 
+.width_100per{
+    width:100%;
+}
 
+a:hover{
+         text-decoration:none;
+    }
+
+.link_standart_for_div {
+    display: block; /* Ссылка как блочный элемент */
+    text-align: center; /* Выравнивание по центру */
+    height: 100%; /* Высота на весь слой */
+    color: black; /* Цвет ссылки */
+    
+}
 
 
 
@@ -115,16 +131,23 @@ body{
 
 
 div.one_block_fetext_list{
-    height:100px;
+    min-height:100px;
     /*border:2px solid black;*/
     border-radius:5%;
     background-color:#F5F5F5;
      box-shadow: 0 0 10px rgba(0,0,0,0.5);
      padding:5px;
+    
+}
+
+p.one_block_body_fetext_list{
+     white-space:pre-wrap;
+     word-wrap: break-word;
 }
 
 div.one_block_fetext_list_external{
     padding:10px;
+    position:relative;
 }
 
 div.inline {
@@ -374,6 +397,21 @@ width: 100%;
 
 
 
+
+/*listfe*/
+
+div.listfe_favourite_star{
+    position:absolute;
+    width:30px;
+    height:30px;
+    right:5px;
+    top:5px;
+}
+
+
+
+
+
    
    /*-------------------------------DETAILS   and edit---------------*/
 
@@ -383,7 +421,12 @@ width: 100%;
        width:200px;
        box-shadow: 0 0 10px rgba(0,0,0,0.5);
    }
-
+   div.details_favourite_star{
+    
+    width:30px;
+    height:30px;
+   
+}
    div.block_images{
            text-align: center;
            padding-top:50px;
@@ -392,6 +435,34 @@ width: 100%;
    div.edit_button_image_action{
        width: 200px;
    }
+
+
+   /*.col{
+  color:black;
+}*/
+
+   .Favourite_true{
+        color:yellow;
+   }
+
+   .Favourite_false{
+
+ color:grey;
+   }
+
+  .favourite_star{
+      /*font-size:40pt;*/
+      /*display:inline;*/
+font-size:25pt;
+      cursor:pointer;
+      width:30px;
+      height:30px;
+      padding:0;
+   }
+   .wingdings {
+    font-family: Wingdings;
+    
+}
 
 
 
@@ -405,7 +476,7 @@ width: 100%;
 
 
    div.div_search_ft_but{
-       margin-left:50%;
+       margin-left:45%;
        display:inline;
    }
 

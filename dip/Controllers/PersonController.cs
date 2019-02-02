@@ -1,5 +1,7 @@
 ﻿using dip.Models;
+using dip.Models.Domain;
 using dip.Models.ViewModel.PersonV;
+using dip.Models.ViewModel.PhysicV;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +28,46 @@ namespace dip.Controllers
             res.User = ApplicationUser.GetUser(personId);
 
 
-            
+
             return View(res);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult FavouritePhysics(int id)
+        {
+            bool res = false;
+            string check_id = ApplicationUser.GetUserId();
+            if (check_id != null)
+            {
+                var fetext = FEText.Get(id);
+                if (fetext == null)
+                    return new HttpStatusCodeResult(404);
+                res = fetext.ChangeFavourite(check_id);
+            }
+
+
+            return PartialView(res);
+        }
+
+
+
+        public ActionResult ListFavouritePhysics(string personId)
+        {
+            ListFeTextV res = new ListFeTextV();
+            string personId_ = personId ?? ApplicationUser.GetUserId();
+
+            var user = ApplicationUser.GetUser(personId_);
+            user.LoadFavouritedList();
+            res.FeTexts = user.FavouritedPhysics.ToList();
+            if (personId==null||personId == personId_)
+                foreach (var i in res.FeTexts)
+                {
+                    i.FavouritedCurrentUser = true;
+                }
+            //return PartialView("ListFeText","",);
+            return PartialView(res);
         }
     }
 }
