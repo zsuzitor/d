@@ -12,18 +12,37 @@ function changeFizVel(type)
     // Получаем дескриптор раздела физики
     var id = $('#fizVelId'+type).val();
     //TODO надо изменить на НЕ хардкод
-    if (id == 'VOZ11_FIZVEL_R1' || id == 'VOZ11_FIZVEL_R2' || // задано параметрическое воздействие
-        id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
-        id == 'VOZ11_FIZVEL_R5')
+
+    var checkParametrics = document.getElementById('parametric_action_or_not').split(' ');
+    var actionId = document.getElementById('action'+type);
+    for (var i = 0; i < checkParametrics.lenght; ++i) {
+        if (checkParametrics[i] == actionId) {
+            goAjaxRequest({
+                url: prefix + 'GetParametricFizVels/' + id + postfix,
+                func_success: function (data, status, jqXHR) {
+                    // Заменяем часть представления, отвечающего за выбор физической величины
+                    $('#parametricFizVel' + type).replaceWith(data);
+                }
+            });
+            break;
+        }
+
+    }
+    //if (checkParametric.value == true) //{
+
+    //}
+    //if (id == 'VOZ11_FIZVEL_R1' || id == 'VOZ11_FIZVEL_R2' || // задано параметрическое воздействие
+    //    id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
+    //    id == 'VOZ11_FIZVEL_R5')
     {
 
 
-goAjaxRequest({url:prefix + 'GetParametricFizVels/' + id+postfix,
-    func_success: function (data, status, jqXHR)
-            {
-                // Заменяем часть представления, отвечающего за выбор физической величины
-                $('#parametricFizVel'+type).replaceWith(data);
-            }});
+//goAjaxRequest({url:prefix + 'GetParametricFizVels/' + id+postfix,
+//    func_success: function (data, status, jqXHR)
+//            {
+//                // Заменяем часть представления, отвечающего за выбор физической величины
+//                $('#parametricFizVel'+type).replaceWith(data);
+//            }});
 
 
 /*

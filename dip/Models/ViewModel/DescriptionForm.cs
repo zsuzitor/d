@@ -19,6 +19,7 @@ namespace dip.Models.ViewModel
         public List<Vrem> Vrems { get; set; }
         public string CurrentAction { get; set; }
         public string CurrentActionId { get; set; }
+       
 
         //public Domain.Action Action { get; set; }
 
@@ -26,6 +27,7 @@ namespace dip.Models.ViewModel
         public DescriptionForm()
         {
 
+            //ActionParametricIds ="";
         }
 
         //возвращает только данные для отображения(список полей и чему равны)
@@ -172,7 +174,7 @@ namespace dip.Models.ViewModel
 
                 if (string.IsNullOrWhiteSpace(actionId))
                     actionId = listOfActions.First().Id;
-
+                //res.ActionParametricIds = string.Join(" ",listOfActions.Where(x1 => x1.Parametric).Select(x1 => x1.Id).ToList());
 
 
                 // Получаем список типов воздействий     

@@ -55,10 +55,11 @@ namespace dip.Controllers
             }
             res.InputFormData = inp_;
             res.OutputFormData = outp_;
+            res.SetAllParametricAction();
 
 
 
-            
+
             return PartialView(res);
         }
         /// <summary>
@@ -83,11 +84,12 @@ namespace dip.Controllers
         public ActionResult ChangeAction(string fizVelId, string type)
         {
             ChangeActionV res = new ChangeActionV();
-            if (fizVelId== "VOZ11")
+            AllAction act =AllAction.Get(fizVelId);
+            if (act.Parametric)
             {
                 res.CheckboxParamsId = null;
 
-                res.ParametricFizVelsId = "VOZ11_FIZVEL_R1";
+                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";
                 
             }
             else
@@ -119,20 +121,21 @@ namespace dip.Controllers
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             List<FizVel> listOfFizVels;
-
+            AllAction act = AllAction.Get(id);
             using (var db = new ApplicationDbContext())
-                if (id != "VOZ11") // непараметрическое воздействие
-                                   
-                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL") ||
+                if (!act.Parametric)
+                 // непараметрическое воздействие
+
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL") ||
                                                                               (fizVel.Id == "NO_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
                 else
                    
-                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == id + "_FIZVEL"))
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
             
             res.List = listOfFizVels;
-            res.CurrentActionId = id;
+            res.CurrentActionId = act.Id;
             res.Type = type;
             return PartialView(res);
         }

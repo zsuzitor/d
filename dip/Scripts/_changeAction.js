@@ -43,7 +43,39 @@ fizVelId:id,
 // vremId:'',
 type:type
 };
+goAjaxRequest({
+    url: prefix + "ChangeAction",
+    data: formData,
+    func_success: function (req, status, jqXHR) {
+        var data = req.split('<hr />');//.responseText
+        var type = data[0].trim();
+        $('#fizVel' + type).replaceWith(data[1]);
+        //document.getElementById('fizVel'+type).innerHTML = data[1];
 
+        //$('#prosGroup' + type).replaceWith(data[2]);
+        document.getElementById('prosGroup' + type).innerHTML = data[2];
+
+        //$('#specGroup' + type).replaceWith(data[3]);
+        document.getElementById('specGroup' + type).innerHTML = data[3];
+
+        // $('#vremGroup' + type).replaceWith(data[4]);
+        document.getElementById('vremGroup' + type).innerHTML = data[4];
+
+        $('#parametricFizVel' + type).replaceWith(data[5]);
+        //document.getElementById('parametricFizVel' + type).innerHTML = data[5];
+
+    }, type: 'POST'
+});
+
+};
+$('#actionI').on('change', function () {
+    changeParams('I');
+
+});
+$('#actionO').on('change', function () {
+
+    changeParams('O');
+});
 
 
 // if (id != 'VOZ11') {// непараметрическое воздействие
@@ -78,27 +110,7 @@ type:type
 
 //     }
 
-goAjaxRequest({url:prefix+"ChangeAction",
-    data: formData,
-    func_success: function (req, status, jqXHR) {
-var data = req.split('<hr />');//.responseText
-                            var type = data[0].trim();
-        $('#fizVel'+type).replaceWith(data[1]);
-                            //document.getElementById('fizVel'+type).innerHTML = data[1];
 
-                            //$('#prosGroup' + type).replaceWith(data[2]);
-        document.getElementById('prosGroup' + type).innerHTML = data[2];
-
-        //$('#specGroup' + type).replaceWith(data[3]);
-        document.getElementById('specGroup' + type).innerHTML = data[3];
-
-       // $('#vremGroup' + type).replaceWith(data[4]);
-        document.getElementById('vremGroup' + type).innerHTML = data[4];
-
-        $('#parametricFizVel' + type).replaceWith(data[5]);
-        //document.getElementById('parametricFizVel' + type).innerHTML = data[5];
-                	
-                	 },type:'POST'});
 
 
 /*
@@ -147,19 +159,10 @@ $('#spec'+type).replaceWith(data[3]);
 
                 xhr.send(formData);
 */
-};
+
 
 // Назначение на событие change функции changeParams
-$('#actionI').on('change', function ()
-{
-    changeParams('I');
 
-});
-$('#actionO').on('change', function ()
-{
-
-    changeParams('O');
-});
 
 /*
     // Формируем ajax-запрос

@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
-    //TODO чужой контроллер, не используется
+    //TODO чужой контроллер, не используется, практически не менял и не знаю что делает, перед открытием все проверить и понять
     //[RequireHttps]
     [Authorize(Roles = "close")]//такой роли нет, закрываем контроллер
     public class DescriptionQueriesController : Controller

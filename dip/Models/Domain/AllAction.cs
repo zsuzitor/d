@@ -20,5 +20,18 @@ namespace dip.Models.Domain
             Actions = new List<Action>();
             Parametric = false;
         }
+
+
+        public static AllAction Get(string id)
+        {
+            AllAction res = null;
+            using (var db=new ApplicationDbContext())
+            {
+                res = db.AllActions.FirstOrDefault(x1=>x1.Id==id);
+            }
+            return res;
+
+        }
+
     }
 }

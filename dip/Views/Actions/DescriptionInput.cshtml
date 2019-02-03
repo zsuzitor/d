@@ -24,7 +24,7 @@
 
 
     @*@if(ViewBag.inputForm)*@
-    
+    <input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
     @Html.Action("PartFormDescrSearch", "Helpers",new {a= Model.InputForm,type="I", param= Model.InputFormData })
 
     <hr />
