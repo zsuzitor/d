@@ -12,7 +12,7 @@
         <div class="col-md-10">
 
             @{
-                string[] needSelectedList = Model.Param?.listSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] needSelectedList = Model.Param?.ListSelectedPros?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var pro in Model.List)
                 {
                     <div>

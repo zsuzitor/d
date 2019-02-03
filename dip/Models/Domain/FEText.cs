@@ -157,23 +157,23 @@ namespace dip.Models.Domain
                 //TODO оптимизация? разница только в  x1.Input == 1\0
                 //находим все записи которые подходят по входным параметрам
                 var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
-                x1.Name == inp.actionId &&
-                  x1.Type == inp.actionType &&
+                x1.Name == inp.ActionId &&
+                  x1.Type == inp.ActionType &&
                   x1.FizVelId == inp.FizVelId &&
-                  x1.Pros == inp.listSelectedPros &&
-                  x1.Spec == inp.listSelectedSpec &&
-                  x1.Vrem == inp.listSelectedVrem &&
-                  x1.FizVelSection == inp.parametricFizVelId);
+                  x1.Pros == inp.ListSelectedPros &&
+                  x1.Spec == inp.ListSelectedSpec &&
+                  x1.Vrem == inp.ListSelectedVrem &&
+                  x1.FizVelSection == inp.ParametricFizVelId);
 
                 //находим все записи которые подходят по выходным параметрам
                 var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
-                 x1.Name == outp.actionId &&
-                x1.Type == outp.actionType &&
+                 x1.Name == outp.ActionId &&
+                x1.Type == outp.ActionType &&
                 x1.FizVelId == outp.FizVelId &&
-                x1.Pros == outp.listSelectedPros &&
-                x1.Spec == outp.listSelectedSpec &&
-                x1.Vrem == outp.listSelectedVrem &&
-                x1.FizVelSection == outp.parametricFizVelId);
+                x1.Pros == outp.ListSelectedPros &&
+                x1.Spec == outp.ListSelectedSpec &&
+                x1.Vrem == outp.ListSelectedVrem &&
+                x1.FizVelSection == outp.ParametricFizVelId);
 
                 //записи которые подходят по всем параметрам
                 list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();

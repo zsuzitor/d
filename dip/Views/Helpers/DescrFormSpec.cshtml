@@ -11,7 +11,7 @@
         <div class="col-md-10">
 
             @{
-                string[] needSelectedList = Model.Param?.listSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] needSelectedList = Model.Param?.ListSelectedSpec?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var spec in Model.List)
                 {
                     <div>

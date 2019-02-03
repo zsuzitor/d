@@ -254,6 +254,16 @@ namespace dip.Controllers
         }
 
 
+        public ActionResult GetProsChildEdit(string id)
+        {
+            GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
+            res.List = Pro.GetChild(id);
+            res.List = res.List.Count > 0 ? res.List : null;
+            
+
+            return PartialView(res);
+        }
+
 
 
         //TODO хз что это и зачем, скорее всего не используется

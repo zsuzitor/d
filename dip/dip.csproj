@@ -389,6 +389,10 @@
     <Content Include="Views\Helpers\Favourite.cshtml" />
     <Content Include="Views\Person\ListFavouritePhysics.cshtml" />
     <Content Include="Views\Helpers\ListFeText.cshtml" />
+    <Content Include="Views\Physic\CreateSomething.cshtml" />
+    <Content Include="Views\Physic\CreateDescription.cshtml" />
+    <Content Include="Views\Actions\GetProsChildEdit.cshtml" />
+    <Content Include="Views\Helpers\DescrFormProsEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

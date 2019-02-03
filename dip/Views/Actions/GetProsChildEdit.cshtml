@@ -1,0 +1,15 @@
+﻿
+
+
+
+@model dip.Models.ViewModel.ActionsV.GetListSomethingV<dip.Models.Domain.Pro>
+
+
+
+@if (Model.List != null)
+{
+
+
+    @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.List})
+
+}

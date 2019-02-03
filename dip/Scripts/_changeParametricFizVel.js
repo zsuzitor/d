@@ -11,7 +11,7 @@ function changeFizVel(type)
 
     // Получаем дескриптор раздела физики
     var id = $('#fizVelId'+type).val();
-
+    //TODO надо изменить на НЕ хардкод
     if (id == 'VOZ11_FIZVEL_R1' || id == 'VOZ11_FIZVEL_R2' || // задано параметрическое воздействие
         id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
         id == 'VOZ11_FIZVEL_R5')

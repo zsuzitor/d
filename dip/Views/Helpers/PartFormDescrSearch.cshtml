@@ -8,7 +8,7 @@
     <hr />
     @*@( +a.Postfix)*@
     <div class="form-group">
-        <label id=@("actionLabel"+Model.Type) class="control-label col-md-2" value="@Model.Form.currentActionId" for="@("action"+Model.Type)">Название воздействия</label>
+        <label id=@("actionLabel"+Model.Type) class="control-label col-md-2" value="@Model.Form.CurrentActionId" for="@("action"+Model.Type)">Название воздействия</label>
         @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
 
 
@@ -21,9 +21,9 @@
 
             <select name=@("actionId"+ Model.Type) class="form-control" id=@("action"+Model.Type)>
 
-                @foreach (var i in Model.Form.actionId)
+                @foreach (var i in Model.Form.ActionId)
                 {
-                    if (Model.Param?.actionId == i.Id)
+                    if (Model.Param?.ActionId == i.Id)
                     {
                         <option selected value="@i.Id">@i.Name</option>
                     }
@@ -44,10 +44,10 @@
         @*@Html.Label("Тип входа", new { @class = "control-label col-md-2" })*@
         <div class="col-md-10">
             <select name=@("actionType"+ Model.Type) class="form-control" id=@("actionType"+Model.Type)>
-                @foreach (var i in Model.Form.actionType)
+                @foreach (var i in Model.Form.ActionType)
                 {
 
-                    if (Model.Param?.actionType == i.Id)
+                    if (Model.Param?.ActionType == i.Id)
                     {
                         <option selected value="@i.Id">@i.Name</option>
                     }
@@ -67,11 +67,11 @@
     </div>
     <div id=@("fizVelGroup"+ Model.Type)>
 
-        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.fizVelId, param = Model.Param })
+        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.FizVelId, param = Model.Param })
 
 
     </div>
-    @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.parametricFizVelId, param = Model.Param })
+    @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.ParametricFizVelId, param = Model.Param })
 
 
     @*@if (a.pros.Count > 0)
@@ -81,7 +81,7 @@
             <div id=@("prosGroup"+Model.Type)>
                 @*<div class="form-group" id=@("pros" + type)>*@
 
-                @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = Model.Form.pros, param = Model.Param })
+                @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = Model.Form.Pros, param = Model.Param })
 
 
                 @*</div>*@
@@ -93,7 +93,7 @@
     @*}*@
             <div id=@("specGroup"+Model.Type)>
 
-                @Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.Form.spec, param = Model.Param })
+                @Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.Form.Specs, param = Model.Param })
 
 
 
@@ -105,7 +105,7 @@
         <label class="control-label col-md-2">Временные характеристики</label>
     @*}*@
         <div id=@("vremGroup"+Model.Type)>
-            @Html.Action("DescrFormVrem", "Helpers", new { type = Model.Type, vrems = Model.Form.vrem, param = Model.Param })
+            @Html.Action("DescrFormVrem", "Helpers", new { type = Model.Type, vrems = Model.Form.Vrems, param = Model.Param })
 
 
 

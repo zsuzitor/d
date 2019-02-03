@@ -78,6 +78,16 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        public ActionResult DescrFormProsEdit(List<Pro> pros)
+        {
+            DescrFormListDataV<Pro> res = new DescrFormListDataV<Pro>();
+            res.List = pros;
+            
+            return PartialView(res);
+        }
+        
+
+
         //TODO не помню зачем это нужно и нужно ли вообще
         public ActionResult selectList(dynamic a, string label, string id, string name)
         {

@@ -56,20 +56,20 @@ namespace dip.Models.Domain
         public void SetDescrParam(DescrSearchI inp, DescrSearchI outp)
         {
             //при добавлении добавлять в конец
-            this.Params_.Add(inp.actionId);
-            this.Params_.Add(inp.actionType);
+            this.Params_.Add(inp.ActionId);
+            this.Params_.Add(inp.ActionType);
             this.Params_.Add(inp.FizVelId);
-            this.Params_.Add(inp.parametricFizVelId);
-            this.Params_.Add(inp.listSelectedPros);
-            this.Params_.Add(inp.listSelectedSpec);
-            this.Params_.Add(inp.listSelectedVrem);
-            this.Params_.Add(outp.actionId);
-            this.Params_.Add(outp.actionType);
+            this.Params_.Add(inp.ParametricFizVelId);
+            this.Params_.Add(inp.ListSelectedPros);
+            this.Params_.Add(inp.ListSelectedSpec);
+            this.Params_.Add(inp.ListSelectedVrem);
+            this.Params_.Add(outp.ActionId);
+            this.Params_.Add(outp.ActionType);
             this.Params_.Add(outp.FizVelId);
-            this.Params_.Add(outp.parametricFizVelId);
-            this.Params_.Add(outp.listSelectedPros);
-            this.Params_.Add(outp.listSelectedSpec);
-            this.Params_.Add(outp.listSelectedVrem);
+            this.Params_.Add(outp.ParametricFizVelId);
+            this.Params_.Add(outp.ListSelectedPros);
+            this.Params_.Add(outp.ListSelectedSpec);
+            this.Params_.Add(outp.ListSelectedVrem);
 
 
 

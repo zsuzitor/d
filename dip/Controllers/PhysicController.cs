@@ -232,11 +232,32 @@ namespace dip.Controllers
 
 
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public ActionResult CreateSomething()//, string technicalFunctionId
+        {
+
+            return View();
+        }
 
 
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public ActionResult CreateDescription()//, string technicalFunctionId
+        {
+            DescriptionForm res = new DescriptionForm();
+            res= DescriptionForm.GetFormObject(null,null);
+            return View(res);
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult CreateDescription(string g)//, string technicalFunctionId
+        {
 
+            return View();
+        }
 
 
 

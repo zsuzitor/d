@@ -1,0 +1,380 @@
+﻿
+
+@model dip.Models.ViewModel.DescriptionForm
+
+@{
+    ViewBag.Title = "CreateDescription";
+}
+
+<h2>CreateDescription</h2>
+
+
+
+
+<div class="form-horizontal">
+    <button id="changeTypeActionId_but_id" onclick="changeTypeActionId()">Добавить новый</button>
+    <div id="create_descr_action_old_div">
+        <select name=@("actionId") class="form-control" id=@("action")>
+
+            @foreach (var i in Model.ActionId)
+            {
+                <option value="@i.Id">@i.Name</option>
+            }
+        </select>
+    </div>
+   
+    <div style="display:none;" id="create_descr_action_new_div">
+
+        @Html.Editor("actionId_")
+        @Html.Editor("actionName")
+        <input type="checkbox" value="Параметрическ" />
+    </div>
+
+    <hr />
+    <div>
+        <p>@*по идеи не нужно,*@ нужно вынести как то отдельно, тк не имеет отношения к форме в целом</p>
+        <select name=@("actionType") class="form-control" id=@("actionType")>
+            @foreach (var i in Model.ActionType)
+            {
+
+                <option selected value="@i.Id">@i.Name</option>
+            }
+        </select>
+    </div>
+    <hr />
+    <div>
+        @Html.Action("DescrFormFizVels", "Helpers", new { type = "", fizVelId = Model.FizVelId })
+
+
+
+
+
+
+    </div>
+    <hr />
+    <div>
+        @Html.Action("DescrFormParamFizVels", "Helpers", new { type = "", parametricFizVelId = Model.ParametricFizVelId })
+
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Action("DescrFormProsEdit", "Helpers", new {  pros = Model.Pros })
+
+
+
+
+
+        
+
+
+
+    </div>
+
+
+    <hr />
+    <div>
+        @*@Html.Action("DescrFormSpec", "Helpers", new { type = "", specs = Model.Specs })*@
+
+
+        <div class="form-group descrCheckBoxChild" >
+            @if (Model.Specs != null && Model.Specs.Count != 0)
+            {
+                <div class="col-md-10">
+                    @foreach (var spec in Model.Specs)
+                    {
+                        <div>
+                            <label>
+                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+
+                                @spec.Name
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+
+
+
+
+
+    </div>
+
+    <hr />
+    <div>
+        @*@Html.Action("DescrFormVrem", "Helpers", new { type = "", vrems = Model.Vrems })*@
+
+
+        <div class="form-group descrCheckBoxChild" >
+            @if (Model.Vrems != null && Model.Vrems.Count != 0)
+            {
+                <div class="col-md-10">
+                    @foreach (var vrem in Model.Vrems)
+                    {
+                        <div>
+                            <label>
+                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@vrem.Id" />
+
+                                @vrem.Name
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function changeTypeActionId() {
+        var newdiv = document.getElementById('create_descr_action_new_div');
+        var oldDiv = document.getElementById('create_descr_action_old_div');
+        var changeBut = document.getElementById('changeTypeActionId_but_id');
+
+        if (newdiv.style.display == 'none') {
+            newdiv.style.display = 'block';
+            oldDiv.style.display = 'none';
+            changeBut.innerHTML = 'Использовать существущие';
+        }
+        else{
+            newdiv.style.display = 'none';
+            oldDiv.style.display = 'block';
+            changeBut.innerHTML = 'Добавить новый';
+        }
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function loadCheckBoxChild(ch, meth) {
+        
+        var div = document.getElementById((ch.value));
+
+        if (div && !div.innerHTML.trim()) {
+            goAjaxRequest({
+                url: '/Actions/' + meth + '?id=' + ch.value ,
+                func_success: function (data, status, jqXHR) {
+
+                    if (data.trim()) {
+                        div.innerHTML = data;
+                        loadCheckBoxChild(ch, meth);
+                    }
+                    else {
+                        div.remove();
+                    }
+
+                }
+            });
+        }
+        else {
+            //уже загружен либо не существует, надо снять чекбоксы при снятии на родителе
+            if (div) {
+                if (!$(ch).prop("checked")) {
+                    //галка снята, снимаем у детей и прячем
+
+                    $('#' + ch.value + type + ' input:checkbox:checked').each(function () {//[type=checkbox]
+                        $(this).removeAttr("checked")
+                    });
+                    document.getElementById(ch.value + type).style.display = 'none';
+                }
+                else {
+                    document.getElementById(ch.value + type).style.display = 'block';
+                }
+
+            }
+
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+    function changeParams(type) {
+
+        var prefix = '/Actions/';
+
+        var postfix = '?type=' + type + '&';
+
+
+        // Получаем дескриптор воздействия
+        var id = $('#action' + type).val();
+
+
+
+        var formData = {
+            fizVelId: id,
+
+            type: type
+        };
+
+
+        goAjaxRequest({
+            url: prefix + "ChangeAction",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                var data = req.split('<hr />');//.responseText
+                var type = data[0].trim();
+                $('#fizVel' + type).replaceWith(data[1]);
+             
+
+            
+                document.getElementById('prosGroup' + type).innerHTML = data[2];
+
+   
+                document.getElementById('specGroup' + type).innerHTML = data[3];
+
+   
+                document.getElementById('vremGroup' + type).innerHTML = data[4];
+
+                $('#parametricFizVel' + type).replaceWith(data[5]);
+
+
+            }, type: 'POST'
+        });
+
+    };
+
+
+
+    function changeFizVel(type) {
+ 
+        var prefix = '/Actions/';
+
+        var postfix = '?type=' + type;
+
+        var id = $('#fizVelId' + type).val();
+        //TODO надо изменить на НЕ хардкод
+        if (id == 'VOZ11_FIZVEL_R1' || id == 'VOZ11_FIZVEL_R2' || // задано параметрическое воздействие
+            id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
+            id == 'VOZ11_FIZVEL_R5') {
+
+
+            goAjaxRequest({
+                url: prefix + 'GetParametricFizVels/' + id + postfix,
+                func_success: function (data, status, jqXHR) {
+                    // Заменяем часть представления, отвечающего за выбор физической величины
+                    $('#parametricFizVel' + type).replaceWith(data);
+                }
+            });
+
+
+           
+        }
+    };
+
+
+
+
+
+    $(document).on('change', ':checkbox', function () {
+
+        if (this.name == 'listSelectedPros') {
+            //pros
+            loadCheckBoxChild(this, 'GetProsChildEdit');
+        }
+        else if (this.name == 'listSelectedSpec') {
+            //spec
+            loadCheckBoxChild(this, 'GetSpecChildEdit');
+        }
+        else if (this.name == 'listSelectedVrem') {
+            //vrem
+            loadCheckBoxChild(this, 'GetVremChildEdit');
+        }
+
+
+    });
+
+
+
+
+    // Назначение на событие change функции changeFizVel
+    $('#fizVel').on('change', function () {
+        changeFizVel();
+
+    });
+ 
+
+
+
+
+
+
+
+    // Назначение на событие change функции changeParams
+    $('#action').on('change', function () {
+        changeParams();
+
+    });
+   
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,15 +10,15 @@ namespace dip.Models.ViewModel
     public class DescriptionForm
     {
         // public string Postfix { get; set; }
-        public List<Domain.AllAction> actionId { get; set; }
-        public List<Domain.ActionType> actionType { get; set; }
-        public List<Domain.FizVel> fizVelId { get; set; }
-        public List<Domain.FizVel> parametricFizVelId { get; set; }
-        public List<Pro> pros { get; set; }
-        public List<Spec> spec { get; set; }
-        public List<Vrem> vrem { get; set; }
-        public string currentAction { get; set; }
-        public string currentActionId { get; set; }
+        public List<Domain.AllAction> ActionId { get; set; }
+        public List<Domain.ActionType> ActionType { get; set; }
+        public List<Domain.FizVel> FizVelId { get; set; }
+        public List<Domain.FizVel> ParametricFizVelId { get; set; }
+        public List<Pro> Pros { get; set; }
+        public List<Spec> Specs { get; set; }
+        public List<Vrem> Vrems { get; set; }
+        public string CurrentAction { get; set; }
+        public string CurrentActionId { get; set; }
 
         //public Domain.Action Action { get; set; }
 
@@ -191,6 +191,8 @@ namespace dip.Models.ViewModel
                 var listOfParametricFizVels = db.FizVels.Where(parametricFizVel => (parametricFizVel.Parent == fizVelId))
                                                                      .OrderBy(parametricFizVel => parametricFizVel.Id).ToList();
 
+
+                //TODO че по оптимизации?
                 // Получаем список пространственных характеристик для выбранного воздействия
                 prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();
 
@@ -212,7 +214,7 @@ namespace dip.Models.ViewModel
 
 
 
-
+                //TODO че по оптимизации?
                 // Получаем список специальных характеристик для выбранного воздействия
                 specList = db.Specs.Where(x1 => x1.Parent == actionId + "_SPEC").ToList();
 
@@ -233,7 +235,7 @@ namespace dip.Models.ViewModel
 
 
 
-
+                //TODO че по оптимизации?
                 // Получаем список временных характеристик для выбранного воздействия
                 vremList = db.Vrems.Where(x1 => x1.Parent == actionId + "_VREM").ToList();
 
@@ -268,15 +270,15 @@ namespace dip.Models.ViewModel
                 //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление
-                res.actionId = listOfActions;
-                res.actionType = actionType;
-                res.fizVelId = listOfFizVels;
-                res.parametricFizVelId = listOfParametricFizVels;
-                res.pros = prosList;// listSelectedPros;
-                res.spec = specList;//listSelectedSpec;
-                res.vrem = vremList;// listSelectedVrem;
-                res.currentAction = actionId;
-                res.currentActionId = "-1";
+                res.ActionId = listOfActions;
+                res.ActionType = actionType;
+                res.FizVelId = listOfFizVels;
+                res.ParametricFizVelId = listOfParametricFizVels;
+                res.Pros = prosList;// listSelectedPros;
+                res.Specs = specList;//listSelectedSpec;
+                res.Vrems = vremList;// listSelectedVrem;
+                res.CurrentAction = actionId;
+                res.CurrentActionId = "-1";
             }
             return res;
         }

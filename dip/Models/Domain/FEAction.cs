@@ -49,13 +49,13 @@ namespace dip.Models.Domain
 
         public void SetFromInput(DescrSearchI a)
         {
-            Name = a?.actionId;
-            Type = a?.actionType;
+            Name = a?.ActionId;
+            Type = a?.ActionType;
             FizVelId = a?.FizVelId;
-            FizVelSection = a?.parametricFizVelId;
-            Pros = a?.listSelectedPros;
-            Spec = a?.listSelectedSpec;
-            Vrem = a?.listSelectedVrem;
+            FizVelSection = a?.ParametricFizVelId;
+            Pros = a?.ListSelectedPros;
+            Spec = a?.ListSelectedSpec;
+            Vrem = a?.ListSelectedVrem;
             
         }
         //public void SetFromInput(DescrSearchIOut a)

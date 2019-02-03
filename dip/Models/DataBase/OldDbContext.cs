@@ -361,6 +361,8 @@ namespace dip.Models.DataBase
                             obj.Parent = null;
                         else
                             obj.Parent = i["parent"].ToString().Trim();
+                        if (obj.Id == "VOZ11")
+                            obj.Parametric = true;
                         using (var db = new ApplicationDbContext())
                         {
                             db.AllActions.Add(obj);

@@ -143,13 +143,13 @@ namespace dip.Models.Domain
     public class DescrSearchI
     {
        
-        public string actionId { get; set; }
-        public string actionType { get; set; }
+        public string ActionId { get; set; }
+        public string ActionType { get; set; }
         public string FizVelId { get; set; }
-        public string parametricFizVelId { get; set; }
-        public string listSelectedPros { get; set; }
-        public string listSelectedSpec { get; set; }
-        public string listSelectedVrem { get; set; }
+        public string ParametricFizVelId { get; set; }
+        public string ListSelectedPros { get; set; }
+        public string ListSelectedSpec { get; set; }
+        public string ListSelectedVrem { get; set; }
 
 
         public DescrSearchI()
@@ -170,13 +170,13 @@ namespace dip.Models.Domain
             //if (!valid)
             //    throw new Exception("валидация");
 
-            this.actionId = a?.actionIdI;
-            this.actionType = a?.actionTypeI;
+            this.ActionId = a?.actionIdI;
+            this.ActionType = a?.actionTypeI;
             this.FizVelId = a?.FizVelIdI;
-            this.parametricFizVelId = a?.parametricFizVelIdI;
-            this.listSelectedPros = a?.listSelectedProsI;
-            this.listSelectedSpec = a?.listSelectedSpecI;
-            this.listSelectedVrem = a?.listSelectedVremI;
+            this.ParametricFizVelId = a?.parametricFizVelIdI;
+            this.ListSelectedPros = a?.listSelectedProsI;
+            this.ListSelectedSpec = a?.listSelectedSpecI;
+            this.ListSelectedVrem = a?.listSelectedVremI;
 
 
         }
@@ -194,13 +194,13 @@ namespace dip.Models.Domain
             //if (!valid)
             //    throw new Exception("валидация");
 
-            this.actionId = a?.actionIdO;
-            this.actionType = a?.actionTypeO;
+            this.ActionId = a?.actionIdO;
+            this.ActionType = a?.actionTypeO;
             this.FizVelId = a?.FizVelIdO;
-            this.parametricFizVelId = a?.parametricFizVelIdO;
-            this.listSelectedPros = a?.listSelectedProsO;
-            this.listSelectedSpec = a?.listSelectedSpecO;
-            this.listSelectedVrem = a?.listSelectedVremO;
+            this.ParametricFizVelId = a?.parametricFizVelIdO;
+            this.ListSelectedPros = a?.listSelectedProsO;
+            this.ListSelectedSpec = a?.listSelectedSpecO;
+            this.ListSelectedVrem = a?.listSelectedVremO;
 
         }
 
@@ -211,9 +211,9 @@ namespace dip.Models.Domain
         {
             if (a == null)
                 return true;
-            if (string.IsNullOrWhiteSpace( a.actionId ) && string.IsNullOrWhiteSpace(a.actionType)  && string.IsNullOrWhiteSpace(a.FizVelId )
-                && string.IsNullOrWhiteSpace(a.parametricFizVelId) && string.IsNullOrWhiteSpace(a.listSelectedPros )
-                && string.IsNullOrWhiteSpace(a.listSelectedSpec)  && string.IsNullOrWhiteSpace(a.listSelectedVrem ))
+            if (string.IsNullOrWhiteSpace( a.ActionId ) && string.IsNullOrWhiteSpace(a.ActionType)  && string.IsNullOrWhiteSpace(a.FizVelId )
+                && string.IsNullOrWhiteSpace(a.ParametricFizVelId) && string.IsNullOrWhiteSpace(a.ListSelectedPros )
+                && string.IsNullOrWhiteSpace(a.ListSelectedSpec)  && string.IsNullOrWhiteSpace(a.ListSelectedVrem ))
                 return true;
 
 
@@ -225,17 +225,17 @@ namespace dip.Models.Domain
         {
 
             //pro
-            this.listSelectedPros = Pro.DeleteNotChildCheckbox(this.listSelectedPros);
+            this.ListSelectedPros = Pro.DeleteNotChildCheckbox(this.ListSelectedPros);
 
 
 
             //spec
-            this.listSelectedSpec = Spec.DeleteNotChildCheckbox(this.listSelectedSpec);
+            this.ListSelectedSpec = Spec.DeleteNotChildCheckbox(this.ListSelectedSpec);
 
 
 
             //vrem
-            this.listSelectedVrem = Vrem.DeleteNotChildCheckbox(this.listSelectedVrem);
+            this.ListSelectedVrem = Vrem.DeleteNotChildCheckbox(this.ListSelectedVrem);
 
 
         }
