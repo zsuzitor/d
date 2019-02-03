@@ -246,8 +246,9 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription()//, string technicalFunctionId
         {
-            DescriptionForm res = new DescriptionForm();
-            res= DescriptionForm.GetFormObject(null,null);
+            CreateDescriptionV res = new CreateDescriptionV();
+            res.Form= DescriptionForm.GetFormObject(null,null);
+            res.SetAllParametricAction();
             return View(res);
         }
 

@@ -285,5 +285,11 @@ namespace dip.Models.ViewModel
             return res;
         }
 
+
+        public string GetAllParametricAction()
+        {
+            return string.Join(" ", this.ActionId.Where(x1 => x1.Parametric).Select(x1 => x1.Id).ToList());
+        }
+
     }
 }

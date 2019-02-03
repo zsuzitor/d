@@ -1,40 +1,68 @@
 ﻿
 
-@model dip.Models.ViewModel.DescriptionForm
+@model dip.Models.ViewModel.PhysicV.CreateDescriptionV
 
 @{
     ViewBag.Title = "CreateDescription";
 }
+
 
 <h2>CreateDescription</h2>
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
 <div class="form-horizontal">
+    @*#line1*@
     <button id="changeTypeActionId_but_id" onclick="changeTypeActionId()">Добавить новый</button>
     <div id="create_descr_action_old_div">
         <select name=@("actionId") class="form-control" id=@("action")>
 
-            @foreach (var i in Model.ActionId)
+            @foreach (var i in Model.Form.ActionId)
             {
                 <option value="@i.Id">@i.Name</option>
             }
         </select>
     </div>
-   
+
     <div style="display:none;" id="create_descr_action_new_div">
 
-        @Html.Editor("actionId_")
+        @*@Html.Editor("actionId_")*@
         @Html.Editor("actionName")
-        <input type="checkbox" value="Параметрическ" />
+        <input type="checkbox" id="changeTypeParamActionId" @*onchange="changeTypeParamAction()"*@ name="changeTypeParamActionName" value="Параметрическ" />
     </div>
 
     <hr />
+
+
+
+
+
+
+
+
+
+    @*#line2*@
+
+
     <div>
         <p>@*по идеи не нужно,*@ нужно вынести как то отдельно, тк не имеет отношения к форме в целом</p>
         <select name=@("actionType") class="form-control" id=@("actionType")>
-            @foreach (var i in Model.ActionType)
+            @foreach (var i in Model.Form.ActionType)
             {
 
                 <option selected value="@i.Id">@i.Name</option>
@@ -42,8 +70,79 @@
         </select>
     </div>
     <hr />
+
+
+
+
+
+
+
+
+    @*#line3*@
+    <button id="changeTypeFizVelId_but_id" onclick="changeTypeFizVelId()">Добавить новые</button>
+    <div id="create_descr_FizVel_old_div">
+        <div id="fizVelGroup">
+            @Html.Action("DescrFormFizVels", "Helpers", new { type = "", fizVelId = Model.Form.FizVelId })
+
+
+
+
+        </div>
+    </div>
+    <div style="display:none;" id="create_descr_FizVel_new_div">
+        <div id="FizVelGroupNew">
+            <input class="text-box single-line" id="FizVelName" name="FizVelName" type="text" value="">
+
+        </div>
+        <button id="addNewFizVelId_but_id" onclick="addNewFizVelId()">Добавить</button>
+
+    </div>
+    <hr />
+
+
+
+
+
+
+
+
+    @*#line4*@
+
+    <div id="parametricAllBlock">
+        <button id="changeTypeParamFizVelId_but_id" onclick="changeTypeParamFizVelId()">Добавить новый</button>
+        <div id="create_descr_ParamFizVel_old_div">
+            <div>
+                @Html.Action("DescrFormParamFizVels", "Helpers", new { type = "", parametricFizVelId = Model.Form.ParametricFizVelId })
+
+            </div>
+        </div>
+        <div style="display:none;" id="create_descr_ParamFizVel_new_div">
+            <div id="ParametricFizVelGroupNew">
+
+                <input class="text-box single-line" id="ParamFizVelName" name="ParamFizVelName" type="text" value="">
+            </div>
+            <button id="addNewParametricFizVelId_but_id" onclick="addNewParametricFizVelId()">Добавить</button>
+
+        </div>
+    </div>
+
+    <hr />
+
+
+
+
+
+
+
+    @*#line checkboxes*@
+    <div id="div_all_checkboxes">
+    @*#line5*@
     <div>
-        @Html.Action("DescrFormFizVels", "Helpers", new { type = "", fizVelId = Model.FizVelId })
+        <div id="prosGroup">
+            @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.Form.Pros })
+        </div>
+
+
 
 
 
@@ -51,53 +150,45 @@
 
 
     </div>
-    <hr />
-    <div>
-        @Html.Action("DescrFormParamFizVels", "Helpers", new { type = "", parametricFizVelId = Model.ParametricFizVelId })
 
-    </div>
+
 
     <hr />
 
-    <div>
-        @Html.Action("DescrFormProsEdit", "Helpers", new {  pros = Model.Pros })
 
 
 
 
 
-        
 
 
+    @*#line6*@
 
-    </div>
 
-
-    <hr />
     <div>
         @*@Html.Action("DescrFormSpec", "Helpers", new { type = "", specs = Model.Specs })*@
 
-
-        <div class="form-group descrCheckBoxChild" >
-            @if (Model.Specs != null && Model.Specs.Count != 0)
+        <div id="specGroup">
+            <div class="form-group descrCheckBoxChild">
+                @if (Model.Form.Specs != null && Model.Form.Specs.Count != 0)
             {
-                <div class="col-md-10">
-                    @foreach (var spec in Model.Specs)
-                    {
-                        <div>
-                            <label>
-                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+                    <div class="col-md-10">
+                        @foreach (var spec in Model.Form.Specs)
+                        {
+                            <div>
+                                <label>
+                                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
 
-                                @spec.Name
-                            </label>
+                                    @spec.Name
+                                </label>
 
-                        </div>
-                    }
+                            </div>
+                        }
 
-                </div>
-            }
+                    </div>
+                }
+            </div>
         </div>
-
 
 
 
@@ -105,32 +196,57 @@
     </div>
 
     <hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*#line7*@
+
     <div>
         @*@Html.Action("DescrFormVrem", "Helpers", new { type = "", vrems = Model.Vrems })*@
 
-
-        <div class="form-group descrCheckBoxChild" >
-            @if (Model.Vrems != null && Model.Vrems.Count != 0)
+        <div id="vremGroup">
+            <div class="form-group descrCheckBoxChild">
+                @if (Model.Form.Vrems != null && Model.Form.Vrems.Count != 0)
             {
-                <div class="col-md-10">
-                    @foreach (var vrem in Model.Vrems)
-                    {
-                        <div>
-                            <label>
-                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@vrem.Id" />
+                    <div class="col-md-10">
+                        @foreach (var vrem in Model.Form.Vrems)
+                        {
+                            <div>
+                                <label>
+                                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@vrem.Id" />
 
-                                @vrem.Name
-                            </label>
+                                    @vrem.Name
+                                </label>
 
-                        </div>
-                    }
+                            </div>
+                        }
 
-                </div>
-            }
+                    </div>
+                }
+            </div>
         </div>
-
     </div>
 </div>
+
+    </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -145,22 +261,154 @@
 
 
 <script>
-    function changeTypeActionId() {
+    //прячем
+    function ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut) {
+        newdiv.style.display = 'none';
+        oldDiv.style.display = 'block';
+        changeBut.innerHTML = 'Добавить новый';
+    }
+
+    function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
+        newdiv.style.display = 'block';
+        oldDiv.style.display = 'none';
+        changeBut.innerHTML = 'Использовать существущие';
+    }
+
+
+
+
+
+
+    //flag-1 прячем 2 показываем  newdiv
+    function changeTypeActionId(flag) {
         var newdiv = document.getElementById('create_descr_action_new_div');
         var oldDiv = document.getElementById('create_descr_action_old_div');
         var changeBut = document.getElementById('changeTypeActionId_but_id');
 
-        if (newdiv.style.display == 'none') {
-            newdiv.style.display = 'block';
-            oldDiv.style.display = 'none';
-            changeBut.innerHTML = 'Использовать существущие';
+        if (!flag)
+            if (newdiv.style.display == 'none') {
+                ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+                changeTypeFizVelId(2);
+                changeTypeParamFizVelId(2);
+                if (!document.getElementById('changeTypeParamActionId').checked)
+                document.getElementById('parametricAllBlock').style.display='none';
+               
+            }
+            else {
+                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                changeTypeFizVelId(1);
+                changeTypeParamFizVelId(1);
+
+                document.getElementById('parametricAllBlock').style.display = 'block';
+            }
+        else {
+            if (flag == 1) {
+                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                changeTypeFizVelId(flag);
+                changeTypeParamFizVelId(flag);
+                document.getElementById('parametricAllBlock').style.display = 'block';
+            }
+            if (flag == 2) {
+                ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+                changeTypeFizVelId(flag);
+                changeTypeParamFizVelId(flag);
+                if (!document.getElementById('changeTypeParamActionId').checked)
+                document.getElementById('parametricAllBlock').style.display = 'none';
+
+            }
         }
-        else{
-            newdiv.style.display = 'none';
-            oldDiv.style.display = 'block';
-            changeBut.innerHTML = 'Добавить новый';
-        }
+
         
+
+
+    }
+
+    //flag-1 прячем 2 показываем  newdiv
+    function changeTypeFizVelId(flag) {
+        var newdiv = document.getElementById('create_descr_FizVel_new_div');
+        var oldDiv = document.getElementById('create_descr_FizVel_old_div');
+        var changeBut = document.getElementById('changeTypeFizVelId_but_id');
+
+        if (!flag) {
+            var oldDivAction = document.getElementById('create_descr_action_old_div');
+          
+            if (newdiv.style.display == 'none') {
+                if (oldDivAction.style.display != 'none')
+                    ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+            }
+            else {
+                if (oldDivAction.style.display != 'none')
+                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+            }
+        }
+        else {
+            if (flag == 1) {
+                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+            }
+            if (flag == 2) {
+                ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+            }
+        }
+
+    }
+
+    //flag-1 прячем 2 показываем  newdiv
+    function changeTypeParamFizVelId(flag) {
+        var newdiv = document.getElementById('create_descr_ParamFizVel_new_div');
+        var oldDiv = document.getElementById('create_descr_ParamFizVel_old_div');
+        var changeBut = document.getElementById('changeTypeParamFizVelId_but_id');
+
+
+        var id = $('#fizVelId').val();
+
+       
+
+        var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
+        var actionId = document.getElementById('action');
+        if (!flag) {
+            var oldDivAction = document.getElementById('create_descr_action_old_div');
+            for (var i = 0; i < checkParametrics.length; ++i) {
+
+                if (checkParametrics[i] == actionId.value) {
+                    if (newdiv.style.display == 'none') {
+                        if (oldDivAction.style.display != 'none')// || document.getElementById('changeTypeParamActionId').checked
+                        ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+                    }
+                    else {
+                        if (oldDivAction.style.display != 'none')//|| document.getElementById('changeTypeParamActionId').checked
+                        ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                    }
+                    break;
+                }
+
+
+            }
+        }
+        else {
+            if (flag == 1) {
+                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+            }
+            if (flag == 2) {
+                ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+            }
+
+        }
+    }
+    
+
+
+    function addNewFizVelId() {
+        var div = document.getElementById('FizVelGroupNew');
+        div.innerHTML += '<input class="text-box single-line" id="FizVelName" name="FizVelName" type="text" value="">';
+    }
+
+    function addNewParametricFizVelId() {
+        var div = document.getElementById('ParametricFizVelGroupNew');
+        div.innerHTML += '<input class="text-box single-line" id="ParamFizVelName" name="ParamFizVelName" type="text" value="">';
     }
 
 
@@ -169,17 +417,8 @@
 
 
 
-
-
-
-
-
-
-
-
-
     function loadCheckBoxChild(ch, meth) {
-        
+
         var div = document.getElementById((ch.value));
 
         if (div && !div.innerHTML.trim()) {
@@ -204,13 +443,13 @@
                 if (!$(ch).prop("checked")) {
                     //галка снята, снимаем у детей и прячем
 
-                    $('#' + ch.value + type + ' input:checkbox:checked').each(function () {//[type=checkbox]
+                    $('#' + ch.value  + ' input:checkbox:checked').each(function () {//[type=checkbox]
                         $(this).removeAttr("checked")
                     });
-                    document.getElementById(ch.value + type).style.display = 'none';
+                    document.getElementById(ch.value ).style.display = 'none';
                 }
                 else {
-                    document.getElementById(ch.value + type).style.display = 'block';
+                    document.getElementById(ch.value ).style.display = 'block';
                 }
 
             }
@@ -229,22 +468,19 @@
 
 
 
-    function changeParams(type) {
+    function changeParams() {
 
         var prefix = '/Actions/';
 
-        var postfix = '?type=' + type + '&';
-
-
         // Получаем дескриптор воздействия
-        var id = $('#action' + type).val();
+        var id = $('#action').val();
 
 
+        
 
         var formData = {
             fizVelId: id,
 
-            type: type
         };
 
 
@@ -253,20 +489,20 @@
             data: formData,
             func_success: function (req, status, jqXHR) {
                 var data = req.split('<hr />');//.responseText
-                var type = data[0].trim();
-                $('#fizVel' + type).replaceWith(data[1]);
-             
+                //var type = data[0].trim();
+                $('#fizVel' ).replaceWith(data[1]);
 
-            
-                document.getElementById('prosGroup' + type).innerHTML = data[2];
 
-   
-                document.getElementById('specGroup' + type).innerHTML = data[3];
 
-   
-                document.getElementById('vremGroup' + type).innerHTML = data[4];
+                document.getElementById('prosGroup' ).innerHTML = data[2];
 
-                $('#parametricFizVel' + type).replaceWith(data[5]);
+
+                document.getElementById('specGroup' ).innerHTML = data[3];
+
+
+                document.getElementById('vremGroup' ).innerHTML = data[4];
+
+                $('#parametricFizVel').replaceWith(data[5]);
 
 
             }, type: 'POST'
@@ -276,13 +512,13 @@
 
 
 
-    function changeFizVel(type) {
- 
+    function changeFizVel() {
+
         var prefix = '/Actions/';
 
-        var postfix = '?type=' + type;
+        //var postfix = '?type=' + type;
 
-        var id = $('#fizVelId' + type).val();
+        var id = $('#fizVelId').val();
         //TODO надо изменить на НЕ хардкод
         //if (id == 'VOZ11_FIZVEL_R1' || id == 'VOZ11_FIZVEL_R2' || // задано параметрическое воздействие
         //    id == 'VOZ11_FIZVEL_R3' || id == 'VOZ11_FIZVEL_R4' ||
@@ -290,15 +526,15 @@
         //var checkParametric = document.getElementById('parametric_action_or_not');
 
 
-        var checkParametrics = document.getElementById('parametric_action_or_not').split(' ');
-        var actionId = document.getElementById('action' + type);
-        for (var i = 0; i < checkParametrics.lenght; ++i) {
-            if (checkParametrics[i] == actionId) {
+        var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
+        var actionId = document.getElementById('action');
+        for (var i = 0; i < checkParametrics.length; ++i) {
+            if (checkParametrics[i] == actionId.value) {
                 goAjaxRequest({
-                    url: prefix + 'GetParametricFizVels/' + id + postfix,
+                    url: prefix + 'GetParametricFizVels/' + id ,
                     func_success: function (data, status, jqXHR) {
                         // Заменяем часть представления, отвечающего за выбор физической величины
-                        $('#parametricFizVel' + type).replaceWith(data);
+                        $('#parametricFizVel').replaceWith(data);
                     }
                 });
                 break;
@@ -313,64 +549,80 @@
 
 
 
+
+
     $(document).on('change', ':checkbox', function () {
 
-        if (this.name == 'listSelectedPros') {
-            //pros
-            loadCheckBoxChild(this, 'GetProsChildEdit');
+        switch(this.name){
+            case 'listSelectedPros':
+                loadCheckBoxChild(this, 'GetProsChildEdit');
+                break;
+
+            case 'listSelectedSpec':
+                loadCheckBoxChild(this, 'GetSpecChildEdit');
+                break;
+
+            case 'listSelectedVrem':
+                loadCheckBoxChild(this, 'GetVremChildEdit');
+                break;
+
+            case 'changeTypeParamActionName':
+                if (this.checked){
+                    document.getElementById('parametricAllBlock').style.display = 'block';
+                    document.getElementById('div_all_checkboxes').style.display = 'none';
+                    
+                }
+                else {
+                    document.getElementById('parametricAllBlock').style.display = 'none';
+                    document.getElementById('div_all_checkboxes').style.display = 'block';
+
+                }
+                break;
+            
         }
-        else if (this.name == 'listSelectedSpec') {
-            //spec
-            loadCheckBoxChild(this, 'GetSpecChildEdit');
-        }
-        else if (this.name == 'listSelectedVrem') {
-            //vrem
-            loadCheckBoxChild(this, 'GetVremChildEdit');
-        }
+        //
+
+        //if (this.name == 'listSelectedPros') {
+        //    //pros
+        //    loadCheckBoxChild(this, 'GetProsChildEdit');
+        //}
+        //else if (this.name == 'listSelectedSpec') {
+        //    //spec
+        //    loadCheckBoxChild(this, 'GetSpecChildEdit');
+        //}
+        //else if (this.name == 'listSelectedVrem') {
+        //    //vrem
+        //    loadCheckBoxChild(this, 'GetVremChildEdit');
+        //}
+
 
 
     });
 
 
+    $(document).ready(function () {
+        // Назначение на событие change функции changeFizVel
+        $('#fizVelGroup').on('change', function () {
+            changeFizVel();
+
+        });
 
 
-    // Назначение на событие change функции changeFizVel
-    $('#fizVel').on('change', function () {
-        changeFizVel();
 
+
+        // Назначение на событие change функции changeParams
+        $('#action').on('change', function () {
+            changeParams();
+
+        });
     });
- 
 
-
-
-
-
-
-
-    // Назначение на событие change функции changeParams
-    $('#action').on('change', function () {
-        changeParams();
-
-    });
-   
-
-
-
-
-
+    
 
 
 
 
 </script>
-
-
-
-
-
-
-
-
 
 
 

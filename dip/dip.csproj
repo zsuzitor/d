@@ -263,6 +263,7 @@
     <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />
     <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
     <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\EditV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\ListFeTextV.cs" />

@@ -32,10 +32,10 @@ namespace dip.Models.ViewModel.ActionsV
             //ActionId будет 1 и тоже, поэтому берем любое
             if (InputForm != null)
             {
-                ActionParametricIds =  string.Join(" ",InputForm.ActionId.Where(x1 => x1.Parametric).Select(x1 => x1.Id).ToList());
+                ActionParametricIds = InputForm.GetAllParametricAction(); ;
             }
             else if (OutpForm != null)
-                ActionParametricIds = string.Join(" ", OutpForm.ActionId.Where(x1 => x1.Parametric).Select(x1 => x1.Id).ToList());
+                ActionParametricIds =OutpForm.GetAllParametricAction();
 
 
         }

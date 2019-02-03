@@ -13,10 +13,10 @@ function changeFizVel(type)
     var id = $('#fizVelId'+type).val();
     //TODO надо изменить на НЕ хардкод
 
-    var checkParametrics = document.getElementById('parametric_action_or_not').split(' ');
+    var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
     var actionId = document.getElementById('action'+type);
-    for (var i = 0; i < checkParametrics.lenght; ++i) {
-        if (checkParametrics[i] == actionId) {
+    for (var i = 0; i < checkParametrics.length; ++i) {
+        if (checkParametrics[i] == actionId.value) {
             goAjaxRequest({
                 url: prefix + 'GetParametricFizVels/' + id + postfix,
                 func_success: function (data, status, jqXHR) {
