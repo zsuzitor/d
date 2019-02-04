@@ -5,10 +5,11 @@
 
 
 <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
-    @if (Model.List != null && Model.List.Count != 0)
-            {
-        <div class="col-md-10">
-            @foreach (var pro in Model.List)
+    <div class="col-md-10" id="@(Model.ParentId+"_PROS")">
+        @if (Model.List != null)
+        {
+
+            foreach (var pro in Model.List)
             {
                 <div>
                     <label>
@@ -17,10 +18,18 @@
                         @pro.Name
                     </label>
 
+                    <div id="@pro.Id">
+
+                    </div>
+
                 </div>
             }
 
-        </div>
-    }
+
+        }
+    </div>
+    <div class="col-md-10">
+        <button  onclick="addNewPro('@Model.ParentId')">Добавить</button>
+    </div>
 </div>
 

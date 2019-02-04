@@ -139,7 +139,7 @@
     @*#line5*@
     <div>
         <div id="prosGroup">
-            @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.Form.Pros })
+            @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.Form.Pros, parentId=Model.Form.CurrentAction })
         </div>
 
 
@@ -165,35 +165,11 @@
     @*#line6*@
 
 
-    <div>
-        @*@Html.Action("DescrFormSpec", "Helpers", new { type = "", specs = Model.Specs })*@
-
-        <div id="specGroup">
-            <div class="form-group descrCheckBoxChild">
-                @if (Model.Form.Specs != null && Model.Form.Specs.Count != 0)
-            {
-                    <div class="col-md-10">
-                        @foreach (var spec in Model.Form.Specs)
-                        {
-                            <div>
-                                <label>
-                                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
-
-                                    @spec.Name
-                                </label>
-
-                            </div>
-                        }
-
-                    </div>
-                }
+        <div>
+            <div id="specGroup">
+                @Html.Action("DescrFormSpecEdit", "Helpers", new { specs = Model.Form.Specs, parentId = Model.Form.CurrentAction })
             </div>
-        </div>
-
-
-
-
-    </div>
+            </div>
 
     <hr />
 
@@ -215,25 +191,7 @@
         @*@Html.Action("DescrFormVrem", "Helpers", new { type = "", vrems = Model.Vrems })*@
 
         <div id="vremGroup">
-            <div class="form-group descrCheckBoxChild">
-                @if (Model.Form.Vrems != null && Model.Form.Vrems.Count != 0)
-            {
-                    <div class="col-md-10">
-                        @foreach (var vrem in Model.Form.Vrems)
-                        {
-                            <div>
-                                <label>
-                                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@vrem.Id" />
-
-                                    @vrem.Name
-                                </label>
-
-                            </div>
-                        }
-
-                    </div>
-                }
-            </div>
+            @Html.Action("DescrFormVremEdit", "Helpers", new { vrems = Model.Form.Vrems, parentId = Model.Form.CurrentAction })
         </div>
     </div>
 </div>
@@ -292,7 +250,7 @@
                 changeTypeParamFizVelId(2);
                 if (!document.getElementById('changeTypeParamActionId').checked)
                 document.getElementById('parametricAllBlock').style.display='none';
-               
+
             }
             else {
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
@@ -318,7 +276,7 @@
             }
         }
 
-        
+
 
 
     }
@@ -331,7 +289,7 @@
 
         if (!flag) {
             var oldDivAction = document.getElementById('create_descr_action_old_div');
-          
+
             if (newdiv.style.display == 'none') {
                 if (oldDivAction.style.display != 'none')
                     ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
@@ -363,7 +321,7 @@
 
         var id = $('#fizVelId').val();
 
-       
+
 
         var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
         var actionId = document.getElementById('action');
@@ -398,7 +356,7 @@
 
         }
     }
-    
+
 
 
     function addNewFizVelId() {
@@ -476,7 +434,7 @@
         var id = $('#action').val();
 
 
-        
+
 
         var formData = {
             fizVelId: id,
@@ -485,7 +443,7 @@
 
 
         goAjaxRequest({
-            url: prefix + "ChangeAction",
+            url: prefix + "ChangeActionEdit",
             data: formData,
             func_success: function (req, status, jqXHR) {
                 var data = req.split('<hr />');//.responseText
@@ -558,11 +516,11 @@
                 loadCheckBoxChild(this, 'GetProsChildEdit');
                 break;
 
-            case 'listSelectedSpec':
+            case 'listSelectedSpecs':
                 loadCheckBoxChild(this, 'GetSpecChildEdit');
                 break;
 
-            case 'listSelectedVrem':
+            case 'listSelectedVrems':
                 loadCheckBoxChild(this, 'GetVremChildEdit');
                 break;
 
@@ -570,7 +528,7 @@
                 if (this.checked){
                     document.getElementById('parametricAllBlock').style.display = 'block';
                     document.getElementById('div_all_checkboxes').style.display = 'none';
-                    
+
                 }
                 else {
                     document.getElementById('parametricAllBlock').style.display = 'none';
@@ -578,26 +536,37 @@
 
                 }
                 break;
-            
+
         }
-        //
-
-        //if (this.name == 'listSelectedPros') {
-        //    //pros
-        //    loadCheckBoxChild(this, 'GetProsChildEdit');
-        //}
-        //else if (this.name == 'listSelectedSpec') {
-        //    //spec
-        //    loadCheckBoxChild(this, 'GetSpecChildEdit');
-        //}
-        //else if (this.name == 'listSelectedVrem') {
-        //    //vrem
-        //    loadCheckBoxChild(this, 'GetVremChildEdit');
-        //}
-
 
 
     });
+
+
+
+
+
+    function addNewPro(id) {
+        var div = document.getElementById(id + '_PROS');
+        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id+'_input' + '" />';
+
+    }
+    function addNewSpec(id) {
+        var div = document.getElementById(id + '_SPEC');
+        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id + '_input' + '" />';
+    }
+    function addNewVrem(id) {
+        var div = document.getElementById(id + '_VREM');
+        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id + '_input' + '" />';
+    }
+
+
+
+
+
+
+
+
 
 
     $(document).ready(function () {
@@ -617,7 +586,7 @@
         });
     });
 
-    
+
 
 
 

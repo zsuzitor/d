@@ -1,0 +1,26 @@
+﻿@model dip.Models.ViewModel.ActionsV.ChangeActionV
+
+@*это представление сплитится по <hr />   => не менять*@
+@(Model.Type)
+<hr />
+@Html.Action("GetFizVels", "Actions", new { id = Model.FizVelId })
+
+<hr />
+
+@Html.Action("GetProsEdit", "Actions", new { id = Model.CheckboxParamsId})
+
+<hr />
+
+@Html.Action("GetSpecEdit", "Actions", new { id = Model.CheckboxParamsId })
+
+<hr />
+
+@Html.Action("GetVremEdit", "Actions", new { id = Model.CheckboxParamsId})
+
+<hr />
+
+@Html.Action("GetParametricFizVels", "Actions", new { id = Model.ParametricFizVelsId })
+
+
+
+

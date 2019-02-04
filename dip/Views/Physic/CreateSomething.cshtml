@@ -8,8 +8,12 @@
 
 
 
+<div class="form-group form-horizontal">
+    <div>
+        @Html.ActionLink("Добавить физический эффект", "Create", "Physic", new { }, new {  })
+    </div>
+    <div>
+        @Html.ActionLink("Добавить дескрипторы", "CreateDescription", "Physic", new { }, new {  })
+    </div>
 
-@Html.ActionLink("Добавить физический эффект", "Create", "Physic", new { }, new { @class = "navbar-brand" })
-
-
-@Html.ActionLink("Добавить дескрипторы", "CreateDescription", "Physic", new { }, new { @class = "navbar-brand" })
+</div>

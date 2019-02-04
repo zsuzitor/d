@@ -12,12 +12,14 @@ namespace dip.Models.ViewModel.HelpersV
         public List<T> List { get; set; }
         public DescrSearchI Param { get; set; }
         public string Type { get; set; }
+        public string ParentId { get; set; }//для редактирования формы
 
         public DescrFormListDataV()
         {
             List = null;
             Param = null;
             Type = null;
+            ParentId = "";
         }
     }
 }

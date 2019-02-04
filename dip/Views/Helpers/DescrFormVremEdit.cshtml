@@ -1,0 +1,34 @@
+﻿
+
+
+
+@model dip.Models.ViewModel.HelpersV.DescrFormListDataV<dip.Models.Domain.Vrem>
+
+
+
+<div class="form-group descrCheckBoxChild">
+    <div class="col-md-10" id="@(Model.ParentId+"_VREM")">
+        @if (Model.List != null && Model.List.Count != 0)
+        {
+
+            foreach (var vrem in Model.List)
+            {
+                <div>
+                    <label>
+                        <input class="checkBoxClass" type="checkbox" name=@("listSelectedVrems") value="@vrem.Id" />
+
+                        @vrem.Name
+                    </label>
+                    <div id="@vrem.Id">
+
+                    </div>
+                </div>
+            }
+
+
+        }
+    </div>
+    <div class="col-md-10">
+        <button onclick="addNewVrem('@Model.ParentId')">Добавить</button>
+    </div>
+</div>

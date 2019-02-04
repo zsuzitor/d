@@ -78,14 +78,34 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-        public ActionResult DescrFormProsEdit(List<Pro> pros)
+        public ActionResult DescrFormProsEdit(List<Pro> pros,string parentId)
         {
             DescrFormListDataV<Pro> res = new DescrFormListDataV<Pro>();
             res.List = pros;
-            
+            res.ParentId = parentId;
+
+
             return PartialView(res);
         }
-        
+
+        public ActionResult DescrFormSpecEdit(List<Spec> specs, string parentId)
+        {
+            DescrFormListDataV<Spec> res = new DescrFormListDataV<Spec>();
+            res.List = specs;
+            res.ParentId = parentId;
+
+            return PartialView(res);
+        }
+
+        public ActionResult DescrFormVremEdit(List<Vrem> vrems, string parentId)
+        {
+            DescrFormListDataV<Vrem> res = new DescrFormListDataV<Vrem>();
+            res.List = vrems;
+            res.ParentId = parentId;
+
+            return PartialView(res);
+        }
+
 
 
         //TODO не помню зачем это нужно и нужно ли вообще

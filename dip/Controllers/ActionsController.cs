@@ -89,8 +89,8 @@ namespace dip.Controllers
             {
                 res.CheckboxParamsId = null;
 
-                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";
-                
+                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
+
             }
             else
             {
@@ -109,6 +109,37 @@ namespace dip.Controllers
 
             return PartialView(res);
         }
+
+
+        public ActionResult ChangeActionEdit(string fizVelId)
+        {
+            ChangeActionV res = new ChangeActionV();
+            AllAction act = AllAction.Get(fizVelId);
+            if (act.Parametric)
+            {
+                res.CheckboxParamsId = null;
+
+                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
+
+            }
+            else
+            {
+                res.CheckboxParamsId = fizVelId;
+
+                res.ParametricFizVelsId = null;
+            }
+
+            ////-----
+
+            res.FizVelId = fizVelId;
+
+
+
+           
+
+            return PartialView(res);
+        }
+
 
 
         /// <summary>
@@ -137,6 +168,7 @@ namespace dip.Controllers
             res.List = listOfFizVels;
             res.CurrentActionId = act.Id;
             res.Type = type;
+            res.ParentId = id;
             return PartialView(res);
         }
 
@@ -160,9 +192,25 @@ namespace dip.Controllers
            
             res.List = prosList;
             res.Type = type;
+            res.ParentId = id;
             return PartialView(res);
         }
 
+        [ChildActionOnly]
+        public ActionResult GetProsEdit(string id)
+        {
+            GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
+            List<Pro> prosList = new List<Pro>();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
+
+
+            res.List = prosList;
+            res.ParentId = id;
+
+            return PartialView(res);
+        }
 
 
 
@@ -185,6 +233,24 @@ namespace dip.Controllers
             // Отправляем его в представление
             res.List = specList;
             res.Type = type;
+            res.ParentId = id;
+            return PartialView(res);
+        }
+
+        [ChildActionOnly]
+        public ActionResult GetSpecEdit(string id)
+        {
+            GetListSomethingV<Spec> res = new GetListSomethingV<Spec>();
+            // Получаем обновленный список специальных характеристик
+            List<Spec> specList = new List<Spec>();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
+            //var listSelectedSpec = GetListSelectedItem(specList);
+
+            // Отправляем его в представление
+            res.List = specList;
+            res.ParentId = id;
             return PartialView(res);
         }
 
@@ -209,6 +275,25 @@ namespace dip.Controllers
             // Отправляем его в представление
             res.List = vremList;
             res.Type = type;
+            res.ParentId = id;
+            return PartialView(res);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult GetVremEdit(string id)
+        {
+            GetListSomethingV<Vrem> res = new GetListSomethingV<Vrem>();
+            // Получаем обновленный список временных характеристик
+            List<Vrem> vremList = new List<Vrem>();
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
+
+
+            // Отправляем его в представление
+            res.List = vremList;
+            res.ParentId = id;
             return PartialView(res);
         }
 
@@ -233,6 +318,7 @@ namespace dip.Controllers
                  res.List = FizVel.GetParametricFizVels(id) ;
           
             res.Type = type;
+            res.ParentId = id;
             return PartialView(res);
         }
 
@@ -252,7 +338,7 @@ namespace dip.Controllers
             res.List = Pro.GetChild(id);
              res.List= res.List.Count>0?res.List : null;
             res.Type = type;
-            
+            res.ParentId = id;
             return PartialView(res);
         }
 
@@ -262,28 +348,11 @@ namespace dip.Controllers
             GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
             res.List = Pro.GetChild(id);
             res.List = res.List.Count > 0 ? res.List : null;
-            
+            res.ParentId = id;
 
             return PartialView(res);
         }
 
-
-
-        //TODO хз что это и зачем, скорее всего не используется
-        /// <summary>
-        /// GET-метод удаления из представления дополнительных значений характеристики
-        /// </summary>
-        /// <param name="id"> дескриптор выбранной характеристики </param>
-        /// <returns> результат действия ActionResult </returns>
-        //[ChildActionOnly]
-        public ActionResult GetEmptyChild(string id, string type)
-        {
-           
-            // Передаем в представление дескриптор характеристики
-            ViewBag.parent = id;
-            ViewBag.type = type;
-            return PartialView();
-        }
 
 
 
@@ -302,12 +371,20 @@ namespace dip.Controllers
             res.List = Spec.GetChild(id);
             res.List = res.List.Count > 0 ? res.List : null;
             res.Type = type;
-
+            res.ParentId = id;
 
             return PartialView(res);
         }
 
+        public ActionResult GetSpecChildEdit(string id)
+        {
+            GetListSomethingV<Spec> res = new GetListSomethingV<Spec>();
+            res.List = Spec.GetChild(id);
+            res.List = res.List.Count > 0 ? res.List : null;
+            res.ParentId = id;
 
+            return PartialView(res);
+        }
 
 
 
@@ -328,6 +405,16 @@ namespace dip.Controllers
             res.List = Vrem.GetChild(id);
             res.List = res.List.Count > 0 ? res.List : null;
             res.Type = type;
+            res.ParentId = id;
+            return PartialView(res);
+        }
+
+        public ActionResult GetVremChildEdit(string id)
+        {
+            GetListSomethingV<Vrem> res = new GetListSomethingV<Vrem>();
+            res.List = Vrem.GetChild(id);
+            res.List = res.List.Count > 0 ? res.List : null;
+            res.ParentId = id;
 
             return PartialView(res);
         }
@@ -337,6 +424,22 @@ namespace dip.Controllers
 
 
 
+        //TODO хз что это и зачем, скорее всего не используется
+        /// <summary>
+        /// GET-метод удаления из представления дополнительных значений характеристики
+        /// </summary>
+        /// <param name="id"> дескриптор выбранной характеристики </param>
+        /// <returns> результат действия ActionResult </returns>
+        //[ChildActionOnly]
+        public ActionResult GetEmptyChild(string id, string type)
+        {
+            //TODO для отладки
+            throw new Exception("Используется? TODO");
+            // Передаем в представление дескриптор характеристики
+            ViewBag.parent = id;
+            ViewBag.type = type;
+            return PartialView();
+        }
 
 
 
@@ -347,9 +450,9 @@ namespace dip.Controllers
 
 
 
-     
 
-       
+
+
 
     }
 }

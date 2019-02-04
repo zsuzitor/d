@@ -1,0 +1,5 @@
+﻿
+@model dip.Models.ViewModel.ActionsV.GetListSomethingV<dip.Models.Domain.Vrem>
+
+@Html.Action("DescrFormVremEdit", "Helpers", new { vrems = Model.List, parentId = Model.ParentId })
+

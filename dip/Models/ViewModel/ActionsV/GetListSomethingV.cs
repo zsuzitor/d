@@ -10,12 +10,14 @@ namespace dip.Models.ViewModel.ActionsV
         public List<T> List { get; set; }
         public string CurrentActionId { get; set; }
         public string Type { get; set; }
+        public string ParentId { get; set; }//для редактирования
 
         public GetListSomethingV()
         {
             List = null;
             CurrentActionId = null;
             Type = null;
+            ParentId = null;
         }
     }
 }

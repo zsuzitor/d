@@ -6,10 +6,10 @@
 
 
 
-@if (Model.List != null)
-{
+@*@if (Model.List != null)
+{*@
 
 
-    @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.List})
+    @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.List, parentId = Model.ParentId })
 
-}
+@*}*@

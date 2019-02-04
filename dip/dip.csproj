@@ -394,6 +394,14 @@
     <Content Include="Views\Physic\CreateDescription.cshtml" />
     <Content Include="Views\Actions\GetProsChildEdit.cshtml" />
     <Content Include="Views\Helpers\DescrFormProsEdit.cshtml" />
+    <Content Include="Views\Actions\GetVremChildEdit.cshtml" />
+    <Content Include="Views\Actions\GetSpecChildEdit.cshtml" />
+    <Content Include="Views\Helpers\DescrFormSpecEdit.cshtml" />
+    <Content Include="Views\Helpers\DescrFormVremEdit.cshtml" />
+    <Content Include="Views\Actions\ChangeActionEdit.cshtml" />
+    <Content Include="Views\Actions\GetProsEdit.cshtml" />
+    <Content Include="Views\Actions\GetSpecEdit.cshtml" />
+    <Content Include="Views\Actions\GetVremEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

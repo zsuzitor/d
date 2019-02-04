@@ -1,0 +1,38 @@
+﻿
+
+
+@model dip.Models.ViewModel.HelpersV.DescrFormListDataV<dip.Models.Domain.Spec>
+
+
+
+
+    @*@Html.Action("DescrFormSpec", "Helpers", new { type = "", specs = Model.Specs })*@
+
+    
+        <div class="form-group descrCheckBoxChild">
+            <div class="col-md-10" id="@(Model.ParentId+"_SPEC")">
+                @if (Model.List != null )
+                {
+
+                    foreach (var spec in Model.List)
+                    {
+                        <div>
+                            <label>
+                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+
+                                @spec.Name
+                            </label>
+                            <div id="@spec.Id">
+
+                            </div>
+                        </div>
+                    }
+
+
+                }
+            </div>
+            <div class="col-md-10">
+                <button onclick="addNewSpec('@Model.ParentId')">Добавить</button>
+            </div>
+        </div>
+   
