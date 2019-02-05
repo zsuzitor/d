@@ -534,15 +534,32 @@
 
         switch(this.name){
             case 'listSelectedPros':
-                loadCheckBoxChild(this, 'GetProsChildEdit');
+                if (this.checked) {
+                    loadCheckBoxChild(this, 'GetProsChildEdit');
+
+                }
+                else {
+                    document.getElementById(this.value + '_childs').innerHTML = '';
+                }
+
                 break;
 
             case 'listSelectedSpecs':
-                loadCheckBoxChild(this, 'GetSpecChildEdit');
+                if (this.checked) {
+                    loadCheckBoxChild(this, 'GetSpecChildEdit');
+                }
+                else {
+                    document.getElementById(this.value + '_childs').innerHTML = '';
+                }
                 break;
 
             case 'listSelectedVrems':
-                loadCheckBoxChild(this, 'GetVremChildEdit');
+                  if (this.checked) {
+                      loadCheckBoxChild(this, 'GetVremChildEdit');
+                  }
+                  else {
+                      document.getElementById(this.value + '_childs').innerHTML = '';
+                  }
                 break;
 
             case 'changeTypeParamActionName':
@@ -559,37 +576,49 @@
                 break;
 
             case 'listSelectedProsNew':
-                document.getElementById(this.value+'_childs').innerHTML=' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+this.value+'_PROS)"> </div>\
+                if (this.checked) {
+                    document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
+           <div class="col-md-10" id="'+ this.value + '_PROS"> </div>\
            <div class="col-md-10">\
-               <button onclick="addNewPro("'+this.value+'_PROS")">Добавить</button>\
+               <button onclick="addNewPro(\''+ this.value + '\')">Добавить</button>\
            </div>\
        </div>';
-
+                }
+                else
+                    document.getElementById(this.value + '_childs').innerHTML = '';
+                //_PROS
 
                 break;
 
 
             case 'listSelectedVremsNew':
-
+                if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+ this.value + '_Vrem)"> </div>\
+           <div class="col-md-10" id="'+ this.value + '"> </div>\
            <div class="col-md-10">\
-               <button onclick="addNewVrem("' + this.value + '_Vrem")">Добавить</button>\
+               <button onclick="addNewVrem(\'' + this.value + '_Vrem\')">Добавить</button>\
            </div>\
        </div>';
-
+                }
+                else
+                    document.getElementById(this.value + '_childs').innerHTML = '';
+                //_VREM
 
                 break;
 
 
             case 'listSelectedSpecsNew':
+                if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+ this.value + '_SPEC)"> </div>\
+           <div class="col-md-10" id="'+ this.value + '"> </div>\
            <div class="col-md-10">\
-               <button onclick="addNewSpec("' + this.value + '_SPEC")">Добавить</button>\
+               <button onclick="addNewSpec(\'' + this.value + '_SPEC\')">Добавить</button>\
            </div>\
        </div>';
+                }
+                else
+                    document.getElementById(this.value + '_childs').innerHTML = '';
+                //_SPEC
                 break;
         }
 
@@ -599,25 +628,30 @@
 
 
 
-
+    //name input text- id родителя, id input text- его id, value checkbox -id к которому относится
     function addNewPro(id) {
+        //var div ;
+        //if (id.split('_').length>1)
+            //div = document.getElementById(id);
+        //else
+        //    div = document.getElementById(id + '_PROS');
         var div = document.getElementById(id + '_PROS');
-        var strCur = id + '_PROS' + (mainObjEdit.maxNewProId++);
+        var strCur = id.split('_')[0] + '_PROS_NEW' + (mainObjEdit.maxNewProId++);
         div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/><input id="'
-            + strCur + '" type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '" type="text" id="' + div.id + '_input' + '"name="'+id+'" /><div id="' + strCur + '_childs"></div></div>';
 
     }
     function addNewSpec(id) {
         var div = document.getElementById(id + '_SPEC');
-        var strCur = id + '_SPEC' + (mainObjEdit.maxNewSpecId++);
+        var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
         div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/><input id="'
-            + strCur + '"  type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
     function addNewVrem(id) {
         var div = document.getElementById(id + '_VREM');
-        var strCur = id + '_VREM' + (mainObjEdit.maxNewVremId++);
+        var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
         div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/><input id="'
-            + strCur + '"  type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
 
 
