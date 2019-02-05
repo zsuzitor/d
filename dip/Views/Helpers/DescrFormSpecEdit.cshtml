@@ -17,12 +17,13 @@
                     foreach (var spec in Model.List)
                     {
                         <div>
-                            <label>
-                                <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+                            <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+                            <input name=@(@Model.ParentId @*@spec.Parent*@) id="@spec.Id" value="@spec.Name" type="text"/>
+                                
 
-                                @spec.Name
-                            </label>
-                            <div id="@spec.Id">
+                                
+                            
+                            <div id="@(spec.Id+"_childs")">
 
                             </div>
                         </div>

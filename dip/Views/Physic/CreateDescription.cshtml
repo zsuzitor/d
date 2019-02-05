@@ -219,6 +219,21 @@
 
 
 <script>
+
+
+    var mainObjEdit = {
+        newAction: false,
+        newFizVel: false,
+        newParamFizVel: false,
+        maxNewSpecId: 1,
+        maxNewProId: 1,
+        maxNewVremId: 1
+
+    };
+
+
+
+
     //прячем
     function ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut) {
         newdiv.style.display = 'none';
@@ -245,6 +260,7 @@
 
         if (!flag)
             if (newdiv.style.display == 'none') {
+                mainObjEdit.newAction = true;
                 ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
                 changeTypeFizVelId(2);
                 changeTypeParamFizVelId(2);
@@ -253,6 +269,7 @@
 
             }
             else {
+                mainObjEdit.newAction = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
                 changeTypeFizVelId(1);
                 changeTypeParamFizVelId(1);
@@ -261,15 +278,19 @@
             }
         else {
             if (flag == 1) {
+                mainObjEdit.newAction = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
                 changeTypeFizVelId(flag);
                 changeTypeParamFizVelId(flag);
+
                 document.getElementById('parametricAllBlock').style.display = 'block';
             }
             if (flag == 2) {
+                mainObjEdit.newAction = true;
                 ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
                 changeTypeFizVelId(flag);
                 changeTypeParamFizVelId(flag);
+
                 if (!document.getElementById('changeTypeParamActionId').checked)
                 document.getElementById('parametricAllBlock').style.display = 'none';
 
@@ -377,7 +398,7 @@
 
     function loadCheckBoxChild(ch, meth) {
 
-        var div = document.getElementById((ch.value));
+        var div = document.getElementById((ch.value+"_childs"));
 
         if (div && !div.innerHTML.trim()) {
             goAjaxRequest({
@@ -537,6 +558,39 @@
                 }
                 break;
 
+            case 'listSelectedProsNew':
+                document.getElementById(this.value+'_childs').innerHTML=' <div class="form-group descrCheckBoxChild"> \
+           <div class="col-md-10" id="'+this.value+'_PROS)"> </div>\
+           <div class="col-md-10">\
+               <button onclick="addNewPro("'+this.value+'_PROS")">Добавить</button>\
+           </div>\
+       </div>';
+
+
+                break;
+
+
+            case 'listSelectedVremsNew':
+
+                document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
+           <div class="col-md-10" id="'+ this.value + '_Vrem)"> </div>\
+           <div class="col-md-10">\
+               <button onclick="addNewVrem("' + this.value + '_Vrem")">Добавить</button>\
+           </div>\
+       </div>';
+
+
+                break;
+
+
+            case 'listSelectedSpecsNew':
+                document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
+           <div class="col-md-10" id="'+ this.value + '_SPEC)"> </div>\
+           <div class="col-md-10">\
+               <button onclick="addNewSpec("' + this.value + '_SPEC")">Добавить</button>\
+           </div>\
+       </div>';
+                break;
         }
 
 
@@ -548,16 +602,22 @@
 
     function addNewPro(id) {
         var div = document.getElementById(id + '_PROS');
-        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id+'_input' + '" />';
+        var strCur = id + '_PROS' + (mainObjEdit.maxNewProId++);
+        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/><input id="'
+            + strCur + '" type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
 
     }
     function addNewSpec(id) {
         var div = document.getElementById(id + '_SPEC');
-        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id + '_input' + '" />';
+        var strCur = id + '_SPEC' + (mainObjEdit.maxNewSpecId++);
+        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/><input id="'
+            + strCur + '"  type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
     }
     function addNewVrem(id) {
         var div = document.getElementById(id + '_VREM');
-        div.innerHTML += '<input type="checkbox"/><input type="text" id="' + div.id + '_input' + '" />';
+        var strCur = id + '_VREM' + (mainObjEdit.maxNewVremId++);
+        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/><input id="'
+            + strCur + '"  type="text" id="' + div.id + '_input' + '" /><div id="' + strCur + '_childs"></div></div>';
     }
 
 

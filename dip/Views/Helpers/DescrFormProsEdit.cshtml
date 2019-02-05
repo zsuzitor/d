@@ -12,13 +12,13 @@
             foreach (var pro in Model.List)
             {
                 <div>
-                    <label>
-                        <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
+                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
+                    <input name=@(@Model.ParentId @*@pro.Parent*@) id="@pro.Id" type="text" value="@pro.Name"/>
+                       
 
-                        @pro.Name
-                    </label>
+                        
 
-                    <div id="@pro.Id">
+                    <div id="@(pro.Id + "_childs")">
 
                     </div>
 
