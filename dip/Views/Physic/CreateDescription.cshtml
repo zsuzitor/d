@@ -139,7 +139,21 @@
     @*#line5*@
     <div>
         <div id="prosGroup">
-            @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.Form.Pros, parentId=Model.Form.CurrentAction })
+            <div id="prosGroup_new" style="display:none;">
+                <div class="form-group descrCheckBoxChild">
+                    <div class="col-md-10" id="VOZ0_PROS">
+                    </div>
+                    <div class="col-md-10">
+                        <button onclick="addNewPro('VOZ0')">Добавить</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div id="prosGroup_old">
+                @Html.Action("DescrFormProsEdit", "Helpers", new { pros = Model.Form.Pros, parentId = Model.Form.CurrentAction })
+            </div>
+        
         </div>
 
 
@@ -167,7 +181,24 @@
 
         <div>
             <div id="specGroup">
-                @Html.Action("DescrFormSpecEdit", "Helpers", new { specs = Model.Form.Specs, parentId = Model.Form.CurrentAction })
+
+                <div id="specGroup_new" style="display:none;">
+                    <div class="form-group descrCheckBoxChild">
+                        <div class="col-md-10" id="VOZ0_SPEC">
+                        </div>
+                        <div class="col-md-10">
+                            <button onclick="addNewSpec('VOZ0')">Добавить</button>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div id="specGroup_old">
+                    @Html.Action("DescrFormSpecEdit", "Helpers", new { specs = Model.Form.Specs, parentId = Model.Form.CurrentAction })
+                </div>
+
+
+                
             </div>
             </div>
 
@@ -191,7 +222,24 @@
         @*@Html.Action("DescrFormVrem", "Helpers", new { type = "", vrems = Model.Vrems })*@
 
         <div id="vremGroup">
-            @Html.Action("DescrFormVremEdit", "Helpers", new { vrems = Model.Form.Vrems, parentId = Model.Form.CurrentAction })
+            <div id="vremGroup_new" style="display:none;">
+                <div class="form-group descrCheckBoxChild">
+                    <div class="col-md-10" id="VOZ0_VREM">
+                    </div>
+                    <div class="col-md-10">
+                        <button onclick="addNewVrem('VOZ0')">Добавить</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div id="vremGroup_old">
+                @Html.Action("DescrFormVremEdit", "Helpers", new { vrems = Model.Form.Vrems, parentId = Model.Form.CurrentAction })
+            </div>
+
+
+
+           
         </div>
     </div>
 </div>
@@ -244,7 +292,8 @@
     function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
         newdiv.style.display = 'block';
         oldDiv.style.display = 'none';
-        changeBut.innerHTML = 'Использовать существущие';
+        if (changeBut)
+            changeBut.innerHTML = 'Использовать существущие';
     }
 
 
@@ -258,28 +307,54 @@
         var oldDiv = document.getElementById('create_descr_action_old_div');
         var changeBut = document.getElementById('changeTypeActionId_but_id');
 
+        //pros
+        var newPro = document.getElementById('prosGroup_new');
+        var oldPro = document.getElementById('prosGroup_old');
+
+        //Vrem
+        var newVrem = document.getElementById('vremGroup_new');
+        var oldVrem = document.getElementById('vremGroup_old');
+
+        //Spec
+        var newSpec = document.getElementById('specGroup_new');
+        var oldSpec = document.getElementById('specGroup_old');
+
+
         if (!flag)
             if (newdiv.style.display == 'none') {
-                mainObjEdit.newAction = true;
-                ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
-                changeTypeFizVelId(2);
-                changeTypeParamFizVelId(2);
-                if (!document.getElementById('changeTypeParamActionId').checked)
-                document.getElementById('parametricAllBlock').style.display='none';
+                //mainObjEdit.newAction = true;
+                //ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+
+
+
+
+                //changeTypeFizVelId(2);
+                //changeTypeParamFizVelId(2);
+                //if (!document.getElementById('changeTypeParamActionId').checked)
+                //document.getElementById('parametricAllBlock').style.display='none';
+                flag = 2;
 
             }
             else {
-                mainObjEdit.newAction = false;
-                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
-                changeTypeFizVelId(1);
-                changeTypeParamFizVelId(1);
+                //mainObjEdit.newAction = false;
+                //ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                //changeTypeFizVelId(1);
+                //changeTypeParamFizVelId(1);
 
-                document.getElementById('parametricAllBlock').style.display = 'block';
+                //document.getElementById('parametricAllBlock').style.display = 'block';
+
+                flag = 1;
             }
-        else {
+       // else {
             if (flag == 1) {
                 mainObjEdit.newAction = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+
+                ReplaceDisplayNoneNew(newPro, oldPro, null);
+                ReplaceDisplayNoneNew(newVrem, oldVrem, null);
+                ReplaceDisplayNoneNew(newSpec, oldSpec, null);
+
                 changeTypeFizVelId(flag);
                 changeTypeParamFizVelId(flag);
 
@@ -288,14 +363,21 @@
             if (flag == 2) {
                 mainObjEdit.newAction = true;
                 ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+
+                ReplaceDisplayNoneOld(newPro, oldPro, null);
+                ReplaceDisplayNoneOld(newVrem, oldVrem, null);
+                ReplaceDisplayNoneOld(newSpec, oldSpec, null);
+
+
                 changeTypeFizVelId(flag);
                 changeTypeParamFizVelId(flag);
+
 
                 if (!document.getElementById('changeTypeParamActionId').checked)
                 document.getElementById('parametricAllBlock').style.display = 'none';
 
             }
-        }
+       // }
 
 
 
@@ -473,13 +555,13 @@
 
 
 
-                document.getElementById('prosGroup' ).innerHTML = data[2];
+                document.getElementById('prosGroup_old').innerHTML = data[2];
 
 
-                document.getElementById('specGroup' ).innerHTML = data[3];
+                document.getElementById('specGroup_old').innerHTML = data[3];
 
 
-                document.getElementById('vremGroup' ).innerHTML = data[4];
+                document.getElementById('vremGroup_old').innerHTML = data[4];
 
                 $('#parametricFizVel').replaceWith(data[5]);
 
@@ -594,9 +676,9 @@
             case 'listSelectedVremsNew':
                 if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+ this.value + '"> </div>\
+           <div class="col-md-10" id="' + this.value + '_VREM"> </div>\
            <div class="col-md-10">\
-               <button onclick="addNewVrem(\'' + this.value + '_Vrem\')">Добавить</button>\
+               <button onclick="addNewVrem(\'' + this.value + '\')">Добавить</button>\
            </div>\
        </div>';
                 }
@@ -610,9 +692,9 @@
             case 'listSelectedSpecsNew':
                 if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+ this.value + '"> </div>\
+           <div class="col-md-10" id="' + this.value + '_SPEC"> </div>\
            <div class="col-md-10">\
-               <button onclick="addNewSpec(\'' + this.value + '_SPEC\')">Добавить</button>\
+               <button onclick="addNewSpec(\'' + this.value + '\')">Добавить</button>\
            </div>\
        </div>';
                 }
@@ -637,27 +719,36 @@
         //    div = document.getElementById(id + '_PROS');
         var div = document.getElementById(id + '_PROS');
         var strCur = id.split('_')[0] + '_PROS_NEW' + (mainObjEdit.maxNewProId++);
-        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/><input id="'
+        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
+            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+            '<input id="'
             + strCur + '" type="text" id="' + div.id + '_input' + '"name="'+id+'" /><div id="' + strCur + '_childs"></div></div>';
 
     }
     function addNewSpec(id) {
         var div = document.getElementById(id + '_SPEC');
         var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
-        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/><input id="'
+        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/>' +
+            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+            '<input id="'
             + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
     function addNewVrem(id) {
         var div = document.getElementById(id + '_VREM');
         var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
-        div.innerHTML += '<div><input value="' + strCur + '" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/><input id="'
+        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/>' +
+            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+            '<input id="'
             + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
 
+    //<div id="div_'+div.id+'_all">
 
 
-
-
+    function deleteItem(a) {
+        // <div id="div_(pro.Id)_all">
+        alert(a);
+    }
 
 
 

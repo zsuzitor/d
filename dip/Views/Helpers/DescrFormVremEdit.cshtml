@@ -13,13 +13,14 @@
 
             foreach (var vrem in Model.List)
             {
-                <div>
+                <div id="div_@(vrem.Id)_all">
                     <input class="checkBoxClass" type="checkbox" name=@("listSelectedVrems") value="@vrem.Id" />
-                    <input name="@(@Model.ParentId @*@vrem.Parent*@)" id="@vrem.Id" value="@vrem.Name" type="text"/>
-                        
+                    <button onclick="deleteItem('@vrem.Id')">Удалить</button>
+                    <input name="@(@Model.ParentId @*@vrem.Parent*@)" id="@vrem.Id" value="@vrem.Name" type="text" />
 
-                        
-                    
+
+
+
                     <div id="@(vrem.Id + "_childs")">
 
                     </div>
