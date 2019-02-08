@@ -115,6 +115,9 @@ namespace dip.Controllers
         {
             ChangeActionV res = new ChangeActionV();
             AllAction act = AllAction.Get(fizVelId);
+            if(act==null)
+                return new HttpStatusCodeResult(404);
+
             if (act.Parametric)
             {
                 res.CheckboxParamsId = null;
@@ -148,7 +151,7 @@ namespace dip.Controllers
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
         [ChildActionOnly]
-        public ActionResult GetFizVels(string id, string type = "")
+        public ActionResult GetFizVels(string id, string type = "") //TODO GetFizVelsEdit  оптимизация
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             List<FizVel> listOfFizVels;
@@ -172,6 +175,31 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+
+        [ChildActionOnly]
+        public ActionResult GetFizVelsEdit(string id)//TODO GetFizVels  оптимизация
+        {
+            GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
+            List<FizVel> listOfFizVels;
+            AllAction act = AllAction.Get(id);
+            using (var db = new ApplicationDbContext())
+                if (!act.Parametric)
+                    // непараметрическое воздействие
+
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL") ||
+                                                                              (fizVel.Id == "NO_FIZVEL"))
+                                                           .OrderBy(fizVel => fizVel.Id).ToList();
+                else
+
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL"))
+                                                           .OrderBy(fizVel => fizVel.Id).ToList();
+
+            res.List = listOfFizVels;
+            res.CurrentActionId = act.Id;
+          
+            res.ParentId = id;
+            return PartialView(res);
+        }
 
 
 
@@ -309,7 +337,7 @@ namespace dip.Controllers
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
         //[ChildActionOnly]
-        public ActionResult GetParametricFizVels(string id, string type)
+        public ActionResult GetParametricFizVels(string id, string type)//TODO GetParametricFizVelsEdit  оптимизация
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             // Получаем список физических величин для параметрических воздействий
@@ -318,6 +346,19 @@ namespace dip.Controllers
                  res.List = FizVel.GetParametricFizVels(id) ;
           
             res.Type = type;
+            res.ParentId = id;
+            return PartialView(res);
+        }
+
+        public ActionResult GetParametricFizVelsEdit(string id)//TODO GetParametricFizVels  оптимизация
+        {
+            GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
+            // Получаем список физических величин для параметрических воздействий
+
+            if (!string.IsNullOrWhiteSpace(id))
+                res.List = FizVel.GetParametricFizVels(id);
+
+            
             res.ParentId = id;
             return PartialView(res);
         }

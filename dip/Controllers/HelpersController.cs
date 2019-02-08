@@ -39,6 +39,13 @@ namespace dip.Controllers
             
             return PartialView(res);
         }
+        public ActionResult DescrFormFizVelsEdit(List<FizVel> fizVelId)
+        {
+            DescrFormListDataV<FizVel> res = new DescrFormListDataV<FizVel>();
+            res.List = fizVelId;
+
+            return PartialView(res);
+        }
 
 
         public ActionResult DescrFormParamFizVels(string type, List<FizVel> parametricFizVelId, DescrSearchI param = null)
@@ -47,6 +54,12 @@ namespace dip.Controllers
             res.List = parametricFizVelId;
             res.Type = type;
             res.Param = param;
+            return PartialView(res);
+        }
+        public ActionResult DescrFormParamFizVelsEdit( List<FizVel> parametricFizVelId)
+        {
+            DescrFormListDataV<FizVel> res = new DescrFormListDataV<FizVel>();
+            res.List = parametricFizVelId;
             return PartialView(res);
         }
 

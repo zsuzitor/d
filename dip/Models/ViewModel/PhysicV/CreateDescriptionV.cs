@@ -12,7 +12,9 @@ namespace dip.Models.ViewModel.PhysicV
 
 
 
-
+        /// <summary>
+        /// загружает список все параметрических воздействий загруженных в  форму, одной строкой
+        /// </summary>
         public void SetAllParametricAction()
         {
             //ActionId будет 1 и тоже, поэтому берем любое

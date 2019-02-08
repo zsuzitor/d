@@ -402,6 +402,10 @@
     <Content Include="Views\Actions\GetProsEdit.cshtml" />
     <Content Include="Views\Actions\GetSpecEdit.cshtml" />
     <Content Include="Views\Actions\GetVremEdit.cshtml" />
+    <Content Include="Views\Helpers\DescrFormFizVelsEdit.cshtml" />
+    <Content Include="Views\Helpers\DescrFormParamFizVelsEdit.cshtml" />
+    <Content Include="Views\Actions\GetFizVelsEdit.cshtml" />
+    <Content Include="Views\Actions\GetParametricFizVelsEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

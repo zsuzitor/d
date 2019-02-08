@@ -247,8 +247,14 @@ namespace dip.Controllers
         public ActionResult CreateDescription()//, string technicalFunctionId
         {
             CreateDescriptionV res = new CreateDescriptionV();
-            res.Form= DescriptionForm.GetFormObject(null,null);
-            res.SetAllParametricAction();
+             //res.Form= DescriptionForm.GetFormObject(null,null);
+            res.Form = new DescriptionForm();
+            using (var db = new ApplicationDbContext())
+            {
+                // Получаем список всех воздействий 
+                res.Form.ActionId = db.AllActions.OrderBy(action => action.Id).ToList();
+            }
+                res.SetAllParametricAction();
             return View(res);
         }
 

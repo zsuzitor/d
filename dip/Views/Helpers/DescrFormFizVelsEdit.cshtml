@@ -1,0 +1,44 @@
+﻿
+
+
+@model dip.Models.ViewModel.HelpersV.DescrFormListDataV<dip.Models.Domain.FizVel>
+
+
+
+
+
+
+    @*@if (Model.Param?.ActionId != "VOZ11")
+    {
+       
+        <label class="control-label col-md-2" for="fizVelId">Название физической величины</label>
+    }
+    else
+    {
+      
+        <label class="control-label col-md-2" for="fizVelId">Раздел физики</label>
+    }*@
+    <div class="col-md-10">
+        
+       
+
+            @foreach (var i in Model.List)
+            {
+                <div class="padding_10_top">
+                    <input name="fizVelId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="" style="display:none;">
+                    <input class="" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" />
+                </div>
+                    @*<input type="text" value="@i.Name" name="@i.Id" />*@
+               
+
+            }
+
+        @*</select>*@
+
+
+
+
+
+    </div>
+
+

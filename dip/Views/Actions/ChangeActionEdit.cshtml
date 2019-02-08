@@ -3,7 +3,7 @@
 @*это представление сплитится по <hr />   => не менять*@
 @(Model.Type)
 <hr />
-@Html.Action("GetFizVels", "Actions", new { id = Model.FizVelId })
+@Html.Action("GetFizVelsEdit", "Actions", new { id = Model.FizVelId })
 
 <hr />
 
@@ -19,7 +19,7 @@
 
 <hr />
 
-@Html.Action("GetParametricFizVels", "Actions", new { id = Model.ParametricFizVelsId })
+@Html.Action("GetParametricFizVelsEdit", "Actions", new { id = Model.ParametricFizVelsId })
 
 
 

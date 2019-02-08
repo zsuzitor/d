@@ -1,0 +1,28 @@
+﻿
+
+
+
+@model dip.Models.ViewModel.HelpersV.DescrFormListDataV<dip.Models.Domain.FizVel>
+
+
+    @if (Model.List != null && Model.List.Count != 0)
+    {
+       
+        <label class="control-label col-md-2" for="@("parametricFizVelId")">Название физической величины</label>
+        <div class="col-md-10">
+            
+
+            
+                @*<option value="NO_FIZVEL">Не выбрано</option>*@
+                @foreach (var i in Model.List)
+                {
+                    <input type="text" value="@i.Name" name="@i.Id" />
+                    
+                }
+
+            @*</select>*@
+
+        </div>
+    }
+
+

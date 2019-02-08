@@ -88,7 +88,9 @@ a:hover{
     
 }
 
-
+.padding_10_top{
+    padding-top:10px;
+}
 
 
 
@@ -150,7 +152,7 @@ div.one_block_fetext_list_external{
     position:relative;
 }
 
-div.inline {
+.inline {
      display: inline;
 }
 div.div_inline_block {
