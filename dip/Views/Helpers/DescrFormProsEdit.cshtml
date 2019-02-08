@@ -5,19 +5,19 @@
 
 
 <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
-    <div class="col-md-10" id="@(Model.ParentId+"_PROS")">
+    <div class="" id="@(Model.ParentId+"_PROS")">
         @if (Model.List != null)
         {
 
             foreach (var pro in Model.List)
             {
-                <div id="div_@(pro.Id)_all">
-                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
-                    <button onclick="deleteItem('@pro.Id')">Удалить</button>
+                <div class="one_check_line_edit"  id="div_@(pro.Id)_all">
+                    <input id="@(pro.Id+"_chch")" class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
+                    <button id="@(pro.Id+"_delbut")" onclick="deleteItem('@pro.Id')">Удалить</button>
                     <input name=@(@Model.ParentId @*@pro.Parent*@) id="@pro.Id" type="text" value="@pro.Name"/>
                        
+                  
 
-                        
 
                     <div id="@(pro.Id + "_childs")">
 
@@ -29,7 +29,7 @@
 
         }
     </div>
-    <div class="col-md-10">
+    <div class="">
         <button  onclick="addNewPro('@Model.ParentId')">Добавить</button>
     </div>
 </div>

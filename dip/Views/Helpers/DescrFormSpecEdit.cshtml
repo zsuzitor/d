@@ -10,15 +10,15 @@
 
     
         <div class="form-group descrCheckBoxChild">
-            <div class="col-md-10" id="@(Model.ParentId+"_SPEC")">
+            <div class="" id="@(Model.ParentId+"_SPEC")">
                 @if (Model.List != null)
                 {
 
                     foreach (var spec in Model.List)
                     {
-                        <div id="div_@(spec.Id)_all">
-                            <input class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
-                            <button onclick="deleteItem('@spec.Id')">Удалить</button>
+                        <div class="one_check_line_edit"  id="div_@(spec.Id)_all">
+                            <input  id="@(spec.Id+"_chch")"  class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
+                            <button  id="@(spec.Id+"_delbut")"  onclick="deleteItem('@spec.Id')">Удалить</button>
                             <input name=@(@Model.ParentId @*@spec.Parent*@) id="@spec.Id" value="@spec.Name" type="text" />
 
 
@@ -33,7 +33,7 @@
 
                 }
             </div>
-            <div class="col-md-10">
+            <div class="">
                 <button onclick="addNewSpec('@Model.ParentId')">Добавить</button>
             </div>
         </div>

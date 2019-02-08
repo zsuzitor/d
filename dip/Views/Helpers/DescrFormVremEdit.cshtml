@@ -7,15 +7,15 @@
 
 
 <div class="form-group descrCheckBoxChild">
-    <div class="col-md-10" id="@(Model.ParentId+"_VREM")">
+    <div class="" id="@(Model.ParentId+"_VREM")">
         @if (Model.List != null && Model.List.Count != 0)
         {
 
             foreach (var vrem in Model.List)
             {
-                <div id="div_@(vrem.Id)_all">
-                    <input class="checkBoxClass" type="checkbox" name=@("listSelectedVrems") value="@vrem.Id" />
-                    <button onclick="deleteItem('@vrem.Id')">Удалить</button>
+                <div class="one_check_line_edit"  id="div_@(vrem.Id)_all">
+                    <input  id="@(vrem.Id+"_chch")"  class="checkBoxClass" type="checkbox" name=@("listSelectedVrems") value="@vrem.Id" />
+                    <button id="@(vrem.Id+"_delbut")"  onclick="deleteItem('@vrem.Id')">Удалить</button>
                     <input name="@(@Model.ParentId @*@vrem.Parent*@)" id="@vrem.Id" value="@vrem.Name" type="text" />
 
 
@@ -30,7 +30,7 @@
 
         }
     </div>
-    <div class="col-md-10">
+    <div class="">
         <button onclick="addNewVrem('@Model.ParentId')">Добавить</button>
     </div>
 </div>

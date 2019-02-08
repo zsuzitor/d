@@ -273,6 +273,8 @@
         newAction: false,
         newFizVel: false,
         newParamFizVel: false,
+        parametricAction: false,
+        parametricActionNew: false,
         maxNewSpecId: 1,
         maxNewProId: 1,
         maxNewVremId: 1
@@ -286,7 +288,8 @@
     function ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut) {
         newdiv.style.display = 'none';
         oldDiv.style.display = 'block';
-        changeBut.innerHTML = 'Добавить новый';
+        if (changeBut)
+            changeBut.innerHTML = 'Добавить новый';
     }
 
     function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
@@ -346,7 +349,10 @@
 
                 flag = 1;
             }
-       // else {
+        // else {
+      
+       
+
             if (flag == 1) {
                 mainObjEdit.newAction = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
@@ -394,25 +400,33 @@
             var oldDivAction = document.getElementById('create_descr_action_old_div');
 
             if (newdiv.style.display == 'none') {
-                if (oldDivAction.style.display != 'none')
+                if (oldDivAction.style.display != 'none') {
+                    mainObjEdit.newFizVel = true;
                     ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+                }
+                   
 
             }
             else {
-                if (oldDivAction.style.display != 'none')
-                ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                if (oldDivAction.style.display != 'none') {
+                    mainObjEdit.newFizVel = false;
+                    ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                }
+               
             }
         }
         else {
             if (flag == 1) {
+                mainObjEdit.newFizVel = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
             }
             if (flag == 2) {
+                mainObjEdit.newFizVel = true;
                 ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
 
             }
         }
-
+        
     }
 
     //flag-1 прячем 2 показываем  newdiv
@@ -426,38 +440,52 @@
 
 
 
-        var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
+        //var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
         var actionId = document.getElementById('action');
         if (!flag) {
             var oldDivAction = document.getElementById('create_descr_action_old_div');
-            for (var i = 0; i < checkParametrics.length; ++i) {
-
-                if (checkParametrics[i] == actionId.value) {
+           
+            if (checkParametricAction(actionId.value)){
                     if (newdiv.style.display == 'none') {
-                        if (oldDivAction.style.display != 'none')// || document.getElementById('changeTypeParamActionId').checked
-                        ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
-
+                        if (oldDivAction.style.display != 'none') {// || document.getElementById('changeTypeParamActionId').checked
+                            ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
+                            mainObjEdit.newParamFizVel = true;
+                        }
                     }
                     else {
-                        if (oldDivAction.style.display != 'none')//|| document.getElementById('changeTypeParamActionId').checked
-                        ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                        if (oldDivAction.style.display != 'none') {//|| document.getElementById('changeTypeParamActionId').checked
+                            ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
+                            mainObjEdit.newParamFizVel = false;
+                        }
                     }
-                    break;
-                }
-
-
             }
         }
         else {
             if (flag == 1) {
+                mainObjEdit.newParamFizVel = false;
                 ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut);
             }
             if (flag == 2) {
+                mainObjEdit.newParamFizVel = true;
                 ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut);
 
             }
 
         }
+    }
+
+
+
+
+    function checkParametricAction(id) {
+        var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
+        for (var i = 0; i < checkParametrics.length; ++i) {//todo вынести в фукнцию
+
+            if (checkParametrics[i] == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -569,6 +597,9 @@
             }, type: 'POST'
         });
 
+        mainObjEdit.parametricAction = checkParametricAction(id);
+
+
     };
 
 
@@ -648,20 +679,20 @@
                 if (this.checked){
                     document.getElementById('parametricAllBlock').style.display = 'block';
                     document.getElementById('div_all_checkboxes').style.display = 'none';
-
+                    mainObjEdit.parametricActionNew = true;
                 }
                 else {
                     document.getElementById('parametricAllBlock').style.display = 'none';
                     document.getElementById('div_all_checkboxes').style.display = 'block';
-
+                    mainObjEdit.parametricActionNew = false;
                 }
                 break;
 
             case 'listSelectedProsNew':
                 if (this.checked) {
                     document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="'+ this.value + '_PROS"> </div>\
-           <div class="col-md-10">\
+           <div class="" id="'+ this.value + '_PROS"> </div>\
+           <div class="">\
                <button onclick="addNewPro(\''+ this.value + '\')">Добавить</button>\
            </div>\
        </div>';
@@ -676,8 +707,8 @@
             case 'listSelectedVremsNew':
                 if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="' + this.value + '_VREM"> </div>\
-           <div class="col-md-10">\
+           <div class="" id="' + this.value + '_VREM"> </div>\
+           <div class="">\
                <button onclick="addNewVrem(\'' + this.value + '\')">Добавить</button>\
            </div>\
        </div>';
@@ -692,8 +723,8 @@
             case 'listSelectedSpecsNew':
                 if (this.checked) {
                 document.getElementById(this.value + '_childs').innerHTML = ' <div class="form-group descrCheckBoxChild"> \
-           <div class="col-md-10" id="' + this.value + '_SPEC"> </div>\
-           <div class="col-md-10">\
+           <div class="" id="' + this.value + '_SPEC"> </div>\
+           <div class="">\
                <button onclick="addNewSpec(\'' + this.value + '\')">Добавить</button>\
            </div>\
        </div>';
@@ -719,8 +750,14 @@
         //    div = document.getElementById(id + '_PROS');
         var div = document.getElementById(id + '_PROS');
         var strCur = id.split('_')[0] + '_PROS_NEW' + (mainObjEdit.maxNewProId++);
-        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
-            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+
+        
+
+
+
+
+        div.innerHTML += '<div class="one_check_line_edit" id="div_' + div.id + '_all"><input value="' + strCur + '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
+            '<button id="' + strCur + '_delbut"  onclick=\'deleteItem("' + strCur + '")\'>Удалить</button>' +
             '<input id="'
             + strCur + '" type="text" id="' + div.id + '_input' + '"name="'+id+'" /><div id="' + strCur + '_childs"></div></div>';
 
@@ -728,16 +765,16 @@
     function addNewSpec(id) {
         var div = document.getElementById(id + '_SPEC');
         var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
-        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/>' +
-            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+        div.innerHTML += '<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur + '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/>' +
+            '<button id="' + strCur + '_delbut"  onclick=\'deleteItem("' + strCur + '")\'>Удалить</button>' +
             '<input id="'
             + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
     function addNewVrem(id) {
         var div = document.getElementById(id + '_VREM');
         var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
-        div.innerHTML += '<div id="div_' + div.id + '_all"><input value="' + strCur + '" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/>' +
-            '<button onclick="deleteItem("' + div.id + '")">Удалить</button>' +
+        div.innerHTML += '<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur + '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/>' +
+            '<button id="' + strCur + '_delbut" onclick=\'deleteItem("' + strCur + '")\'>Удалить</button>' +
             '<input id="'
             + strCur + '"  type="text" id="' + div.id + '_input' + '"name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
     }
@@ -745,9 +782,37 @@
     //<div id="div_'+div.id+'_all">
 
 
-    function deleteItem(a) {
+    function deleteItem(id) {
         // <div id="div_(pro.Id)_all">
-        alert(a);
+        var delbut = document.getElementById(id + '_delbut');
+        var checkboxChilds = $('#' + id + '_chch');
+        var inp = $('#' + id );
+        if (delbut.innerHTML.trim() == 'Удалить') {
+            //"удаляем"
+            delbut.innerHTML = 'Восстановить';
+            var divChilds = document.getElementById(id + '_childs');
+            divChilds.innerHTML = '';
+            $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
+            $(checkboxChilds).css('display', 'none');
+            $(inp).prop('readonly', true);
+            $(inp).css('background-color', 'grey');
+        }
+        else{
+            //восстанавливаем
+            delbut.innerHTML = 'Удалить';
+            $(checkboxChilds).css('display','inline');
+            $(inp).removeProp('readonly');
+            $(inp).css('background-color', 'white');
+
+        }
+        //readonly
+        //.css("","");
+        
+       
+        
+        
+        
+       // alert(id);
     }
 
 
