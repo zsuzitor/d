@@ -11,6 +11,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
+using Newtonsoft.Json;  //JSON.NET
+using Newtonsoft.Json.Linq;
+
 using static dip.Models.Functions;
 
 namespace dip.Controllers
@@ -260,8 +264,14 @@ namespace dip.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public ActionResult CreateDescription(string g)//, string technicalFunctionId
+        public ActionResult CreateDescription(string json)//, string technicalFunctionId
         {
+            
+            var g= JsonConvert.DeserializeObject<JsonSaveDescription[]>(json);
+
+
+
+
 
             return View();
         }
@@ -284,6 +294,6 @@ namespace dip.Controllers
 
     }
 
-    
+  
 
 }

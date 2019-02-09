@@ -16,13 +16,16 @@
                 @*<option value="NO_FIZVEL">Не выбрано</option>*@
                 @foreach (var i in Model.List)
                 {
-                    <input type="text" value="@i.Name" name="@i.Id" />
-                    
+                    <div class="padding_10_top">
+                        <button class="btn btn-default" onclick="changeParamFizVels('@i.Id')">Изменить</button>
+                        <input class="form-control" type="text" value="@i.Name" name="@Model.ParentId" id="@(i.Id+"_inp")" readonly />
+                        
+                    </div>
                 }
 
-            @*</select>*@
+                        @*</select>*@
 
-        </div>
-    }
+                    </div>
+                }
 
 

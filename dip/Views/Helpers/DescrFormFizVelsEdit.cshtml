@@ -25,8 +25,9 @@
             @foreach (var i in Model.List)
             {
                 <div class="padding_10_top">
-                    <input name="fizVelId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="" style="display:none;">
-                    <input class="" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" />
+                    <input name="fizVelId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="radioClass" style="display:none;">
+                    <button class="btn btn-default" onclick="changeFizVels('@i.Id')">Изменить</button>
+                    <input class="form-control" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" readonly />
                 </div>
                     @*<input type="text" value="@i.Name" name="@i.Id" />*@
                

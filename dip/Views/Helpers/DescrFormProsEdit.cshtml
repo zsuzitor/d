@@ -4,7 +4,7 @@
 
 
 
-<div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
+<div class="form-group descrCheckBoxChildEdit" @*id=@("pros" + type)*@>
     <div class="" id="@(Model.ParentId+"_PROS")">
         @if (Model.List != null)
         {
@@ -13,8 +13,9 @@
             {
                 <div class="one_check_line_edit"  id="div_@(pro.Id)_all">
                     <input id="@(pro.Id+"_chch")" class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
-                    <button id="@(pro.Id+"_delbut")" onclick="deleteItem('@pro.Id')">Удалить</button>
-                    <input name=@(@Model.ParentId @*@pro.Parent*@) id="@pro.Id" type="text" value="@pro.Name"/>
+                    <button class="btn btn-default" id="@(pro.Id+"_delbut")" onclick="deleteItem('@pro.Id')">Удалить</button>
+                    <button class="btn btn-default" onclick="changePros('@pro.Id')">Изменить</button>
+                    <input class="form-control" name=@(@Model.ParentId @*@pro.Parent*@) id="@(pro.Id+"_inp")" type="text" value="@pro.Name" readonly/>
                        
                   
 
@@ -30,7 +31,7 @@
         }
     </div>
     <div class="">
-        <button  onclick="addNewPro('@Model.ParentId')">Добавить</button>
+        <button class="btn btn-default"  onclick="addNewPro('@Model.ParentId')">Добавить</button>
     </div>
 </div>
 

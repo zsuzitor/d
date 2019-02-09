@@ -403,4 +403,16 @@ namespace dip.Models.Domain
 
 
 
+    class JsonSaveDescription
+    {
+        public string Id { get; set; }
+        public string ParentId { get; set; }
+        public int Type { get; set; }
+        public string Text { get; set; }
+        public bool Parametric { get; set; }
+        public int TypeAction { get; set; }
+    }
+
+
+
 }

@@ -59,6 +59,9 @@ textarea{
 .checkBoxClass{
     width:20px !important;
 }
+.radioClass{
+    width:20px !important;
+}
 
 /*при редактиваронии*/
 /*div.one_effect_img{
@@ -532,6 +535,9 @@ div.div_img_record_show_block{
 
 div.descrCheckBoxChild{
     padding-left:30px;
+}
+div.descrCheckBoxChildEdit{
+    padding-left:45px;
 }
 
 
