@@ -15,7 +15,7 @@
             {
                 <div class="one_check_line_edit"  id="div_@(vrem.Id)_all">
                     <input  id="@(vrem.Id+"_chch")"  class="checkBoxClass" type="checkbox" name=@("listSelectedVrems") value="@vrem.Id" />
-                    <button class="btn btn-default" id="@(vrem.Id+"_delbut")"  onclick="deleteItem('@vrem.Id')">Удалить</button>
+                    <button class="btn btn-default" id="@(vrem.Id+"_delbut")"  onclick="deleteItemVrem('@vrem.Id')">Удалить</button>
                     <button class="btn btn-default" onclick="changeVrems('@vrem.Id')">Изменить</button>
                     <input class="form-control" name="@(@Model.ParentId @*@vrem.Parent*@)" id="@(vrem.Id+"_inp")" value="@vrem.Name" type="text" readonly/>
 

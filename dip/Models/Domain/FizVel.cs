@@ -11,6 +11,7 @@ namespace dip.Models.Domain
         public string Id { get; set; }
         public string Name { get; set; }
         public string Parent { get; set; }
+        public bool Parametric { get; set; }
 
         public ICollection< Action >Actions { get; set; }
 
@@ -19,7 +20,7 @@ namespace dip.Models.Domain
 
         public FizVel()
         {
-
+            Parametric = false;
 
         }
 
