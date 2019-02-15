@@ -31,14 +31,14 @@ namespace dip.Controllers
         }
 
 
-        
+
 
 
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
             DetailsV res = new DetailsV();
             res.Effect = FEText.Get(id);
-            if(res.Effect == null)
+            if (res.Effect == null)
                 return new HttpStatusCodeResult(404);
             string check_id = ApplicationUser.GetUserId();
 
@@ -55,9 +55,9 @@ namespace dip.Controllers
                 if (roles != null)
                     if (roles.Contains("admin"))
                         res.Admin = true;
-                res.Favourited=res.Effect.Favourited(check_id);
+                res.Favourited = res.Effect.Favourited(check_id);
             }
-         
+
 
 
             return View(res);
@@ -68,15 +68,15 @@ namespace dip.Controllers
             ShowSimilarV res = new ShowSimilarV();
             res.ListSimilarIds = FEText.GetListSimilar(id);
 
-            
+
             return PartialView(res);
         }
 
 
-        public ActionResult ListFeText(int[] listId=null,int numLoad=1)
+        public ActionResult ListFeText(int[] listId = null, int numLoad = 1)
         {
             ListFeTextV res = new ListFeTextV();
-            
+
             if (listId == null)
             {
                 listId = (int[])TempData["list_fe_id"];
@@ -94,8 +94,8 @@ namespace dip.Controllers
         {
             EditV res = new EditV();
             res.Obj = FEText.Get(id);
-            
-            if(res==null)
+
+            if (res == null)
                 return new HttpStatusCodeResult(404);
 
             FEAction inp = null;
@@ -115,12 +115,12 @@ namespace dip.Controllers
             res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
 
 
-            
+
 
             res.Obj.LoadImage();
 
 
-            
+
             return View(res);
         }
 
@@ -128,20 +128,20 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
-            
-            if(!ModelState.IsValid)
+
+            if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
 
-           
-                DescrSearchIInput.ValidationIfNeed(inp);
-            
-                DescrSearchIOut.ValidationIfNeed(outp);
+
+            DescrSearchIInput.ValidationIfNeed(inp);
+
+            DescrSearchIOut.ValidationIfNeed(outp);
             if (inp?.Valide == false || outp?.Valide == false)
                 return new HttpStatusCodeResult(404);
 
 
             var list_img_byte = Get_photo_post(uploadImage);
-            
+
             List<int> deleteImg = null;
             if (deleteImg_ != null)
                 deleteImg = deleteImg_.Distinct().ToList();
@@ -161,15 +161,15 @@ namespace dip.Controllers
 
             if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp_, outp_))
                 return new HttpStatusCodeResult(404);
-            Lucene_.UpdateDocument(obj.IDFE.ToString(),obj);
+            Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
-            return RedirectToAction("Details", "Physic",new {id= oldObj.IDFE });
+            return RedirectToAction("Details", "Physic", new { id = oldObj.IDFE });
         }
 
 
-        
+
 
 
 
@@ -177,17 +177,17 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
-            
-            FEText res = new FEText() ;
-            
-            
+
+            FEText res = new FEText();
+
+
             return View(res);
         }
 
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage,  DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
         {
 
             //if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
@@ -200,10 +200,10 @@ namespace dip.Controllers
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
-            
-                DescrSearchIInput.ValidationIfNeed(inp);
-            
-                DescrSearchIOut.ValidationIfNeed(outp);
+
+            DescrSearchIInput.ValidationIfNeed(inp);
+
+            DescrSearchIOut.ValidationIfNeed(outp);
             if (inp?.Valide == false || outp?.Valide == false)
                 return new HttpStatusCodeResult(404);
 
@@ -213,10 +213,10 @@ namespace dip.Controllers
             outp_.DeleteNotChildCheckbox();
 
             var list_img_byte = Get_photo_post(uploadImage);
-            
-           
-                //новая
-                obj.AddToDb(inp_, outp_, list_img_byte);
+
+
+            //новая
+            obj.AddToDb(inp_, outp_, list_img_byte);
 
 
 
@@ -251,14 +251,14 @@ namespace dip.Controllers
         public ActionResult CreateDescription()//, string technicalFunctionId
         {
             CreateDescriptionV res = new CreateDescriptionV();
-             //res.Form= DescriptionForm.GetFormObject(null,null);
+            //res.Form= DescriptionForm.GetFormObject(null,null);
             res.Form = new DescriptionForm();
             using (var db = new ApplicationDbContext())
             {
                 // Получаем список всех воздействий 
                 res.Form.ActionId = db.AllActions.OrderBy(action => action.Id).ToList();
             }
-                res.SetAllParametricAction();
+            res.SetAllParametricAction();
             return View(res);
         }
 
@@ -308,7 +308,7 @@ namespace dip.Controllers
                 switch (i.Type)
                 {
                     case 1://actionid
-                       
+
                         switch (i.TypeAction)
                         {
                             case 1://добавление
@@ -326,7 +326,7 @@ namespace dip.Controllers
                         break;
 
                     case 2://fizvell
-                        if (currentActionId == null&& i.ParentId!="VOZ0")
+                        if (currentActionId == null && i.ParentId != "VOZ0")
                             currentActionId = i.ParentId;
                         switch (i.TypeAction)
                         {
@@ -365,13 +365,13 @@ namespace dip.Controllers
 
                     case 4://pros
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
-                        if (currentActionId == null&& !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
                         //VOZ2_PROS4
                         //VOZ0_PROS_NEW4
-                        
-                           
-                       
+
+
+
                         switch (i.TypeAction)
                         {
                             case 1://добавление
@@ -388,7 +388,7 @@ namespace dip.Controllers
 
                     case 5://spec
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
-                        if (currentActionId == null&& !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
 
                         switch (i.TypeAction)
@@ -408,7 +408,7 @@ namespace dip.Controllers
                     case 6://vrem
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
 
-                        if (currentActionId == null&& !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
                         switch (i.TypeAction)
                         {
@@ -439,9 +439,9 @@ namespace dip.Controllers
                 int lastAllActionId = 1;
                 {
                     var allAction = db.AllActions.ToList();
-                    if(allAction.Count>0)
-                    lastAllActionId = allAction.Max(x1=> int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                        //.OrderBy(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]))
+                    if (allAction.Count > 0)
+                        lastAllActionId = allAction.Max(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                    //.OrderBy(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]))
                     //.Select(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0])).Last();
                 }
                 foreach (var i in massAddActionId)//возможно вытащить из цикла тк сейчас нельзя добавить больше 1
@@ -450,23 +450,23 @@ namespace dip.Controllers
                     db.AllActions.Add(obj);
                     db.SaveChanges();
                     i.NewId = obj.Id;
-                    currentActionId= obj.Id;
+                    currentActionId = obj.Id;
                     currentActionParametric = i.Parametric;
                     //break;//TODO
                 }
 
-                if (currentActionId!=null&currentActionParametric == null)
-                    currentActionParametric = db.AllActions.FirstOrDefault(x1=>x1.Id== currentActionId)?.Parametric;
+                if (currentActionId != null & currentActionParametric == null)
+                    currentActionParametric = db.AllActions.FirstOrDefault(x1 => x1.Id == currentActionId)?.Parametric;
 
                 foreach (var i in massEditActionId)
                 {
-                    var act=db.AllActions.FirstOrDefault(x1=>x1.Id==i.Id);
+                    var act = db.AllActions.FirstOrDefault(x1 => x1.Id == i.Id);
                     if (act != null)
                         act.Name = i.Text;
                     else
                         i.Id = null;
-                        
-                    
+
+
                     db.SaveChanges();
                 }
 
@@ -506,20 +506,20 @@ namespace dip.Controllers
 
 
                 //FizVels
-                if(currentActionId!=null&& currentActionParametric!=null)
+                if (currentActionId != null && currentActionParametric != null)
                 {
-                    var fizvels = db.FizVels.Where(x1=>x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
-                    int lastFizVel=1;
+                    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
+                    int lastFizVel = 1;
                     if (fizvels.Count > 0)
                         if (currentActionParametric == false)
-                    {
-                         lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                    }
-                    else
-                    {
-                         lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                    }
-                   
+                        {
+                            lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                        }
+                        else
+                        {
+                            lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                        }
+
                     foreach (var i in massAddFizVels)
                     {
                         string fizVelId = "";
@@ -540,7 +540,7 @@ namespace dip.Controllers
                 }
                 foreach (var i in massEditFizVels)
                 {
-                    var obj = db.FizVels.FirstOrDefault(x1=>x1.Id==i.Id);
+                    var obj = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
                     if (obj != null)
                         obj.Name = i.Text;
                     else
@@ -549,21 +549,21 @@ namespace dip.Controllers
                     db.SaveChanges();
                 }
 
-               
+
 
                 //ParamFizVels
-                if (currentActionId != null&&massAddParamFizVels.Count > 0&& currentActionParametric == true)
+                if (currentActionId != null && massAddParamFizVels.Count > 0 && currentActionParametric == true)
                 {
-                   
+
 
                     string currentFizVels = massAddParamFizVels[0].ParentId;
-                    
-                    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains( currentFizVels+"_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
+
+                    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
                     int lastFizVel = 1;
                     if (fizvels.Count > 0)
-                        lastFizVel=fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                        lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
 
-                    
+
 
                     foreach (var i in massAddParamFizVels)
                     {
@@ -571,7 +571,7 @@ namespace dip.Controllers
                         {
                             Name = i.Text,
                             Parent = currentFizVels,
-                            Id = (currentFizVels+"_" + ++lastFizVel)
+                            Id = (currentFizVels + "_" + ++lastFizVel)
                         });
                         db.SaveChanges();
                     }
@@ -599,54 +599,54 @@ namespace dip.Controllers
                     //add checkbox
 
                     //pro
-                    { 
-                    int last = 1;
-                    var pros = db.Pros.Where(x1 => x1.Id.Contains( currentActionId + "_PROS")).ToList();
+                    {
+                        int last = 1;
+                        var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
                         if (pros.Count > 0)
                             last = pros.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_PROS") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                    //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
+                        //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
 
-                    int countLastIter = 0;
-                    while (massAddPros.Count > 0)
-                    {
-
-                        if (countLastIter == massAddPros.Count)
-                            throw new Exception("непонятные PRO");
-                        countLastIter = massAddPros.Count;
-                        for (int i = 0; i < massAddPros.Count; ++i)
+                        int countLastIter = 0;
+                        while (massAddPros.Count > 0)
                         {
-                            //проверить можно ли добавить, и добавить и вынести в массив
-                            if (!massAddPros[i].ParentId.Contains("_NEW"))
-                            {
-                                var pro = new Models.Domain.Pro()
-                                {
-                                    Name = massAddPros[i].Text,
-                                    Parent = (massAddPros[i].ParentId.Contains("_PROS")? massAddPros[i].ParentId:massAddPros[i].ParentId+"_PROS"),
-                                    Id = (currentActionId + "_PROS" + ++last)//VOZ1_PROS1
-                                };
 
-                                db.Pros.Add(pro);
-                                db.SaveChanges();
-                                for (int i2 = 0; i2 < massAddPros.Count; ++i2)
+                            if (countLastIter == massAddPros.Count)
+                                throw new Exception("непонятные PRO");
+                            countLastIter = massAddPros.Count;
+                            for (int i = 0; i < massAddPros.Count; ++i)
+                            {
+                                //проверить можно ли добавить, и добавить и вынести в массив
+                                if (!massAddPros[i].ParentId.Contains("_NEW"))
                                 {
-                                    if (massAddPros[i2].ParentId == massAddPros[i].Id)
+                                    var pro = new Models.Domain.Pro()
                                     {
-                                        massAddPros[i2].ParentId = pro.Id;
+                                        Name = massAddPros[i].Text,
+                                        Parent = (massAddPros[i].ParentId.Contains("_PROS") ? massAddPros[i].ParentId : massAddPros[i].ParentId + "_PROS"),
+                                        Id = (currentActionId + "_PROS" + ++last)//VOZ1_PROS1
+                                    };
+
+                                    db.Pros.Add(pro);
+                                    db.SaveChanges();
+                                    for (int i2 = 0; i2 < massAddPros.Count; ++i2)
+                                    {
+                                        if (massAddPros[i2].ParentId == massAddPros[i].Id)
+                                        {
+                                            massAddPros[i2].ParentId = pro.Id;
+                                        }
                                     }
+                                    massAddPros.Remove(massAddPros[i--]);
+
                                 }
-                                massAddPros.Remove(massAddPros[i--]);
+
 
                             }
-
-
                         }
                     }
-                }
 
                     //vrem
                     {
                         int last = 1;
-                        var vrems = db.Vrems.Where(x1 => x1.Id.Contains( currentActionId + "_VREM")).ToList();
+                        var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
                         if (vrems.Count > 0)
                             last = vrems.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_VREM") }, StringSplitOptions.RemoveEmptyEntries)[0]));
                         //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
@@ -667,7 +667,7 @@ namespace dip.Controllers
                                     {
                                         Name = massAddVrems[i].Text,
                                         Parent = (massAddVrems[i].ParentId.Contains("_VREM") ? massAddVrems[i].ParentId : massAddVrems[i].ParentId + "_VREM"),
-                                        
+
                                         Id = (currentActionId + "_VREM" + ++last)
                                     };
 
@@ -692,7 +692,7 @@ namespace dip.Controllers
                     //spec
                     {
                         int last = 1;
-                        var specs = db.Specs.Where(x1 => x1.Id.Contains( currentActionId + "_SPEC")).ToList();
+                        var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
                         if (specs.Count > 0)
                             last = specs.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_SPEC") }, StringSplitOptions.RemoveEmptyEntries)[0]));
                         //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
@@ -713,7 +713,7 @@ namespace dip.Controllers
                                     {
                                         Name = massAddSpecs[i].Text,
                                         Parent = (massAddSpecs[i].ParentId.Contains("_SPEC") ? massAddSpecs[i].ParentId : massAddSpecs[i].ParentId + "_SPEC"),
-                                        
+
                                         Id = (currentActionId + "_SPEC" + ++last)
                                     };
 
@@ -743,7 +743,7 @@ namespace dip.Controllers
                             act.Name = i.Text;
                         else
                             i.Id = null;
-                        
+
                         db.SaveChanges();
                     }
                     foreach (var i in massEditSpecs)
@@ -770,21 +770,21 @@ namespace dip.Controllers
 
                     {
                         List<Pro> forDeleted = new List<Pro>();
-                        
+
                         int start = 0;
-                    foreach(var i in massDeletedPros)
-                    {
-                        var pro = db.Pros.FirstOrDefault(x1=>x1.Id==i.Id);
+                        foreach (var i in massDeletedPros)
+                        {
+                            var pro = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
                             if (pro == null)
                                 continue;
                             forDeleted.Add(pro);
-                        //var childs=Pro.GetChild(pro.Id);
-                        //    forDeleted.AddRange(childs);
-                        for(; start < forDeleted.Count; ++start)
+                            //var childs=Pro.GetChild(pro.Id);
+                            //    forDeleted.AddRange(childs);
+                            for (; start < forDeleted.Count; ++start)
                             {
                                 forDeleted.AddRange(Pro.GetChild(forDeleted[start].Id));
                             }
-                    }
+                        }
                         db.Pros.RemoveRange(forDeleted);
                         db.SaveChanges();
                     }
@@ -859,6 +859,6 @@ namespace dip.Controllers
 
     }
 
-  
+
 
 }
