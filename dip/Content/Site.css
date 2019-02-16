@@ -575,3 +575,46 @@ div.descrForm_div_shwh_but{
 div.one_check_line_edit{
     padding-top:10px;
 }
+
+
+
+/*create something*/
+
+
+div.create_something_one_block{
+    width:200px;
+}
+
+
+
+div.create_something_one_block_inside{
+    height:200px;
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-radius:20px;
+    text-align:center;
+cursor:pointer;
+overflow:hidden;
+position:relative;
+}
+div.home_index_one_block{
+    width:200px;
+    
+}
+div.create_something_one_block_inside:hover div.create_something_one_block_move{
+    top:0;
+}
+div.create_something_one_block_move{
+    /*border:solid 2px black;*/
+position:absolute;
+background-color:rgb(128, 128, 128);
+opacity:1;
+width:200px;
+height:200px;
+top:200px;
+-webkit-transition:1s;
+-o-transition:1s;
+transition:1s;
+color:white;
+
+}

@@ -91,7 +91,7 @@ namespace dip.Models.DataBase
                 var command1 = new SqlCommand();
                 command1.Connection = connection1;
                 command1.CommandType = CommandType.Text;
-
+               
                 connection1.Open();
 
 
@@ -238,9 +238,15 @@ namespace dip.Models.DataBase
                     throw e;
                 }
 
+
+                connection1.Close();
+                command1.Dispose();
                 
+
             }
 
+
+            
 
 
             //try
@@ -1014,6 +1020,14 @@ namespace dip.Models.DataBase
                 }
 
                 returnvalue = true;
+
+
+
+                connection.Close();
+                command.Dispose();
+
+
+
             }
  
             return returnvalue;

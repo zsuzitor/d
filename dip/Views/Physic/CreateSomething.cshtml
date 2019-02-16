@@ -8,12 +8,51 @@
 
 
 
-<div class="form-group form-horizontal">
-    <div>
+@*<div class="form-group form-horizontal">*@
+    @*<div>
         @Html.ActionLink("Добавить физический эффект", "Create", "Physic", new { }, new {  })
     </div>
     <div>
         @Html.ActionLink("Добавить дескрипторы", "CreateDescription", "Physic", new { }, new {  })
-    </div>
+    </div>*@
 
+
+
+    <div class="padding_10_top create_something_one_block div_inline_block">
+        <div class="create_something_one_block_inside">
+            <a class="link_standart_for_div" href="@Url.Action("Create","Physic", new { })">
+
+
+                @*@Html.ActionLink("Личная страница", "PersonalRecord", "SocialNetwork", new { }, new { })*@
+                Добавить  физический  <br>эффект
+
+                <div class="create_something_one_block_move">
+                    Страница для создания физических эффектов
+
+                </div>
+
+            </a>
+        </div>
+    </div>
+<div class="padding_10_top create_something_one_block div_inline_block">
+    <div class="create_something_one_block_inside">
+        <a class="link_standart_for_div" href="@Url.Action("CreateDescription","Physic", new { })">
+
+
+            @*@Html.ActionLink("Личная страница", "PersonalRecord", "SocialNetwork", new { }, new { })*@
+            Добавить дескрипторы
+
+            <div class="create_something_one_block_move">
+                Страница для создания, редактирования и удаления дескрипторов
+
+            </div>
+
+        </a>
+    </div>
 </div>
+
+
+
+
+
+@*</div>*@
