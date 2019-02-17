@@ -8,17 +8,17 @@
 
 
 
-    @*@if (Model.Param?.ActionId != "VOZ11")
+    @*@if (Model.Param?.Parametric==false)
     {
-       
+
         <label class="control-label col-md-2" for="fizVelId">Название физической величины</label>
     }
     else
     {
-      
+
         <label class="control-label col-md-2" for="fizVelId">Раздел физики</label>
     }*@
-    <div class="col-md-10">
+    @*<div class="col-md-10">*@
         
        
 
@@ -27,6 +27,7 @@
                 <div class="padding_10_top">
                     <input name="fizVelId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="radioClass" style="display:none;">
                     <button class="btn btn-default" onclick="changeFizVels('@i.Id')">Изменить</button>
+                    <button class="btn btn-default" onclick="">Удалить</button>
                     <input class="form-control" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" readonly />
                 </div>
                     @*<input type="text" value="@i.Name" name="@i.Id" />*@
@@ -40,6 +41,6 @@
 
 
 
-    </div>
+    @*</div>*@
 
 

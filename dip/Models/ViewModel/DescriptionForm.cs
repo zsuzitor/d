@@ -26,6 +26,13 @@ namespace dip.Models.ViewModel
 
         public DescriptionForm()
         {
+            ActionId = new List<AllAction>();
+            ActionType = new List<Domain.ActionType>();
+            FizVelId = new List<FizVel>();
+            ParametricFizVelId = new List<FizVel>();
+            Pros = new List<Pro>();
+            Specs = new List<Spec>();
+            Vrems = new List<Vrem>();
 
             //ActionParametricIds ="";
         }
@@ -173,17 +180,22 @@ namespace dip.Models.ViewModel
                 var listOfActions = db.AllActions.OrderBy(action => action.Id).ToList();
 
                 if (string.IsNullOrWhiteSpace(actionId))
-                    actionId = listOfActions.First().Id;
+                    actionId = listOfActions.FirstOrDefault()?.Id;
                 //res.ActionParametricIds = string.Join(" ",listOfActions.Where(x1 => x1.Parametric).Select(x1 => x1.Id).ToList());
 
-
+                if (string.IsNullOrWhiteSpace(actionId))
+                    return res;
                 // Получаем список типов воздействий     
                 var actionType = db.ActionTypes.OrderByDescending(type => type.Name).ToList();//, "id", "name", "Не выбрано")
 
                 // Получаем список физических величин для выбранного воздействия
-                var listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == actionId + "_FIZVEL") ||
-                                                                              (fizVel.Id == "NO_FIZVEL"))
+                List<FizVel> listOfFizVels;
+                //if (!string.IsNullOrWhiteSpace(actionId))
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == actionId + "_FIZVEL") ||
+                                                                                (fizVel.Id == "NO_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
+                //else
+                //    listOfFizVels = new List<FizVel>();
 
                 // Выбираем  из списка раздел физики
                 if (string.IsNullOrWhiteSpace(fizVelId))

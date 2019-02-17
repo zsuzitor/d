@@ -33,5 +33,14 @@ namespace dip.Models.Domain
 
         }
 
+        public static bool? CheckParametric(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            using (var db = new ApplicationDbContext())
+                return db.AllActions.FirstOrDefault(x1 => x1.Id == id)?.Parametric;
+
+        }
+
     }
 }

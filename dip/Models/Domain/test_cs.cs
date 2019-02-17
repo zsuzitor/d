@@ -144,6 +144,7 @@ namespace dip.Models.Domain
     {
        
         public string ActionId { get; set; }
+        public bool? Parametric { get; set; }
         public string ActionType { get; set; }
         public string FizVelId { get; set; }
         public string ParametricFizVelId { get; set; }
@@ -154,7 +155,7 @@ namespace dip.Models.Domain
 
         public DescrSearchI()
         {
-
+            Parametric = null;
         }
         /// <summary>
         /// параметр может измениться
@@ -205,7 +206,15 @@ namespace dip.Models.Domain
         }
 
 
-       
+
+
+        public bool? CheckParametric()
+        {
+             this.Parametric=AllAction.CheckParametric(this.ActionId);
+            return this.Parametric;
+        }
+
+
 
         public static bool IsNull(DescrSearchI a)
         {

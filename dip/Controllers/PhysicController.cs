@@ -345,7 +345,11 @@ namespace dip.Controllers
                         break;
 
                     case 3://paramfizvell
-                        //TODO проверять является ли параметрическим  actionId и тогда уже решать добавлять или нет
+                           //TODO проверять является ли параметрическим  actionId и тогда уже решать добавлять или нет
+
+                        if (currentActionId == null && !i.ParentId.Contains("VOZ0"))
+                            currentActionId = i.ParentId.Split('_')[0];
+
                         switch (i.TypeAction)
                         {
                             //TODO проверять является ли параметрическим
@@ -365,7 +369,7 @@ namespace dip.Controllers
 
                     case 4://pros
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
-                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.ParentId.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
                         //VOZ2_PROS4
                         //VOZ0_PROS_NEW4
@@ -388,7 +392,7 @@ namespace dip.Controllers
 
                     case 5://spec
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
-                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.ParentId.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
 
                         switch (i.TypeAction)
@@ -408,7 +412,7 @@ namespace dip.Controllers
                     case 6://vrem
                            //TODO проверять является ли параметрическим и сравнивать с типом actionId и тогда уже решать добавлять или нет
 
-                        if (currentActionId == null && !i.Id.Contains("VOZ0"))
+                        if (currentActionId == null && !i.ParentId.Contains("VOZ0"))
                             currentActionId = i.ParentId.Split('_')[0];
                         switch (i.TypeAction)
                         {
@@ -430,13 +434,14 @@ namespace dip.Controllers
             if (massAddActionId.Count > 1)//TODO
                 throw new Exception("добавлено слишком много ActionId, это не предусмотрено");
 
-            if (notValide)
+            if (notValide)//TODO
                 return new HttpStatusCodeResult(404);
             using (var db = new ApplicationDbContext())
             {
 
                 //ActionId
-                int lastAllActionId = 1;
+                int lastAllActionId = 0;
+                if(massAddActionId.Count>0)
                 {
                     var allAction = db.AllActions.ToList();
                     if (allAction.Count > 0)
@@ -453,6 +458,28 @@ namespace dip.Controllers
                     currentActionId = obj.Id;
                     currentActionParametric = i.Parametric;
                     //break;//TODO
+
+
+                //надо обновить в pros... parentid там где =="VOZ0"? 
+                foreach(var i2 in massAddPros)
+                    {
+                        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                    }
+                        
+                    foreach (var i2 in massAddVrems)
+                    {
+                        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                    }
+                       
+                    foreach (var i2 in massAddSpecs)
+                    {
+                        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                    }
+                        
+
                 }
 
                 if (currentActionId != null & currentActionParametric == null)
@@ -506,10 +533,14 @@ namespace dip.Controllers
 
 
                 //FizVels
-                if (currentActionId != null && currentActionParametric != null)
+                if (currentActionId != null && massAddFizVels.Count > 0 && currentActionParametric != null)
                 {
-                    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
-                    int lastFizVel = 1;
+                    List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList(); 
+                    //if (currentActionParametric == false)
+                    //    fizvels=//выберет и не параметрические
+                    //else
+                    //    fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL_R")).ToList();
+                    int lastFizVel = 0;
                     if (fizvels.Count > 0)
                         if (currentActionParametric == false)
                         {
@@ -517,7 +548,12 @@ namespace dip.Controllers
                         }
                         else
                         {
-                            lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                            lastFizVel = fizvels.Max(x1 =>
+                            {
+                                int rs;
+                                int.TryParse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0],out rs);
+                                return rs;
+                            });
                         }
 
                     foreach (var i in massAddFizVels)
@@ -532,10 +568,15 @@ namespace dip.Controllers
                         db.FizVels.Add(new Models.Domain.FizVel()
                         {
                             Name = i.Text,
-                            Parent = currentActionId,
+                            Parent = currentActionId + "_FIZVEL",
                             Id = fizVelId
                         });
                         db.SaveChanges();
+                        foreach(var i2 in massAddParamFizVels)
+                        {
+                            if (i2.ParentId ==i.Id)
+                                i2.ParentId = fizVelId;
+                        }
                     }
                 }
                 foreach (var i in massEditFizVels)
@@ -552,32 +593,36 @@ namespace dip.Controllers
 
 
                 //ParamFizVels
-                if (currentActionId != null && massAddParamFizVels.Count > 0 && currentActionParametric == true)
+                if(currentActionParametric == true)
                 {
 
 
-                    string currentFizVels = massAddParamFizVels[0].ParentId;
-
-                    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
-                    int lastFizVel = 1;
-                    if (fizvels.Count > 0)
-                        lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-
-
-
-                    foreach (var i in massAddParamFizVels)
+                    if (currentActionId != null && massAddParamFizVels.Count > 0)
                     {
-                        db.FizVels.Add(new Models.Domain.FizVel()
+
+
+                        string currentFizVels = massAddParamFizVels[0].ParentId;
+
+                        var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
+                        int lastFizVel = 0;
+                        if (fizvels.Count > 0)
+                            lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+
+
+
+                        foreach (var i in massAddParamFizVels)
                         {
-                            Name = i.Text,
-                            Parent = currentFizVels,
-                            Id = (currentFizVels + "_" + ++lastFizVel)
-                        });
-                        db.SaveChanges();
+                            db.FizVels.Add(new Models.Domain.FizVel()
+                            {
+                                Name = i.Text,
+                                Parent = currentFizVels,
+                                Id = (currentFizVels + "_" + ++lastFizVel),
+                                Parametric = true
+                            });
+                            db.SaveChanges();
+                        }
                     }
-                }
-                if (currentActionParametric == true)
-                {
+                
                     foreach (var i in massEditParamFizVels)
                     {
                         var obj = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -600,7 +645,7 @@ namespace dip.Controllers
 
                     //pro
                     {
-                        int last = 1;
+                        int last = 0;
                         var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
                         if (pros.Count > 0)
                             last = pros.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_PROS") }, StringSplitOptions.RemoveEmptyEntries)[0]));
@@ -645,7 +690,7 @@ namespace dip.Controllers
 
                     //vrem
                     {
-                        int last = 1;
+                        int last = 0;
                         var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
                         if (vrems.Count > 0)
                             last = vrems.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_VREM") }, StringSplitOptions.RemoveEmptyEntries)[0]));
@@ -691,7 +736,7 @@ namespace dip.Controllers
 
                     //spec
                     {
-                        int last = 1;
+                        int last = 0;
                         var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
                         if (specs.Count > 0)
                             last = specs.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_SPEC") }, StringSplitOptions.RemoveEmptyEntries)[0]));

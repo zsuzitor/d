@@ -336,6 +336,8 @@ namespace dip.Models.DataBase
                             obj.Parent = null;
                         else
                             obj.Parent = i["parent"].ToString().Trim();
+                        if (obj.Parent.Contains("_FIZVEL_R"))
+                            obj.Parametric = true; 
                         using (var db = new ApplicationDbContext())
                         {
                             db.FizVels.Add(obj);

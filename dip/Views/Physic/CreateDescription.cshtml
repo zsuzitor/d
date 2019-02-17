@@ -94,7 +94,7 @@
     @*<button id="changeTypeFizVelId_but_id" onclick="changeTypeFizVelId()">Добавить новые</button>*@
     <div  id="fizVelGroup_all" style="display:none;">
         <div id="fizVelGroup">
-            <div class="form-group" id="fizVel">
+            <div class="" id="fizVel">@*form-group col-md-10*@
                 @*@Html.Action("DescrFormFizVelsEdit", "Helpers", new { fizVelId = Model.Form.FizVelId })*@
             </div>
 
@@ -227,12 +227,13 @@
 
 
 <script>
-    //mainObjEdit.curentActionId
+    //mainObjEdit.curentFizVelId
     var mainObjEdit = {
         //newAction: false,
         //newFizVel: false,
         //newParamFizVel: false,
-        curentActionId:'',
+        curentActionId: '',
+        curentFizVelId: '',
         parametricAction: false,
         //parametricActionNew: false,
 
@@ -299,9 +300,11 @@
 
                             document.getElementById('vremGroup').innerHTML = data[4];
 
-                            document.getElementById('parametricFizVel').innerHTML = data[5];
+                            //document.getElementById('parametricFizVel').innerHTML = data[5];
+
                             document.getElementById('fizVelGroup_all').style.display = 'block';
-                            document.getElementById('parametricFizVel_all').style.display = 'block';
+                            //document.getElementById('parametricFizVel_all').style.display = 'block';
+
                             document.getElementById('div_all_checkboxes').style.display = 'block';
                             //$('#parametricFizVel').replaceWith(data[5]);
                             //определить тип и спрятать лишнее  //из результата не вытаскивать
@@ -318,7 +321,7 @@
                 }
                 else {//voz0
                     document.getElementById('fizVelGroup_all').style.display = 'block';
-                    document.getElementById('parametricFizVel_all').style.display = 'block';
+                    //document.getElementById('parametricFizVel_all').style.display = 'block';
                     document.getElementById('div_all_checkboxes').style.display = 'block';
 
                     document.getElementById('changeTypeParamActionId').style.display = 'block';
@@ -341,21 +344,28 @@
                     }
 
                 }
-                
+                document.getElementById('parametricFizVel_all').style.display = 'none';
 
                 break;
 
 
             case 'fizVelId':
-                goAjaxRequest({
-                    url: '/Actions/GetParametricFizVelsEdit/' + this.value,
-                    func_success: function (data, status, jqXHR) {
-                        // Заменяем часть представления, отвечающего за выбор физической величины
-                        //$('#parametricFizVel').replaceWith(data);
-                        document.getElementById('parametricFizVel').innerHTML = data;
-                    }
-                });
+                mainObjEdit.curentFizVelId = this.value;
+                if (this.value.indexOf("FizVelNameNew")===-1)
+                    goAjaxRequest({
+                        url: '/Actions/GetParametricFizVelsEdit/' + this.value,
+                        func_success: function (data, status, jqXHR) {
+                            // Заменяем часть представления, отвечающего за выбор физической величины
+                            //$('#parametricFizVel').replaceWith(data);
+                            document.getElementById('parametricFizVel').innerHTML = data;
 
+                        }
+                    });
+                if (mainObjEdit.parametricAction) {
+                    document.getElementById('parametricFizVel').innerHTML = '';
+                    document.getElementById('parametricFizVel_all').style.display = 'block';
+                }
+ 
                 break;
             
         }
@@ -594,14 +604,49 @@
 
     function addNewFizVelId() {
         var div = document.getElementById('fizVel');
-        div.innerHTML += '<input class="form-control" id="FizVelNameNew' + mainObjEdit.maxNewFizVelId++ +
-            '_inp" name="FizVelName" type="text" value="">';
+        var newMaxId= mainObjEdit.maxNewFizVelId++;
+        var newMaxIdStr="FizVelNameNew"+newMaxId;
+
+        //div.innerHTML += '<input class="form-control" id="' +newMaxIdStr+
+        //    '_inp" name="FizVelName" type="text" value="">';
+        var res = "";
+       
+
+        res += '<div class="padding_10_top">';
+        
+        res += '<input name="fizVelId" type="radio" value="' + newMaxIdStr +
+ '" id="' + newMaxIdStr +
+ '_radio" class="radioClass" style="';
+   
+        if (mainObjEdit.parametricAction) {
+            res += 'display: block;">';
+        }
+        else {
+            res += 'display: none;">';
+        }
+            res += '<button class="btn btn-default" onclick="(' + newMaxIdStr +
+            ')">Удалить</button>'+
+                    '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentActionId +
+            '" id="' + newMaxIdStr + '_inp" >' +
+               ' </div>';
+
+
+        div.innerHTML += res;
+
     }
 
     function addNewParametricFizVelId() {
         var div = document.getElementById('parametricFizVel');
-        div.innerHTML += '<input class="form-control" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
-            '_inp" name="ParamFizVelName" type="text" value="">';
+        //div.innerHTML += '<input class="form-control" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
+        //    '_inp" name="ParamFizVelName" type="text" value="">';
+
+
+        div.innerHTML += ' <div class="padding_10_top">'+
+                        '<button class="btn btn-default" onclick="()">Удалить</button>'+
+                        '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentFizVelId + '" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
+            '_inp" > </div>'
+
+
     }
 
 
@@ -821,7 +866,8 @@
         //    curentActionId= this.val();
         //});
         $('#fizVel input:radio:checked').each(function () {//[type=checkbox] 
-            curentFizVel = this.val();
+            //curentFizVel = this.val();
+            curentFizVel = this.value;
         });
         //struct.Parametric = mainObjEdit.parametricAction;
 

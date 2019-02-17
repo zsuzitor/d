@@ -47,12 +47,20 @@ namespace dip.Controllers
             res.OutpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO, outp?.listSelectedProsO, outp?.listSelectedSpecO, outp?.listSelectedVremO);
 
             var inp_ = new DescrSearchI(inp);
+            if(inp_.CheckParametric()==null)
+                if (res.InputForm.ActionId.Count > 0)
+                    inp_.Parametric=res.InputForm.ActionId[0].Parametric;
+            
             var outp_ = new DescrSearchI(outp);
-            if (DescrSearchI.IsNull(inp_) || DescrSearchI.IsNull(outp_))
-            {
-                inp_ = null;
-                outp_ = null;
-            }
+            if (outp_.CheckParametric() == null)
+                if (res.OutpForm.ActionId.Count > 0)
+                    outp_.Parametric = res.OutpForm.ActionId[0].Parametric;
+            //outp_.CheckParametric();
+            //if (DescrSearchI.IsNull(inp_) || DescrSearchI.IsNull(outp_))
+            //{
+            //    inp_ = null;
+            //    outp_ = null;
+            //}
             res.InputFormData = inp_;
             res.OutputFormData = outp_;
             res.SetAllParametricAction();
@@ -89,7 +97,15 @@ namespace dip.Controllers
             {
                 res.CheckboxParamsId = null;
 
-                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
+                //res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
+                using (var db=new ApplicationDbContext())
+                {
+                    res.ParametricFizVelsId =db.FizVels.Where(x1=>x1.Parent==(act.Id+ "_FIZVEL")).OrderBy(fizVel => fizVel.Id).FirstOrDefault().Id;
+                }
+
+
+
+
 
             }
             else

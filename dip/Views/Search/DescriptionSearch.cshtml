@@ -20,7 +20,16 @@
         
         @*div_form_id*@
     <div>
-        @Html.Action("DescriptionInput", "Actions",new {inp= Model.FormInput,outp = Model.FormOutput})
+        @*@if (Model.FormInput==null || Model.FormOutput == null)
+        {
+            @Html.Action("DescriptionInput", "Actions", new { })
+        }
+        else
+        {*@
+            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput })
+
+        @*}*@
+        @* TODO мб костыль, пока не понятно *@
         
     </div>
 

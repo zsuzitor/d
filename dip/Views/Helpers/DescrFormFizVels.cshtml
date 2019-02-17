@@ -7,13 +7,13 @@
 
 
 <div class="form-group" id=@("fizVel"+Model.Type)>
-    @if (Model.Param?.ActionId != "VOZ11")
+    @if (Model.Param?.Parametric==false)
     {
         @*@Html.LabelFor(model => model.FizVelId, "Название физической величины", htmlAttributes: new { @class = "control-label col-md-2" })*@
         <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type )">Название физической величины</label>
     }
-    else
-    {
+   @if (Model.Param?.Parametric == true)
+   {
         @*@Html.LabelFor(model => model.FizVelId, "Раздел физики", htmlAttributes: new { @class = "control-label col-md-2" })*@
         <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type)">Раздел физики</label>
     }
