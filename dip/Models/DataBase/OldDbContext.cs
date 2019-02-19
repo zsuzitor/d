@@ -323,7 +323,7 @@ namespace dip.Models.DataBase
                 //FizVels
 
 
-                try
+                //try
                 {
                     command.CommandText = "select * from FizVels";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
@@ -336,7 +336,7 @@ namespace dip.Models.DataBase
                             obj.Parent = null;
                         else
                             obj.Parent = i["parent"].ToString().Trim();
-                        if (obj.Parent.Contains("_FIZVEL_R"))
+                        if (obj.Parent?.Contains("_FIZVEL_R")==true)
                             obj.Parametric = true; 
                         using (var db = new ApplicationDbContext())
                         {
@@ -346,10 +346,10 @@ namespace dip.Models.DataBase
                     }
                     
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 

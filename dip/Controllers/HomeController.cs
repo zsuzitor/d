@@ -24,7 +24,8 @@ namespace dip.Controllers
                 //db.Database.ExecuteSqlCommand(@"EXEC initFullTextSearch;");
                 //db.SaveChanges();
             }
-         
+
+            //string Kappa = true.ToString();
 
 
             return View();

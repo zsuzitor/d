@@ -28,9 +28,10 @@
 
 
 <input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
+<div><label>Название воздействия</label></div>
 <div class="form-horizontal">
     @*#line1*@
-   
+    
     <div id="actionId_all">
 
         @foreach (var i in Model.Form.ActionId)
@@ -38,6 +39,7 @@
             <div class="padding_10_top">
                 <input name="actionId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="radioClass">
                 <button class="btn btn-default" onclick="changeActionId('@i.Id')">Изменить</button>
+                <button id="restoreInput_but_@i.Id" class="btn btn-default" onclick="restoreValue(1,'@i.Id')" style="display:none;">Восстановить значение</button>
                 <input class="form-control" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" readonly />
             </div>
         }
@@ -92,6 +94,14 @@
 
     @*#line3*@
     @*<button id="changeTypeFizVelId_but_id" onclick="changeTypeFizVelId()">Добавить новые</button>*@
+    <div id="fizVelGroup_np_label" style="display:none;">
+        <label class="">Название физической величины</label>
+    </div>
+
+
+    <div id="fizVelGroup_p_label" style="display:none;">
+        <label class="">Раздел физики</label>
+    </div>
     <div  id="fizVelGroup_all" style="display:none;">
         <div id="fizVelGroup">
             <div class="" id="fizVel">@*form-group col-md-10*@
@@ -116,12 +126,15 @@
 
 
     @*#line4*@
-
+    
     <div id="parametricBlock_all">
        
         
             <div id="parametricFizVel_all"  style="display:none;">
+                <div id="parametricFizVel_label">
+                    <label class="">Название физической величины</label>
 
+                </div>
                 <div class="form-group" id="parametricFizVel">
                     @*@Html.Action("DescrFormParamFizVelsEdit", "Helpers", new { parametricFizVelId = Model.Form.ParametricFizVelId })*@
                 </div>
@@ -144,6 +157,9 @@
     @*#line5*@
     <div>
         <div id="prosGroup_all">
+           
+                <label class="">Пространственные характеристики</label>
+            
             <div id="prosGroup">
 
             </div>
@@ -166,6 +182,7 @@
 
         <div>
             <div id="specGroup_all">
+                <label class="">Специальные характеристики</label>
                 <div id="specGroup">
                    
                 </div>
@@ -192,6 +209,7 @@
     <div>
         @*@Html.Action("DescrFormVrem", "Helpers", new { type = "", vrems = Model.Vrems })*@
         <div id="vremGroup_all">
+            <label class="">Временные характеристики</label>
             <div id="vremGroup">
 
                
@@ -227,7 +245,7 @@
 
 
 <script>
-    //mainObjEdit.curentFizVelId
+    //mainObjEdit.massOldValue
     var mainObjEdit = {
         //newAction: false,
         //newFizVel: false,
@@ -252,7 +270,9 @@
 
         massDeletedPros:[],
         massDeletedVrems:[],
-        massDeletedSpecs:[]
+        massDeletedSpecs: [],
+
+        massOldValue:[]
 
     };
 
@@ -480,6 +500,8 @@
                 $(this).css('display','block');
             });
             mainObjEdit.parametricAction = true;
+            document.getElementById('fizVelGroup_np_label').style.display = 'none';
+            document.getElementById('fizVelGroup_p_label').style.display = 'block';
         }
         else {
             document.getElementById('prosGroup_all').style.display = 'block';
@@ -490,6 +512,8 @@
                 $(this).css('display', 'none');
             });
             mainObjEdit.parametricAction = false;
+            document.getElementById('fizVelGroup_np_label').style.display = 'block';
+            document.getElementById('fizVelGroup_p_label').style.display = 'none';
         }
         
         
@@ -656,91 +680,199 @@
     function changeActionId(id){
 
         var inp=$('#'+id+'_inp');
-        
-        if($(inp).prop('readonly'))  {
+        var inpVal=inp.val();
+        if ($(inp).prop('readonly')) {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditActionId.includes(id))
+            if (!mainObjEdit.massEditActionId.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditActionId.push(id);
+                // document.getElementById('restoreInput_but_' + id).style.display = 'block';
+            }
+
 
         }
-        else{
+        else {
             $(inp).prop('readonly', true);
+
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(1, id);
+                        return;
+                    }
+                    break;
+                }
+                    
+
+
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
 
     function changeFizVels(id){
 
         var inp=$('#'+id+'_inp');
-        
+        var inpVal = inp.val();
         if($(inp).prop('readonly'))  {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditFizVels.includes(id))
+            if (!mainObjEdit.massEditFizVels.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditFizVels.push(id);
+               
+            }
+                
 
         }
         else{
             $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(2, id);
+                        return;
+                    }
+                    break;
+                }
+                    
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
     
     
     function changeParamFizVels(id){
 
         var inp=$('#'+id+'_inp');
-        
+        var inpVal = inp.val();
         if($(inp).prop('readonly'))  {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditParamFizVels.includes(id))
+            if (!mainObjEdit.massEditParamFizVels.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditParamFizVels.push(id);
+                
+            }
+                
 
         }
         else{
             $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(3, id);
+                        return;
+                    }
+                    break;
+                }
+                    
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
     
     function changePros(id){
 
         var inp=$('#'+id+'_inp');
-        
+        var inpVal = inp.val();
         if($(inp).prop('readonly'))  {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditPros.includes(id))
+            if (!mainObjEdit.massEditPros.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditPros.push(id);
+           
+            }
+                
 
         }
         else{
             $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(4, id);
+                        return;
+                    }
+                    break;
+                }
+                    
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
 
     function changeSpecs(id){
 
         var inp = $('#' + id + '_inp');
-        
+        var inpVal = inp.val();
         if($(inp).prop('readonly'))  {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditSpecs.includes(id))
+            if (!mainObjEdit.massEditSpecs.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditSpecs.push(id);
+               
+            }
+                
 
         }
         else{
             $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(5, id);
+                        return;
+                    }
+                    break;
+                }
+                    
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
+
+
+
     function changeVrems(id){
 
         var inp = $('#' + id + '_inp');
-        
+        var inpVal = inp.val();
         if($(inp).prop('readonly'))  {
             $(inp).removeProp('readonly');
-            if(!mainObjEdit.massEditVrems.includes(id))
+            if (!mainObjEdit.massEditVrems.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
                 mainObjEdit.massEditVrems.push(id);
+              
+            }
+               
 
         }
         else{
             $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreValue(6, id);
+                        return;
+                    }
+                    break;
+                }
+                   
         }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
     }
 
     
@@ -837,6 +969,78 @@
         }
     }
 
+    
+
+
+    function restoreValue(type, id) {
+        
+        for(var i=0;i<mainObjEdit.massOldValue.length;++i){
+            if (mainObjEdit.massOldValue[i].id == id) {
+                document.getElementById(id + '_inp').value = mainObjEdit.massOldValue[i].val;
+                mainObjEdit.massOldValue.splice(i, 1);
+                switch(type){
+                    case 1:
+                        for(var i2=0;i2<mainObjEdit.massEditActionId.length;++i2){
+                            if(mainObjEdit.massEditActionId[i2]==id){
+                                mainObjEdit.massEditActionId.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        for(var i2=0;i2<mainObjEdit.massEditFizVels.length;++i2){
+                            if(mainObjEdit.massEditFizVels[i2]==id){
+                                mainObjEdit.massEditFizVels.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 3:
+                        for(var i2=0;i2<mainObjEdit.massEditParamFizVels.length;++i2){
+                            if(mainObjEdit.massEditParamFizVels[i2]==id){
+                                mainObjEdit.massEditParamFizVels.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 4:
+                        for(var i2=0;i2<mainObjEdit.massEditPros.length;++i2){
+                            if(mainObjEdit.massEditPros[i2]==id){
+                                mainObjEdit.massEditPros.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    
+                    case 5:
+                        for(var i2=0;i2<mainObjEdit.massEditSpecs.length;++i2){
+                            if(mainObjEdit.massEditSpecs[i2]==id){
+                                mainObjEdit.massEditSpecs.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 6:
+                        for (var i2 = 0; i2 < mainObjEdit.massEditVrems.length; ++i2) {
+                            if (mainObjEdit.massEditVrems[i2] == id) {
+                                mainObjEdit.massEditVrems.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    
+                }
+               
+                break;
+            }
+               
+            
+        }
+        var inp = $('#' + id + '_inp');
+        $(inp).prop('readonly', true);
+        document.getElementById('restoreInput_but_' + id).style.display = 'none';
+        // document.getElementById('restoreInput_but_' + id).style.display = 'none';
+    }
 
 
 

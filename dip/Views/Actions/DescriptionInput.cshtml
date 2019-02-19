@@ -69,6 +69,50 @@
             //    //}
             //    //console.log(arr);
             //});
+
+
+            @*var curActionIdI=@(!string.IsNullOrWhiteSpace(Model?.InputFormData?.ActionId)? Model?.InputFormData?.ActionId:"0");
+            var curActionIdO=@(!string.IsNullOrWhiteSpace(Model?.OutputFormData?.ActionId) ? Model?.OutputFormData?.ActionId : "0");*@
+
+            var curActionIdI="@(Model?.InputFormData?.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
+            var curActionIdO="@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";
+            @*if(!curActionIdI){
+
+                if(@(Model?.InputForm.ActionId.Count) > 0){
+                    curActionIdI=@(Model?.InputForm.ActionId[0].Id);
+                }
+
+            }
+            if(!curActionIdO){
+                if(@(Model?.OutpForm.ActionId.Count) > 0){
+                    curActionIdI=@(Model?.OutpForm.ActionId[0].Id);
+                }
+            }*@
+
+
+            //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
+
+            //скрываем ненужные поля
+            if (curActionIdI==="True") {//massParamAction.includes(curActionIdI)) {
+                //парам
+                changeTypeActionId('I', true);
+
+            }
+            else if (curActionIdI === "False") {
+                //не парам
+                changeTypeActionId('I', false);
+            }
+            if (curActionIdO === "True") {//massParamAction.includes(curActionIdO)) {
+                //парам
+                changeTypeActionId('O', true);
+            }
+            else if (curActionIdO === "False") {
+                //не парам
+                changeTypeActionId('O', false);
+            }
+
+
+
         });
         var data_descr_search = {
             //have_input:null,
@@ -119,7 +163,7 @@
 
 
 
-             
+
             if (this.name.indexOf('listSelectedPros') >= 0) {
                 //pros
                 loadCheckBoxChild(this, 'GetProsChild', 'Pros');
@@ -143,7 +187,7 @@
         //function loadProsChild(ch) {
         //    var type = ch.id.split('Pros')[1][0];
         //    var div = document.getElementById((ch.value + type));
-           
+
         //    if (div && !div.innerHTML.trim()) {
         //        goAjaxRequest({
         //            url: '/Actions/GetProsChild?id=' + ch.value + '&type=' + type,
@@ -159,11 +203,11 @@
         //            }
         //        });
         //    }
-            
+
         //}
 
 
-     
+
 
         function loadCheckBoxChild(ch,meth,key) {
             var type = ch.name.split(key)[1][0];
@@ -199,10 +243,10 @@
                     else {
                         document.getElementById(ch.value + type).style.display = 'block';
                     }
-                    
+
                 }
-               
-               
+
+
 
             }
 
@@ -221,14 +265,14 @@
             data_descr_search.actionTypeI = UndefinedToStr($('#actionTypeI').val());
             data_descr_search.FizVelIdI = UndefinedToStr($('#fizVelIdI').val());
             data_descr_search.parametricFizVelIdI = UndefinedToStr($('#parametricFizVelIdI').val());
-          
+
 
 
             data_descr_search.actionIdO = UndefinedToStr($('#actionO').val());
             data_descr_search.actionTypeO = UndefinedToStr($('#actionTypeO').val());
             data_descr_search.FizVelIdO = UndefinedToStr($('#fizVelIdO').val());
             data_descr_search.parametricFizVelIdO = UndefinedToStr($('#parametricFizVelIdO').val());
-           
+
 
             data_descr_search.listSelectedProsO = '';
             data_descr_search.listSelectedSpecO = '';
@@ -282,8 +326,35 @@
 
 
 
+    //flag- true->param, false->not param
+        function changeTypeActionId(type,flag){
 
+            var fizNp=document.getElementById("fizVelGroup"+ type+"_np_label");
+            var fizP=document.getElementById("fizVelGroup"+ type+"_p_label");
+            var Pfiz=document.getElementById("parametricFizVel"+type+"_label");
 
+            var pros=document.getElementById("prosGroup"+type+"_label");
+            var spec=document.getElementById("specGroup"+type+"_label");
+            var vrem=document.getElementById("vremGroup"+type+"_label");
+
+            if(flag){
+                fizNp.style.display='none';
+                fizP.style.display='block';
+                Pfiz.style.display='block';
+                pros.style.display='none';
+                spec.style.display='none';
+                vrem.style.display='none';
+            }
+            else{
+                fizNp.style.display='block';
+                fizP.style.display='none';
+                Pfiz.style.display='none';
+                pros.style.display='block';
+                spec.style.display='block';
+                vrem.style.display='block';
+            }
+
+        }
 
 
 </script>

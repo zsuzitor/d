@@ -9,8 +9,8 @@
     @*@( +a.Postfix)*@
     <div class="form-group">
         <label id=@("actionLabel"+Model.Type) class="control-label col-md-2" value="@Model.Form.CurrentActionId" for="@("action"+Model.Type)">Название воздействия</label>
-      
-               @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
+
+        @*@Html.Label("Название воздействия", new { id = "actionLabel", @class = "control-label col-md-2" })*@
 
 
 
@@ -66,60 +66,90 @@
             @*@Html.ValidationMessageFor(model => model.Action.ActionType_Id, "", new { @class = "text-danger" })*@
         </div>
     </div>
-    <div id=@("fizVelGroup"+ Model.Type)>
+    <div class="form-group">
+    <div id=@("fizVelGroup"+ Model.Type+"_label")>
+        <div id=@("fizVelGroup"+ Model.Type+"_np_label") style="display:none;">
+            <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type )">Название физической величины</label>
+        </div>
 
-        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.FizVelId, param = Model.Param })
+
+        <div id=@("fizVelGroup"+ Model.Type+"_p_label") style="display:none;">
+            <label class="control-label col-md-2" for="@("fizVelId"+ Model.Type)">Раздел физики</label>
+        </div>
+
+
+
+
 
 
     </div>
-    @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.ParametricFizVelId, param = Model.Param })
+    <div id=@("fizVelGroup"+ Model.Type)>
+        @*<div class="form-group" id=@("fizVel"+Model.Type)>*@
+        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.FizVelId, param = Model.Param })
 
+        @*</div>*@
+    </div>
+</div>
+    <div class="form-group">
+        <div id=@("parametricFizVel"+Model.Type+"_label") style="display:none;">
+            <label class="control-label col-md-2" for="@("parametricFizVelId"+ Model.Type)">Название физической величины</label>
 
-    @*@if (a.pros.Count > 0)
-    {*@
-        <label class="control-label col-md-2">Пространственные характеристики</label>
+        </div>
+        @*<div class="form-group" id=@("parametricFizVel"+Model.Type)>*@
+        @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.ParametricFizVelId, param = Model.Param })
+        @*</div>*@
+    </div>
+        @*@if (a.pros.Count > 0)
+            {*@
+        <div id=@("prosGroup"+Model.Type+"_label") style="display:none;">
+            <label class="control-label col-md-2">Пространственные характеристики</label>
+        </div>
         @*}*@
-            <div id=@("prosGroup"+Model.Type)>
-                @*<div class="form-group" id=@("pros" + type)>*@
+        <div id=@("prosGroup"+Model.Type)>
+            @*<div class="form-group" id=@("pros" + type)>*@
 
-                @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = Model.Form.Pros, param = Model.Param })
-
-
-                @*</div>*@
-            </div>
-    
-    @*@if (a.spec.Count > 0)
-    {*@
-        <label class="control-label col-md-2">Специальные характеристики</label>
-    @*}*@
-            <div id=@("specGroup"+Model.Type)>
-
-                @Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.Form.Specs, param = Model.Param })
+            @Html.Action("DescrFormPros", "Helpers", new { type = Model.Type, pros = Model.Form.Pros, param = Model.Param })
 
 
+            @*</div>*@
+        </div>
+
+        @*@if (a.spec.Count > 0)
+            {*@
+        <div id=@("specGroup"+Model.Type+"_label") style="display:none;">
+            <label class="control-label col-md-2">Специальные характеристики</label>
+        </div>
+        @*}*@
+        <div id=@("specGroup"+Model.Type)>
+
+            @Html.Action("DescrFormSpec", "Helpers", new { type = Model.Type, specs = Model.Form.Specs, param = Model.Param })
 
 
-            </div>
-    
-    @*@if (a.vrem.Count > 0)
-    {*@
-        <label class="control-label col-md-2">Временные характеристики</label>
-    @*}*@
+
+
+        </div>
+
+        @*@if (a.vrem.Count > 0)
+            {*@
+        <div id=@("vremGroup"+Model.Type+"_label") style="display:none;">
+            <label class="control-label col-md-2">Временные характеристики</label>
+        </div>
+        @*}*@
         <div id=@("vremGroup"+Model.Type)>
             @Html.Action("DescrFormVrem", "Helpers", new { type = Model.Type, vrems = Model.Form.Vrems, param = Model.Param })
 
 
 
         </div>
-    
 
-    @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
-                <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
-            </div>
-        </div>*@
-</div>
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" name="nameOfButton" value="Отмена" class="btn btn-default" />
+                    <input type="submit" name="nameOfButton" value="Далее" class="btn btn-default" />
+                </div>
+            </div>*@
+    </div>
 
 
 

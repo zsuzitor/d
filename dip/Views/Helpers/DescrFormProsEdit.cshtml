@@ -15,6 +15,7 @@
                     <input id="@(pro.Id+"_chch")" class="checkBoxClass" type="checkbox" name=@("listSelectedPros") value="@pro.Id" />
                     <button class="btn btn-default" id="@(pro.Id+"_delbut")" onclick="deleteItemPro('@pro.Id')">Удалить</button>
                     <button class="btn btn-default" onclick="changePros('@pro.Id')">Изменить</button>
+                    <button id="restoreInput_but_@pro.Id" class="btn btn-default" onclick="restoreValue(4,'@pro.Id')" style="display:none;">Восстановить значение</button>
                     <input class="form-control" name=@(@Model.ParentId @*@pro.Parent*@) id="@(pro.Id+"_inp")" type="text" value="@pro.Name" readonly/>
                        
                   

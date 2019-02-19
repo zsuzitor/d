@@ -8,7 +8,7 @@
     @if (Model.List != null && Model.List.Count != 0)
     {
        
-        <label class="control-label col-md-2" for="@("parametricFizVelId")">Название физической величины</label>
+        
         <div class="col-md-10">
             
 
@@ -18,6 +18,7 @@
                 {
                     <div class="padding_10_top">
                         <button class="btn btn-default" onclick="changeParamFizVels('@i.Id')">Изменить</button>
+                        <button id="restoreInput_but_@i.Id" class="btn btn-default" onclick="restoreValue(3,'@i.Id')" style="display:none;">Восстановить значение</button>
                         <button class="btn btn-default" onclick="">Удалить</button>
                         <input class="form-control" type="text" value="@i.Name" name="@Model.ParentId" id="@(i.Id+"_inp")" readonly />
                         

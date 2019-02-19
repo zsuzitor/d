@@ -97,10 +97,10 @@ namespace dip.Controllers
             {
                 res.CheckboxParamsId = null;
 
-                //res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
-                using (var db=new ApplicationDbContext())
+                //res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";
+                using (var db=new ApplicationDbContext())//TODO using in this controller
                 {
-                    res.ParametricFizVelsId =db.FizVels.Where(x1=>x1.Parent==(act.Id+ "_FIZVEL")).OrderBy(fizVel => fizVel.Id).FirstOrDefault().Id;
+                    res.ParametricFizVelsId =db.FizVels.Where(x1=>x1.Parent==(act.Id+ "_FIZVEL")).OrderBy(fizVel => fizVel.Id).FirstOrDefault()?.Id;
                 }
 
 
@@ -138,7 +138,11 @@ namespace dip.Controllers
             {
                 res.CheckboxParamsId = null;
 
-                res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";//TODO
+                //res.ParametricFizVelsId = $"{act.Id}_FIZVEL_R1";
+                using (var db = new ApplicationDbContext())
+                {
+                    res.ParametricFizVelsId = db.FizVels.Where(x1 => x1.Parent == (act.Id + "_FIZVEL")).OrderBy(fizVel => fizVel.Id).FirstOrDefault()?.Id;
+                }
 
             }
             else
@@ -167,7 +171,7 @@ namespace dip.Controllers
         /// <param name="id"> дескриптор выбранного воздействия </param>
         /// <returns> результат действия ActionResult </returns>
         [ChildActionOnly]
-        public ActionResult GetFizVels(string id, string type = "") //TODO GetFizVelsEdit  оптимизация
+        public ActionResult GetFizVels(string id, string type = "") 
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             List<FizVel> listOfFizVels;
@@ -193,7 +197,7 @@ namespace dip.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult GetFizVelsEdit(string id)//TODO GetFizVels  оптимизация
+        public ActionResult GetFizVelsEdit(string id)
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             List<FizVel> listOfFizVels;
@@ -229,7 +233,8 @@ namespace dip.Controllers
         {
             GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
             List<Pro> prosList = new List<Pro>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA?.Parametric==false)
                 using (var db = new ApplicationDbContext())
                     prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
            
@@ -245,7 +250,8 @@ namespace dip.Controllers
         {
             GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
             List<Pro> prosList = new List<Pro>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA=AllAction.Get(id);
+            if (allA?.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     prosList = db.Pros.Where(pros => pros.Parent == id + "_PROS").ToList();
 
@@ -269,7 +275,8 @@ namespace dip.Controllers
             GetListSomethingV<Spec> res = new GetListSomethingV<Spec>();
             // Получаем обновленный список специальных характеристик
             List<Spec> specList = new List<Spec>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA?.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
             //var listSelectedSpec = GetListSelectedItem(specList);
@@ -287,7 +294,8 @@ namespace dip.Controllers
             GetListSomethingV<Spec> res = new GetListSomethingV<Spec>();
             // Получаем обновленный список специальных характеристик
             List<Spec> specList = new List<Spec>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA?.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     specList = db.Specs.Where(spec => spec.Parent == id + "_SPEC").ToList();
             //var listSelectedSpec = GetListSelectedItem(specList);
@@ -311,7 +319,8 @@ namespace dip.Controllers
             GetListSomethingV<Vrem> res = new GetListSomethingV<Vrem>();
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
 
@@ -330,7 +339,8 @@ namespace dip.Controllers
             GetListSomethingV<Vrem> res = new GetListSomethingV<Vrem>();
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
 
@@ -357,8 +367,8 @@ namespace dip.Controllers
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             // Получаем список физических величин для параметрических воздействий
-           
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if (allA.Parametric == true)
                  res.List = FizVel.GetParametricFizVels(id) ;
           
             res.Type = type;
@@ -370,8 +380,8 @@ namespace dip.Controllers
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             // Получаем список физических величин для параметрических воздействий
-
-            if (!string.IsNullOrWhiteSpace(id))
+            AllAction allA = AllAction.Get(id);
+            if ( allA.Parametric == true)
                 res.List = FizVel.GetParametricFizVels(id);
 
             

@@ -25,6 +25,7 @@ namespace dip.Models.Domain
         public static AllAction Get(string id)
         {
             AllAction res = null;
+            if(!string.IsNullOrWhiteSpace(id))
             using (var db=new ApplicationDbContext())
             {
                 res = db.AllActions.FirstOrDefault(x1=>x1.Id==id);

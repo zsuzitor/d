@@ -27,6 +27,7 @@
                 <div class="padding_10_top">
                     <input name="fizVelId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="radioClass" style="display:none;">
                     <button class="btn btn-default" onclick="changeFizVels('@i.Id')">Изменить</button>
+                    <button id="restoreInput_but_@i.Id" class="btn btn-default" onclick="restoreValue(2,'@i.Id')" style="display:none;">Восстановить значение</button>
                     <button class="btn btn-default" onclick="">Удалить</button>
                     <input class="form-control" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" readonly />
                 </div>

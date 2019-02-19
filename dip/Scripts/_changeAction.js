@@ -64,6 +64,23 @@ goAjaxRequest({
         $('#parametricFizVel' + type).replaceWith(data[5]);
         //document.getElementById('parametricFizVel' + type).innerHTML = data[5];
 
+
+        var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
+
+        //скрываем ненужные поля
+        if (massParamAction.includes(id)) {
+            //парам
+            changeTypeActionId(type, true);
+
+        }
+        else {
+            //не парам
+            changeTypeActionId(type, false);
+        }
+
+
+
+
     }, type: 'POST'
 });
 

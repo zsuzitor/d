@@ -20,6 +20,7 @@
                             <input  id="@(spec.Id+"_chch")"  class="checkBoxClass" type="checkbox" name=@("listSelectedSpecs") value="@spec.Id" />
                             <button class="btn btn-default"  id="@(spec.Id+"_delbut")"  onclick="deleteItemSpec('@spec.Id')">Удалить</button>
                             <button class="btn btn-default" onclick="changeSpecs('@spec.Id')">Изменить</button>
+                            <button id="restoreInput_but_@spec.Id" class="btn btn-default" onclick="restoreValue(5,'@spec.Id')" style="display:none;">Восстановить значение</button>
                             <input class="form-control" name=@(@Model.ParentId @*@spec.Parent*@) id="@(spec.Id+"_inp")" value="@spec.Name" type="text" readonly/>
 
 
