@@ -64,6 +64,7 @@ namespace dip.Models.Domain
 
 
         [NotMapped]
+       // [ScaffoldColumn(false)]//TODO hz
         public bool? FavouritedCurrentUser { get; set; }//зафоловил ли текущий пользователь эту запись
 
 

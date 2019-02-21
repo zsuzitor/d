@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace dip.Models.Domain
 {
+
+    //---
     [Table("Actions")]
     public class Action
     {

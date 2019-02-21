@@ -14,7 +14,7 @@ namespace dip.Models
 
     }
 
-    public abstract class Item<T> where T : Item<T>
+    public abstract class ItemDescrFormCheckbox<T> where T : ItemDescrFormCheckbox<T>
     {
         [Key]
         public string Id { get; set; }

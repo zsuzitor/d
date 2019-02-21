@@ -7,7 +7,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Vrem: Item<Vrem>
+    public class Vrem: ItemDescrFormCheckbox<Vrem>
     {
         //[Key]
         //public string Id { get; set; }

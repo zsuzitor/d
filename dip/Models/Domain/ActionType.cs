@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
+    //---
     public class ActionType//: Item
     {
         [Key]

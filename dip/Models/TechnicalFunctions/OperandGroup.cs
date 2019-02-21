@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.TechnicalFunctions
 {
+    //---
     public class OperandGroup
     {
         [Key]

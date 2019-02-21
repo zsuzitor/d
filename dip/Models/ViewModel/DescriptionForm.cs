@@ -212,7 +212,7 @@ namespace dip.Models.ViewModel
 
                 {
                     var allPros = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                    var treeProBase = Item<Pro>.GetQueueParent(allPros);
+                    var treeProBase = ItemDescrFormCheckbox<Pro>.GetQueueParent(allPros);
                     foreach (var p in prosList)
                     {
                         foreach (var i in treeProBase)
@@ -234,7 +234,7 @@ namespace dip.Models.ViewModel
 
                 {
                     var allSpec = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
-                    var treeSpecBase = Item<Spec>.GetQueueParent(allSpec);
+                    var treeSpecBase = ItemDescrFormCheckbox<Spec>.GetQueueParent(allSpec);
                     foreach (var s in specList)
                     {
                         foreach (var i in treeSpecBase)
@@ -255,7 +255,7 @@ namespace dip.Models.ViewModel
 
                 {
                     var allVrem = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
-                    var treeVremBase = Item<Vrem>.GetQueueParent(allVrem);
+                    var treeVremBase = ItemDescrFormCheckbox<Vrem>.GetQueueParent(allVrem);
                     foreach (var v in vremList)
                     {
 

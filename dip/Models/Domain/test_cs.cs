@@ -24,7 +24,7 @@ using System.Web.Hosting;
 
 namespace dip.Models.Domain
 {
-    enum RolesProject { admin, vip, user };
+    enum RolesProject { admin, subscriber, user };//vip
     //var a = (RolesProject)Enum.Parse(typeof(RolesProject), "", true);
 
 

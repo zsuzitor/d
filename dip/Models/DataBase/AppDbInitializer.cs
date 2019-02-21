@@ -49,7 +49,7 @@ namespace dip.Models.DataBase
                 // добавляем для пользователя роль
                 userManager.AddToRole(admin.Id, RolesProject.admin.ToString());
                 userManager.AddToRole(admin.Id, RolesProject.user.ToString());
-                userManager.AddToRole(admin.Id, RolesProject.vip.ToString());
+                userManager.AddToRole(admin.Id, RolesProject.subscriber.ToString());
                 //
                 userManager.AddToRole(Nadmin.Id, RolesProject.user.ToString());
             }
