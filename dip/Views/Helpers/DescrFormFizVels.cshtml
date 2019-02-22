@@ -6,7 +6,7 @@
 
 
 
-<div class="" id=@("fizVel"+Model.Type)>
+@*<div class="" id=@("fizVel"+Model.Type)>*@
    
     <div class="col-md-10">
         @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
@@ -34,5 +34,5 @@
 
         @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
     </div>
-</div>
+@*</div>*@
 

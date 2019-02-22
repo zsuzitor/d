@@ -93,6 +93,7 @@ namespace dip.Controllers
         {
             ChangeActionV res = new ChangeActionV();
             AllAction act =AllAction.Get(fizVelId);
+            res.Parametric = act.Parametric;
             if (act.Parametric)
             {
                 res.CheckboxParamsId = null;
@@ -320,7 +321,7 @@ namespace dip.Controllers
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
             AllAction allA = AllAction.Get(id);
-            if (allA.Parametric == false)
+            if (allA?.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
 
@@ -340,7 +341,7 @@ namespace dip.Controllers
             // Получаем обновленный список временных характеристик
             List<Vrem> vremList = new List<Vrem>();
             AllAction allA = AllAction.Get(id);
-            if (allA.Parametric == false)
+            if (allA?.Parametric == false)
                 using (var db = new ApplicationDbContext())
                     vremList = db.Vrems.Where(vrem => vrem.Parent == id + "_VREM").ToList();
 
@@ -367,8 +368,11 @@ namespace dip.Controllers
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             // Получаем список физических величин для параметрических воздействий
-            AllAction allA = AllAction.Get(id);
-            if (allA.Parametric == true)
+            string[] actionId = id?.Split(new string[] {"_" }, StringSplitOptions.RemoveEmptyEntries);
+            AllAction allA = null;
+            if(actionId?.Length>0)
+                allA=AllAction.Get(actionId[0]);
+            if (allA?.Parametric == true)
                  res.List = FizVel.GetParametricFizVels(id) ;
           
             res.Type = type;
@@ -380,8 +384,11 @@ namespace dip.Controllers
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
             // Получаем список физических величин для параметрических воздействий
-            AllAction allA = AllAction.Get(id);
-            if ( allA.Parametric == true)
+            string[] actionId = id?.Split(new string[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
+            AllAction allA = null;
+            if (actionId.Length > 0)
+                allA = AllAction.Get(actionId[0]);
+            if ( allA?.Parametric == true)
                 res.List = FizVel.GetParametricFizVels(id);
 
             

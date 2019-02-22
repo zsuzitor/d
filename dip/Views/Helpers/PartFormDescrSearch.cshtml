@@ -85,10 +85,11 @@
     </div>
     <div id=@("fizVelGroup"+ Model.Type)>
         @*<div class="form-group" id=@("fizVel"+Model.Type)>*@
-        @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.FizVelId, param = Model.Param })
-
-        @*</div>*@
-    </div>
+        <div class="" id=@("fizVel"+Model.Type)>
+            @Html.Action("DescrFormFizVels", "Helpers", new { type = Model.Type, fizVelId = Model.Form.FizVelId, param = Model.Param })
+        </div>
+            @*</div>*@
+        </div>
 </div>
     <div class="form-group">
         <div id=@("parametricFizVel"+Model.Type+"_label") style="display:none;">
@@ -96,9 +97,12 @@
 
         </div>
         @*<div class="form-group" id=@("parametricFizVel"+Model.Type)>*@
-        @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.ParametricFizVelId, param = Model.Param })
-        @*</div>*@
-    </div>
+
+        <div class="" id=@("parametricFizVel"+Model.Type)>
+            @Html.Action("DescrFormParamFizVels", "Helpers", new { type = Model.Type, parametricFizVelId = Model.Form.ParametricFizVelId, param = Model.Param })
+        </div>
+            @*</div>*@
+        </div>
         @*@if (a.pros.Count > 0)
             {*@
         <div id=@("prosGroup"+Model.Type+"_label") style="display:none;">

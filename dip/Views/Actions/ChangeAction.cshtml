@@ -7,19 +7,31 @@
 @Html.Action("GetFizVels","Actions",new {id=Model.FizVelId,type= Model.Type })
 
 <hr />
+@if (Model.Parametric != true)
+{
+    @Html.Action("GetPros", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
+}
 
-@Html.Action("GetPros", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
-
-<hr />
-
-@Html.Action("GetSpec", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
-
-<hr />
-
-@Html.Action("GetVrem", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
 
 <hr />
+@if (Model.Parametric != true)
+{
+    @Html.Action("GetSpec", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
+}
 
+
+<hr />
+@if (Model.Parametric != true)
+{
+    @Html.Action("GetVrem", "Actions", new { id = Model.CheckboxParamsId, type = Model.Type })
+}
+
+
+<hr />
+@if (Model.Parametric != false)
+{
 @Html.Action("GetParametricFizVels", "Actions", new { id = Model.ParametricFizVelsId, type = Model.Type })
+}
+
 
 

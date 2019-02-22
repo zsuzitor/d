@@ -11,6 +11,7 @@ namespace dip.Models.ViewModel.ActionsV
         public string ParametricFizVelsId { get; set; }
         public string FizVelId { get; set; }
         public string Type { get; set; }
+        public bool? Parametric { get; set; }
 
         public ChangeActionV()
         {
@@ -18,6 +19,7 @@ namespace dip.Models.ViewModel.ActionsV
             ParametricFizVelsId = null;
             FizVelId = null;
             Type = null;
+            Parametric = null;
         }
     }
 }

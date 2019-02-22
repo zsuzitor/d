@@ -1,12 +1,16 @@
 ????
 разграничение по ролям какая роль что может?
 левинштайн- не для поиска
+
+есть ли аналоги?
 ???
 +добавление fetext 
 +редактирование fetext
 регистрация\авторизация ---без почты
 +дескрипторный поиск
 добавление в избранное
+
+просмотр похожих fetext
 
 дескрипторы:
 +редактирование
@@ -20,7 +24,15 @@ fulltexsearch - без тезауруса и без томита+near
 ??tomita+ngramm{
 server+lucene>tomita+ng
 hz how use
+Install cmake 2.8, lua 5.2, gcc 4.8.1
+Create directory "build/" on the same level as "src/"
+cd build
+cmake ../src/ -DCMAKE_BUILD_TYPE=Release
+make
+copy libmystem-c-binding.so from https://github.com/yandex/tomita-parser/releases/tag/v1.0 to the same folder
 }
+
+если в запросе больше 10 слов, то выбираются главные(до 10) с помощью sql server
 lucene - обычный полнотекстовый поиск lucene
 fullTextSearchF - обычный полнотекстовый поиск fullTextSearch
 fullTextSearchCf - поиск форм слов, можно использовать (#слово) для повышения важности слова
@@ -42,6 +54,9 @@ https ---
 
 
 ----------------------------------------
+при просмотре картинки серый фон не весь экран закрывает(низ), если изменить масштаб
+переписать replacewith на innerhtml
+sql server иногда перестает работать
 lucene переписать
 а есть ли чекбоксы для noaction
 класс functions раскидать

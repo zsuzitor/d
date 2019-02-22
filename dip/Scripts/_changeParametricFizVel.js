@@ -21,7 +21,8 @@ function changeFizVel(type)
                 url: prefix + 'GetParametricFizVels/' + id + postfix,
                 func_success: function (data, status, jqXHR) {
                     // Заменяем часть представления, отвечающего за выбор физической величины
-                    $('#parametricFizVel' + type).replaceWith(data);
+                    //$('#parametricFizVel' + type).replaceWith(data);
+                    document.getElementById('parametricFizVel' + type).innerHTML = data;
                 }
             });
             break;

@@ -118,7 +118,7 @@ namespace dip.Controllers
                ApplicationUser.GetUserId(), true, null, type, str);
             var listmaramslog = log.AddLogDb();
             
-            if (str.Length > 10)
+            if (str.Split().Length > 10)
                 str = Search.StringSemanticParse(listmaramslog[1]);
 
 
