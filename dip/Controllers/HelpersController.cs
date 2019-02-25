@@ -30,6 +30,65 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+
+        //вся часть формы
+        public ActionResult PartFormStateObject(StateObject a, string type = "", string param = null)
+        {
+            PartFormStateObjectV res = new PartFormStateObjectV();
+            res.State  = a;
+            res.Type = type;
+            res.Param = param;
+            return PartialView(res);
+        }
+
+        //только список
+        public ActionResult FormStateObject(List<StateObject> a, string type = "", string param = null)
+        {
+            FormStateObjectV res = new FormStateObjectV();
+            res.States = a;
+            res.Type = type;
+            res.Param = param;
+            return PartialView(res);
+        }
+
+
+        public ActionResult PartFormCharacteristicObject(CharacteristicObject a, string type = "")//, string param = null
+        {
+            PartFormCharacteristicObjectV res = new PartFormCharacteristicObjectV();
+            res.Characteristic = a;
+            res.Type = type;
+            //res.Param = param;
+            return PartialView(res);
+        }
+
+
+
+
+        public ActionResult PartFormPhaseObject(List<PhaseCharacteristicObject> a, string type = "",string param=null)
+        {
+            PartFormPhaseObjectV res = new PartFormPhaseObjectV();
+            res.Phases = a;
+            res.Type = type;
+            //res.Param = param;
+            return PartialView(res);
+        }
+
+        //public ActionResult PartFormPhaseObject(PhaseCharacteristicObject a, string type = "", string param = null)
+        //{
+        //    PartFormPhaseObjectV res = new PartFormPhaseObjectV();
+        //    res.Phases = a;
+        //    res.Type = type;
+        //    //res.Param = param;
+        //    return PartialView(res);
+        //}
+
+
+
+
+
+
+
+
         public ActionResult DescrFormFizVels(string type, List<FizVel> fizVelId, DescrSearchI param = null)
         {
             DescrFormListDataV<FizVel> res = new DescrFormListDataV<FizVel>();

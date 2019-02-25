@@ -217,6 +217,7 @@
     <Compile Include="Models\Domain\ActionType.cs" />
     <Compile Include="Models\Domain\ActionVrem.cs" />
     <Compile Include="Models\Domain\AllAction.cs" />
+    <Compile Include="Models\Domain\CharacteristicObject.cs" />
     <Compile Include="Models\Domain\FEAction.cs" />
     <Compile Include="Models\Domain\FEIndex.cs" />
     <Compile Include="Models\Domain\FEObject.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Models\Domain\NeZakon.cs" />
     <Compile Include="Models\Domain\Pro.cs" />
     <Compile Include="Models\Domain\Spec.cs" />
+    <Compile Include="Models\Domain\StateObject.cs" />
     <Compile Include="Models\Domain\test_cs.cs" />
     <Compile Include="Models\Domain\The.cs" />
     <Compile Include="Models\Domain\ThesChild.cs" />
@@ -256,11 +258,16 @@
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\ObjectInputV.cs" />
     <Compile Include="Models\ViewModel\AdminV\ChangeRoleV.cs" />
     <Compile Include="Models\ViewModel\DescriptionForm.cs" />
     <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\FormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\PartFormCharacteristicObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\PartFormPhaseObjectV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\PartFormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
     <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionV.cs" />
@@ -406,6 +413,12 @@
     <Content Include="Views\Helpers\DescrFormParamFizVelsEdit.cshtml" />
     <Content Include="Views\Actions\GetFizVelsEdit.cshtml" />
     <Content Include="Views\Actions\GetParametricFizVelsEdit.cshtml" />
+    <Content Include="Views\Actions\ObjectInput.cshtml" />
+    <Content Include="Views\Helpers\PartFormStateObject.cshtml" />
+    <Content Include="Views\Helpers\PartFormCharacteristicObject.cshtml" />
+    <Content Include="Views\Helpers\PartFormPhaseObject.cshtml" />
+    <Content Include="Views\Actions\GetStateObject.cshtml" />
+    <Content Include="Views\Helpers\FormStateObject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

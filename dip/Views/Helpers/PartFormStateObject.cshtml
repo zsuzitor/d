@@ -1,0 +1,29 @@
+﻿@model dip.Models.ViewModel.HelpersV.PartFormStateObjectV
+
+
+
+
+
+@*@foreach (var i2 in Model.States)
+{*@
+    <div>
+        
+        @Html.Action("FormStateObject", "Helpers", new { a = new List<dip.Models.Domain.StateObject>() {Model.State }, type = Model.Type, param = Model.Param })
+        @*<label>@Model.State.Name</label>
+        <div>
+            @foreach (var i in Model.State.Childs)
+            {
+                <div>
+                    @Html.Action("PartFormStateObject", "Helpers", new { a = i, type = Model.Type, param = Model.Param })
+                </div>
+            }
+        </div>*@
+    </div>
+@*}*@
+
+
+
+
+
+
+

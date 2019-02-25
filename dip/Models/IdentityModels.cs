@@ -128,21 +128,26 @@ namespace dip.Models
 
         //--------------------------------------------------------------
 
-        public DbSet<TechnicalFunctions.Index> Indexs { get; set; }
-        public DbSet<TechnicalFunctions.Limit> Limits { get; set; }
-        public DbSet<TechnicalFunctions.Operand> Operands { get; set; }
-        public DbSet<TechnicalFunctions.OperandGroup> OperandGroups { get; set; }
-        public DbSet<TechnicalFunctions.Operation> Operations { get; set; }
+        //public DbSet<TechnicalFunctions.Index> Indexs { get; set; }
+        //public DbSet<TechnicalFunctions.Limit> Limits { get; set; }
+        //public DbSet<TechnicalFunctions.Operand> Operands { get; set; }
+        //public DbSet<TechnicalFunctions.OperandGroup> OperandGroups { get; set; }
+        //public DbSet<TechnicalFunctions.Operation> Operations { get; set; }
 
         //--------------------------------------------------------------
         public DbSet<Log> Logs{ get; set; }
         public DbSet<LogParam> LogParams { get; set; }
         public DbSet<Image> Images { get; set; }
 
+        //
+        public DbSet<StateObject> StateObjects { get; set; }
+       // public DbSet<CharacteristicObject> CharacteristicObjects { get; set; }
+        public DbSet<PhaseCharacteristicObject> PhaseCharacteristicObjects { get; set; }
+        
 
         //----------------------------TEST--
         //public DbSet<test> tests { get; set; }
-        
+
 
 
         //--------------------------------------------------------------

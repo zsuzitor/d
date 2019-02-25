@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using dip.Models;
+using dip.Models.Domain;
 
 namespace dip.Controllers
 {
@@ -192,7 +193,7 @@ namespace dip.Controllers
 
 
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    await UserManager.AddToRoleAsync(user.Id, "user");
+                    await UserManager.AddToRoleAsync(user.Id, RolesProject.NotApproveUser.ToString());
                     return View("DisplayEmail");
                     //return RedirectToAction("Index", "Home");
                 }

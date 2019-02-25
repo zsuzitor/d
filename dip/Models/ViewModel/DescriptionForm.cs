@@ -209,10 +209,10 @@ namespace dip.Models.ViewModel
                 //TODO че по оптимизации?
                 // Получаем список пространственных характеристик для выбранного воздействия
                 prosList = db.Pros.Where(x1 => x1.Parent == actionId + "_PROS").ToList();
-
+                if (prosIdList.Length > 0)
                 {
                     var allPros = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                    var treeProBase = ItemDescrFormCheckbox<Pro>.GetQueueParent(allPros);
+                    var treeProBase = Pro.GetQueueParent(allPros);
                     foreach (var p in prosList)
                     {
                         foreach (var i in treeProBase)
@@ -231,10 +231,10 @@ namespace dip.Models.ViewModel
                 //TODO че по оптимизации?
                 // Получаем список специальных характеристик для выбранного воздействия
                 specList = db.Specs.Where(x1 => x1.Parent == actionId + "_SPEC").ToList();
-
+                if (specIdList.Length > 0)
                 {
                     var allSpec = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
-                    var treeSpecBase = ItemDescrFormCheckbox<Spec>.GetQueueParent(allSpec);
+                    var treeSpecBase = Spec.GetQueueParent(allSpec);
                     foreach (var s in specList)
                     {
                         foreach (var i in treeSpecBase)
@@ -252,10 +252,10 @@ namespace dip.Models.ViewModel
                 //TODO че по оптимизации?
                 // Получаем список временных характеристик для выбранного воздействия
                 vremList = db.Vrems.Where(x1 => x1.Parent == actionId + "_VREM").ToList();
-
+                if (vremIdList.Length > 0)
                 {
                     var allVrem = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
-                    var treeVremBase = ItemDescrFormCheckbox<Vrem>.GetQueueParent(allVrem);
+                    var treeVremBase = Vrem.GetQueueParent(allVrem);
                     foreach (var v in vremList)
                     {
 

@@ -78,107 +78,107 @@ namespace dip.Models.DataBase
 
                // return true;
                 //MSSQLSERVER
-                var connection1 = new SqlConnection();
-                //(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
-                // connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
-                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
-                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+                //var connection1 = new SqlConnection();
+                ////(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
+                //// connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
+                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
+                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
 
 
-                //connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
-                connection1.ConnectionString = Constants.sql_2;
+                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
+                //connection1.ConnectionString = Constants.sql_2;
 
-                var command1 = new SqlCommand();
-                command1.Connection = connection1;
-                command1.CommandType = CommandType.Text;
+                //var command1 = new SqlCommand();
+                //command1.Connection = connection1;
+                //command1.CommandType = CommandType.Text;
                
-                connection1.Open();
+                //connection1.Open();
 
 
 
 
                 //Limit
 
-                try
-                {
-                    command1.CommandText = "select * from Limit";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new TechnicalFunctions.Limit();
-                        obj.Id = i["Id"].ToString().Trim();
-                        obj.Value = i["Value"].ToString().Trim();
-                        obj.Parent = i["Parent"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Limits.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //try
+                //{
+                //    command1.CommandText = "select * from Limit";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new TechnicalFunctions.Limit();
+                //        obj.Id = i["Id"].ToString().Trim();
+                //        obj.Value = i["Value"].ToString().Trim();
+                //        obj.Parent = i["Parent"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Limits.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                        
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
 
                 //OperandGroup
 
-                try
-                {
+                //try
+                //{
 
-                    command1.CommandText = "select * from OperandGroup";
+                //    command1.CommandText = "select * from OperandGroup";
                     
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new TechnicalFunctions.OperandGroup();
-                        obj.Id = i["Id"].ToString().Trim();
-                        obj.Value = i["Value"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.OperandGroups.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new TechnicalFunctions.OperandGroup();
+                //        obj.Id = i["Id"].ToString().Trim();
+                //        obj.Value = i["Value"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.OperandGroups.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
 
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
 
                 //Operation
 
-                try
-                {
-                    command1.CommandText = "select * from Operation";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new TechnicalFunctions.Operation();
-                        obj.Id = i["Id"].ToString().Trim();
-                        obj.Value = i["Value"].ToString().Trim();
-                        obj.Parent = i["Parent"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Operations.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //try
+                //{
+                //    command1.CommandText = "select * from Operation";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new TechnicalFunctions.Operation();
+                //        obj.Id = i["Id"].ToString().Trim();
+                //        obj.Value = i["Value"].ToString().Trim();
+                //        obj.Parent = i["Parent"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Operations.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
@@ -186,61 +186,61 @@ namespace dip.Models.DataBase
 
                 //Operand
 
-                try
-                {
-                    command1.CommandText = "select * from Operand";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "OperandGroupId");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new TechnicalFunctions.Operand();
-                        obj.Id = i["Id"].ToString().Trim();
-                        obj.Value = i["Value"].ToString().Trim();
-                        obj.OperandGroupId = i["OperandGroupId"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Operands.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //try
+                //{
+                //    command1.CommandText = "select * from Operand";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "OperandGroupId");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new TechnicalFunctions.Operand();
+                //        obj.Id = i["Id"].ToString().Trim();
+                //        obj.Value = i["Value"].ToString().Trim();
+                //        obj.OperandGroupId = i["OperandGroupId"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Operands.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
 
                 //Index
-                try
-                {
-                    command1.CommandText = "select * from [Index]";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "OperationId", "OperandId", "LimitId", "EffectIds");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new TechnicalFunctions.Index();
-                        obj.Id = i["Id"].ToString().Trim();
-                        obj.OperationId = i["OperationId"].ToString().Trim();
-                        obj.OperandId = i["OperandId"].ToString().Trim();
-                        obj.LimitId = i["LimitId"].ToString().Trim();
-                        obj.EffectIds = i["EffectIds"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Indexs.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //try
+                //{
+                //    command1.CommandText = "select * from [Index]";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "OperationId", "OperandId", "LimitId", "EffectIds");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new TechnicalFunctions.Index();
+                //        obj.Id = i["Id"].ToString().Trim();
+                //        obj.OperationId = i["OperationId"].ToString().Trim();
+                //        obj.OperandId = i["OperandId"].ToString().Trim();
+                //        obj.LimitId = i["LimitId"].ToString().Trim();
+                //        obj.EffectIds = i["EffectIds"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Indexs.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                    
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
-                connection1.Close();
-                command1.Dispose();
+                //connection1.Close();
+                //command1.Dispose();
                 
 
             }
@@ -1021,7 +1021,63 @@ namespace dip.Models.DataBase
                     throw e;
                 }
 
+
+
+
+
+
+
+
+                //thes theschild 2
+
+                using (var db=new ApplicationDbContext())
+                {
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id="MONOFAZ",
+                        Name= "Однофазное",
+                        Parent= "STRUCTOBJECT"//ALLSTATE
+
+                    });
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id = "POLYFAZ",
+                        Name = "Многофазное",
+                        Parent = "STRUCTOBJECT"
+
+                    });
+                    db.SaveChanges();
+                }
+                LoadStateObject("MONOFAZ");
+                LoadStateObject("POLYFAZ");
+
+                LoadCharacteristicObject("DESCOBJECT");
+               
+
+
+
+
+
+
+
                 returnvalue = true;
+
+
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1035,7 +1091,80 @@ namespace dip.Models.DataBase
             return returnvalue;
 
         }
+    
         
+        
+        
+        
+        public static void LoadStateObject(string id)
+        {
+            try
+            {
+                command.CommandText = $"select * from Thes where parent ='{id}'";
+                var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                foreach (var i in ldr)
+                {
+                    var obj = new Domain.StateObject();
+
+                    obj.Id = i["id"].ToString().Trim();
+                    obj.Name = i["name"].ToString().Trim();
+                    obj.Parent = i["parent"].ToString().Trim();
+                    
+
+                    using (var db = new ApplicationDbContext())
+                    {
+                        db.StateObjects.Add(obj);
+                        db.SaveChanges();
+                    }
+                    //if (!string.IsNullOrWhiteSpace(obj.Parent))
+                        LoadStateObject(obj.Id);
+                }
+
+            }
+            catch (Exception e)
+            {
+                //connection.Open();
+                //LoadState(id);
+                throw e;
+            }
+        }
+
+        public static void LoadCharacteristicObject(string id)
+        {
+            try
+            {
+                command.CommandText = $"select * from Thes where parent = '{id}'";
+                var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
+                foreach (var i in ldr)
+                {
+                    var obj = new Domain.PhaseCharacteristicObject();
+
+                    obj.Id = i["id"].ToString().Trim();
+                    obj.Name = i["name"].ToString().Trim();
+                    obj.Parent = i["parent"].ToString().Trim();
+
+
+                    using (var db = new ApplicationDbContext())
+                    {
+                        db.PhaseCharacteristicObjects.Add(obj);
+                        db.SaveChanges();
+                    }
+                    //if (!string.IsNullOrWhiteSpace(obj.Parent))
+                        LoadCharacteristicObject(obj.Id);
+                }
+
+            }
+            catch (Exception e)
+            {
+                //connection.Open();
+                //LoadState(id);
+                throw e;
+            }
+        }
+
+
+
     }
+    
     
 }

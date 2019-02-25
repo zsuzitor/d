@@ -1,0 +1,35 @@
+﻿@model dip.Models.ViewModel.ActionsV.ObjectInputV
+
+
+
+
+<div>
+    <hr />
+    @*@Html.DropDownList("nn", @Model.actionId)*@
+    <hr />
+    <h1>Начальное состояние объекта</h1>
+    @*@helpers_.PartFormDescrSearch(Html)*@
+    @*@Html.Label("1233")*@
+
+
+    @*@if(ViewBag.inputForm)*@
+    @*<input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />*@
+    <div>
+        <div>
+            @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StateStart, type = "S", param = Model.StateStartSelected })
+        </div>
+        <div>
+            @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicStart, type = "S", param = Model.StateStartSelected })
+        </div>
+    </div>
+    <hr />
+    <h1>Конечное состояние объекта</h1>
+    <div>
+        <div>
+            @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StateEnd, type = "E", param = Model.StateEndSelected })
+        </div>
+        <div>
+            @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicEnd, type = "E", param = Model.StateEndSelected })
+        </div>
+    </div>
+    </div>

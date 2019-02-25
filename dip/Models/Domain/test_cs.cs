@@ -24,7 +24,7 @@ using System.Web.Hosting;
 
 namespace dip.Models.Domain
 {
-    enum RolesProject { admin, subscriber, user };//vip
+    enum RolesProject { admin, subscriber, NotApproveUser, user };//vip
     //var a = (RolesProject)Enum.Parse(typeof(RolesProject), "", true);
 
 
@@ -139,6 +139,104 @@ namespace dip.Models.Domain
 
 
     }
+
+
+
+    public class PhaseCharacteristicObject : AParentDb<PhaseCharacteristicObject>
+    {
+        // public string Id { get; set; }
+        public string Name { get; set; }
+        // public string Parent { get; set; }
+
+
+        //[NotMapped]
+        //public List<CharacteristicObject> Childs { get; set; }
+        //[NotMapped]
+        //public CharacteristicObject ParentItem { get; set; }
+
+
+
+
+        public PhaseCharacteristicObject()
+        {
+
+        }
+
+
+        public static PhaseCharacteristicObject Get(string id)
+        {
+            PhaseCharacteristicObject res = null;
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    res = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == id);
+            return res;
+        }
+
+
+        //public override  void LoadChild()
+        //{
+        //    if (this.Childs.Count < 1)
+        //        this.ReLoadChild();
+        //}
+
+        public override void ReLoadChild()
+        {
+
+            using (var db = new ApplicationDbContext())
+                this.Childs = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == this.Id).ToList();
+        }
+
+
+
+
+
+        public override List<PhaseCharacteristicObject> GetParentsList(ApplicationDbContext db_ = null)
+        {
+            List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+            var db = db_ ?? new ApplicationDbContext();
+
+            var par = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
+
+            if (par != null)
+            {
+                if (par.Parent != "DESCOBJECT")
+                    res.AddRange(par.GetParentsList(db));
+
+                res.Add(par);
+            }
+
+
+
+            if (db_ == null)
+                db.Dispose();
+
+            return res;
+        }
+
+
+
+        //мб вынести в класс
+        //public override bool LoadPartialTree(List<CharacteristicObject> list)
+        //{
+        //    this.LoadChild();
+        //    if (list == null || list.Count < 1)
+        //        return false;
+        //    //this.LoadChild();
+        //    foreach (var i in this.Childs)
+        //    {
+        //        if (list.FirstOrDefault(x1 => x1.Id == i.Id) != null) //if (list.Contains(i))
+        //            i.LoadPartialTree(list);
+        //    }
+
+
+        //    return true;
+        //}
+
+
+
+
+    }
+
 
     public class DescrSearchI
     {

@@ -65,11 +65,164 @@ namespace dip.Controllers
             res.OutputFormData = outp_;
             res.SetAllParametricAction();
 
-
+            
 
 
             return PartialView(res);
         }
+
+
+
+
+        //stateId-последний выбранный ребенок
+        public ActionResult ObjectInput(string stateIdStart, string stateIdEnd,string[] CharacteristicStart, string[] CharacteristicEnd)
+        {
+
+            //TODO если пришли пустые значения надо загружать пустую форму
+            //TODO CharacteristicStart может содержать несколько конечных элементов
+
+            ObjectInputV res = new ObjectInputV();
+            
+            //CharacteristicObject
+            //StateObject StateStart = null;
+            //StateObject StateEnd = null;
+
+            //List<CharacteristicObject> CharacteristicStart1 = new List<CharacteristicObject>();
+            //List<CharacteristicObject> CharacteristicStart2 = new List<CharacteristicObject>();
+            //List<CharacteristicObject> CharacteristicStart3 = new List<CharacteristicObject>();
+
+            //List<CharacteristicObject> CharacteristicEnd1 = new List<CharacteristicObject>();
+            //List<CharacteristicObject> CharacteristicEnd2 = new List<CharacteristicObject>();
+            //List<CharacteristicObject> CharacteristicEnd3 = new List<CharacteristicObject>();
+
+            {
+               
+                StateObject state = StateObject.Get(stateIdStart);
+                if (state != null)
+                {
+                    var stateList = state.GetParentsList();
+                    stateList.Add(state);
+                    foreach(var i in stateList)
+                        res.StateStartSelected += i + " ";
+                    res.StateStart = stateList[0];
+                    res.StateStart.LoadPartialTree(stateList);
+                }
+                
+            }
+            {
+                StateObject state = StateObject.Get(stateIdEnd);
+
+                if (state != null)
+                {
+                    var stateList = state.GetParentsList();
+                stateList.Add(state);
+                    foreach (var i in stateList)
+                        res.StateEndSelected += i + " ";
+                    res.StateEnd = stateList[0];
+                    res.StateEnd.LoadPartialTree(stateList);
+                }
+            }
+
+
+
+
+
+            //PhaseCharacteristicObject CharacteristicObjPhase1 = null;
+            //{
+            //    PhaseCharacteristicObject characteristic = CharacteristicStart.Length>0? PhaseCharacteristicObject.Get(CharacteristicStart[0]):null;
+            //    if (characteristic != null)
+            //    {
+            //        var characteristicList = characteristic.GetParentsList();
+            //        characteristicList.Add(characteristic);
+            //        CharacteristicObjPhase1 = characteristicList[0];
+            //        CharacteristicObjPhase1.LoadPartialTree(characteristicList);
+            //    }
+
+            //}
+
+
+
+            //TODO че по оптимизации?
+            // Получаем список пространственных характеристик для выбранного воздействия
+            for (var charac=0; charac< CharacteristicStart.Length;++charac)
+            {
+                var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                using (var db = new ApplicationDbContext())//TODO using in this controller
+                {
+                    var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                    if(prosIdList.Length>0)
+                    {
+                        var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                        var treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+                        foreach (var p in prosList)
+                        {
+                            foreach (var i in treeProBase)
+                            {
+                                if (p.Id == i[0].Id)
+                                    if (!p.LoadPartialTree(i))
+                                        throw new Exception("TODO ошибка");
+                            }
+                        }
+                        if(charac==0)
+                            res.CharacteristicStart.Phase1.AddRange(prosList);
+                        else if(charac==1)
+                            res.CharacteristicStart.Phase2.AddRange(prosList);
+                        else
+                            res.CharacteristicStart.Phase3.AddRange(prosList);
+                        // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
+                    }
+                }
+            }
+
+
+            //TODO че по оптимизации?
+            // Получаем список пространственных характеристик для выбранного воздействия
+            for (var charac = 0; charac < CharacteristicEnd.Length; ++charac)
+            {
+                var prosIdList = CharacteristicEnd[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                using (var db = new ApplicationDbContext())//TODO using in this controller
+                {
+                    var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                    if (prosIdList.Length > 0)
+                    {
+                        var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                        var treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+                        foreach (var p in prosList)
+                        {
+                            foreach (var i in treeProBase)
+                            {
+                                if (p.Id == i[0].Id)
+                                    if (!p.LoadPartialTree(i))
+                                        throw new Exception("TODO ошибка");
+                            }
+                        }
+                        if (charac == 0)
+                            res.CharacteristicEnd.Phase1.AddRange(prosList);
+                        else if (charac == 1)
+                            res.CharacteristicEnd.Phase2.AddRange(prosList);
+                        else
+                            res.CharacteristicEnd.Phase3.AddRange(prosList);
+                        // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
+                    }
+                }
+            }
+
+
+            
+
+            return PartialView(res);
+        }
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// загрузить для отображения(не формой а текстом)
         /// </summary>
@@ -354,16 +507,32 @@ namespace dip.Controllers
 
 
 
+
+        [ChildActionOnly]
+        public ActionResult GetStateObject(string id, string type = "")
+        {
+            List<StateObject> res = new List<StateObject>();
+            var obj = StateObject.Get(id);
+            obj.ReLoadChild();
+            if (obj != null)
+                res = obj.Childs;
+
+
+            return PartialView(res);
+        }
+
+
+
         //////------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
-        /// <summary>
-        /// GET-метод обновления параметрических физических величин
-        /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns>
-        //[ChildActionOnly]
+            /// <summary>
+            /// GET-метод обновления параметрических физических величин
+            /// </summary>
+            /// <param name="id"> дескриптор выбранного воздействия </param>
+            /// <returns> результат действия ActionResult </returns>
+            //[ChildActionOnly]
         public ActionResult GetParametricFizVels(string id, string type)//TODO GetParametricFizVelsEdit  оптимизация
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();

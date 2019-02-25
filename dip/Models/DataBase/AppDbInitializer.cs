@@ -41,8 +41,11 @@ namespace dip.Models.DataBase
             var Nadmin = new ApplicationUser { Email = "asa123A@mail.ru", UserName = "asa123A@mail.ru", Name = "zsuz11", Surname = "zsuzSUR111", Birthday = DateTime.Now, EmailConfirmed = true };
             string Npassword = "Admin1!";
             var resultN = userManager.Create(Nadmin, Npassword);
+            var NAadmin = new ApplicationUser { Email = "asa123NA@mail.ru", UserName = "asa123NA@mail.ru", Name = "zsuz111", Surname = "zsuzSUR1111", Birthday = DateTime.Now, EmailConfirmed = true };
+            string NApassword = "Admin1!";
+            var resultNA = userManager.Create(NAadmin, NApassword);
             //
-            
+
             // если создание пользователя прошло успешно
             if (result.Succeeded)
             {
@@ -52,6 +55,8 @@ namespace dip.Models.DataBase
                 userManager.AddToRole(admin.Id, RolesProject.subscriber.ToString());
                 //
                 userManager.AddToRole(Nadmin.Id, RolesProject.user.ToString());
+                //
+                userManager.AddToRole(NAadmin.Id, RolesProject.NotApproveUser.ToString());
             }
 
 
