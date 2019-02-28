@@ -257,6 +257,8 @@
     <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\GetPhaseObjectV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\GetStateObjectV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ObjectInputV.cs" />
     <Compile Include="Models\ViewModel\AdminV\ChangeRoleV.cs" />
@@ -416,9 +418,10 @@
     <Content Include="Views\Actions\ObjectInput.cshtml" />
     <Content Include="Views\Helpers\PartFormStateObject.cshtml" />
     <Content Include="Views\Helpers\PartFormCharacteristicObject.cshtml" />
-    <Content Include="Views\Helpers\PartFormPhaseObject.cshtml" />
     <Content Include="Views\Actions\GetStateObject.cshtml" />
-    <Content Include="Views\Helpers\FormStateObject.cshtml" />
+    <Content Include="Views\Actions\GetPhaseObject.cshtml" />
+    <Content Include="Views\Helpers\ListPhaseObject.cshtml" />
+    <Content Include="Views\Helpers\ListStateObject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

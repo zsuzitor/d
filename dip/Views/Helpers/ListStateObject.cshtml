@@ -1,0 +1,19 @@
+﻿@model dip.Models.ViewModel.HelpersV.FormStateObjectV
+
+
+
+@foreach (var i2 in Model.States)
+{
+    <label>@i2.Name</label>
+    <div>
+        @foreach (var i in i2.Childs)
+        {
+            <div>
+                @Html.Action("FormStateObject", "Helpers", new { a = i, type = Model.Type, param = Model.Param })
+            </div>
+        }
+    </div>
+}
+
+
+

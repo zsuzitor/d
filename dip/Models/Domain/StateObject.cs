@@ -6,12 +6,13 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class StateObject: AParentDb<StateObject>
+    public class StateObject: AParentDb<StateObject>//, ICloneable
     {
         //public string Id { get; set; }
         public string Name { get; set; }
-       // public string Parent { get; set; }
+        // public string Parent { get; set; }
 
+        public int? CountPhase { get; set; }
 
         //[NotMapped]
         //public List<StateObject> Childs { get; set; }
@@ -22,10 +23,29 @@ namespace dip.Models.Domain
 
         public StateObject()
         {
+            CountPhase = null;
+        }
+
+        //public StateObject(StateObject obj)
+        //{
+        //    this.
+        //}
+
+
+        public StateObject CloneWithOutRef()
+        {
+            return new StateObject()
+            {
+                CountPhase=this.CountPhase,
+                Id=this.Id,
+                Name= this.Name,
+                Parent= this.Parent
+            };
+
 
         }
 
-        
+
         public static StateObject Get(string id)
         {
             StateObject res = null;

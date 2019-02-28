@@ -6,6 +6,8 @@
 <div>
     <hr />
     @*@Html.DropDownList("nn", @Model.actionId)*@
+    @Html.CheckBox("changeObjectCheckbox")
+    @Html.Label("Объект изменяется")
     <hr />
     <h1>Начальное состояние объекта</h1>
     @*@helpers_.PartFormDescrSearch(Html)*@
@@ -16,20 +18,24 @@
     @*<input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />*@
     <div>
         <div>
-            @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StateStart, type = "S", param = Model.StateStartSelected })
+            @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StatesStart, type = "S", param = Model.StateStartSelected })
         </div>
         <div>
-            @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicStart, type = "S", param = Model.StateStartSelected })
+            @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicsStart, type = "S", param = Model.StateStartSelected })
         </div>
     </div>
     <hr />
-    <h1>Конечное состояние объекта</h1>
-    <div>
+    @if (Model.changeStateObject)
+    {
+        <h1>Конечное состояние объекта</h1>
         <div>
-            @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StateEnd, type = "E", param = Model.StateEndSelected })
+            <div>
+                @Html.Action("PartFormStateObject", "Helpers", new { a = Model.StatesEnd, type = "E", param = Model.StateEndSelected })
+            </div>
+            <div>
+                @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicsEnd, type = "E", param = Model.StateEndSelected })
+            </div>
         </div>
-        <div>
-            @Html.Action("PartFormCharacteristicObject", "Helpers", new { a = Model.CharacteristicEnd, type = "E", param = Model.StateEndSelected })
-        </div>
-    </div>
+    }
+    
     </div>

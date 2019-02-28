@@ -1036,8 +1036,8 @@ namespace dip.Models.DataBase
                     {
                         Id="MONOFAZ",
                         Name= "Однофазное",
-                        Parent= "STRUCTOBJECT"//ALLSTATE
-
+                        Parent= "STRUCTOBJECT",//ALLSTATE
+                        CountPhase=1
                     });
                     db.StateObjects.Add(new StateObject()
                     {
@@ -1109,7 +1109,10 @@ namespace dip.Models.DataBase
                     obj.Id = i["id"].ToString().Trim();
                     obj.Name = i["name"].ToString().Trim();
                     obj.Parent = i["parent"].ToString().Trim();
-                    
+                    if (obj.Id == "3CONFAZ1")
+                        obj.CountPhase = 3;
+                    if(obj.Id == "2CONFAZ1" || obj.Id == "2CONFAZ2")
+                        obj.CountPhase = 2;
 
                     using (var db = new ApplicationDbContext())
                     {

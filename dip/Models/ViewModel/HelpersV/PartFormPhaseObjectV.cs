@@ -6,7 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
-    public class PartFormPhaseObjectV
+    public class ListPhaseObjectV
     {
 
         public List<PhaseCharacteristicObject> Phases { get; set; }
@@ -14,7 +14,7 @@ namespace dip.Models.ViewModel.HelpersV
         public string Param { get; set; }
 
 
-        public PartFormPhaseObjectV()
+        public ListPhaseObjectV()
         {
 
         }

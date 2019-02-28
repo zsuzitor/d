@@ -7,13 +7,13 @@
 <div>
     <p>Фаза 1</p>
     <div>
-        @Html.Action("PartFormPhaseObject", "Helpers", new { a = Model.Characteristic.Phase1, type = Model.Type, param = Model.Characteristic.ParamPhase1 })
+        @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase1, type = Model.Type, param = Model.Characteristic?.ParamPhase1 })
 
 
     </div>
     <p>Фаза 2</p>
     <div>
-        @Html.Action("PartFormPhaseObject", "Helpers", new { a = Model.Characteristic.Phase2, type = Model.Type, param = Model.Characteristic.ParamPhase2 })
+        @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase2, type = Model.Type, param = Model.Characteristic?.ParamPhase2 })
 
 
 
@@ -21,7 +21,7 @@
     </div>
     <p>Фаза 3</p>
     <div>
-        @Html.Action("PartFormPhaseObject", "Helpers", new { a = Model.Characteristic.Phase3, type = Model.Type, param = Model.Characteristic.ParamPhase3 })
+        @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase3, type = Model.Type, param = Model.Characteristic?.ParamPhase3 })
 
 
 

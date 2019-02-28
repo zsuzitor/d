@@ -14,13 +14,20 @@ namespace dip.Models
     }
 
 
-    public abstract class  AHasChilds<T>
+    public abstract class  AHasChilds<T> where T:new()
     {
         [NotMapped]
         public List<T> Childs { get; set; }
         [NotMapped]
         public T ParentItem { get; set; }
 
+
+
+        public AHasChilds()
+        {
+            ParentItem = default(T);
+            Childs = new List<T>();
+        }
 
         public virtual void LoadChild()
         {
@@ -43,7 +50,7 @@ namespace dip.Models
     }
 
 
-    public abstract class AParentDb<T>: AHasChilds<T> where T: AParentDb<T>
+    public abstract class AParentDb<T> : AHasChilds<T> where T :  AParentDb<T>, new()
     {
         [Key]
         public string Id { get; set; }
@@ -72,6 +79,8 @@ namespace dip.Models
 
             return true;
         }
+
+       
 
 
         public static List<List<T>> GetQueueParent(List<T> list)
@@ -120,7 +129,7 @@ namespace dip.Models
 
 
 
-        public abstract class ItemDescrFormCheckbox<T>: AParentDb<T> where T : ItemDescrFormCheckbox<T>
+        public abstract class ItemDescrFormCheckbox<T>: AParentDb<T> where T : ItemDescrFormCheckbox<T>,new()
     {
         //[Key]
         //public string Id { get; set; }
@@ -130,6 +139,13 @@ namespace dip.Models
         //public T ParentItem { get; set; }
 
         public List<Models.Domain.Action> Actions { get; set; }
+
+
+
+        public ItemDescrFormCheckbox()
+        {
+
+        }
 
         //[NotMapped]
         //public List<T> Childs { get; set; }

@@ -1,9 +1,9 @@
-﻿@model IEnumerable<dip.Models.Domain.StateObject>
+﻿@model dip.Models.ViewModel.ActionsV.GetStateObjectV
 
 
 
 
-@Html.Action("PartFormStateObject", "Helpers", new { a = Model.Characteristic.Phase1, type = Model.Type, param = Model.Characteristic.ParamPhase1 })
+@Html.Action("ListtateObject", "Helpers", new { a = Model.List, type = Model.Type })
 
 
 

@@ -162,6 +162,18 @@ namespace dip.Models.Domain
 
         }
 
+        public PhaseCharacteristicObject CloneWithOutRef()
+        {
+            return new PhaseCharacteristicObject()
+            {
+                
+                Id = this.Id,
+                Name = this.Name,
+                Parent = this.Parent
+            };
+
+
+        }
 
         public static PhaseCharacteristicObject Get(string id)
         {
