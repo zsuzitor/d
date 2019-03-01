@@ -127,7 +127,7 @@ namespace dip.Controllers
             //res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
 
 
-
+             DescrObjectI[] objForms = ;
 
             res.Obj.LoadImage();
 
@@ -138,18 +138,28 @@ namespace dip.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
         {
 
             if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
 
-
-            DescrSearchIInput.ValidationIfNeed(inp);
-
-            DescrSearchIOut.ValidationIfNeed(outp);
-            if (inp?.Valide == false || outp?.Valide == false)
+            FEText oldObj = FEText.Get(obj.IDFE);
+            if (oldObj == null)
                 return new HttpStatusCodeResult(404);
+
+            foreach (var i in forms)
+            {
+                DescrSearchI.Validation(i);
+                if (i?.Valide == false)
+                    return new HttpStatusCodeResult(404);
+                i.DeleteNotChildCheckbox();
+            }
+            //DescrSearchIInput.ValidationIfNeed(inp);
+
+            //DescrSearchIOut.ValidationIfNeed(outp);
+            //if (inp?.Valide == false || outp?.Valide == false)
+            //    return new HttpStatusCodeResult(404);
 
 
             var list_img_byte = Get_photo_post(uploadImage);
@@ -162,18 +172,19 @@ namespace dip.Controllers
 
             //TODO валидация
 
-            FEText oldObj = FEText.Get(obj.IDFE);
-            if (oldObj == null)
-                return new HttpStatusCodeResult(404);
 
-            DescrSearchI inp_ = new DescrSearchI(inp);
-            inp_.DeleteNotChildCheckbox();
-            DescrSearchI outp_ = new DescrSearchI(outp);
-            outp_.DeleteNotChildCheckbox();
+            //foreach (var i in forms)
+            //    i.DeleteNotChildCheckbox();
+            //DescrSearchI inp_ = new DescrSearchI(inp);
+            //inp_.DeleteNotChildCheckbox();
+            //DescrSearchI outp_ = new DescrSearchI(outp);
+            //outp_.DeleteNotChildCheckbox();
 
-            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, inp_, outp_))
+            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList()))
                 return new HttpStatusCodeResult(404);
             Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
+
+            DescrObjectI[] objForms = ;
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
@@ -199,7 +210,7 @@ namespace dip.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
         {
 
             //if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
@@ -212,23 +223,29 @@ namespace dip.Controllers
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
+            foreach (var i in forms)
+            {
+                DescrSearchI.Validation(i);
+                if (i?.Valide == false)
+                    return new HttpStatusCodeResult(404);
+                i.DeleteNotChildCheckbox();
+            }
 
-            DescrSearchIInput.ValidationIfNeed(inp);
+            
 
-            DescrSearchIOut.ValidationIfNeed(outp);
-            if (inp?.Valide == false || outp?.Valide == false)
-                return new HttpStatusCodeResult(404);
-
-            DescrSearchI inp_ = new DescrSearchI(inp);
-            inp_.DeleteNotChildCheckbox();
-            DescrSearchI outp_ = new DescrSearchI(outp);
-            outp_.DeleteNotChildCheckbox();
+            //DescrSearchI inp_ = new DescrSearchI(inp);
+            //inp_.DeleteNotChildCheckbox();
+            //DescrSearchI outp_ = new DescrSearchI(outp);
+            //outp_.DeleteNotChildCheckbox();
 
             var list_img_byte = Get_photo_post(uploadImage);
 
 
+            DescrObjectI[] objForms = ;
+
+
             //новая
-            obj.AddToDb(inp_, outp_, list_img_byte);
+            obj.AddToDb(forms, objForms, list_img_byte);
 
 
 

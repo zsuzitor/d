@@ -48,7 +48,7 @@ namespace dip.Controllers
             DescriptionInputV res = new DescriptionInputV();
 
             
-            foreach(var i in inp)
+            foreach(var i in inp)//TODO
             {
                 DescrSearchI.Validation(i);
                 if(i?.Valide==false)
@@ -66,7 +66,7 @@ namespace dip.Controllers
                 });
 
             }
-            foreach (var i in outp)
+            foreach (var i in outp)//TODO
             {
                 DescrSearchI.Validation(i);
                 if (i?.Valide==false)

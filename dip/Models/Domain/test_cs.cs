@@ -262,6 +262,25 @@ namespace dip.Models.Domain
     }
 
 
+
+
+    public class DescrObjectI
+    {
+        public string ListSelectedPhase1 { get; set; }
+        public string ListSelectedPhase2 { get; set; }
+        public string ListSelectedPhase3 { get; set; }
+
+        public bool Start { get; set; }//начальное или конечное состояние
+        public int NumPhase { get; set; }
+
+        public DescrObjectI()
+        {
+            Start = true;
+            NumPhase = 1;
+        }
+    }
+
+
     public class  DescriptionFormWithData{
 
         public DescriptionForm Form { get; set; }

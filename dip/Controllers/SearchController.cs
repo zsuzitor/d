@@ -23,7 +23,7 @@ namespace dip.Controllers
 
         
         //TODO search- переименовать+ в js тоже поменять на partial
-        public ActionResult DescriptionSearch(string search = null, DescrSearchI[] forms= null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
+        public ActionResult DescriptionSearch(string search = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
 
             //TODO сейчас просто проставил null временно
@@ -40,11 +40,15 @@ namespace dip.Controllers
             //var outp = new DescrSearchI(outp:null);//outp_
             //if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
             foreach (var i in forms)
+            {
                 DescrSearchI.Validation(i);
+                if(i?.Valide==false)
+                    return new HttpStatusCodeResult(404);
+            }
             if (forms!=null)
             {
 
-                res.SearchList = FEText.GetByDescr(forms);
+                res.SearchList = FEText.GetByDescr(forms, objForms);
 
                 res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
                 res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); ;

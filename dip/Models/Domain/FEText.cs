@@ -144,44 +144,46 @@ namespace dip.Models.Domain
 
         }
 
-        public static int[] GetByDescr(DescrSearchI[] forms)
+        public static int[] GetByDescr(DescrSearchI[] forms, DescrObjectI[]objects)
         {
             int[] list_id = null;
-            //if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
-            //{
-            //поиск
-            //List<int> list_id = new List<int>();
-            inp.DeleteNotChildCheckbox();
-            outp.DeleteNotChildCheckbox();
-            using (var db = new ApplicationDbContext())
-            {
-                //TODO оптимизация? разница только в  x1.Input == 1\0
-                //находим все записи которые подходят по входным параметрам
-                var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
-                x1.Name == inp.ActionId &&
-                  x1.Type == inp.ActionType &&
-                  x1.FizVelId == inp.FizVelId &&
-                  x1.Pros == inp.ListSelectedPros &&
-                  x1.Spec == inp.ListSelectedSpec &&
-                  x1.Vrem == inp.ListSelectedVrem &&
-                  x1.FizVelSection == inp.ParametricFizVelId);
+            //////if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
+            //////{
+            //////поиск
+            //////List<int> list_id = new List<int>();
+            ////foreach(var i in forms)
+            ////    i.DeleteNotChildCheckbox();
+            //////inp.DeleteNotChildCheckbox();
+            //////outp.DeleteNotChildCheckbox();
+            ////using (var db = new ApplicationDbContext())
+            ////{
+            ////    //TODO оптимизация? разница только в  x1.Input == 1\0
+            ////    //находим все записи которые подходят по входным параметрам
+            ////    var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
+            ////    x1.Name == inp.ActionId &&
+            ////      x1.Type == inp.ActionType &&
+            ////      x1.FizVelId == inp.FizVelId &&
+            ////      x1.Pros == inp.ListSelectedPros &&
+            ////      x1.Spec == inp.ListSelectedSpec &&
+            ////      x1.Vrem == inp.ListSelectedVrem &&
+            ////      x1.FizVelSection == inp.ParametricFizVelId);
 
-                //находим все записи которые подходят по выходным параметрам
-                var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
-                 x1.Name == outp.ActionId &&
-                x1.Type == outp.ActionType &&
-                x1.FizVelId == outp.FizVelId &&
-                x1.Pros == outp.ListSelectedPros &&
-                x1.Spec == outp.ListSelectedSpec &&
-                x1.Vrem == outp.ListSelectedVrem &&
-                x1.FizVelSection == outp.ParametricFizVelId);
+            ////    //находим все записи которые подходят по выходным параметрам
+            ////    var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
+            ////     x1.Name == outp.ActionId &&
+            ////    x1.Type == outp.ActionType &&
+            ////    x1.FizVelId == outp.FizVelId &&
+            ////    x1.Pros == outp.ListSelectedPros &&
+            ////    x1.Spec == outp.ListSelectedSpec &&
+            ////    x1.Vrem == outp.ListSelectedVrem &&
+            ////    x1.FizVelSection == outp.ParametricFizVelId);
 
-                //записи которые подходят по всем параметрам
-                list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();
-                //ViewBag.listFeId = list_id;
+            ////    //записи которые подходят по всем параметрам
+            ////    list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();
+            ////    //ViewBag.listFeId = list_id;
 
-            }
-            //}
+            ////}
+            //////}
             return list_id;
         }
 
@@ -305,17 +307,17 @@ order by [data].score desc
             return res;
         }
 
-        public void GetDescrFrom(DescrSearchIInput inp = null, DescrSearchIOut outp = null)
-        {
-            List<FEAction> lst = null;
-            using (var db = new ApplicationDbContext())
-            {
-                lst = db.FEActions.Where(x1 => x1.Idfe == this.IDFE).ToList();
-            }
-            inp = new DescrSearchIInput(lst.First(x1 => x1.Input == 1));
+        //public void GetDescrFrom(DescrSearchIInput inp = null, DescrSearchIOut outp = null)
+        //{
+        //    List<FEAction> lst = null;
+        //    using (var db = new ApplicationDbContext())
+        //    {
+        //        lst = db.FEActions.Where(x1 => x1.Idfe == this.IDFE).ToList();
+        //    }
+        //    inp = new DescrSearchIInput(lst.First(x1 => x1.Input == 1));
+        //    outp?
 
-
-        }
+        //}
 
         public bool Validation()
         {
@@ -331,7 +333,7 @@ order by [data].score desc
             return true;
         }
 
-        public bool AddToDb(DescrSearchI inp, DescrSearchI outp, List<byte[]> addImgs = null)
+        public bool AddToDb( DescrSearchI[] forms, DescrObjectI[] objForms , List<byte[]> addImgs = null)
         {
             //if (!this.Validation())
             //    return false;
@@ -343,34 +345,44 @@ order by [data].score desc
                 db.FEText.Add(this);
                 db.SaveChanges();
 
-
-
-                FEAction inpa = new FEAction()
+                foreach (var i in forms)
                 {
-                    Idfe = this.IDFE,
-                    Input = 1,
+                    var act = new FEAction() { Idfe = this.IDFE };//, Input = (i.InputForm ? 1 : 0)
+                    act.SetFromInput(i);
+                    db.FEActions.Add(act);
+                    db.SaveChanges();
+                }
 
-                };
-                inpa.SetFromInput(inp);
-                db.FEActions.Add(inpa);
+                //FEAction inpa = new FEAction()
+                //{
+                //    Idfe = this.IDFE,
+                //    Input = 1,
 
-                FEAction outpa = new FEAction()
-                {
-                    Idfe = this.IDFE,
-                    Input = 0,
+                //};
+                //inpa.SetFromInput(inp);
+                //db.FEActions.Add(inpa);
 
-                };
-                outpa.SetFromInput(outp);
-                db.FEActions.Add(outpa);
+                //FEAction outpa = new FEAction()
+                //{
+                //    Idfe = this.IDFE,
+                //    Input = 0,
+
+                //};
+                //outpa.SetFromInput(outp);
+                //db.FEActions.Add(outpa);
                 this.AddImages(addImgs, db);
 
                 db.SaveChanges();
+
+                DescrObjectI[] objForms = ;
+
+
             }
             Lucene_.BuildIndexSolo(this);
             return true;
         }
 
-        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, DescrSearchI inp = null, DescrSearchI outp = null)
+        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, DescrObjectI[] objForms=null)
         {
 
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -388,14 +400,46 @@ order by [data].score desc
 
 
                 var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//&&x1.Input==1
-                var inpdb = descrdb.FirstOrDefault(x1 => x1.Input == 1);
-                var outpdb = descrdb.FirstOrDefault(x1 => x1.Input == 0);
+                db.FEActions.RemoveRange(descrdb);//без сохранения
+                
+                var inpdb = descrdb.Where(x1 => x1.Input == 1).ToList();
+                var outpdb = descrdb.Where(x1 => x1.Input == 0).ToList();
                 if (inpdb == null || outpdb == null)
                     return false;
-                inpdb.SetFromInput(inp);
-                outpdb.SetFromInput(outp);
+                //foreach(var i in inpdb)//TODO
+                //{
+                //    var newobj = forms.FirstOrDefault(x1 => x1.InputForm);
+                //    if (newobj != null)
+                //    {
+                //        forms.Remove(newobj);
+                //        //forms.FirstOrDefault(x1=>x1.id);
+                //        i.SetFromInput(newobj);
+                //    }
+                    
+                //}
+                foreach(var i in forms)
+                {
+                    var act=new FEAction() {Idfe=this.IDFE };//,Input=(i.InputForm?1:0)
+                    act.SetFromInput(i);
+                    db.FEActions.Add(act);
+                }
+                //foreach (var i in outpdb)
+                //{
+                //    var newobj = forms.FirstOrDefault(x1 => !x1.InputForm);
+                //    if (newobj != null)
+                //    {
+                //        forms.Remove(newobj);
+                //        //forms.FirstOrDefault(x1=>x1.id);
+                //        i.SetFromInput(newobj);
+                //    }
+
+                //}
+                //inpdb.SetFromInput(inp);
+                //outpdb.SetFromInput(outp);
 
                 db.SaveChanges();
+
+                DescrObjectI[] objForms = ;
             }
             return true;
         }

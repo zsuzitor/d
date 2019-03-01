@@ -56,7 +56,10 @@ namespace dip.Models.Domain
             Pros = a?.ListSelectedPros;
             Spec = a?.ListSelectedSpec;
             Vrem = a?.ListSelectedVrem;
-            
+            if(a?.InputForm!=null)
+            Input = (a.InputForm? 1 : 0);
+
+
         }
         //public void SetFromInput(DescrSearchIOut a)
         //{
