@@ -26,7 +26,7 @@
         }
         else
         {*@
-            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput })
+            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput })@*inp = Model.FormInput, outp = Model.FormOutput*@
 
         @*}*@
         @* TODO мб костыль, пока не понятно *@
@@ -106,23 +106,23 @@
             data_descr_search.listSelectedSpecO = data_descr_search.listSelectedSpecO.trim();
             data_descr_search.listSelectedVremO = data_descr_search.listSelectedVremO.trim();
 
-            var url_ = document.getElementById("descr_search_href_id").value + "?" +
-                    //"search=yes&" +
-                    "actionIdI=" + data_descr_search.actionIdI + "&" +
-                    "actionTypeI=" + data_descr_search.actionTypeI + "&" +
-                    "FizVelIdI=" + data_descr_search.FizVelIdI + "&" +
-                    "parametricFizVelIdI=" + data_descr_search.parametricFizVelIdI + "&" +
-                    "listSelectedProsI=" + data_descr_search.listSelectedProsI + "&" +
-                    "listSelectedSpecI=" + data_descr_search.listSelectedSpecI + "&" +
-                    "listSelectedVremI=" + data_descr_search.listSelectedVremI + "&" +
-                    "actionIdO=" + data_descr_search.actionIdO + "&" +
-                    "actionTypeO=" + data_descr_search.actionTypeO + "&" +
-                    "FizVelIdO=" + data_descr_search.FizVelIdO + "&" +
-                    "parametricFizVelIdO=" + data_descr_search.parametricFizVelIdO + "&" +
-                    "listSelectedProsO=" + data_descr_search.listSelectedProsO + "&" +
-                    "listSelectedSpecO=" + data_descr_search.listSelectedSpecO + "&" +
-                    "listSelectedVremO=" + data_descr_search.listSelectedVremO + "&";
-            history.pushState(null, null, url_);
+            //var url_ = document.getElementById("descr_search_href_id").value + "?" +
+            //        //"search=yes&" +
+            //        "actionIdI=" + data_descr_search.actionIdI + "&" +
+            //        "actionTypeI=" + data_descr_search.actionTypeI + "&" +
+            //        "FizVelIdI=" + data_descr_search.FizVelIdI + "&" +
+            //        "parametricFizVelIdI=" + data_descr_search.parametricFizVelIdI + "&" +
+            //        "listSelectedProsI=" + data_descr_search.listSelectedProsI + "&" +
+            //        "listSelectedSpecI=" + data_descr_search.listSelectedSpecI + "&" +
+            //        "listSelectedVremI=" + data_descr_search.listSelectedVremI + "&" +
+            //        "actionIdO=" + data_descr_search.actionIdO + "&" +
+            //        "actionTypeO=" + data_descr_search.actionTypeO + "&" +
+            //        "FizVelIdO=" + data_descr_search.FizVelIdO + "&" +
+            //        "parametricFizVelIdO=" + data_descr_search.parametricFizVelIdO + "&" +
+            //        "listSelectedProsO=" + data_descr_search.listSelectedProsO + "&" +
+            //        "listSelectedSpecO=" + data_descr_search.listSelectedSpecO + "&" +
+            //        "listSelectedVremO=" + data_descr_search.listSelectedVremO + "&";
+            //history.pushState(null, null, url_);
 
 
 

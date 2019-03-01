@@ -144,7 +144,7 @@ namespace dip.Models.Domain
 
         }
 
-        public static int[] GetByDescr(DescrSearchI inp, DescrSearchI outp)
+        public static int[] GetByDescr(DescrSearchI[] forms)
         {
             int[] list_id = null;
             //if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))

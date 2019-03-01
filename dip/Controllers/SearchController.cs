@@ -23,40 +23,43 @@ namespace dip.Controllers
 
         
         //TODO search- переименовать+ в js тоже поменять на partial
-        public ActionResult DescriptionSearch(string search = null, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null)
+        public ActionResult DescriptionSearch(string search = null, DescrSearchI[] forms= null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
 
-            
-                DescrSearchIInput.ValidationIfNeed(inp_);
-           
-                DescrSearchIOut.ValidationIfNeed(outp_);
-            if (inp_?.Valide == false || outp_?.Valide == false)
-                return new HttpStatusCodeResult(404);
+            //TODO сейчас просто проставил null временно
+            //DescrSearchIInput.ValidationIfNeed(inp_);
+
+            //DescrSearchIOut.ValidationIfNeed(outp_);
+            //if (inp_?.Valide == false || outp_?.Valide == false)
+            //    return new HttpStatusCodeResult(404);
 
             DescriptionSearchV res = new DescriptionSearchV();
 
-            
-            var inp = new DescrSearchI(inp_);
-            var outp = new DescrSearchI(outp_);
-            if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
+
+            //var inp = new DescrSearchI(inp:null);//inp_
+            //var outp = new DescrSearchI(outp:null);//outp_
+            //if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
+            foreach (var i in forms)
+                DescrSearchI.Validation(i);
+            if (forms!=null)
             {
 
-                res.SearchList = FEText.GetByDescr(inp, outp);
+                res.SearchList = FEText.GetByDescr(forms);
 
-                res.FormInput = inp_;
-                res.FormOutput = outp_;
+                res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
+                res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); ;
 
 
             }
 
             else
-                res.ItsSearch = true;
+                //res.ItsSearch = true;
 
 
             if (search != null)
             {
 
-                res.Search = true;
+                //res.Search = true;
                 TempData["list_fe_id"] = res.SearchList;
 
 
@@ -66,7 +69,7 @@ namespace dip.Controllers
 
                 Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
                 ApplicationUser.GetUserId(), true);
-                log.SetDescrParam(inp, outp);
+                log.SetDescrParam(forms);
                 log.AddLogDb();
                 return RedirectToAction("ListFeText", "Physic");
                 //return RedirectToRoute(new { controller = "Physic", action = "ListFeText", listId = list_id });//new { listId = list_id }

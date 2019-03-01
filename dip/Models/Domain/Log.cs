@@ -53,23 +53,34 @@ namespace dip.Models.Domain
         }
 
 
-        public void SetDescrParam(DescrSearchI inp, DescrSearchI outp)
+        public void SetDescrParam(DescrSearchI[] param)
         {
             //при добавлении добавлять в конец
-            this.Params_.Add(inp.ActionId);
-            this.Params_.Add(inp.ActionType);
-            this.Params_.Add(inp.FizVelId);
-            this.Params_.Add(inp.ParametricFizVelId);
-            this.Params_.Add(inp.ListSelectedPros);
-            this.Params_.Add(inp.ListSelectedSpec);
-            this.Params_.Add(inp.ListSelectedVrem);
-            this.Params_.Add(outp.ActionId);
-            this.Params_.Add(outp.ActionType);
-            this.Params_.Add(outp.FizVelId);
-            this.Params_.Add(outp.ParametricFizVelId);
-            this.Params_.Add(outp.ListSelectedPros);
-            this.Params_.Add(outp.ListSelectedSpec);
-            this.Params_.Add(outp.ListSelectedVrem);
+            //this.Params_.Add(inp.ActionId);
+            //this.Params_.Add(inp.ActionType);
+            //this.Params_.Add(inp.FizVelId);
+            //this.Params_.Add(inp.ParametricFizVelId);
+            //this.Params_.Add(inp.ListSelectedPros);
+            //this.Params_.Add(inp.ListSelectedSpec);
+            //this.Params_.Add(inp.ListSelectedVrem);
+            //this.Params_.Add(outp.ActionId);
+            //this.Params_.Add(outp.ActionType);
+            //this.Params_.Add(outp.FizVelId);
+            //this.Params_.Add(outp.ParametricFizVelId);
+            //this.Params_.Add(outp.ListSelectedPros);
+            //this.Params_.Add(outp.ListSelectedSpec);
+            //this.Params_.Add(outp.ListSelectedVrem);
+            foreach(var i in param)
+            {
+                //TODO name проставлять
+                this.Params_.Add(i.ActionId);
+                this.Params_.Add(i.ActionType);
+                this.Params_.Add(i.FizVelId);
+                this.Params_.Add(i.ParametricFizVelId);
+                this.Params_.Add(i.ListSelectedPros);
+                this.Params_.Add(i.ListSelectedSpec);
+                this.Params_.Add(i.ListSelectedVrem);
+            }
 
 
 

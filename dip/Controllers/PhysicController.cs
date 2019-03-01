@@ -98,21 +98,33 @@ namespace dip.Controllers
             if (res == null)
                 return new HttpStatusCodeResult(404);
 
-            FEAction inp = null;
-            FEAction outp = null;
-            FEAction.Get((int)id, ref inp, ref outp);
+            List < FEAction> inp = null;
+            List<FEAction> outp = null;
+            FEAction.Get((int)id, inp, outp);
 
-            res.FormInput = new DescrSearchIInput(inp);
-            res.FormOutput = new DescrSearchIOut(outp);
+            res.FormsInput = inp.Select(x1=> {
+                var rs = new DescrSearchI(x1);
+                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
+                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
+                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
+                return rs;
+            }).ToList();
+            res.FormsOutput = outp.Select(x1 => {
+                var rs = new DescrSearchI(x1);
+                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
+                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
+                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
+                return rs;
+            }).ToList();// new DescrSearchI(outp);
 
             //TODO
-            res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
-            res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);
-            res.FormInput.listSelectedSpecI = Spec.GetAllIdsFor(res.FormInput.listSelectedSpecI);
+            //res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
+            //res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);
+            //res.FormInput.listSelectedSpecI = Spec.GetAllIdsFor(res.FormInput.listSelectedSpecI);
 
-            res.FormOutput.listSelectedProsO = Pro.GetAllIdsFor(res.FormOutput.listSelectedProsO);
-            res.FormOutput.listSelectedVremO = Vrem.GetAllIdsFor(res.FormOutput.listSelectedVremO);
-            res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
+            //res.FormOutput.listSelectedProsO = Pro.GetAllIdsFor(res.FormOutput.listSelectedProsO);
+            //res.FormOutput.listSelectedVremO = Vrem.GetAllIdsFor(res.FormOutput.listSelectedVremO);
+            //res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
 
 
 

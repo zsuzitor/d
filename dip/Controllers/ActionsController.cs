@@ -34,35 +34,74 @@ namespace dip.Controllers
             //    return View();
             //}
 
-        public ActionResult DescriptionInput(DescrSearchIInput inp=null, DescrSearchIOut outp = null)
+            //TODO мб ограничивать что бы не закинули слишком много
+        public ActionResult DescriptionInput(List<DescrSearchI> inp, List<DescrSearchI> outp)
         {
-            
-                DescrSearchIInput.ValidationIfNeed(inp);
-            
-                DescrSearchIOut.ValidationIfNeed(outp);
-            if(inp?.Valide==false|| outp?.Valide==false)
-                return new HttpStatusCodeResult(404);
-            DescriptionInputV res = new DescriptionInputV();
-            res.InputForm = DescriptionForm.GetFormObject(inp?.actionIdI,inp?.FizVelIdI, inp?.listSelectedProsI, inp?.listSelectedSpecI, inp?.listSelectedVremI);
-            res.OutpForm = DescriptionForm.GetFormObject(outp?.actionIdO, outp?.FizVelIdO, outp?.listSelectedProsO, outp?.listSelectedSpecO, outp?.listSelectedVremO);
 
-            var inp_ = new DescrSearchI(inp);
-            if(inp_.CheckParametric()==null)
-                if (res.InputForm.ActionId.Count > 0)
-                    inp_.Parametric=res.InputForm.ActionId[0].Parametric;
+            //DescrSearchIInput.ValidationIfNeed(inp);
+
+            //DescrSearchIOut.ValidationIfNeed(outp);
+            inp = inp ?? new List<DescrSearchI>() {null };
+            outp = outp ?? new List<DescrSearchI>() { null };
+
             
-            var outp_ = new DescrSearchI(outp);
-            if (outp_.CheckParametric() == null)
-                if (res.OutpForm.ActionId.Count > 0)
-                    outp_.Parametric = res.OutpForm.ActionId[0].Parametric;
+            DescriptionInputV res = new DescriptionInputV();
+
+            
+            foreach(var i in inp)
+            {
+                DescrSearchI.Validation(i);
+                if(i?.Valide==false)
+                    return new HttpStatusCodeResult(404);
+                var formObj = DescriptionForm.GetFormObject(i?.ActionId, i?.FizVelId, i?.ListSelectedPros, i?.ListSelectedSpec, i?.ListSelectedVrem);
+                if (i?.CheckParametric() == null)
+                    if (formObj.ActionId.Count > 0)
+                        if(i!=null)
+                        i.Parametric = formObj.ActionId[0].Parametric;
+                res.InputForms.Add(new DescriptionFormWithData()
+                {
+                    Form = formObj,
+                    FormData = i,
+                    
+                });
+
+            }
+            foreach (var i in outp)
+            {
+                DescrSearchI.Validation(i);
+                if (i?.Valide==false)
+                    return new HttpStatusCodeResult(404);
+                var formObj = DescriptionForm.GetFormObject(i?.ActionId, i?.FizVelId, i?.ListSelectedPros, i?.ListSelectedSpec, i?.ListSelectedVrem);
+                if (i?.CheckParametric() == null)
+                    if (formObj.ActionId.Count > 0)
+                        if (i != null)
+                            i.Parametric = formObj.ActionId[0].Parametric;
+                res.OutpForms.Add(new DescriptionFormWithData()
+                {
+                    Form = formObj,//DescriptionForm.GetFormObject(i.ActionId, i.FizVelId, i.ListSelectedPros, i.ListSelectedSpec, i.ListSelectedVrem),
+                    FormData = i
+                });
+
+            }
+
+            
+            //var inp_ = new DescrSearchI(inp);
+            //if(inp_.CheckParametric()==null)
+            //    if (res.InputForm.ActionId.Count > 0)
+            //        inp_.Parametric=res.InputForm.ActionId[0].Parametric;
+            
+            //var outp_ = new DescrSearchI(outp);
+            //if (outp_.CheckParametric() == null)
+            //    if (res.OutpForm.ActionId.Count > 0)
+            //        outp_.Parametric = res.OutpForm.ActionId[0].Parametric;
             //outp_.CheckParametric();
             //if (DescrSearchI.IsNull(inp_) || DescrSearchI.IsNull(outp_))
             //{
             //    inp_ = null;
             //    outp_ = null;
             //}
-            res.InputFormData = inp_;
-            res.OutputFormData = outp_;
+            //res.InputFormData = inp_;
+            //res.OutputFormData = outp_;
             res.SetAllParametricAction();
 
             

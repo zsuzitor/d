@@ -36,15 +36,15 @@ namespace dip.Models.Domain
 
         }
 
-        public static void Get(int FETextId,ref FEAction inp, ref FEAction outp)
+        public static void Get(int FETextId, List<FEAction> inp, List<FEAction> outp)
         {
             List<FEAction> lst = null;
             using (var db = new ApplicationDbContext())
             {
                  lst= db.FEActions.Where(x1=>x1.Idfe==FETextId).ToList();
             }
-            inp = lst.First(x1=>x1.Input==1);
-            outp = lst.First(x1 => x1.Input == 0);
+            inp = lst.Where(x1=>x1.Input==1).ToList();
+            outp = lst.Where(x1 => x1.Input == 0).ToList();
         }
 
         public void SetFromInput(DescrSearchI a)

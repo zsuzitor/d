@@ -27,12 +27,20 @@
 
     @*@if(ViewBag.inputForm)*@
     <input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
-    @Html.Action("PartFormDescrSearch", "Helpers",new {a= Model.InputForm,type="I", param= Model.InputFormData })
+    @foreach (var i in Model.InputForms)
+    {
+        @Html.Action("PartFormDescrSearch", "Helpers", new { a = i.Form, type = "I", param = i.FormData })
 
+    }
+    
     <hr />
     <h1>Выход</h1>
-    
-    @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForm, type = "O", param = Model.OutputFormData })
+    @foreach (var i in Model.OutpForms)
+    {
+        @Html.Action("PartFormDescrSearch", "Helpers", new { a = i.Form, type = "O", param = i.FormData })
+
+    }
+   @* @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForm, type = "O", param = Model.OutputFormData })*@
 
 
 </div>
@@ -76,8 +84,15 @@
             @*var curActionIdI=@(!string.IsNullOrWhiteSpace(Model?.InputFormData?.ActionId)? Model?.InputFormData?.ActionId:"0");
             var curActionIdO=@(!string.IsNullOrWhiteSpace(Model?.OutputFormData?.ActionId) ? Model?.OutputFormData?.ActionId : "0");*@
 
-            var curActionIdI="@(Model?.InputFormData?.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
-            var curActionIdO="@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";
+            @*var curActionIdI="@(Model?.InputFormData?.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
+            var curActionIdO="@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";*@
+
+
+            @*var curActionIdI="@(Model?.InputForms[0]?.FormData.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
+            var curActionIdO = "@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";*@
+
+            var sdd_i=@(string.Join(" ",Model?.InputForms.Select(x1=>x1.FormData.ActionId).ToList()));
+            var sdd_o=@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.FormData.ActionId).ToList()));
             @*if(!curActionIdI){
 
                 if(@(Model?.InputForm.ActionId.Count) > 0){
@@ -90,29 +105,56 @@
                     curActionIdI=@(Model?.OutpForm.ActionId[0].Id);
                 }
             }*@
+            var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
+            var mssdd_i=sdd_i.split(' ');
+            var mssdd_o=sdd_o.split(' ');
+            for(var i=0;i<mssdd_i.length;++i){
+                if (massParamAction.includes(mssdd_i[i])) {
+                    //парам
+                    changeTypeActionId("I"+(i+1), true);
 
+                }
+                else {
+                    //не парам
+                    changeTypeActionId("I"+(i+1), false);
+                }
+            }
+            for(var i=0;i<mssdd_o.length;++i){
+                if (massParamAction.includes(mssdd_o[i])) {
+                    //парам
+                    changeTypeActionId("O"+(i+1), true);
+
+                }
+                else {
+                    //не парам
+                    changeTypeActionId("O"+(i+1), false);
+                }
+            }
 
             //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
 
             //скрываем ненужные поля
-            if (curActionIdI==="True") {//massParamAction.includes(curActionIdI)) {
-                //парам
-                changeTypeActionId('I', true);
+            //if (curActionIdI==="True") {//massParamAction.includes(curActionIdI)) {
+            //    //парам
+            //    changeTypeActionId('I', true);
 
-            }
-            else if (curActionIdI === "False") {
-                //не парам
-                changeTypeActionId('I', false);
-            }
-            if (curActionIdO === "True") {//massParamAction.includes(curActionIdO)) {
-                //парам
-                changeTypeActionId('O', true);
-            }
-            else if (curActionIdO === "False") {
-                //не парам
-                changeTypeActionId('O', false);
-            }
+            //}
+            //else if (curActionIdI === "False") {
+            //    //не парам
+            //    changeTypeActionId('I', false);
+            //}
+            //if (curActionIdO === "True") {//massParamAction.includes(curActionIdO)) {
+            //    //парам
+            //    changeTypeActionId('O', true);
+            //}
+            //else if (curActionIdO === "False") {
+            //    //не парам
+            //    changeTypeActionId('O', false);
+            //}
+            
 
+            //скрываем ненужные поля
+            
 
 
         });
@@ -266,7 +308,7 @@
         //    data_descr_search.function_trigger = callF;
         //}
         function Go_next_step() {
-
+            //TODO
             data_descr_search.actionIdI = UndefinedToStr($('#actionI').val());
             data_descr_search.actionTypeI = UndefinedToStr($('#actionTypeI').val());
             data_descr_search.FizVelIdI = UndefinedToStr($('#fizVelIdI').val());

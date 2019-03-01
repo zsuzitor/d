@@ -9,33 +9,38 @@ namespace dip.Models.ViewModel.ActionsV
     public class DescriptionInputV
     {
         //ActionId будет 1 и тоже
-        public DescriptionForm InputForm { get; set; }
-        public DescriptionForm OutpForm { get; set; }
+        //public List<DescriptionForm> InputForm { get; set; }
+        //public List<DescriptionForm> OutpForm { get; set; }
 
-        public DescrSearchI InputFormData { get; set; }
-        public DescrSearchI OutputFormData { get; set; }
+        //public DescrSearchI InputFormData { get; set; }
+        //public DescrSearchI OutputFormData { get; set; }
+
+            public List<DescriptionFormWithData> InputForms{ get; set; }
+        public List<DescriptionFormWithData> OutpForms { get; set; }
 
         public string ActionParametricIds { get; set; }
 
         public DescriptionInputV()
         {
-            InputForm = null;
-            OutpForm = null;
-            InputFormData = null;
-            OutputFormData = null;
+            InputForms = new List<DescriptionFormWithData>() ;
+            OutpForms = new List<DescriptionFormWithData>();
+            //InputFormData = null;
+            //OutputFormData = null;
 
             ActionParametricIds = null;
         }
 
+        /// <summary>
+        /// заносит в объект строку с списком всех параметрических actionid
+        /// </summary>
         public void SetAllParametricAction()
         {
             //ActionId будет 1 и тоже, поэтому берем любое
-            if (InputForm != null)
-            {
-                ActionParametricIds = InputForm.GetAllParametricAction(); ;
-            }
-            else if (OutpForm != null)
-                ActionParametricIds =OutpForm.GetAllParametricAction();
+            if (InputForms != null&& InputForms.Count>0)
+                ActionParametricIds = InputForms[0].Form.GetAllParametricAction(); 
+            
+            else if (OutpForms != null && OutpForms.Count > 0)
+                ActionParametricIds =OutpForms[0].Form.GetAllParametricAction();
 
 
         }
