@@ -2,18 +2,54 @@
 
 
 
-@foreach (var i2 in Model.States)
+@if (Model.States != null)
 {
-    <label>@i2.Name</label>
-    <div>
-        @foreach (var i in i2.Childs)
+    string[] needSelectedList = Model.Param.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+    <div class="objectInputChilds">
+        @foreach (var i2 in Model.States)
         {
-            <div>
-                @Html.Action("FormStateObject", "Helpers", new { a = i, type = Model.Type, param = Model.Param })
+
+            @*<input type="radio" class="radioClass" name="change_state_radio" value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
+            <label>@i2.Name</label>*@
+
+
+           
+                bool? needSelected = needSelectedList?.Contains(i2.Id);
+            
+                <label>
+                    @if (needSelected == true)
+                    {
+
+                        <input type="radio" class="radioClass" name="change_state_radio" checked value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
+                    }
+                    else
+                    {
+                        @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
+                        <input type="radio" class="radioClass" name="change_state_radio" value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
+
+                    }
+                    @i2.Name
+                </label>
+
+
+
+
+
+                if (i2.CountPhase != null && i2.CountPhase > 0)
+                {
+                <input type="hidden" id=@("CountPhase_state_"+i2.Id) value=@(""+i2.CountPhase) />
+            }
+            <div id=@("stateChilds_"+Model.Type+"_"+i2.Id)>
+                @foreach (var i in i2.Childs)
+                {
+                    <div>
+                        @Html.Action("ListStateObject", "Helpers", new { a = i, type = Model.Type, param = Model.Param })
+                    </div>
+                }
             </div>
         }
+
     </div>
 }
-
 
 

@@ -255,6 +255,7 @@
     <Compile Include="Models\TechnicalFunctions\OperandGroup.cs" />
     <Compile Include="Models\TechnicalFunctions\Operation.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\ChangeStateObjectV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetPhaseObjectV.cs" />
@@ -422,6 +423,8 @@
     <Content Include="Views\Actions\GetPhaseObject.cshtml" />
     <Content Include="Views\Helpers\ListPhaseObject.cshtml" />
     <Content Include="Views\Helpers\ListStateObject.cshtml" />
+    <Content Include="Views\Actions\ChangeObjectChanges.cshtml" />
+    <Content Include="Views\Actions\ChangeStateObject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

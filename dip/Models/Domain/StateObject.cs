@@ -32,6 +32,15 @@ namespace dip.Models.Domain
         //}
 
 
+        public static List<StateObject> GetBase()
+        {
+            List<StateObject> res = new List<StateObject>();
+            using (var db = new ApplicationDbContext())
+                            res= db.StateObjects.Where(x1 => x1.Parent == "STRUCTOBJECT").ToList();
+            return res; 
+        }
+
+
         public StateObject CloneWithOutRef()
         {
             return new StateObject()

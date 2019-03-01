@@ -43,7 +43,7 @@ namespace dip.Controllers
         }
 
         //только список
-        public ActionResult ListStateObject(List<StateObject> a, string type = "", string param = null)
+        public ActionResult ListStateObject(List<StateObject> a, string type = "", string param = "")
         {
             FormStateObjectV res = new FormStateObjectV();
             res.States = a;
@@ -65,12 +65,12 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ListPhaseObject(List<PhaseCharacteristicObject> a, string type = "",string param=null)
+        public ActionResult ListPhaseObject(List<PhaseCharacteristicObject> a, string type = "",string param="")
         {
             ListPhaseObjectV res = new ListPhaseObjectV();
             res.Phases = a;
             res.Type = type;
-            //res.Param = param;
+            res.Param = param;
             return PartialView(res);
         }
 

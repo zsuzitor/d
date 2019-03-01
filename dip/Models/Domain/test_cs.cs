@@ -162,6 +162,17 @@ namespace dip.Models.Domain
 
         }
 
+
+
+        public static List<PhaseCharacteristicObject> GetBase()
+        {
+            List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+            using (var db = new ApplicationDbContext())
+                res = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+            return res;
+        }
+
+
         public PhaseCharacteristicObject CloneWithOutRef()
         {
             return new PhaseCharacteristicObject()

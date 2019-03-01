@@ -82,7 +82,7 @@ namespace dip.Controllers
             //TODO CharacteristicStart может содержать несколько конечных элементов
 
             ObjectInputV res = new ObjectInputV();
-
+            res.changeStateObject = changeStateObject;
 
             CharacteristicStart = CharacteristicStart == null ? new string[0] : CharacteristicStart;
             if(changeStateObject)
@@ -101,15 +101,14 @@ namespace dip.Controllers
             //List<CharacteristicObject> CharacteristicEnd3 = new List<CharacteristicObject>();
 
 
-            List<StateObject> baseState;
-            List<PhaseCharacteristicObject> basePhase;
-            using (var db = new ApplicationDbContext())
-            {
-                baseState = db.StateObjects.Where(x1 => x1.Parent == "STRUCTOBJECT").ToList();
-                basePhase = db.PhaseCharacteristicObjects.Where(x1=>x1.Parent== "DESCOBJECT").ToList();
-            }
+            List<StateObject> baseState=StateObject.GetBase();
+            List<PhaseCharacteristicObject> basePhase= PhaseCharacteristicObject.GetBase(); 
+            
+                
+                //db.PhaseCharacteristicObjects.Where(x1=>x1.Parent== "DESCOBJECT").ToList();
+            
             res.StatesStart = baseState.Select(x1=>x1.CloneWithOutRef()).ToList();
-            if (changeStateObject)
+           // if (changeStateObject)
                 res.StatesEnd = baseState.Select(x1 => x1.CloneWithOutRef()).ToList();
 
             //
@@ -135,7 +134,7 @@ namespace dip.Controllers
                         if(i.Id== stateList[0].Id)//res.StateStart = stateList[0];
                         {
                             i.LoadPartialTree(stateList);
-                            switch (i.CountPhase)
+                            switch (i.CountPhase)//TODO в метод
                             {
                                 case 1:
                                     res.CharacteristicsStart.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList(); 
@@ -177,7 +176,7 @@ namespace dip.Controllers
                         {
                             i.LoadPartialTree(stateList);
 
-                            switch (i.CountPhase)
+                            switch (i.CountPhase)//TODO в метод
                             {
                                 case 1:
                                     res.CharacteristicsEnd.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
@@ -347,7 +346,13 @@ namespace dip.Controllers
 
 
 
+        //public ActionResult ChangeObjectChanges()
+        //{
+        //    List<StateObject> res = StateObject.GetBase();
 
+
+        //    return PartialView(res);
+        //}
 
 
 
@@ -639,35 +644,95 @@ namespace dip.Controllers
         }
 
 
-
-
-        [ChildActionOnly]
-        public ActionResult GetStateObject(string id, string type = "")
+       
+        public ActionResult ChangeStateObject(string id = null, string type = "")
         {
-            GetStateObjectV res = new GetStateObjectV();
-            
+            ChangeStateObjectV res = new ChangeStateObjectV();
+            //GetStateObjectV res = new GetStateObjectV();
+            //GetPhaseObjectV res = new GetPhaseObjectV();
+            res.Type = type;
             //List<StateObject> res = new List<StateObject>();
             var obj = StateObject.Get(id);
-            obj.ReLoadChild();
+
             if (obj != null)
-                res.List = obj.Childs;
+            {
+                obj.ReLoadChild();
+                res.States = obj.Childs;
+                if (obj.CountPhase != null)
+                {
+                    List<PhaseCharacteristicObject> basePhase = PhaseCharacteristicObject.GetBase();
+                    switch (obj.CountPhase)//TODO в метод
+                    {
+                        case 1:
+                            res.Characteristics.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
+                            break;
+
+
+                        case 2:
+                           
+                            res.Characteristics.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
+                            goto case 1;
+                        
+
+                        case 3:
+                           
+                            res.Characteristics.Phase3 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
+                            goto case 2;
+                           
+
+                    }
+                }
+            }
+            
 
 
             return PartialView(res);
         }
 
+        //[ChildActionOnly]
+        //public ActionResult GetStateObject(string id=null, string type = "")
+        //{
+        //    GetStateObjectV res = new GetStateObjectV();
+        //    res.Type= type;
+        //    //List<StateObject> res = new List<StateObject>();
+        //    var obj = StateObject.Get(id);
+            
+        //    if (obj != null)
+        //    {
+        //        obj.ReLoadChild();
+        //        res.List = obj.Childs;
+        //    }
+        //    else if(id=="")
+        //    {
+        //        res.List=StateObject.GetBase();
+        //    }
+                
+
+
+        //    return PartialView(res);
+        //}
+
       
 
 
-        [ChildActionOnly]
-        public ActionResult GetPhaseObject(string id, string type = "")
+       
+        public ActionResult GetPhaseObject(string id=null, string type = "")
         {
             GetPhaseObjectV res = new GetPhaseObjectV();
+            res.Type = type;
             //List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
             var obj = PhaseCharacteristicObject.Get(id);
-            obj.ReLoadChild();
+            
             if (obj != null)
+            {
+                obj.ReLoadChild();
                 res.List = obj.Childs;
+            }
+            else if (id == "")
+            {
+                res.List = PhaseCharacteristicObject.GetBase();
+            }
+
 
 
             return PartialView(res);

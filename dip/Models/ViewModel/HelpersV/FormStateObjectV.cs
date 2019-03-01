@@ -15,7 +15,8 @@ namespace dip.Models.ViewModel.HelpersV
 
         public FormStateObjectV()
         {
-
+            Type = "";
+            Param = "";
         }
     }
 }

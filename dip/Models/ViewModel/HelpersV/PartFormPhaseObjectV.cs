@@ -16,7 +16,8 @@ namespace dip.Models.ViewModel.HelpersV
 
         public ListPhaseObjectV()
         {
-
+            Type = "";
+            Param = "";
         }
 
 

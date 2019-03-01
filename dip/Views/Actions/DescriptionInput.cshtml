@@ -18,6 +18,8 @@
     <hr />
     @*@Html.DropDownList("nn", @Model.actionId)*@
     <hr />
+    @Html.CheckBox("changeTwoInputFormDescr")
+    @Html.Label("2 входа?")
     <h1>Вход</h1>
     @*@helpers_.PartFormDescrSearch(Html)*@
     @*@Html.Label("1233")*@
@@ -166,15 +168,19 @@
 
             if (this.name.indexOf('listSelectedPros') >= 0) {
                 //pros
-                loadCheckBoxChild(this, 'GetProsChild', 'Pros');
+                loadCheckBoxChildDescr(this, 'GetProsChild', 'Pros');
             }
             else if (this.name.indexOf('listSelectedSpec') >= 0) {
                 //spec
-                loadCheckBoxChild(this, 'GetSpecChild', 'Spec');
+                loadCheckBoxChildDescr(this, 'GetSpecChild', 'Spec');
             }
             else if (this.name.indexOf('listSelectedVrem') >= 0) {
                 //vrem
-                loadCheckBoxChild(this, 'GetVremChild', 'Vrem');
+                loadCheckBoxChildDescr(this, 'GetVremChild', 'Vrem');
+            }
+            else if (this.name == 'changeTwoInputFormDescr') {
+                //отобразить 2 форму
+
             }
 
 
@@ -209,7 +215,7 @@
 
 
 
-        function loadCheckBoxChild(ch,meth,key) {
+        function loadCheckBoxChildDescr(ch,meth,key) {
             var type = ch.name.split(key)[1][0];
             var div = document.getElementById((ch.value + type));
 
@@ -220,7 +226,7 @@
 
                         if (data.trim()) {
                                 div.innerHTML = data;
-                                loadCheckBoxChild(ch, meth, key);
+                                loadCheckBoxChildDescr(ch, meth, key);
                         }
                         else {
                             div.remove();

@@ -31,7 +31,7 @@ namespace dip.Models.ViewModel.ActionsV
         {
             StateStartSelected = "";
             StateEndSelected = "";
-            changeStateObject = true;
+            changeStateObject = false;
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model dip.Models.ViewModel.ActionsV.ChangeStateObjectV
+
+@Html.Action("ListStateObject", "Helpers", new { a = Model.States, type = Model.Type})
+
+<hr />
+
+@Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristics?.Phase1, type = (Model.Type+"1") })  @*param =Model.Characteristics.ParamPhase1*@
+<hr />
+
+@Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristics?.Phase2, type = (Model.Type + "2") })
+
+<hr />
+@Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristics?.Phase3, type = (Model.Type + "3") })
+

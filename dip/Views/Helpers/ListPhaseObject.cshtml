@@ -3,22 +3,42 @@
 
 
 
-@if (Model.Phases != null)
+@if (Model.Phases != null&& Model.Phases.Count>0)
 {
-    foreach (var i2 in Model.Phases)
-    {
+    string[] needSelectedList = Model.Param.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+    <div class="objectInputChilds">
+        @foreach (var i2 in Model.Phases)
+        {
         <div>
-            <label>@(i2.Name)</label>
+            @{
+                bool? needSelected = needSelectedList?.Contains(i2.Id);
+            }
+            <label>
+                @if (needSelected == true)
+                {
+
+                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
+                }
+                else
+                {
+                    @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
+                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
+
+                }
+                @i2.Name
+            </label>
+
             <div>
                 @*@foreach (var i in i2.Childs)
                     {*@
-                <div>
-                    @Html.Action("PartFormPhaseObject", "Helpers", new { a = i2.Childs, type = Model.Type, param = Model.Param })
+                <div id=@("phaseChilds_"+Model.Type+"_"+i2.Id)>
+                    @Html.Action("ListPhaseObject", "Helpers", new { a = i2.Childs, type = Model.Type, param = Model.Param })
                 </div>
                 @*}*@
             </div>
         </div>
-    }
+        }
+    </div>
 }
 
 
