@@ -174,6 +174,47 @@ namespace dip.Models.Domain
         }
 
 
+        public static string DeleteNotChildCheckbox(string strIds)
+        {
+          
+            string res = "";
+            var listId = strIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var i in listId)
+            {
+                var listItem = PhaseCharacteristicObject.GetChild(i);
+                if (listItem.Count == 0)
+                    res += i + " ";
+                else
+                {
+                    bool needAdd = true;
+                    foreach (var i2 in listItem)
+                    {
+                        if (listId.Contains(i2.Id))
+                            needAdd = false;
+                    }
+                    if (needAdd)
+                        res += i + " ";
+                }
+
+
+            }
+
+            return res.Trim();
+
+        }
+
+
+        public static List<PhaseCharacteristicObject> GetChild(string id)
+        {
+            // Получаем список значений, соответствующий данной характеристике
+            List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+            using (var db = new ApplicationDbContext())
+                res = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == id).ToList();
+            return res;
+
+        }
+
+
         public PhaseCharacteristicObject CloneWithOutRef()
         {
             return new PhaseCharacteristicObject()
@@ -261,22 +302,77 @@ namespace dip.Models.Domain
 
     }
 
+    public class DescrPhaseI: FEObject
+    {
+        
+        public DescrPhaseI()
+        {
 
+        }
+        public DescrPhaseI(FEObject a)
+        {
+            if (a != null)
+            {
+                Id = a.Id;
+                Idfe = a.Id;
+                Begin = a.Id;
+                NumPhase = a.NumPhase;
+
+                PhaseState = a.PhaseState;
+                Composition = a.Composition;
+                MagneticStructure = a.MagneticStructure;
+                Conductivity = a.Conductivity;
+                MechanicalState = a.MechanicalState;
+                OpticalState = a.OpticalState;
+                Special = a.Special;
+                //NumPhase = 1;
+            }
+
+        }
+
+        public string GetListStr_()//TODO
+        {
+            string res = "";
+            res += PhaseState + " " +
+                Composition + " " +
+                MagneticStructure + " " +
+                Conductivity + " " +
+                MechanicalState + " " +
+                OpticalState + " " +
+                Special + " ";
+                
+
+            return res;
+        }
+    }
 
 
     public class DescrObjectI
     {
-        public string ListSelectedPhase1 { get; set; }
-        public string ListSelectedPhase2 { get; set; }
-        public string ListSelectedPhase3 { get; set; }
+        public DescrPhaseI ListSelectedPhase1 { get; set; }
+        public DescrPhaseI ListSelectedPhase2 { get; set; }
+        public DescrPhaseI ListSelectedPhase3 { get; set; }
 
-        public bool Start { get; set; }//начальное или конечное состояние
-        public int NumPhase { get; set; }
+        public bool Begin { get; set; }//начальное или конечное состояние
+        //public int NumPhase { get; set; }
 
         public DescrObjectI()
         {
-            Start = true;
-            NumPhase = 1;
+            Begin = true;
+            //NumPhase = 1;
+        }
+
+        public List<string> GetList_()//TODO
+        {
+            List<string> res = new List<string>()
+            {
+                ListSelectedPhase1?.GetListStr_(),
+                ListSelectedPhase2?.GetListStr_(),
+                ListSelectedPhase3?.GetListStr_()
+            };
+
+
+            return res;
         }
     }
 

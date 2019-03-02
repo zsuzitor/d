@@ -43,8 +43,8 @@ namespace dip.Controllers
             //DescrSearchIOut.ValidationIfNeed(outp);
             inp = inp ?? new List<DescrSearchI>() {null };
             outp = outp ?? new List<DescrSearchI>() { null };
-
             
+
             DescriptionInputV res = new DescriptionInputV();
 
             
@@ -113,19 +113,26 @@ namespace dip.Controllers
 
 
 
-        //stateId-последний выбранный ребенок
-        public ActionResult ObjectInput(bool changeStateObject=false,string stateIdStart=null, string stateIdEnd = null, string[] CharacteristicStart = null, string[] CharacteristicEnd = null)
-        {
-
+        //stateId-последний выбранный ребенок состояния
+        public ActionResult ObjectInput(bool changeStateObject=false,string stateIdStart=null, string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
+        {//, DescrObjectI objFormsBegin, DescrObjectI objFormsEnd
+         //12;
+         //string[] CharacteristicStart = null, string[] CharacteristicEnd = null
+            List<string> CharacteristicStart = new List<string>();
+            if (objFormsBegin!=null)
+             CharacteristicStart = objFormsBegin.GetList_();
+            List<string> CharacteristicEnd = new List<string>();
+            if (objFormsBegin != null)
+                CharacteristicEnd = objFormsEnd.GetList_();
             //TODO если пришли пустые значения надо загружать пустую форму
             //TODO CharacteristicStart может содержать несколько конечных элементов
 
             ObjectInputV res = new ObjectInputV();
             res.changeStateObject = changeStateObject;
 
-            CharacteristicStart = CharacteristicStart == null ? new string[0] : CharacteristicStart;
-            if(changeStateObject)
-            CharacteristicEnd = CharacteristicEnd == null ? new string[0] : CharacteristicEnd;
+            //CharacteristicStart = CharacteristicStart == null ? new string[0] : CharacteristicStart;
+            //if(changeStateObject)
+            //CharacteristicEnd = CharacteristicEnd == null ? new string[0] : CharacteristicEnd;
 
             //CharacteristicObject
             //StateObject StateStart = null;
@@ -264,8 +271,8 @@ namespace dip.Controllers
 
 
             //TODO че по оптимизации?
-            // Получаем список пространственных характеристик для выбранного воздействия
-            for (var charac=0; charac< CharacteristicStart.Length;++charac)
+            
+            for (var charac=0; charac< CharacteristicStart.Count;++charac)
             {
                 var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
                 using (var db = new ApplicationDbContext())//TODO using in this controller
@@ -318,9 +325,9 @@ namespace dip.Controllers
 
 
             //TODO че по оптимизации?
-            // Получаем список пространственных характеристик для выбранного воздействия
+           
             if (changeStateObject)
-                for (var charac = 0; charac < CharacteristicEnd.Length; ++charac)
+                for (var charac = 0; charac < CharacteristicEnd.Count; ++charac)
             {
                 var prosIdList = CharacteristicEnd[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
                 using (var db = new ApplicationDbContext())//TODO using in this controller

@@ -101,6 +101,9 @@ namespace dip.Controllers
             List < FEAction> inp = null;
             List<FEAction> outp = null;
             FEAction.Get((int)id, inp, outp);
+            List < FEObject> inpObj = null;
+            List < FEObject> outpObj = null;
+            FEObject.Get((int)id, inpObj, outpObj);
 
             res.FormsInput = inp.Select(x1=> {
                 var rs = new DescrSearchI(x1);
@@ -117,6 +120,13 @@ namespace dip.Controllers
                 return rs;
             }).ToList();// new DescrSearchI(outp);
 
+            res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 1));//.Select(x1=>new DescrPhaseI(x1));
+            res.FormObjectBegin.ListSelectedPhase2 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
+            res.FormObjectBegin.ListSelectedPhase3 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+
+            res.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 1));
+            res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
+            res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
             //TODO
             //res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
             //res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);
@@ -127,7 +137,7 @@ namespace dip.Controllers
             //res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
 
 
-             DescrObjectI[] objForms = ;
+           // DescrObjectI[] objForms = ;//TODO-objForms
 
             res.Obj.LoadImage();
 
@@ -180,11 +190,11 @@ namespace dip.Controllers
             //DescrSearchI outp_ = new DescrSearchI(outp);
             //outp_.DeleteNotChildCheckbox();
 
-            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList()))
+            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList()))
                 return new HttpStatusCodeResult(404);
             Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
 
-            DescrObjectI[] objForms = ;
+            //DescrObjectI[] objForms = ;//TODO-objForms
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
@@ -241,7 +251,7 @@ namespace dip.Controllers
             var list_img_byte = Get_photo_post(uploadImage);
 
 
-            DescrObjectI[] objForms = ;
+            //DescrObjectI[] objForms = ; //TODO-objForms
 
 
             //новая

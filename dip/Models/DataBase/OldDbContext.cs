@@ -776,40 +776,77 @@ namespace dip.Models.DataBase
 
 
 
+                //выгрузка из существующей бд не все записи заносятся
 
-                try
-                {
-                    command.CommandText = "select * from FeObject";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
-                        "conductivity", "mechanicalState", "opticalState", "special");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.FEObject();
+                //try
+                //{
+                //    command.CommandText = "select * from FeObject";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
+                //        "conductivity", "mechanicalState", "opticalState", "special");
 
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                //    int lastIdfe = -1;
+                //    int lastBegin = -1;
+                //    int NumPhase = 1;
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.FEObject();
 
-                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
-                        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
-                        obj.PhaseState = i["phaseState"].ToString().Trim();
-                        obj.Composition = i["composition"].ToString().Trim();
-                        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
-                        obj.Conductivity = i["conductivity"].ToString().Trim();
-                        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
-                        obj.OpticalState = i["opticalState"].ToString().Trim();
-                        obj.Special = i["special"].ToString().Trim();
+                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+
+                //        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                //        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
+
+                //        //if (lastIdfe==-1)
+                //        //{
+                //        //    lastIdfe = obj.Idfe;
+                //        //    lastBegin = obj.Begin;
+                //        //}
+                //        //else
+                //        {
+                //            if(lastIdfe== obj.Idfe&& lastBegin== obj.Begin)
+                //            {
+                //                NumPhase++;
+                //            }
+                //            else
+                //            {
+                //                NumPhase = 1;
+                //            }
+                //            lastIdfe = obj.Idfe;
+                //            lastBegin = obj.Begin;
+                //        }
+                //        obj.NumPhase = NumPhase;
+
+                //        obj.PhaseState = i["phaseState"].ToString().Trim();
+                //        obj.Composition = i["composition"].ToString().Trim();
+                //        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
+                //        obj.Conductivity = i["conductivity"].ToString().Trim();
+                //        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
+                //        obj.OpticalState = i["opticalState"].ToString().Trim();
+                //        {
+                //            string[] tmpSpecial = i["special"].ToString().Split(new string[] {" " },StringSplitOptions.RemoveEmptyEntries);
+                //            if(tmpSpecial!=null)
+                //            foreach(var i2 in tmpSpecial)
+                //            {
+                //                    if (i2[0] == 'C')
+                //                        obj.Special += " ";
+                //                    obj.Special += i2;
+                //            }
+                //        }
                         
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.FEObjects.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //        //obj.Special = i["special"].ToString().Trim();
+                        
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.FEObjects.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 

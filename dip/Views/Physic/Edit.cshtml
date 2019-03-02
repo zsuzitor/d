@@ -112,6 +112,10 @@
         <div >@*id="physEditFormDescrDiv"*@
             @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormsInput, outp = Model.FormsOutput})
         </div>
+        <div>
+           
+        @Html.Action("ObjectInput", "Actions", new { objFormsBegin = Model.FormObjectBegin, objFormsEnd = Model.FormObjectEnd })
+    </div>
         @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
         {
 

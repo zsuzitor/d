@@ -39,27 +39,29 @@ namespace dip.Controllers
             //var inp = new DescrSearchI(inp:null);//inp_
             //var outp = new DescrSearchI(outp:null);//outp_
             //if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
-            foreach (var i in forms)
+            
+            if (forms!=null&& objForms!=null)
             {
-                DescrSearchI.Validation(i);
-                if(i?.Valide==false)
-                    return new HttpStatusCodeResult(404);
-            }
-            if (forms!=null)
-            {
+                foreach (var i in forms)
+                {
+                    DescrSearchI.Validation(i);
+                    if (i?.Valide == false)
+                        return new HttpStatusCodeResult(404);
+                }
+
 
                 res.SearchList = FEText.GetByDescr(forms, objForms);
 
                 res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
-                res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); ;
-
-
+                res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); 
+                res.FormObjectBegin = objForms.FirstOrDefault(x1=>x1.Begin) ;
+                res.FormObjectEnd = objForms.FirstOrDefault(x1 => !x1.Begin);
             }
 
-            else
+           // else
                 //res.ItsSearch = true;
 
-
+            
             if (search != null)
             {
 

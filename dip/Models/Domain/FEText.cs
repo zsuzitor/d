@@ -352,6 +352,18 @@ order by [data].score desc
                     db.FEActions.Add(act);
                     db.SaveChanges();
                 }
+                foreach (var i in objForms)
+                {
+                    List<FEObject> objects = new List<FEObject>()
+                    {
+                        
+                        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
+                        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
+                        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
+                };
+                    db.FEObjects.AddRange(objects);
+                    db.SaveChanges();
+                }
 
                 //FEAction inpa = new FEAction()
                 //{
@@ -374,7 +386,7 @@ order by [data].score desc
 
                 db.SaveChanges();
 
-                DescrObjectI[] objForms = ;
+                //DescrObjectI[] objForms = ; //TODO-objForms
 
 
             }
@@ -382,7 +394,7 @@ order by [data].score desc
             return true;
         }
 
-        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, DescrObjectI[] objForms=null)
+        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, List<DescrObjectI> objForms=null)
         {
 
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -399,13 +411,13 @@ order by [data].score desc
                 this.AddImages(addImgs, db);
 
 
-                var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//&&x1.Input==1
+                var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
                 db.FEActions.RemoveRange(descrdb);//без сохранения
                 
-                var inpdb = descrdb.Where(x1 => x1.Input == 1).ToList();
-                var outpdb = descrdb.Where(x1 => x1.Input == 0).ToList();
-                if (inpdb == null || outpdb == null)
-                    return false;
+                //var inpdb = descrdb.Where(x1 => x1.Input == 1).ToList();
+                //var outpdb = descrdb.Where(x1 => x1.Input == 0).ToList();
+                //if (inpdb == null || outpdb == null)
+                //    return false;
                 //foreach(var i in inpdb)//TODO
                 //{
                 //    var newobj = forms.FirstOrDefault(x1 => x1.InputForm);
@@ -439,7 +451,23 @@ order by [data].score desc
 
                 db.SaveChanges();
 
-                DescrObjectI[] objForms = ;
+
+                var objdb = db.FEObjects.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
+                db.FEObjects.RemoveRange(objdb);//без сохранения
+                foreach (var i in objForms)
+                {
+                    List<FEObject> objects = new List<FEObject>()
+                    {
+                        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
+                        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
+                        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
+                };
+                    db.FEObjects.AddRange(objects);
+                    db.SaveChanges();
+                }
+                db.SaveChanges();
+
+                // DescrObjectI[] objForms = ; //TODO-objForms
             }
             return true;
         }

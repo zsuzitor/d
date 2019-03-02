@@ -12,6 +12,9 @@ namespace dip.Models.ViewModel.PhysicV
         public List<DescrSearchI> FormsInput { get; set; }
         public List<DescrSearchI> FormsOutput { get; set; }
 
+        public DescrObjectI FormObjectBegin { get; set; }
+        public DescrObjectI FormObjectEnd { get; set; }
+
         public EditV()
         {
             Obj = null;

@@ -53,7 +53,15 @@ namespace dip.Models.Domain
 
 
         }
+        public static List<StateObject> GetChild(string id)
+        {
+            // Получаем список значений, соответствующий данной характеристике
+            List<StateObject> res = new List<StateObject>();
+            using (var db = new ApplicationDbContext())
+                res = db.StateObjects.Where(x1 => x1.Parent == id).ToList();
+            return res;
 
+        }
 
         public static StateObject Get(string id)
         {

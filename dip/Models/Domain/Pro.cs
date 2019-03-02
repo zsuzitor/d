@@ -65,6 +65,9 @@ namespace dip.Models.Domain
             return res;
         }
 
+
+     
+
         /// <summary>
         /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
         /// </summary>

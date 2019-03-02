@@ -13,6 +13,10 @@
     <div >@*id="physCreateFormDescrDiv"*@
         @Html.Action("DescriptionInput", "Actions")
     </div>
+    <div>
+        @*id="physCreateFormDescrDiv"*@
+    @Html.Action("ObjectInput", "Actions")
+</div>
     @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
     {
         <div id="physCreateFormDescrRecDiv">
