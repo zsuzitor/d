@@ -279,6 +279,28 @@ namespace dip.Models.Domain
         }
 
 
+        public static string GetAllIdsFor(string str)
+        {
+            //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить
+            List<PhaseCharacteristicObject> mainLst = new List<PhaseCharacteristicObject>();
+            var strmass = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            if (strmass == null)
+                return null;
+            foreach (var i in strmass)
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var pr = db.PhaseCharacteristicObjects.First(x1 => x1.Id == i);
+
+                    var lstPr = pr.GetParentsList();
+                    lstPr.Add(pr);
+                    mainLst.AddRange(lstPr);
+                }
+            }
+            return string.Join(" ", mainLst.Select(x1 => x1.Id).Distinct());
+
+        }
+
 
         //мб вынести в класс
         //public override bool LoadPartialTree(List<CharacteristicObject> list)
@@ -359,6 +381,9 @@ namespace dip.Models.Domain
         public DescrObjectI()
         {
             Begin = true;
+            ListSelectedPhase1 = null;
+            ListSelectedPhase2 = null;
+            ListSelectedPhase3 = null;
             //NumPhase = 1;
         }
 

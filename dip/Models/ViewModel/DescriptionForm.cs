@@ -44,7 +44,7 @@ namespace dip.Models.ViewModel
 
             List<FEAction> inp = null;
             List<FEAction > outp = null;
-            FEAction.Get(idfe, inp, outp);
+            FEAction.Get(idfe, ref inp, ref outp);
 
             int iter = 0;
             foreach(var i2 in inp)

@@ -81,7 +81,7 @@ namespace dip.Models.Domain
             
         }
 
-        public static bool Get(int id, List<FEObject> inp, List<FEObject> outp)
+        public static bool Get(int id, ref List<FEObject> inp, ref List<FEObject> outp)
         {
             using (var db=new ApplicationDbContext())
             {

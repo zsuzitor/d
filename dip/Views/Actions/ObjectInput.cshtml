@@ -28,7 +28,7 @@
     </div>
         <hr />
     @{ 
-        string displayEnd = Model.changeStateObject ? "block;" : "none;";
+        string displayEnd = Model.changedObject ? "block;" : "none;";
     }
         <div id="formPartEndId" style="display:@displayEnd">
             <h1>Конечное состояние объекта</h1>

@@ -36,7 +36,7 @@ namespace dip.Models.Domain
 
         }
 
-        public static void Get(int FETextId, List<FEAction> inp, List<FEAction> outp)
+        public static void Get(int FETextId,ref List<FEAction> inp, ref List<FEAction> outp)
         {
             List<FEAction> lst = null;
             using (var db = new ApplicationDbContext())

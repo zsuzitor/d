@@ -98,12 +98,13 @@ namespace dip.Controllers
             if (res == null)
                 return new HttpStatusCodeResult(404);
 
+            //res.ChangedObject=res.obj
             List < FEAction> inp = null;
             List<FEAction> outp = null;
-            FEAction.Get((int)id, inp, outp);
+            FEAction.Get((int)id, ref inp, ref outp);
             List < FEObject> inpObj = null;
             List < FEObject> outpObj = null;
-            FEObject.Get((int)id, inpObj, outpObj);
+            FEObject.Get((int)id, ref inpObj, ref outpObj);
 
             res.FormsInput = inp.Select(x1=> {
                 var rs = new DescrSearchI(x1);
@@ -120,13 +121,32 @@ namespace dip.Controllers
                 return rs;
             }).ToList();// new DescrSearchI(outp);
 
-            res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 1));//.Select(x1=>new DescrPhaseI(x1));
-            res.FormObjectBegin.ListSelectedPhase2 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
-            res.FormObjectBegin.ListSelectedPhase3 = new DescrPhaseI(inpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
-
-            res.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 1));
-            res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
-            res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+            if (inpObj != null)
+            {
+                var objTmp =  inpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
+                if(objTmp!=null)
+                res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(objTmp);//.Select(x1=>new DescrPhaseI(x1));
+                 objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
+                if (objTmp != null)
+                    res.FormObjectBegin.ListSelectedPhase2 = new DescrPhaseI(objTmp);
+                  objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
+                if (objTmp != null)
+                    res.FormObjectBegin.ListSelectedPhase3 = new DescrPhaseI(objTmp);
+            }
+           
+            if (outpObj != null)
+            {
+                var objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
+                if (objTmp != null)
+                    res.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(objTmp);
+                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
+                if (objTmp != null)
+                    res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
+                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
+                if (objTmp != null)
+                    res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+            }
+           
             //TODO
             //res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
             //res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);

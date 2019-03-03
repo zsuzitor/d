@@ -11,7 +11,7 @@ namespace dip.Models.ViewModel.ActionsV
         public List<StateObject> StatesStart { get; set; }
         public string StateStartSelected { get; set; }
 
-        public bool changeStateObject { get; set; }
+        public bool changedObject { get; set; }
 
         public List<StateObject> StatesEnd { get; set; }
         public string StateEndSelected { get; set; }
@@ -31,7 +31,9 @@ namespace dip.Models.ViewModel.ActionsV
         {
             StateStartSelected = "";
             StateEndSelected = "";
-            changeStateObject = false;
+            changedObject = false;
+            CharacteristicsStart = new CharacteristicObject();
+            CharacteristicsEnd = new CharacteristicObject();
         }
     }
 }

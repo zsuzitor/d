@@ -197,7 +197,15 @@ namespace dip.Models
               .Map(t => t.MapLeftKey("ApplicationUserId")//id 1 которое в таблице будет
               .MapRightKey("FETextId")//id 2
               .ToTable("ApplicationUserFETextFavourite"));//название таблицы
-            
+
+
+
+            modelBuilder.Entity<StateObject>().HasMany(c => c.FeTextBegin)//
+              .WithOptional(s => s.StateBegin);//
+
+            modelBuilder.Entity<StateObject>().HasMany(c => c.FeTextEnd)//
+             .WithOptional(s => s.StateEnd);//
+
             base.OnModelCreating(modelBuilder);//инициализация что бы роли и все остальное добавилось нормально
         }
 

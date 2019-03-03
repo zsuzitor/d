@@ -15,11 +15,18 @@ namespace dip.Models.ViewModel.PhysicV
         public DescrObjectI FormObjectBegin { get; set; }
         public DescrObjectI FormObjectEnd { get; set; }
 
+        //public bool ChangedObject { get; set; }
+        //public string StateIdStart { get; set; }
+        //public string StateIdEnd { get; set; }
+
+
         public EditV()
         {
             Obj = null;
             FormsInput = null;
             FormsOutput = null;
+            FormObjectBegin = new DescrObjectI();
+            FormObjectEnd = new DescrObjectI();
         }
 
     }

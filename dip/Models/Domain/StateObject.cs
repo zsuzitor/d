@@ -19,6 +19,8 @@ namespace dip.Models.Domain
         //[NotMapped]
         //public StateObject ParentItem { get; set; }
 
+        public List<FEText> FeTextBegin { get; set; }
+        public List<FEText> FeTextEnd { get; set; }
 
 
         public StateObject()

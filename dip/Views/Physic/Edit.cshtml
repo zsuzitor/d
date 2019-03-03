@@ -110,11 +110,12 @@
 
     <div>
         <div >@*id="physEditFormDescrDiv"*@
-            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormsInput, outp = Model.FormsOutput})
+            @Html.Action("DescriptionInput", "Actions", new { countInput=Model.Obj.CountInput, inp = Model.FormsInput, outp = Model.FormsOutput})
         </div>
         <div>
            
-        @Html.Action("ObjectInput", "Actions", new { objFormsBegin = Model.FormObjectBegin, objFormsEnd = Model.FormObjectEnd })
+        @Html.Action("ObjectInput", "Actions", new { changedObject=Model.Obj.ChangedObject, stateIdBegin = Model.Obj.StateBeginId,
+       stateIdEnd = Model.Obj.StateEndId, objFormsBegin = Model.FormObjectBegin, objFormsEnd = Model.FormObjectEnd })
     </div>
         @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
         {

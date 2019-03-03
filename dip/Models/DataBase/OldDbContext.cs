@@ -735,17 +735,19 @@ namespace dip.Models.DataBase
                     
                     
                 }
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
+                
+
+                    //catch (Exception e)
+                    //{
+                    //    throw e;
+                    //}
 
 
-                //FeIndex
+                    //FeIndex
 
 
 
-                try
+                    try
                 {
                     command.CommandText = "select * from FeIndex";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
@@ -778,119 +780,147 @@ namespace dip.Models.DataBase
 
                 //выгрузка из существующей бд не все записи заносятся
 
-                try
+                //try
+                //{
+                //    command.CommandText = "select * from FeObject";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
+                //        "conductivity", "mechanicalState", "opticalState", "special");
+
+                //    int lastIdfe = -1;
+                //    int lastBegin = -1;
+                //    int NumPhase = 1;
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.FEObject();
+
+                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+
+                //        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                //        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
+
+                //        //if (lastIdfe==-1)
+                //        //{
+                //        //    lastIdfe = obj.Idfe;
+                //        //    lastBegin = obj.Begin;
+                //        //}
+                //        //else
+                //        {
+                //            if (lastIdfe == obj.Idfe && lastBegin == obj.Begin)
+                //            {
+                //                NumPhase++;
+                //            }
+                //            else
+                //            {
+                //                NumPhase = 1;
+                //            }
+                //            lastIdfe = obj.Idfe;
+                //            lastBegin = obj.Begin;
+                //        }
+                //        obj.NumPhase = NumPhase;
+
+                //        obj.PhaseState = i["phaseState"].ToString().Trim();
+                //        obj.Composition = i["composition"].ToString().Trim();
+                //        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
+                //        obj.Conductivity = i["conductivity"].ToString().Trim();
+                //        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
+                //        obj.OpticalState = i["opticalState"].ToString().Trim();
+                //        {
+                //            string[] tmpSpecial = i["special"].ToString().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                //            if (tmpSpecial != null)
+                //                foreach (var i2 in tmpSpecial)
+                //                {
+                //                    if (i2[0] == 'C')
+                //                        obj.Special += " ";
+                //                    obj.Special += i2;
+                //                }
+                //        }
+
+                //        //obj.Special = i["special"].ToString().Trim();
+
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.FEObjects.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
+
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
+
+
+
+
+                //new
+
+                using (var db = new ApplicationDbContext())
                 {
-                    command.CommandText = "select * from FeObject";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
-                        "conductivity", "mechanicalState", "opticalState", "special");
-
-                    int lastIdfe = -1;
-                    int lastBegin = -1;
-                    int NumPhase = 1;
-                    foreach (var i in ldr)
+                    
+                    var test = db.FEIndexs.ToList();
+                    foreach (var i in test)
                     {
-                        var obj = new Domain.FEObject();
-
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-
-                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
-                        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
-
-                        //if (lastIdfe==-1)
-                        //{
-                        //    lastIdfe = obj.Idfe;
-                        //    lastBegin = obj.Begin;
-                        //}
-                        //else
+                       
+                        i.Index = i.Index.Replace("\u0002\u0003\u0004", "\n");
+                        var indexMass = i.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        
+                        for (int i2 = 0; i2 < indexMass.Count; ++i2)
                         {
-                            if (lastIdfe == obj.Idfe && lastBegin == obj.Begin)
+                            if (indexMass[i2] == "2" || indexMass[i2] == "3" || indexMass[i2].IndexOf("2\n") == 0 || indexMass[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
                             {
-                                NumPhase++;
-                            }
-                            else
-                            {
-                                NumPhase = 1;
-                            }
-                            lastIdfe = obj.Idfe;
-                            lastBegin = obj.Begin;
-                        }
-                        obj.NumPhase = NumPhase;
+                                //характеристики начального состояния объекта
 
-                        obj.PhaseState = i["phaseState"].ToString().Trim();
-                        obj.Composition = i["composition"].ToString().Trim();
-                        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
-                        obj.Conductivity = i["conductivity"].ToString().Trim();
-                        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
-                        obj.OpticalState = i["opticalState"].ToString().Trim();
-                        {
-                            string[] tmpSpecial = i["special"].ToString().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                            if (tmpSpecial != null)
-                                foreach (var i2 in tmpSpecial)
+                                if (indexMass[i2].Contains('\n'))
                                 {
-                                    if (i2[0] == 'C')
-                                        obj.Special += " ";
-                                    obj.Special += i2;
+                                    var th = indexMass[i2].Split('\n');
+                                    indexMass[i2] = th[0];
+                                    indexMass.Insert(i2 + 1, th[1]);
+
                                 }
-                        }
+                                FEObject obj = new FEObject()
+                                {
+                                    NumPhase = 1,
+                                    Begin = indexMass[i2][0] == '2' ? 1 : 0,
+                                    Idfe = i.IDFE
 
-                        //obj.Special = i["special"].ToString().Trim();
+                                };
+                           
+                                i2++;
 
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.FEObjects.Add(obj);
-                            db.SaveChanges();
+                                FeObjectParseStep(ref i2, indexMass, obj, 1, i,db);
+                            }
+                           
                         }
+                       
                     }
-
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-
-
-
-                //FeText
-
-
-
-                try
-                {
-                    command.CommandText = "select * from FeText";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "name", "text", "textInp", "textOut", "textObj",
-                        "textApp", "textLit");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.FEText();
-
-                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                        obj.Name = i["name"].ToString().Trim();
-                        obj.Text = i["text"].ToString().Trim();
-                        obj.TextInp = i["textInp"].ToString().Trim();
-                        obj.TextOut = i["textOut"].ToString().Trim();
-                        obj.TextObj = i["textObj"].ToString().Trim();
-                        obj.TextApp = i["textApp"].ToString().Trim();
-                        obj.TextLit = i["textLit"].ToString().Trim();
-                        
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.FEText.Add(obj);
-                            db.SaveChanges();
-                        }
-                        
-                    }
-
                     
                 }
-                catch (Exception e)
+
+
+                using (var db = new ApplicationDbContext())
                 {
-                    throw e;
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id = "MONOFAZ",
+                        Name = "Однофазное",
+                        Parent = "STRUCTOBJECT",//ALLSTATE
+                        CountPhase = 1
+                    });
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id = "POLYFAZ",
+                        Name = "Многофазное",
+                        Parent = "STRUCTOBJECT"
+
+                    });
+                    db.SaveChanges();
                 }
+                //state phase
+                LoadStateObject("MONOFAZ");
+                LoadStateObject("POLYFAZ");
 
-
-
-
-                
+                LoadCharacteristicObject("DESCOBJECT");
 
 
 
@@ -915,7 +945,7 @@ namespace dip.Models.DataBase
                         obj.EndObjectState = i["endObjectState"].ToString().Trim();
                         obj.BeginPhase = i["beginPhase"].ToString().Trim();
                         obj.EndPhase = i["endPhase"].ToString().Trim();
-                        
+
                         using (var db = new ApplicationDbContext())
                         {
                             db.NewFEIndexs.Add(obj);
@@ -923,12 +953,128 @@ namespace dip.Models.DataBase
                         }
                     }
 
-                    
+
                 }
                 catch (Exception e)
                 {
                     throw e;
                 }
+
+
+
+
+
+
+                //FeText
+
+
+
+               // try
+                {
+                    command.CommandText = "select * from FeText";
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "name", "text", "textInp", "textOut", "textObj",
+                        "textApp", "textLit");
+                    var listFetext=new List<FEText>();
+                    foreach (var i in ldr)
+                    {
+                        var obj = new Domain.FEText();
+
+                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                       
+                        obj.Name = i["name"].ToString().Trim();
+                        obj.Text = i["text"].ToString().Trim();
+                        obj.TextInp = i["textInp"].ToString().Trim();
+                        obj.TextOut = i["textOut"].ToString().Trim();
+                        obj.TextObj = i["textObj"].ToString().Trim();
+                        obj.TextApp = i["textApp"].ToString().Trim();
+                        obj.TextLit = i["textLit"].ToString().Trim();
+                        obj.NotApprove = false;
+                        
+                        using (var db = new ApplicationDbContext())
+                        {
+
+                            //db.FEText.Add(obj);
+                            //db.SaveChanges();
+                            listFetext.Add(obj);
+                            var tmpinp=db.FEActions.Where(x1 => x1.Idfe == obj.IDFE).Count();
+                            switch (tmpinp)
+                            {
+                                case 2:
+                                    obj.CountInput = 1;
+                                    break;
+                                case 3:
+                                    obj.CountInput = 2;
+                                    break;
+                            }
+                            //var tmpphase=db.FEObjects.Where(x1 => x1.Idfe == obj.IDFE && x1.Begin == 0).Count();
+                            //if (tmpphase != 0)
+                            //    obj.ChangedObject = true;
+
+                            //var tmpNewIndex=db.NewFEIndexs.FirstOrDefault(x1 => x1.Idfe == obj.IDFE);
+                            //if (tmpNewIndex != null)
+                            //{
+                            //    obj.StateBeginId = tmpNewIndex.BeginPhase;
+                            //    obj.StateBeginId = string.IsNullOrEmpty(tmpNewIndex.EndPhase)?null: tmpNewIndex.EndPhase; 
+                            //}
+                            
+                            //db.SaveChanges();
+                        }
+                        
+                    }
+                    //восстанавливаем бывшие id
+                    listFetext= listFetext.OrderBy(x1 => x1.IDFE).ToList();
+                    using (var db = new ApplicationDbContext())
+                    
+                        foreach (var i in listFetext)
+                    {
+                            int tmpId = i.IDFE;
+                            //try
+                            //{
+                                db.FEText.Add(i);
+                                db.SaveChanges();
+                            //}
+                            //catch
+                            //{
+                            //    var asd = 10;
+                            //}
+                        
+
+                            while (tmpId != i.IDFE)
+                            {
+                                db.FEText.Remove(i);
+                                db.SaveChanges();
+                                db.FEText.Add(i);
+                                db.SaveChanges();
+                            }
+                            var tmpphase = db.FEObjects.Where(x1 => x1.Idfe == i.IDFE && x1.Begin == 0).Count();
+                            if (tmpphase != 0)
+                                i.ChangedObject = true;
+
+                            var tmpNewIndex = db.NewFEIndexs.FirstOrDefault(x1 => x1.Idfe == i.IDFE);
+                            if (tmpNewIndex != null)
+                            {
+                                i.StateBegin = db.StateObjects.First(x1=>x1.Id== tmpNewIndex.BeginPhase) ;
+                                if (!string.IsNullOrEmpty(tmpNewIndex.EndPhase))
+                                    i.StateEnd = db.StateObjects.First(x1 => x1.Id == tmpNewIndex.EndPhase);
+                            }
+                            db.SaveChanges();
+                        }
+
+
+                }
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
+
+
+
+
+                
+
+
+
+               
 
 
 
@@ -1067,28 +1213,28 @@ namespace dip.Models.DataBase
 
                 //thes theschild 2
 
-                using (var db=new ApplicationDbContext())
-                {
-                    db.StateObjects.Add(new StateObject()
-                    {
-                        Id="MONOFAZ",
-                        Name= "Однофазное",
-                        Parent= "STRUCTOBJECT",//ALLSTATE
-                        CountPhase=1
-                    });
-                    db.StateObjects.Add(new StateObject()
-                    {
-                        Id = "POLYFAZ",
-                        Name = "Многофазное",
-                        Parent = "STRUCTOBJECT"
+                //using (var db=new ApplicationDbContext())
+                //{
+                //    db.StateObjects.Add(new StateObject()
+                //    {
+                //        Id="MONOFAZ",
+                //        Name= "Однофазное",
+                //        Parent= "STRUCTOBJECT",//ALLSTATE
+                //        CountPhase=1
+                //    });
+                //    db.StateObjects.Add(new StateObject()
+                //    {
+                //        Id = "POLYFAZ",
+                //        Name = "Многофазное",
+                //        Parent = "STRUCTOBJECT"
 
-                    });
-                    db.SaveChanges();
-                }
-                LoadStateObject("MONOFAZ");
-                LoadStateObject("POLYFAZ");
+                //    });
+                //    db.SaveChanges();
+                //}
+                //LoadStateObject("MONOFAZ");
+                //LoadStateObject("POLYFAZ");
 
-                LoadCharacteristicObject("DESCOBJECT");
+                //LoadCharacteristicObject("DESCOBJECT");
                
 
 
@@ -1202,7 +1348,98 @@ namespace dip.Models.DataBase
             }
         }
 
+        static void FeObjectParseStep(ref int i2, List<string> indexMass, FEObject obj, int numPhase, FEIndex index, ApplicationDbContext db)
+        {
+            
+            for (; i2 < indexMass.Count && (indexMass[i2].Length == 0 || (indexMass[i2][0] != '4' && indexMass[i2][0] != '5')); ++i2)//g[i2][0] != '3' && 
+            {
+                
+                bool slN = false;
+                if (indexMass[i2].Contains("\n"))
+                {
+                    //переход на след фазу или переход на выход
 
+                    var th = indexMass[i2].Split('\n');
+                    indexMass[i2] = th[0];
+                    if ((i2 + 1) >= indexMass.Count)
+                        indexMass.Add(th[1]);
+                    else
+                        indexMass.Insert(i2 + 1, th[1]);
+                    slN = true;
+
+                }
+                if (indexMass[i2].Length != 0)
+                    if (indexMass[i2] == "3" || indexMass[i2].IndexOf("3\n") == 0) //if (g[i2] == "2" || g[i2] == "3" || g[i2].IndexOf("2\n") == 0 || g[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
+                    {
+                        //переход на выходные характеристики
+                        FEObject objNext = new FEObject() { NumPhase = 1, Idfe = index.IDFE, Begin = 0 };
+                        i2++;
+                        FeObjectParseStep(ref i2, indexMass, objNext, objNext.NumPhase, index, db);
+                    }
+                    else if (slN)//if (g[i2].Contains("\n"))
+                    {
+                        //переход на след фазу
+
+                       
+                        if (i2 < indexMass.Count)
+                            FeObjectParseAddValueInObj(indexMass[i2], obj);
+                        
+                        FEObject objNext = new FEObject() { NumPhase = ++numPhase, Idfe = index.IDFE, Begin = obj.Begin };
+                        i2++;
+                        FeObjectParseStep(ref i2, indexMass, objNext, numPhase, index, db);
+                    }
+               
+                if (i2 < indexMass.Count)
+
+                    FeObjectParseAddValueInObj(indexMass[i2], obj);
+               
+            }
+            obj.Composition = obj.Composition.Trim();
+            obj.Conductivity = obj.Conductivity.Trim();
+            obj.MagneticStructure = obj.MagneticStructure.Trim();
+            obj.MechanicalState = obj.MechanicalState.Trim();
+            obj.OpticalState = obj.OpticalState.Trim();
+            obj.PhaseState = obj.PhaseState.Trim();
+            obj.Special = obj.Special.Trim();
+
+
+
+            db.FEObjects.Add(obj);
+            db.SaveChanges();
+           
+        }
+
+        static void FeObjectParseAddValueInObj(string g, FEObject obj)
+        {
+           
+            if (g.Length > 0)
+                switch (g[0])
+                {
+                    case 'F':
+                        obj.PhaseState += g + " ";
+                        break;
+                    case 'X':
+                        obj.Composition += g + " ";
+                        break;
+                    case 'M':
+                        obj.MagneticStructure += g + " ";
+                        break;
+                    case 'E':
+                        obj.Conductivity += g + " ";
+                        break;
+                    case 'D':
+                        obj.MechanicalState += g + " ";
+                        break;
+                    case 'O':
+                        obj.OpticalState += g + " ";
+                        break;
+                    case 'C':
+                        obj.Special += g + " ";
+                        break;
+
+
+                }
+        }
 
     }
     

@@ -221,6 +221,7 @@
     <Compile Include="Models\Domain\FEAction.cs" />
     <Compile Include="Models\Domain\FEIndex.cs" />
     <Compile Include="Models\Domain\FEObject.cs" />
+    <Compile Include="Models\Domain\FeState.cs" />
     <Compile Include="Models\Domain\FEText.cs" />
     <Compile Include="Models\Domain\FizVel.cs" />
     <Compile Include="Models\Domain\Image.cs" />

@@ -35,7 +35,7 @@ namespace dip.Controllers
             //}
 
             //TODO мб ограничивать что бы не закинули слишком много
-        public ActionResult DescriptionInput(List<DescrSearchI> inp, List<DescrSearchI> outp)
+        public ActionResult DescriptionInput( List<DescrSearchI> inp, List<DescrSearchI> outp,int countInput = 1)
         {
 
             //DescrSearchIInput.ValidationIfNeed(inp);
@@ -114,7 +114,7 @@ namespace dip.Controllers
 
 
         //stateId-последний выбранный ребенок состояния
-        public ActionResult ObjectInput(bool changeStateObject=false,string stateIdStart=null, string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
+        public ActionResult ObjectInput(bool changedObject=false,string stateIdBegin=null, string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
         {//, DescrObjectI objFormsBegin, DescrObjectI objFormsEnd
          //12;
          //string[] CharacteristicStart = null, string[] CharacteristicEnd = null
@@ -128,7 +128,7 @@ namespace dip.Controllers
             //TODO CharacteristicStart может содержать несколько конечных элементов
 
             ObjectInputV res = new ObjectInputV();
-            res.changeStateObject = changeStateObject;
+            res.changedObject = changedObject;
 
             //CharacteristicStart = CharacteristicStart == null ? new string[0] : CharacteristicStart;
             //if(changeStateObject)
@@ -167,13 +167,13 @@ namespace dip.Controllers
             //res.CharacteristicsEnd.Phase3 = basePhase;
             {
                
-                StateObject state = StateObject.Get(stateIdStart);
+                StateObject state = StateObject.Get(stateIdBegin);
                 if (state != null)
                 {
                     var stateList = state.GetParentsList();
                     stateList.Add(state);
                     foreach(var i in stateList)
-                        res.StateStartSelected += i + " ";
+                        res.StateStartSelected += i.Id + " ";
                     //using (var db = new ApplicationDbContext())
                     //db.StateObjects.Where(x1=>x1.Parent== "STRUCTOBJECT").ToList();
                     foreach(var i in res.StatesStart)
@@ -205,7 +205,7 @@ namespace dip.Controllers
                 }
                 
             }
-            if (changeStateObject)
+            if (changedObject)
             {
                 StateObject state = StateObject.Get(stateIdEnd);
 
@@ -271,47 +271,46 @@ namespace dip.Controllers
 
 
             //TODO че по оптимизации?
-            
-            for (var charac=0; charac< CharacteristicStart.Count;++charac)
-            {
-                var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-                using (var db = new ApplicationDbContext())//TODO using in this controller
-                {
-                    //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
-                    if(prosIdList.Length>0)
-                    {
-                        var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                        var treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
 
-                        List<PhaseCharacteristicObject> prosList=new List<PhaseCharacteristicObject>();
+            for (var charac = 0; charac < CharacteristicStart.Count; ++charac)
+            {
+                //var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
+                List<List<PhaseCharacteristicObject>> treeProBase = null;
+                var allids=PhaseCharacteristicObject.GetAllIdsFor(CharacteristicStart[charac]);
+                if (allids == null)
+                    break;
+                var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                if (prosIdList.Length > 0)
+                {
+                    using (var db = new ApplicationDbContext())//TODO using in this controller
+                    {
+                        //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                        
+                        var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                        treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+
+
                         switch (charac)
                         {
-                            case 1:
-                                prosList=res.CharacteristicsStart.Phase1 ;
+                            case 0:
+                                prosList = res.CharacteristicsStart.Phase1;
                                 break;
 
 
-                            case 2:
-                               
+                            case 1:
+
                                 prosList = res.CharacteristicsStart.Phase2;
                                 break;
 
-                            case 3:
-                                
-                                prosList = res.CharacteristicsStart.Phase3 ;
+                            case 2:
+
+                                prosList = res.CharacteristicsStart.Phase3;
                                 break;
 
                         }
 
-                        foreach (var p in prosList)
-                        {
-                            foreach (var i in treeProBase)
-                            {
-                                if (p.Id == i[0].Id)
-                                    if (!p.LoadPartialTree(i))
-                                        throw new Exception("TODO ошибка");
-                            }
-                        }
+
                         //if(charac==0)
                         //    res.CharacteristicStart.Phase1.AddRange(prosList);
                         //else if(charac==1)
@@ -320,40 +319,56 @@ namespace dip.Controllers
                         //    res.CharacteristicStart.Phase3.AddRange(prosList);
                         // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
                     }
+                    foreach (var p in prosList)
+                    {
+                        foreach (var i in treeProBase)
+                        {
+                            if (p.Id == i[0].Id)
+                                if (!p.LoadPartialTree(i))
+                                    throw new Exception("TODO ошибка");
+                        }
+                    }
                 }
             }
 
 
             //TODO че по оптимизации?
            
-            if (changeStateObject)
+            if (changedObject)
                 for (var charac = 0; charac < CharacteristicEnd.Count; ++charac)
             {
-                var prosIdList = CharacteristicEnd[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-                using (var db = new ApplicationDbContext())//TODO using in this controller
-                {
-                    //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                    //var prosIdList = CharacteristicEnd[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                    List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
+                    List<List<PhaseCharacteristicObject>> treeProBase = null;
+                    var allids = PhaseCharacteristicObject.GetAllIdsFor(CharacteristicStart[charac]);
+                    if (allids == null)
+                        break;
+                    var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                     if (prosIdList.Length > 0)
                     {
+                        using (var db = new ApplicationDbContext())//TODO using in this controller
+                {
+                    //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                    
                         var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                        var treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+                         treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
 
 
 
-                        List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
+                        //List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
                         switch (charac)
                         {
-                            case 1:
+                            case 0:
                                 prosList = res.CharacteristicsEnd.Phase1;
                                 break;
 
 
-                            case 2:
+                            case 1:
 
                                 prosList = res.CharacteristicsEnd.Phase2;
                                 break;
 
-                            case 3:
+                            case 2:
 
                                 prosList = res.CharacteristicsEnd.Phase3;
                                 break;

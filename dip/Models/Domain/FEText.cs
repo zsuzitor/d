@@ -62,10 +62,23 @@ namespace dip.Models.Domain
         public bool NotApprove { get; set; }
 
 
+        [ScaffoldColumn(false)]
+        public int CountInput { get; set; }
+
+        [ScaffoldColumn(false)]
+        public bool ChangedObject { get; set; }
+
+
 
         [NotMapped]
        // [ScaffoldColumn(false)]//TODO hz
         public bool? FavouritedCurrentUser { get; set; }//зафоловил ли текущий пользователь эту запись
+
+        public string StateBeginId { get; set; }
+        public StateObject StateBegin { get; set; }
+
+        public string StateEndId { get; set; }
+        public StateObject StateEnd { get; set; }
 
 
         public ICollection<Image> Images { get; set; }
@@ -80,6 +93,9 @@ namespace dip.Models.Domain
             FavouritedUser = new List<ApplicationUser>();
             NotApprove = true;
             FavouritedCurrentUser = null;
+
+            CountInput = 1;
+            ChangedObject = false;
         }
 
         public bool Equal(FEText a)
@@ -92,6 +108,9 @@ namespace dip.Models.Domain
             this.TextApp = a.TextApp;
             this.TextLit = a.TextLit;
             this.FavouritedCurrentUser = a.FavouritedCurrentUser;
+
+            this.CountInput = a.CountInput;
+            this.ChangedObject = a.ChangedObject;
 
             return true;
         }
@@ -122,7 +141,7 @@ namespace dip.Models.Domain
         public static List<string> GetPropTextSearch()
         {
             var res = new List<string>();
-            var listNM = new List<string>() { "IDFE" };//исключаем
+            var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser" };//исключаем
 
 
             PropertyInfo[] myPropertyInfo;
