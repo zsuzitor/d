@@ -34,10 +34,13 @@ namespace dip.Controllers
                     //}
                     i.Index= i.Index.Replace("\u0002\u0003\u0004","\n");
                     var g = i.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    
+                    if (i.IDFE == 838)//30)
+                    {
+                        var sdf = 1;
+                    }
                     for (int i2 = 0; i2 < g.Count; ++i2)
                     {
-                        if (g[i2][0] == '2'|| g[i2][0] == '3')
+                        if (g[i2] == "2"|| g[i2] == "3"|| g[i2].IndexOf("2\n")==0 || g[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
                         {
                             //характеристики начального состояния объекта
 
@@ -48,14 +51,20 @@ namespace dip.Controllers
                                 g.Insert(i2 + 1, th[1]);
                                 
                             }
-                            FEObject obj = new FEObject();
-                            obj.NumPhase = 1;
-                            obj.Begin = 1;
-                            if(g[i2][0] == '3')
-                                obj.Begin = 2;
+                            FEObject obj = new FEObject()
+                            {
+                                NumPhase = 1,
+                                Begin = g[i2][0] == '2'?1:0,
+                                Idfe=i.IDFE
+                                
+                            };
+                            //obj.NumPhase = 1;
+                            //obj.Begin = 1;
+                            //if(g[i2][0] == '3')
+                            //    obj.Begin = 2;
                             i2++;
                             //char last;
-                            tttt(ref i2, g, obj, 1);
+                            tttt(ref i2, g, obj, 1,i);
                         }
                         //if (g[i2][0] == '3')
                         //{
@@ -94,36 +103,74 @@ namespace dip.Controllers
                         //    }
                         //}
                     }
+                    if (i.IDFE == 1)//30)
+                    {
+                        var sdf = 1;
+                    }
                 }
                 
                 //char asd = '\u0000';
             }
 
             //string Kappa = true.ToString();
+            var sdgg = res.Where(x1=>x1.Composition==""&&
+            x1.Conductivity == "" &&
+            x1.MagneticStructure == "" &&
+            x1.MechanicalState== "" &&
+            x1.OpticalState== "" &&
+            x1.Special== "" &&
+            x1.PhaseState== "" ).ToList();
 
-
+            var gggg = res.Where(x1=>x1.Idfe==838).ToList();
             return View();
         }
 
-        void tttt(ref int i2,List<string>g, FEObject obj,int numPhase)
+        void tttt(ref int i2,List<string>g, FEObject obj,int numPhase,FEIndex index)
         {
-            for (; i2 < g.Count && (g[i2][0] != '3' && g[i2][0] != '4' && g[i2][0] != '5'); ++i2)
+            if (index.IDFE == 838)//30)
             {
-                
+                var sdf = 1;
+            }
+            for (; i2 < g.Count&&(g[i2].Length == 0||(g[i2][0] != '4' && g[i2][0] != '5')); ++i2)//g[i2][0] != '3' && 
+            {
+                //if (g[i2].Length ==0)
+                //    continue;
+                bool slN = false;
                 if (g[i2].Contains("\n"))
                 {
-                    //переход на след фазу
+                    //переход на след фазу или переход на выход
 
                     var th = g[i2].Split('\n');
                     g[i2] = th[0];
-                    g.Insert(i2+1, th[1]);
-                    // vvvv(g[i2], obj);
-                    //try
+                    if ((i2 + 1) >= g.Count)
+                        g.Add(th[1]);
+                    else
+                    g.Insert(i2 + 1, th[1]);
+                    slN = true;
+
+                }
+                if(g[i2].Length!=0)
+                    if (g[i2] == "3" || g[i2].IndexOf("3\n") == 0) //if (g[i2] == "2" || g[i2] == "3" || g[i2].IndexOf("2\n") == 0 || g[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
+                        {
+                    //переход на выходные характеристики
+                    FEObject objNext = new FEObject() { NumPhase = 1, Idfe = index.IDFE, Begin = 0 };
+                    i2++;
+                    tttt(ref i2, g, objNext, objNext.NumPhase, index);
+                }
+                else if(slN)//if (g[i2].Contains("\n"))
+                {
+                    //переход на след фазу
+
+                    //var th = g[i2].Split('\n');
+                    //g[i2] = th[0];
+                    //g.Insert(i2+1, th[1]);
+                    //// vvvv(g[i2], obj);
+                    ////try
+                    ////{
+                    //if (i2 < g.Count && g[i2].Length < 1)
                     //{
-                    if (i2 < g.Count && g[i2].Length < 1)
-                    {
-                        var asd = 10;
-                    }
+                    //    var asd = 10;
+                    //}
                     if (i2 < g.Count)
                         vvvv(g[i2], obj);
                     //}
@@ -131,14 +178,14 @@ namespace dip.Controllers
                     //{
                     //    var ggg = 1;
                     //}
-                    FEObject objNext = new FEObject() {NumPhase=++numPhase };
+                    FEObject objNext = new FEObject() {NumPhase=++numPhase,Idfe=index.IDFE,Begin=obj.Begin };
                     i2++;
-                    tttt(ref i2,g, objNext, numPhase);
+                    tttt(ref i2,g, objNext, numPhase, index);
                 }
-                if (i2 < g.Count && g[i2].Length < 1)
-                {
-                    var asd = 10;
-                }
+                //if (i2 < g.Count && g[i2].Length < 1)
+                //{
+                //    var asd = 10;
+                //}
                 if (i2 < g.Count)
                 //try
                 //{
@@ -188,10 +235,17 @@ namespace dip.Controllers
 
 
             res.Add(obj);
-            if (res.Count == 136)
-            {
-                var h = 10;
-            }
+            //if (res.Count == 136)
+            //{
+            //    var h = 10;
+            //}
+            //if(g[i2][0] == '3')
+            //{
+            //    //переход на выходные характеристики
+            //    FEObject objNext = new FEObject() { NumPhase = ++numPhase, Idfe = index.IDFE, Begin = 0};
+            //    i2++;
+            //    tttt(ref i2,g, objNext,1,index);
+            //}
             //if (res.Count > 130)
             //{
             //    var h = 10;
