@@ -282,6 +282,9 @@ namespace dip.Models.Domain
         public static string GetAllIdsFor(string str)
         {
             //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить
+            if (string.IsNullOrWhiteSpace(str))
+                return "";
+
             List<PhaseCharacteristicObject> mainLst = new List<PhaseCharacteristicObject>();
             var strmass = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             if (strmass == null)

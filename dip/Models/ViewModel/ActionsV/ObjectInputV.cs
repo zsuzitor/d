@@ -8,8 +8,8 @@ namespace dip.Models.ViewModel.ActionsV
 {
     public class ObjectInputV
     {
-        public List<StateObject> StatesStart { get; set; }
-        public string StateStartSelected { get; set; }
+        public List<StateObject> StatesBegin { get; set; }
+        public string StateBeginSelected { get; set; }
 
         public bool changedObject { get; set; }
 
@@ -29,7 +29,7 @@ namespace dip.Models.ViewModel.ActionsV
 
         public ObjectInputV()
         {
-            StateStartSelected = "";
+            StateBeginSelected = "";
             StateEndSelected = "";
             changedObject = false;
             CharacteristicsStart = new CharacteristicObject();

@@ -91,8 +91,10 @@
             @*var curActionIdI="@(Model?.InputForms[0]?.FormData.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
             var curActionIdO = "@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";*@
 
-            var sdd_i=@(string.Join(" ",Model?.InputForms.Select(x1=>x1.FormData.ActionId).ToList()));
-            var sdd_o=@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.FormData.ActionId).ToList()));
+
+            //отображаем необходимые label (те которые различаются у параметрических и неп )
+            var sdd_i="@(string.Join(" ",Model?.InputForms.Select(x1=>x1.FormData.ActionId).ToList()))";
+            var sdd_o="@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.FormData.ActionId).ToList()))";
             @*if(!curActionIdI){
 
                 if(@(Model?.InputForm.ActionId.Count) > 0){
