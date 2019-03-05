@@ -86,14 +86,40 @@ goAjaxRequest({
 });
 
 };
-$('#actionI').on('change', function () {
-    changeParams('I');
+
+$(document).ready(function () {
+    var i = 0;
+    var inpdiv = document.getElementById('actionI' + i);
+    while (inpdiv) {
+        $('#actionI' + i).on('change', function () {
+            var type = this.id.split('action')[1];
+            changeParams(type);//'I'+i);
+
+        });
+        inpdiv = document.getElementById('actionI' + ++i);
+    }
+     i = 0;
+     inpdiv = document.getElementById('actionO' + i);
+    while (inpdiv) {
+        $('#actionO' + i).on('change', function () {
+            var type = this.id.split('action')[1];
+            changeParams(type);//'O' + i);
+
+        });
+        inpdiv = document.getElementById('actionO' + ++i);
+    }
+
 
 });
-$('#actionO').on('change', function () {
+//$('#actionI').on('change', function () {
 
-    changeParams('O');
-});
+//    changeParams('I');
+//});
+
+//$('#actionO').on('change', function () {
+
+//    changeParams('O');
+//});
 
 
 // if (id != 'VOZ11') {// непараметрическое воздействие

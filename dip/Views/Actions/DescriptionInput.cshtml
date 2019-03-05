@@ -18,8 +18,17 @@
     <hr />
     @*@Html.DropDownList("nn", @Model.actionId)*@
     <hr />
-    @Html.CheckBox("changeTwoInputFormDescr")
     @Html.Label("2 входа?")
+    @if (Model.CountInput > 1)
+    {
+        <input type="checkbox" checked name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id"/>
+    }
+    else
+    {
+        <input type="checkbox" name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id" />
+    }
+    @*@Html.CheckBox("changeTwoInputFormDescr")*@
+    
     <h1>Вход</h1>
     @*@helpers_.PartFormDescrSearch(Html)*@
     @*@Html.Label("1233")*@
@@ -27,23 +36,27 @@
 
     @*@if(ViewBag.inputForm)*@
     <input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
-    @foreach (var i in Model.InputForms)
+    @for (var i = 0; i < Model.InputForms.Count; ++i)
     {
-        @Html.Action("PartFormDescrSearch", "Helpers", new { a = i.Form, type = "I", param = i.FormData })
-
+        <div id=@("block_one_descr_input_"+i)>
+            @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.InputForms[i].Form, type = "I" + i, param = Model.InputForms[i].FormData })
+        </div>
+        <hr />
     }
     
     <hr />
     <h1>Выход</h1>
-    @foreach (var i in Model.OutpForms)
+    @for (var i = 0; i < Model.OutpForms.Count; ++i)
     {
-        @Html.Action("PartFormDescrSearch", "Helpers", new { a = i.Form, type = "O", param = i.FormData })
-
+        <div id=@("block_one_descr_outp_"+i)>
+            @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForms[i].Form, type = "O" + i, param = Model.OutpForms[i].FormData })
+        </div>
+        <hr />
     }
-   @* @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForm, type = "O", param = Model.OutputFormData })*@
+            @* @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.OutpForm, type = "O", param = Model.OutputFormData })*@
 
 
-</div>
+        </div>
 
 
 
@@ -62,6 +75,15 @@
 <script type="text/javascript">
         $(document).ready(function ()
         {
+            if (!document.getElementById('changeTwoInputFormDescr_id').checked) {//
+                var i = 1;//именно 1 тк 0 форма всегда должна быть доступна
+                var div=document.getElementById('block_one_descr_input_'+i);
+                while (div) {
+                    div.style.display = 'none';
+                    div = document.getElementById('block_one_descr_input_' + ++i);
+                }
+
+            }
             //changeParams('I');
             //changeParams('O');
 
@@ -93,8 +115,8 @@
 
 
             //отображаем необходимые label (те которые различаются у параметрических и неп )
-            var sdd_i="@(string.Join(" ",Model?.InputForms.Select(x1=>x1.FormData.ActionId).ToList()))";
-            var sdd_o="@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.FormData.ActionId).ToList()))";
+            var sdd_i = "@(string.Join(" ",Model?.InputForms.Select(x1=>x1.Form.CurrentAction).ToList()))";//FormData.ActionId
+            var sdd_o = "@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.Form.CurrentAction).ToList()))";//FormData.ActionId
             @*if(!curActionIdI){
 
                 if(@(Model?.InputForm.ActionId.Count) > 0){
@@ -113,23 +135,23 @@
             for(var i=0;i<mssdd_i.length;++i){
                 if (massParamAction.includes(mssdd_i[i])) {
                     //парам
-                    changeTypeActionId("I"+(i+1), true);
+                    changeTypeActionId("I"+i, true);
 
                 }
                 else {
                     //не парам
-                    changeTypeActionId("I"+(i+1), false);
+                    changeTypeActionId("I"+i, false);
                 }
             }
             for(var i=0;i<mssdd_o.length;++i){
                 if (massParamAction.includes(mssdd_o[i])) {
                     //парам
-                    changeTypeActionId("O"+(i+1), true);
+                    changeTypeActionId("O"+i, true);
 
                 }
                 else {
                     //не парам
-                    changeTypeActionId("O"+(i+1), false);
+                    changeTypeActionId("O"+i, false);
                 }
             }
 
@@ -224,8 +246,19 @@
             }
             else if (this.name == 'changeTwoInputFormDescr') {
                 //отобразить 2 форму
+                var bl = document.getElementById('changeTwoInputFormDescr_id');
+                var div = document.getElementById('block_one_descr_input_1');
 
+                if (bl.checked) {
+                  
+                    
+                        div.style.display = 'block';
+                }
+                else {
+                    div.style.display = 'none';
+                }
             }
+           
 
 
         });
@@ -260,7 +293,7 @@
 
 
         function loadCheckBoxChildDescr(ch,meth,key) {
-            var type = ch.name.split(key)[1][0];
+            var type = ch.name.split(key)[1];//[0]
             var div = document.getElementById((ch.value + type));
 
             if (div && !div.innerHTML.trim()) {

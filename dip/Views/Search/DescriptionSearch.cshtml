@@ -239,15 +239,39 @@
         //------------------------------------------------------
 
         function clearForm() {
-            $("#actionI option[value='VOZ1']").prop("selected", true);
+            //$("#actionI option[value='VOZ1']").prop("selected", true);
             $("#actionO option[value='VOZ1']").prop("selected", true);
-            $("#actionTypeI option[value='NO_ACTIONS']").prop("selected", true);
+            //$("#actionTypeI option[value='NO_ACTIONS']").prop("selected", true);
             $("#actionTypeO option[value='NO_ACTIONS']").prop("selected", true);
             
-
-            changeParams('I');
             
-            changeParams('O');
+            var i = 0;
+            var inpdiv = document.getElementById('actionI'+i);
+            while (inpdiv) {
+                var valFirstAction = $("#actionI" + i)[0].value;
+                var valFirstActionType = $("#actionTypeI" + i)[0].value;
+               $("#actionI" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
+               $("#actionTypeI" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
+                changeParams('I' + i);
+                inpdiv = document.getElementById('actionI' + ++i);
+            }
+             i = 0;
+             inpdiv = document.getElementById('actionO' + i);
+             while (inpdiv) {
+                 var valFirstAction = $("#actionO" + i)[0].value;
+                 var valFirstActionType = $("#actionTypeO" + i)[0].value;
+                 $("#actionO" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
+                 $("#actionTypeO" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
+                changeParams('O' + i);
+                inpdiv = document.getElementById('actionO' + ++i);
+             }
+
+
+             $('#changeTwoInputFormDescr_id').removeAttr("checked");
+             var div2Input = document.getElementById('block_one_descr_input_1');
+       
+             div2Input.style.display = 'none';
+          
 
             var url_ = document.getElementById("descr_search_href_id").value;
             history.pushState(null, null, url_);

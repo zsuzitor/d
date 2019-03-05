@@ -18,6 +18,8 @@ namespace dip.Models.ViewModel.ActionsV
             public List<DescriptionFormWithData> InputForms{ get; set; }
         public List<DescriptionFormWithData> OutpForms { get; set; }
 
+        public int CountInput { get; set; }
+
         public string ActionParametricIds { get; set; }
 
         public DescriptionInputV()

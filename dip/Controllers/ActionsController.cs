@@ -41,11 +41,19 @@ namespace dip.Controllers
             //DescrSearchIInput.ValidationIfNeed(inp);
 
             //DescrSearchIOut.ValidationIfNeed(outp);
-            inp = inp ?? new List<DescrSearchI>() {null };
-            outp = outp ?? new List<DescrSearchI>() { null };
-            
+           // bool withOutDataInput = false;
 
-            DescriptionInputV res = new DescriptionInputV();
+            inp = inp ?? new List<DescrSearchI>();
+            //if (inp.Count == 0)
+            //    withOutDataInput = true;// countInput = 2;
+            for (; inp.Count< countInput;) {
+                inp.Add(null);
+            }
+            if(outp==null|| outp.Count==0)
+            outp = new List<DescrSearchI>() { null };// outp ??
+
+
+            DescriptionInputV res = new DescriptionInputV() { CountInput= countInput };
 
             
             foreach(var i in inp)//TODO
@@ -66,6 +74,10 @@ namespace dip.Controllers
                 });
 
             }
+            if(res.InputForms.Count<2)//if (withOutDataInput)
+                res.InputForms.Add(res.InputForms[0]);
+
+
             foreach (var i in outp)//TODO
             {
                 DescrSearchI.Validation(i);
@@ -283,9 +295,9 @@ namespace dip.Controllers
             {
                 List<string> CharacteristicsStartNeedSelect = new List<string>();
                 res.CharacteristicsStart.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
-                res.CharacteristicsStart.ParamPhase1 = CharacteristicsStartNeedSelect[0];
-                res.CharacteristicsStart.ParamPhase2 = CharacteristicsStartNeedSelect[1];
-                res.CharacteristicsStart.ParamPhase3 = CharacteristicsStartNeedSelect[2];
+                res.CharacteristicsStart.ParamPhase1 = CharacteristicsStartNeedSelect.Count>0? CharacteristicsStartNeedSelect[0]:null;
+                res.CharacteristicsStart.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+                res.CharacteristicsStart.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2]:null;
             }
             //for (var charac = 0; charac < CharacteristicStart.Count; ++charac)
             //{
@@ -353,9 +365,9 @@ namespace dip.Controllers
             {
                 List<string> CharacteristicsStartNeedSelect = new List<string>();
                 res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
-                res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect[0];
-                res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect[1];
-                res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect[2];
+                res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0]:null;
+                res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+                res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
             }
                 
             //for (var charac = 0; charac < CharacteristicEnd.Count; ++charac)

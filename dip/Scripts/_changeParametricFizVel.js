@@ -61,13 +61,40 @@ function changeFizVel(type)
     }
 };
 
-// Назначение на событие change функции changeFizVel
-$('#fizVelGroupI').on('change', function ()
-{
-    changeFizVel('I');
+
+
+
+$(document).ready(function () {
+
+    var i = 0;
+    var inpdiv = document.getElementById('fizVelGroupI' + i);
+    while (inpdiv) {
+        $('#fizVelGroupI' + i).on('change', function () {
+            changeFizVel('I' + i);
+
+        });
+        inpdiv = document.getElementById('fizVelGroupI' + ++i);
+    }
+    i = 0;
+    inpdiv = document.getElementById('fizVelGroupO' + i);
+    while (inpdiv) {
+        $('#fizVelGroupO' + i).on('change', function () {
+            changeFizVel('O' + i);
+
+        });
+        inpdiv = document.getElementById('fizVelGroupO' + ++i);
+    }
 
 });
-$('#fizVelGroupO').on('change', function ()
-{
-    changeFizVel('O');
-});
+
+
+// Назначение на событие change функции changeFizVel
+//$('#fizVelGroupI').on('change', function ()
+//{
+//    changeFizVel('I');
+
+//});
+//$('#fizVelGroupO').on('change', function ()
+//{
+//    changeFizVel('O');
+//});

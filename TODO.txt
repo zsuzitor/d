@@ -54,13 +54,26 @@ https ---
 
 
 ----------------------------------------
-в fetext возможно тоже есть пробелмы по id и поэтому не правильно подт€гиваютс€ дескрипторы
+запись с id 1 сломана feindex
+надо в feindex посомтреть с пустыми данными фэ и посомтреть где он как будет работать
+списки физ эффектов, только дл€ упрощение выдачи\удалени€, по ним определ€ть можно ли просматривать или нет нельз€
+при удалении фэ предупреждать если он принадлежит списку который выдан пользователю
+data_descr_search обнул€ть в файлах скриптов,добавить пол€,descr search-go1
+DescriptionInput- count input сейчас не обрабатываетс€
+скрывать прелоадер принеудачных запросах
+//при очистке формы пр€тать все инпуты и выходы кроме 1
+//descrsearch-clearForm - хардкод
+Go_next_step-полностью переписать -descriptioninput
+Go_next_step-полностью переписать
+//в fetext возможно тоже есть пробелмы по id и поэтому не правильно подт€гиваютс€ дескрипторы
 fetext GetByDescr
 вытащить из index homec нормальное заполнение feobject
 придетс€ переписать выгрузку в feobject
 var test= db.FEIndexs.First(x1 => x1.IDFE == 1114);
                 var g=test.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" },StringSplitOptions.RemoveEmptyEntries);
 
+
+PhaseCharacteristicObject.GetAllIdsFor(Characteristics[charac]) делает ли тоже самое что и LoadPartialTree
 DescrObjectI вылидировать не при создании feobject
 /--/GetBase дл€ чекбоксов
 хранить stateobject в feobjects??
