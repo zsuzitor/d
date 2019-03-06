@@ -163,9 +163,237 @@ namespace dip.Models.Domain
 
         }
 
-        public static int[] GetByDescr(DescrSearchI[] forms, DescrObjectI[]objects)
+        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects)
         {
             int[] list_id = null;
+
+
+            //if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
+            //{
+            //поиск
+            //List<int> list_id = new List<int>();
+            foreach (var i in forms)
+                i.DeleteNotChildCheckbox();
+            foreach (var i in objects)
+                i.DeleteNotChildCheckbox();
+            //inp.DeleteNotChildCheckbox();
+            //outp.DeleteNotChildCheckbox();
+
+            List<FEAction> formsList = new List<FEAction>();
+            List<FEObject> objectsList = new List<FEObject>();
+            using (var db = new ApplicationDbContext())
+            {
+                //IQueryable<dip.Models.Domain.FEAction> forms_query = db.FEActions;
+
+
+                //
+                //{
+                //    var t_ = forms[0];
+                //    var y_ = forms[1];
+                //    var g_= forms_query.Where(x1 => 
+                //x1.Name == t_.ActionId &&
+                //  x1.Type == t_.ActionType &&
+                //  x1.FizVelId == t_.FizVelId &&
+                //  x1.Pros == t_.ListSelectedPros &&
+                //  x1.Spec == t_.ListSelectedSpec &&
+                //  x1.Vrem == t_.ListSelectedVrem &&
+                //  x1.FizVelSection == t_.ParametricFizVelId).ToList();
+
+                //    var g_1 = forms_query.Where(x1 =>
+                // x1.Name == y_.ActionId &&
+                //   x1.Type == y_.ActionType &&
+                //   x1.FizVelId == y_.FizVelId &&
+                //   x1.Pros == y_.ListSelectedPros &&
+                //   x1.Spec == y_.ListSelectedSpec &&
+                //   x1.Vrem == y_.ListSelectedVrem &&
+                //   x1.FizVelSection == y_.ParametricFizVelId).ToList();
+
+                //    var g_2 = forms_query.Where(x1 =>
+                //x1.Name == y_.ActionId &&
+                //  x1.Type == y_.ActionType &&
+                //  x1.FizVelId == y_.FizVelId &&
+                //  x1.Pros == y_.ListSelectedPros &&
+                //  x1.Spec == y_.ListSelectedSpec &&
+                //  x1.Vrem == y_.ListSelectedVrem &&
+                //  x1.FizVelSection == y_.ParametricFizVelId).Where(x1 =>
+                //x1.Name == t_.ActionId &&
+                //  x1.Type == t_.ActionType &&
+                //  x1.FizVelId == t_.FizVelId &&
+                //  x1.Pros == t_.ListSelectedPros &&
+                //  x1.Spec == t_.ListSelectedSpec &&
+                //  x1.Vrem == t_.ListSelectedVrem &&
+                //  x1.FizVelSection == t_.ParametricFizVelId).ToList();
+
+                //    var g__ = 10;
+                //}
+
+
+
+                //
+                //TODO временно
+                foreach (var inp in forms)
+                {
+                    int beg = (inp.InputForm ? 1 : 0);
+                //    forms_query = forms_query.Where(x1 => x1.Input == beg &&
+                //x1.Name == inp.ActionId &&
+                //  x1.Type == inp.ActionType &&
+                //  x1.FizVelId == inp.FizVelId &&
+                //  x1.Pros == inp.ListSelectedPros &&
+                //  x1.Spec == inp.ListSelectedSpec &&
+                //  x1.Vrem == inp.ListSelectedVrem &&
+                //  x1.FizVelSection == inp.ParametricFizVelId);
+                    formsList.AddRange(db.FEActions.Where(x1 => x1.Input == beg &&
+                 x1.Name == inp.ActionId &&
+                   x1.Type == inp.ActionType &&
+                   x1.FizVelId == inp.FizVelId &&
+                   x1.Pros == inp.ListSelectedPros &&
+                   x1.Spec == inp.ListSelectedSpec &&
+                   x1.Vrem == inp.ListSelectedVrem &&
+                   x1.FizVelSection == inp.ParametricFizVelId).ToList());
+                    //InputForm
+                }
+                //formsList = forms_query.ToList();
+              
+            }
+            //.ToList() .ToArray()
+            var checkInp=formsList.GroupBy(x1 => x1.Idfe).Where(x1=>x1.Count()== forms.Length).ToList();
+            if (checkInp.Count < 1)
+                return null;
+
+            //если уже на этом этапе ничего не найдено дальше не искать
+            using (var db = new ApplicationDbContext())
+            {
+                
+                //IQueryable<dip.Models.Domain.FEObject> objects_query = db.FEObjects;
+                foreach (var obj in objects)
+                {
+                    int beg = (obj.Begin?1:0);
+
+                    if(obj.ListSelectedPhase1!=null)
+                    objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                    x1.NumPhase == 1 &&
+                    x1.Composition == obj.ListSelectedPhase1.Composition &&
+                    x1.Conductivity == obj.ListSelectedPhase1.Conductivity &&
+                    x1.MagneticStructure == obj.ListSelectedPhase1.MagneticStructure &&
+                    x1.MechanicalState == obj.ListSelectedPhase1.MechanicalState &&
+                    x1.OpticalState == obj.ListSelectedPhase1.OpticalState &&
+                    x1.PhaseState == obj.ListSelectedPhase1.PhaseState &&
+                    x1.Special == obj.ListSelectedPhase1.Special).ToList());
+
+
+                    if (obj.ListSelectedPhase2 != null)
+                        objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                         x1.NumPhase == 2 &&
+                        x1.Composition == obj.ListSelectedPhase2.Composition &&
+                   x1.Conductivity == obj.ListSelectedPhase2.Conductivity &&
+                   x1.MagneticStructure == obj.ListSelectedPhase2.MagneticStructure &&
+                   x1.MechanicalState == obj.ListSelectedPhase2.MechanicalState &&
+                   x1.OpticalState == obj.ListSelectedPhase2.OpticalState &&
+                   x1.PhaseState == obj.ListSelectedPhase2.PhaseState &&
+                   x1.Special == obj.ListSelectedPhase2.Special).ToList());
+
+                    if (obj.ListSelectedPhase3 != null)
+                        objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                         x1.NumPhase == 3 &&
+                        x1.Composition == obj.ListSelectedPhase3.Composition &&
+                       x1.Conductivity == obj.ListSelectedPhase3.Conductivity &&
+                       x1.MagneticStructure == obj.ListSelectedPhase3.MagneticStructure &&
+                       x1.MechanicalState == obj.ListSelectedPhase3.MechanicalState &&
+                       x1.OpticalState == obj.ListSelectedPhase3.OpticalState &&
+                       x1.PhaseState == obj.ListSelectedPhase3.PhaseState &&
+                       x1.Special == obj.ListSelectedPhase3.Special).ToList());
+
+
+                    //objects_query = objects_query.Where(x1 => x1.Begin == beg &&
+                    //x1.NumPhase == 1 &&
+                    //x1.Composition == obj.ListSelectedPhase1.Composition &&
+                    //x1.Conductivity == obj.ListSelectedPhase1.Conductivity &&
+                    //x1.MagneticStructure == obj.ListSelectedPhase1.MagneticStructure &&
+                    //x1.MechanicalState == obj.ListSelectedPhase1.MechanicalState &&
+                    //x1.OpticalState == obj.ListSelectedPhase1.OpticalState &&
+                    //x1.PhaseState == obj.ListSelectedPhase1.PhaseState &&
+                    //x1.Special == obj.ListSelectedPhase1.Special);
+
+                    // //2 phase
+                    // if (obj.ListSelectedPhase2 != null)
+                    //     objects_query = objects_query.Where(x1 => x1.Begin == beg &&
+                    //      x1.NumPhase == 2 &&
+                    //     x1.Composition == obj.ListSelectedPhase2.Composition &&
+                    //x1.Conductivity == obj.ListSelectedPhase2.Conductivity &&
+                    //x1.MagneticStructure == obj.ListSelectedPhase2.MagneticStructure &&
+                    //x1.MechanicalState == obj.ListSelectedPhase2.MechanicalState &&
+                    //x1.OpticalState == obj.ListSelectedPhase2.OpticalState &&
+                    //x1.PhaseState == obj.ListSelectedPhase2.PhaseState &&
+                    //x1.Special == obj.ListSelectedPhase2.Special);
+
+                    // //3phase
+                    // if(obj.ListSelectedPhase3!=null)
+                    // objects_query = objects_query.Where(x1 => x1.Begin == beg &&
+                    //  x1.NumPhase == 3 &&
+                    // x1.Composition == obj.ListSelectedPhase3.Composition &&
+                    //x1.Conductivity == obj.ListSelectedPhase3.Conductivity &&
+                    //x1.MagneticStructure == obj.ListSelectedPhase3.MagneticStructure &&
+                    //x1.MechanicalState == obj.ListSelectedPhase3.MechanicalState &&
+                    //x1.OpticalState == obj.ListSelectedPhase3.OpticalState &&
+                    //x1.PhaseState == obj.ListSelectedPhase3.PhaseState &&
+                    //x1.Special == obj.ListSelectedPhase3.Special);
+
+
+
+                }
+                //objectsList = objects_query.ToList();
+            }
+
+            int AllCountPhase = 0;
+            foreach(var i in objects)
+            {
+                if (i.ListSelectedPhase1 != null)
+                    AllCountPhase++;
+                if (i.ListSelectedPhase2 != null)
+                    AllCountPhase++;
+                if (i.ListSelectedPhase3 != null)
+                    AllCountPhase++;
+            }
+            var checkObj = objectsList.GroupBy(x1=>x1.Idfe).Where(x1=>x1.Count()== AllCountPhase).ToList();
+            //formsList.Where(x1=>x1.Input==1).Join(formsList.Where(x1 => x1.Input == 0),inp1=> inp1.Idfe, inp0 => inp0.Idfe,(inp1, inp0)=> inp1.Idfe);
+            //objectsList;
+            if (checkObj.Count == 0)
+                return null;
+
+            list_id=checkObj.Join(checkInp, x1 => x1.Key, x2 => x2.Key, (x1, x2) => x1.Key).ToArray();
+
+            //using (var db = new ApplicationDbContext())
+            //{
+                //TODO оптимизация? разница только в  x1.Input == 1\0
+                //находим все записи которые подходят по входным параметрам
+                //var inp_query = db.FEActions.Where(x1 => x1.Input == 1 &&
+                //x1.Name == inp.ActionId &&
+                //  x1.Type == inp.ActionType &&
+                //  x1.FizVelId == inp.FizVelId &&
+                //  x1.Pros == inp.ListSelectedPros &&
+                //  x1.Spec == inp.ListSelectedSpec &&
+                //  x1.Vrem == inp.ListSelectedVrem &&
+                //  x1.FizVelSection == inp.ParametricFizVelId);
+
+                ////находим все записи которые подходят по выходным параметрам
+                //var out_query = db.FEActions.Where(x1 => x1.Input == 0 &&
+                // x1.Name == outp.ActionId &&
+                //x1.Type == outp.ActionType &&
+                //x1.FizVelId == outp.FizVelId &&
+                //x1.Pros == outp.ListSelectedPros &&
+                //x1.Spec == outp.ListSelectedSpec &&
+                //x1.Vrem == outp.ListSelectedVrem &&
+                //x1.FizVelSection == outp.ParametricFizVelId);
+
+                //записи которые подходят по всем параметрам
+                //list_id = inp_query.Join(out_query, x1 => x1.Idfe, x2 => x2.Idfe, (x1, x2) => x1.Idfe).ToArray();
+                
+            //}
+            //}
+
+
+
+
             //////if (DescrSearchI.Validation(inp) && DescrSearchI.Validation(outp))
             //////{
             //////поиск
@@ -207,19 +435,19 @@ namespace dip.Models.Domain
         }
 
         //алгоритм левинштайна
-        public static int[] GetByText(string text)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                System.Data.SqlClient.SqlParameter param1 = new System.Data.SqlClient.SqlParameter("@searched_str", "Затухание");
-                System.Data.SqlClient.SqlParameter param2 = new System.Data.SqlClient.SqlParameter("@max_lev", 5);
-                var lst = db.Database.SqlQuery<test>("SELECT * FROM GetListLev (@searched_str,@max_lev)", param1, param2).ToList();
+        //public static int[] GetByText(string text)
+        //{
+        //    using (var db = new ApplicationDbContext())
+        //    {
+        //        System.Data.SqlClient.SqlParameter param1 = new System.Data.SqlClient.SqlParameter("@searched_str", "Затухание");
+        //        System.Data.SqlClient.SqlParameter param2 = new System.Data.SqlClient.SqlParameter("@max_lev", 5);
+        //        var lst = db.Database.SqlQuery<test>("SELECT * FROM GetListLev (@searched_str,@max_lev)", param1, param2).ToList();
 
 
-            }
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
 
         public void LoadImage()

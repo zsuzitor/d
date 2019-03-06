@@ -70,7 +70,8 @@ $(document).ready(function () {
     var inpdiv = document.getElementById('fizVelGroupI' + i);
     while (inpdiv) {
         $('#fizVelGroupI' + i).on('change', function () {
-            changeFizVel('I' + i);
+            var type = this.id.split('fizVelGroupI')[1];
+            changeFizVel('I' + type);
 
         });
         inpdiv = document.getElementById('fizVelGroupI' + ++i);
@@ -79,7 +80,8 @@ $(document).ready(function () {
     inpdiv = document.getElementById('fizVelGroupO' + i);
     while (inpdiv) {
         $('#fizVelGroupO' + i).on('change', function () {
-            changeFizVel('O' + i);
+            var type = this.id.split('fizVelGroupO')[1];
+            changeFizVel('O' + type);
 
         });
         inpdiv = document.getElementById('fizVelGroupO' + ++i);

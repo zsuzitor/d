@@ -339,8 +339,8 @@ namespace dip.Models.Domain
             if (a != null)
             {
                 Id = a.Id;
-                Idfe = a.Id;
-                Begin = a.Id;
+                Idfe = a.Idfe;
+                Begin = a.Begin;
                 NumPhase = a.NumPhase;
 
                 PhaseState = a.PhaseState;
@@ -369,7 +369,54 @@ namespace dip.Models.Domain
 
             return res;
         }
-    }
+
+        public void DeleteNotChildCheckbox()
+        {
+            this.PhaseState=PhaseCharacteristicObject.DeleteNotChildCheckbox(this.PhaseState);
+            this.Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.Composition);
+            this.MagneticStructure = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.MagneticStructure);
+            this.Conductivity = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.Conductivity);
+            this.MechanicalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.MechanicalState);
+            this.OpticalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.OpticalState);
+            this.Special = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.Special);
+
+        }
+
+        public static bool Validation(DescrPhaseI a)
+        {
+            if (a != null)
+            {
+                // a.DeleteNotChildCheckbox();
+                //TODO валидация
+                a.PhaseState = NullToEmpryStr(a?.PhaseState);
+                a.Composition = NullToEmpryStr(a?.Composition);
+                a.MagneticStructure = NullToEmpryStr(a?.MagneticStructure);
+                a.Conductivity = NullToEmpryStr(a?.Conductivity);
+                a.MechanicalState = NullToEmpryStr(a?.MechanicalState);
+                a.OpticalState = NullToEmpryStr(a?.OpticalState);
+                a.Special = NullToEmpryStr(a?.Special);
+
+
+
+                a.SortIds();
+            }
+
+            return true;
+        }
+
+
+        public bool SortIds()//TODO
+        {
+            bool res = true;
+            if (string.IsNullOrWhiteSpace(PhaseState))
+                return false;
+            // var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string resStr = string.Join(" ", PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                     OrderBy(x1 => x1).Distinct().ToList());
+            return res;
+        }
+
+        }
 
 
     public class DescrObjectI
@@ -379,14 +426,16 @@ namespace dip.Models.Domain
         public DescrPhaseI ListSelectedPhase3 { get; set; }
 
         public bool Begin { get; set; }//начальное или конечное состояние
-        //public int NumPhase { get; set; }
+                                       //public int NumPhase { get; set; }
 
+        public bool Valide { get; private set; }//мб private
         public DescrObjectI()
         {
             Begin = true;
             ListSelectedPhase1 = null;
             ListSelectedPhase2 = null;
             ListSelectedPhase3 = null;
+            Valide = false;
             //NumPhase = 1;
         }
 
@@ -402,6 +451,69 @@ namespace dip.Models.Domain
 
             return res;
         }
+
+
+
+        public void DeleteNotChildCheckbox()
+        {
+
+            ListSelectedPhase1?.DeleteNotChildCheckbox();
+            ListSelectedPhase2?.DeleteNotChildCheckbox();
+            ListSelectedPhase3?.DeleteNotChildCheckbox();
+
+
+        }
+
+
+        public static bool Validation(DescrObjectI a)
+        {
+
+            if (a != null)
+            {
+                DescrPhaseI.Validation(a.ListSelectedPhase1);
+                DescrPhaseI.Validation(a.ListSelectedPhase2);
+                DescrPhaseI.Validation(a.ListSelectedPhase3);
+               
+                //a.ActionId = NullToEmpryStr(a?.ActionId);
+                //a.ActionType = NullToEmpryStr(a?.ActionType);
+                //a.FizVelId = NullToEmpryStr(a?.FizVelId);
+                //a.ParametricFizVelId = NullToEmpryStr(a?.ParametricFizVelId);
+                //a.ListSelectedPros = NullToEmpryStr(a?.ListSelectedPros);
+                //a.ListSelectedSpec = NullToEmpryStr(a?.ListSelectedSpec);
+                //a.ListSelectedVrem = NullToEmpryStr(a?.ListSelectedVrem);
+
+
+                //a.ListSelectedPros = Pro.SortIds(a?.ListSelectedPros);
+                ////if (a?.listSelectedProsI != null)
+                ////    this.listSelectedPros = string.Join(" ", (a.listSelectedProsI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                ////        OrderBy(x1 =>int.Parse( x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                ////else
+                ////    this.listSelectedPros = null;
+
+                //a.ListSelectedSpec = Spec.SortIds(a?.ListSelectedSpec);
+                ////if (a?.listSelectedSpecI != null)
+                ////    this.listSelectedSpec = string.Join(" ", (a.listSelectedSpecI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                ////        OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                ////else
+                ////    this.listSelectedSpec = null;
+
+                //a.ListSelectedVrem = Vrem.SortIds(a?.ListSelectedVrem);
+                ////if (a?.listSelectedVremI != null)
+                ////    this.listSelectedVrem = string.Join(" ", (a.listSelectedVremI).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                ////        OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).ToList());
+                ////else
+                ////    this.listSelectedVrem = null;
+
+
+                //a.Valide = true;
+
+            }
+            //a.Valide = false;
+            a.Valide = true;
+            return true;
+        }
+
+
     }
 
 

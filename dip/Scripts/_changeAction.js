@@ -16,22 +16,26 @@ function changeParams(type)
 
 //data_descr_search 
             //have_input:null,
-            data_descr_search.actionIdI= '';
-            data_descr_search.actionTypeI= '';
-            data_descr_search.FizVelIdI= '';
-            data_descr_search.parametricFizVelIdI= '';
-            data_descr_search.listSelectedProsI= '';
-            data_descr_search.listSelectedSpecI= '';
-            data_descr_search.listSelectedVremI= '';
-            data_descr_search.actionIdO= '';
-            data_descr_search.actionTypeO= '';
-            data_descr_search.FizVelIdO= '';
-            data_descr_search.parametricFizVelIdO= '';
-            data_descr_search.listSelectedProsO= '';
-            data_descr_search.listSelectedSpecO= '';
-            data_descr_search.listSelectedVremO= '';
-            data_descr_search.search= 'yes';
-            //function_trigger:null
+            //data_descr_search.actionIdI= '';
+            //data_descr_search.actionTypeI= '';
+            //data_descr_search.FizVelIdI= '';
+            //data_descr_search.parametricFizVelIdI= '';
+            //data_descr_search.listSelectedProsI= '';
+            //data_descr_search.listSelectedSpecI= '';
+            //data_descr_search.listSelectedVremI= '';
+            //data_descr_search.actionIdO= '';
+            //data_descr_search.actionTypeO= '';
+            //data_descr_search.FizVelIdO= '';
+            //data_descr_search.parametricFizVelIdO= '';
+            //data_descr_search.listSelectedProsO= '';
+            //data_descr_search.listSelectedSpecO= '';
+            //data_descr_search.listSelectedVremO= '';
+            //data_descr_search.search= 'yes';
+    //function_trigger:null
+            data_descr_search = {
+                search: data_descr_search.search,
+                function_trigger: data_descr_search.function_trigger
+            };
         
 
 
