@@ -360,7 +360,12 @@ namespace dip.Models.Domain
             if (checkObj.Count == 0)
                 return null;
 
-            list_id=checkObj.Join(checkInp, x1 => x1.Key, x2 => x2.Key, (x1, x2) => x1.Key).ToArray();
+            //сравниваем состояния
+            list_id= FEText.GetList(checkObj.Join(checkInp, x1 => x1.Key, x2 => x2.Key, (x1, x2) => x1.Key).ToArray())
+                .Where(x1 => x1.StateBeginId == stateBegin && x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
+            //foreach (var i in list_id)
+               // FEText.GetList(list_id).Where(x1=>x1.StateBeginId== stateBegin&&x1.StateEndId== stateEnd).ToArray();
+
 
             //using (var db = new ApplicationDbContext())
             //{
@@ -539,7 +544,7 @@ order by [data].score desc
         public static List<FEText> GetList(params int[] id)
         {
             var res = new List<FEText>();
-            if (id != null)
+            if (id != null&& id.Length>0)
                 using (var db = new ApplicationDbContext())
                 {
                     res = db.FEText.Join(id, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
