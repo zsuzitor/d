@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +10,9 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+
+//using Mono.Linq.Expressions;
+using Binbin.Linq;
 
 namespace dip.Models.Domain
 {
@@ -181,6 +186,9 @@ namespace dip.Models.Domain
 
             List<FEAction> formsList = new List<FEAction>();
             List<FEObject> objectsList = new List<FEObject>();
+            //System.Collections.Generic.List<System.Linq.IGrouping<int, dip.Models.Domain.FEAction>> checkInp = null;
+            List<int> checkInp = new List<int>();
+
             using (var db = new ApplicationDbContext())
             {
                 //IQueryable<dip.Models.Domain.FEAction> forms_query = db.FEActions;
@@ -231,46 +239,63 @@ namespace dip.Models.Domain
 
                 //
                 //TODO временно
+                //Mono.Linq.Expressions.
+                var predicate = PredicateBuilder.False<FEAction>();
+               
+
+
                 foreach (var inp in forms)
                 {
                     int beg = (inp.InputForm ? 1 : 0);
-                //    forms_query = forms_query.Where(x1 => x1.Input == beg &&
-                //x1.Name == inp.ActionId &&
-                //  x1.Type == inp.ActionType &&
-                //  x1.FizVelId == inp.FizVelId &&
-                //  x1.Pros == inp.ListSelectedPros &&
-                //  x1.Spec == inp.ListSelectedSpec &&
-                //  x1.Vrem == inp.ListSelectedVrem &&
-                //  x1.FizVelSection == inp.ParametricFizVelId);
-                    formsList.AddRange(db.FEActions.Where(x1 => x1.Input == beg &&
+                    //    forms_query = forms_query.Where(x1 => x1.Input == beg &&
+                    //x1.Name == inp.ActionId &&
+                    //  x1.Type == inp.ActionType &&
+                    //  x1.FizVelId == inp.FizVelId &&
+                    //  x1.Pros == inp.ListSelectedPros &&
+                    //  x1.Spec == inp.ListSelectedSpec &&
+                    //  x1.Vrem == inp.ListSelectedVrem &&
+                    //  x1.FizVelSection == inp.ParametricFizVelId);
+                    predicate = predicate.Or(x1 => x1.Input == beg &&
                  x1.Name == inp.ActionId &&
                    x1.Type == inp.ActionType &&
                    x1.FizVelId == inp.FizVelId &&
                    x1.Pros == inp.ListSelectedPros &&
                    x1.Spec == inp.ListSelectedSpec &&
                    x1.Vrem == inp.ListSelectedVrem &&
-                   x1.FizVelSection == inp.ParametricFizVelId).ToList());
+                   x1.FizVelSection == inp.ParametricFizVelId);
+
+                 //   formsList.AddRange(db.FEActions.Where(x1 => x1.Input == beg &&
+                 //x1.Name == inp.ActionId &&
+                 //  x1.Type == inp.ActionType &&
+                 //  x1.FizVelId == inp.FizVelId &&
+                 //  x1.Pros == inp.ListSelectedPros &&
+                 //  x1.Spec == inp.ListSelectedSpec &&
+                 //  x1.Vrem == inp.ListSelectedVrem &&
+                 //  x1.FizVelSection == inp.ParametricFizVelId).ToList());
                     //InputForm
                 }
                 //formsList = forms_query.ToList();
-              
+                int formsLen = forms.Length;
+                checkInp =db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() == formsLen).Select(x1=>x1.Key).ToList();
             }
             //.ToList() .ToArray()
-            var checkInp=formsList.GroupBy(x1 => x1.Idfe).Where(x1=>x1.Count()== forms.Length).ToList();
+            
+            //checkInp=formsList.GroupBy(x1 => x1.Idfe).Where(x1=>x1.Count()== forms.Length).ToList();
             if (checkInp.Count < 1)
                 return null;
 
             //если уже на этом этапе ничего не найдено дальше не искать
+            List<int> checkObj = new List<int>();
             using (var db = new ApplicationDbContext())
             {
-                
+                var predicate = PredicateBuilder.False<FEObject>();
                 //IQueryable<dip.Models.Domain.FEObject> objects_query = db.FEObjects;
                 foreach (var obj in objects)
                 {
                     int beg = (obj.Begin?1:0);
 
-                    if(obj.ListSelectedPhase1!=null)
-                    objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                    if (obj.ListSelectedPhase1 != null)
+                        predicate = predicate.Or(x1 => x1.Begin == beg &&
                     x1.NumPhase == 1 &&
                     x1.Composition == obj.ListSelectedPhase1.Composition &&
                     x1.Conductivity == obj.ListSelectedPhase1.Conductivity &&
@@ -278,11 +303,20 @@ namespace dip.Models.Domain
                     x1.MechanicalState == obj.ListSelectedPhase1.MechanicalState &&
                     x1.OpticalState == obj.ListSelectedPhase1.OpticalState &&
                     x1.PhaseState == obj.ListSelectedPhase1.PhaseState &&
-                    x1.Special == obj.ListSelectedPhase1.Special).ToList());
+                    x1.Special == obj.ListSelectedPhase1.Special);
+                    //objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                    // x1.NumPhase == 1 &&
+                    // x1.Composition == obj.ListSelectedPhase1.Composition &&
+                    // x1.Conductivity == obj.ListSelectedPhase1.Conductivity &&
+                    // x1.MagneticStructure == obj.ListSelectedPhase1.MagneticStructure &&
+                    // x1.MechanicalState == obj.ListSelectedPhase1.MechanicalState &&
+                    // x1.OpticalState == obj.ListSelectedPhase1.OpticalState &&
+                    // x1.PhaseState == obj.ListSelectedPhase1.PhaseState &&
+                    // x1.Special == obj.ListSelectedPhase1.Special).ToList());
 
 
                     if (obj.ListSelectedPhase2 != null)
-                        objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                        predicate = predicate.Or(x1 => x1.Begin == beg &&
                          x1.NumPhase == 2 &&
                         x1.Composition == obj.ListSelectedPhase2.Composition &&
                    x1.Conductivity == obj.ListSelectedPhase2.Conductivity &&
@@ -290,10 +324,19 @@ namespace dip.Models.Domain
                    x1.MechanicalState == obj.ListSelectedPhase2.MechanicalState &&
                    x1.OpticalState == obj.ListSelectedPhase2.OpticalState &&
                    x1.PhaseState == obj.ListSelectedPhase2.PhaseState &&
-                   x1.Special == obj.ListSelectedPhase2.Special).ToList());
+                   x1.Special == obj.ListSelectedPhase2.Special);
+                    //     objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                    //      x1.NumPhase == 2 &&
+                    //     x1.Composition == obj.ListSelectedPhase2.Composition &&
+                    //x1.Conductivity == obj.ListSelectedPhase2.Conductivity &&
+                    //x1.MagneticStructure == obj.ListSelectedPhase2.MagneticStructure &&
+                    //x1.MechanicalState == obj.ListSelectedPhase2.MechanicalState &&
+                    //x1.OpticalState == obj.ListSelectedPhase2.OpticalState &&
+                    //x1.PhaseState == obj.ListSelectedPhase2.PhaseState &&
+                    //x1.Special == obj.ListSelectedPhase2.Special).ToList());
 
                     if (obj.ListSelectedPhase3 != null)
-                        objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                        predicate = predicate.Or(x1 => x1.Begin == beg &&
                          x1.NumPhase == 3 &&
                         x1.Composition == obj.ListSelectedPhase3.Composition &&
                        x1.Conductivity == obj.ListSelectedPhase3.Conductivity &&
@@ -301,7 +344,16 @@ namespace dip.Models.Domain
                        x1.MechanicalState == obj.ListSelectedPhase3.MechanicalState &&
                        x1.OpticalState == obj.ListSelectedPhase3.OpticalState &&
                        x1.PhaseState == obj.ListSelectedPhase3.PhaseState &&
-                       x1.Special == obj.ListSelectedPhase3.Special).ToList());
+                       x1.Special == obj.ListSelectedPhase3.Special);
+                       //objectsList.AddRange(db.FEObjects.Where(x1 => x1.Begin == beg &&
+                       //  x1.NumPhase == 3 &&
+                       // x1.Composition == obj.ListSelectedPhase3.Composition &&
+                       //x1.Conductivity == obj.ListSelectedPhase3.Conductivity &&
+                       //x1.MagneticStructure == obj.ListSelectedPhase3.MagneticStructure &&
+                       //x1.MechanicalState == obj.ListSelectedPhase3.MechanicalState &&
+                       //x1.OpticalState == obj.ListSelectedPhase3.OpticalState &&
+                       //x1.PhaseState == obj.ListSelectedPhase3.PhaseState &&
+                       //x1.Special == obj.ListSelectedPhase3.Special).ToList());
 
 
                     //objects_query = objects_query.Where(x1 => x1.Begin == beg &&
@@ -341,27 +393,33 @@ namespace dip.Models.Domain
 
 
                 }
+                int AllCountPhase = 0;
+                foreach (var i in objects)//TODO в метод #[]
+                {
+                    if (i.ListSelectedPhase1 != null)
+                        AllCountPhase++;
+                    if (i.ListSelectedPhase2 != null)
+                        AllCountPhase++;
+                    if (i.ListSelectedPhase3 != null)
+                        AllCountPhase++;
+                }
+
                 //objectsList = objects_query.ToList();
+                //db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() == formsLen).Select(x1 => x1.Key).ToList();
+                 checkObj = db.FEObjects.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() == AllCountPhase).Select(x1 => x1.Key).ToList();
             }
 
-            int AllCountPhase = 0;
-            foreach(var i in objects)
-            {
-                if (i.ListSelectedPhase1 != null)
-                    AllCountPhase++;
-                if (i.ListSelectedPhase2 != null)
-                    AllCountPhase++;
-                if (i.ListSelectedPhase3 != null)
-                    AllCountPhase++;
-            }
-            var checkObj = objectsList.GroupBy(x1=>x1.Idfe).Where(x1=>x1.Count()== AllCountPhase).ToList();
+            
+            //var checkObj = objectsList.GroupBy(x1=>x1.Idfe).Where(x1=>x1.Count()== AllCountPhase).ToList();
             //formsList.Where(x1=>x1.Input==1).Join(formsList.Where(x1 => x1.Input == 0),inp1=> inp1.Idfe, inp0 => inp0.Idfe,(inp1, inp0)=> inp1.Idfe);
             //objectsList;
             if (checkObj.Count == 0)
                 return null;
 
-            //сравниваем состояния
-            list_id= FEText.GetList(checkObj.Join(checkInp, x1 => x1.Key, x2 => x2.Key, (x1, x2) => x1.Key).ToArray())
+            //x1.Key x2.Key
+
+            //сравниваем состояния и результаты всех запросов
+            list_id = FEText.GetList(checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
                 .Where(x1 => x1.StateBeginId == stateBegin && x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
             //foreach (var i in list_id)
                // FEText.GetList(list_id).Where(x1=>x1.StateBeginId== stateBegin&&x1.StateEndId== stateEnd).ToArray();
