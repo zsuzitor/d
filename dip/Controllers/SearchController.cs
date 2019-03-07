@@ -32,7 +32,8 @@ namespace dip.Controllers
             //DescrSearchIOut.ValidationIfNeed(outp_);
             //if (inp_?.Valide == false || outp_?.Valide == false)
             //    return new HttpStatusCodeResult(404);
-
+            //if (search != null)
+            //    throw new Exception();
             DescriptionSearchV res = new DescriptionSearchV();
 
 

@@ -28,6 +28,10 @@ namespace dip.Models
         public ICollection<FEText> FavouritedPhysics { get; set; }
 
 
+        public List<FEText> Physics { get; set; }
+        public List<ListPhysics> ListPhysics { get; set; }
+
+
 
         public ApplicationUser() : base()
         {
@@ -39,6 +43,9 @@ namespace dip.Models
             CloseProfile = false;
 
             FavouritedPhysics = new List<FEText>();
+
+            Physics = new List<FEText>();
+            ListPhysics = new List<ListPhysics>();
 
         }
 
@@ -143,8 +150,8 @@ namespace dip.Models
         public DbSet<StateObject> StateObjects { get; set; }
        // public DbSet<CharacteristicObject> CharacteristicObjects { get; set; }
         public DbSet<PhaseCharacteristicObject> PhaseCharacteristicObjects { get; set; }
+        public DbSet<ListPhysics> ListPhysics { get; set; }
         
-
         //----------------------------TEST--
         //public DbSet<test> tests { get; set; }
 
@@ -198,6 +205,26 @@ namespace dip.Models
               .MapRightKey("FETextId")//id 2
               .ToTable("ApplicationUserFETextFavourite"));//название таблицы
 
+            modelBuilder.Entity<ApplicationUser>().HasMany(c => c.ListPhysics)//1 класс и свойство который связываем
+              .WithMany(s => s.Users)//2 класс и свойство с которым связываем
+              .Map(t => t.MapLeftKey("ApplicationUserId")//id 1 которое в таблице будет
+              .MapRightKey("ListPhysicsId")//id 2
+              .ToTable("ApplicationUserListPhysics"));//название таблицы
+
+            modelBuilder.Entity<ApplicationUser>().HasMany(c => c.Physics)//1 класс и свойство который связываем
+              .WithMany(s => s.Users)//2 класс и свойство с которым связываем
+              .Map(t => t.MapLeftKey("ApplicationUserId")//id 1 которое в таблице будет
+              .MapRightKey("FETextId")//id 2
+              .ToTable("ApplicationUserFEText"));//название таблицы
+
+
+            modelBuilder.Entity<ListPhysics>().HasMany(c => c.Physics)//1 класс и свойство который связываем
+              .WithMany(s => s.Lists)//2 класс и свойство с которым связываем
+              .Map(t => t.MapLeftKey("ListPhysicsId")//id 1 которое в таблице будет
+              .MapRightKey("FETextIdId")//id 2
+              .ToTable("ApplicationUserFETextId"));//название таблицы
+
+            
 
 
             modelBuilder.Entity<StateObject>().HasMany(c => c.FeTextBegin)//

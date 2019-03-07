@@ -77,6 +77,47 @@ namespace dip.Controllers
             return View();
         }
 
+        public ActionResult ListAct()
+        {
+            ListActV res = new ListActV();
+            res.Lists=ListPhysics.GetAll();
+
+            return View(res);
+        }
+
+        public ActionResult CreateList(string name)
+        {
+            var res=ListPhysics.Create(name);
+
+            return PartialView();
+        }
+
+        public ActionResult EditList(int id,string name)
+        {
+            ListPhysics.Edit(id,name);
+
+            return PartialView();
+        }
+        public ActionResult DeleteList(int id, string name)
+        {
+            ListPhysics.Delete(id);
+
+            return PartialView();
+        }
+
+        public ActionResult AddToList(int id)
+        {
+            ListPhysics.AddPhys(id);
+
+            return PartialView();
+        }
+        public ActionResult DeleteFromList(int id)
+        {
+            ListPhysics.DeletePhys(id);
+
+            return PartialView();
+        }
+
 
     }
 }

@@ -222,5 +222,16 @@ namespace dip.Controllers
         }
 
 
+
+        public ActionResult ListPhysItem(ListPhysics item)
+        {
+
+
+
+            return PartialView(item);
+        }
+        
+
+
     }
 }

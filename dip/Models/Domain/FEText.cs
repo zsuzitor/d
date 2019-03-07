@@ -91,6 +91,8 @@ namespace dip.Models.Domain
         public ICollection<ApplicationUser> FavouritedUser { get; set; }
 
 
+        public List<ListPhysics> Lists { get; set; }
+        public List<ApplicationUser> Users { get; set; }
 
         public FEText()
         {
@@ -168,6 +170,7 @@ namespace dip.Models.Domain
 
         }
 
+        //при более чем 2х входах и 1 выходах-(||forms>3) эту функцию необходимо будет изменить
         public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects)
         {
             int[] list_id = null;
@@ -294,7 +297,7 @@ namespace dip.Models.Domain
                 {
                     int beg = (obj.Begin?1:0);
 
-                    if (obj.ListSelectedPhase1 != null)
+                    if (obj.ListSelectedPhase1 != null)//TODO вынести  все фазы в метод и в цикл по фазам??????
                         predicate = predicate.Or(x1 => x1.Begin == beg &&
                     x1.NumPhase == 1 &&
                     x1.Composition == obj.ListSelectedPhase1.Composition &&

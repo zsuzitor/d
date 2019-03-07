@@ -635,3 +635,18 @@ transition:1s;
 color:white;
 
 }
+
+
+
+div.ListAct_OneColumn{
+    width:50%;
+    box-sizing:border-box;
+    background-color:antiquewhite;
+}
+div.ListAct_ExistList{
+    min-height:300px;
+}
+
+div.ListAct_MainDiv{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}

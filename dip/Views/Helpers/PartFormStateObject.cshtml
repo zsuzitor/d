@@ -6,7 +6,7 @@
 
 @*@foreach (var i2 in Model.States)
 {*@
-    <div>
+    <div id=@("mainBlockStates_"+ Model.Type)>
         @*new List<dip.Models.Domain.StateObject>() {*@
             @Html.Action("ListStateObject", "Helpers", new { a = Model.States, type = Model.Type, param = Model.Param })
             @*<label>@Model.State.Name</label>

@@ -55,9 +55,21 @@
 
     $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedStatus]')
 
-        switch (this.name) {
-            case 'change_state_radio':
-                var valSplit = this.value.split('_');
+        //switch (this.name) {
+        //    case 'change_state_radio':
+        if(this.name.indexOf('change_state_radio')>=0){
+            var valSplit = this.value.split('_');
+
+
+            var groupRadio = document.getElementsByName(this.name);
+            for (let i = 0; i < groupRadio.length; ++i) {
+                let parts=groupRadio[i].value.split('change_state_radio_');
+                document.getElementById('stateChilds_' + parts[1]).innerHTML = '';
+                
+            }
+
+
+
                 var formData = {
                     id: valSplit[4],
                     type: valSplit[3]
@@ -80,10 +92,19 @@
                     }, type: 'POST'
                 });
 
-                //скрыть\показать нужные\не нужные фазы
-                if (document.getElementById('CountPhase_state_' + valSplit[4])) {
+            //скрыть\показать нужные\не нужные фазы именно чекбоксы
+                let countPhase=document.getElementById('CountPhase_state_' + valSplit[4]);
+                //if (countPhase) {
+                    
+                    for (let i = 0; i < 3; ++i) {
+                        if (countPhase&&i < countPhase.value)
+                            document.getElementById('PhaseObject_all_' + valSplit[3] + '_' + i).style.display = 'block';
+                        else
+                            document.getElementById('PhaseObject_all_' + valSplit[3] + '_' + i).style.display = 'none';
 
-                }
+                    }
+                    
+                //}
                 //goAjaxRequest({
                 //    url: "/Actions/GetPhaseObject",
                 //    data: formData,
@@ -99,7 +120,7 @@
 
                 //    }, type: 'POST'
                 //});
-                break;
+        //        break;
 
 
         }

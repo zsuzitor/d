@@ -436,6 +436,78 @@
             //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
 
 
+            //состояния
+            {
+                let funcGetState = function (mass) {
+                    for (let iter = 0; iter < mass.length; ++iter) {
+                        let searchFlag = false;
+                        for (let iter2 = 0; iter2 < mass.length; ++iter2) {
+                            if (mass[iter2].name == mass[iter].id) {
+                                searchFlag = true;
+                                break;
+                            }
+
+                        }
+                        if (!searchFlag) {
+                            //resBeginState = massStatesS[iter];
+                            //data_descr_search.stateBegin = mass[iter].id.split('_')[1];
+                            //break;
+                            return mass[iter].id.split('_')[1];
+                        }
+                    }
+                };
+
+
+
+            let massStatesS = [];
+            $('#mainBlockStates_S input:radio:checked').each(function () {//[type=checkbox] 
+                massStatesS.push({id:this.id.split('change_state_radio_id_')[1],name:this.name.split('change_state_radio_id_')[1]});//(this.id.split('change_state_radio_id_')[1]);
+            });
+                //let resBeginState = null;
+            data_descr_search.stateBegin = funcGetState(massStatesS);
+            //for (let iter = 0; iter < massStatesS.length; ++iter) {
+            //    let searchFlag = false;
+            //    for (let iter2 = 0; iter2 < massStatesS.length; ++iter2) {
+            //        if (massStatesS[iter2].name == massStatesS[iter].id) {
+            //            searchFlag = true;
+            //            break;
+            //        }
+                       
+            //    }
+            //    if (!searchFlag) {
+            //        //resBeginState = massStatesS[iter];
+            //        data_descr_search.stateBegin = massStatesS[iter].id.split('_')[1];
+            //        break;
+            //    }
+            //        }
+            if (twoObject) {
+                let massStatesE = [];
+                $('#mainBlockStates_E input:radio:checked').each(function () {//[type=checkbox] 
+                    massStatesE.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_id_')[1] });//(this.id.split('change_state_radio_id_')[1]);
+                });
+                //let resEndState = null;
+                data_descr_search.stateEnd = funcGetState(massStatesE);
+                //for (let iter = 0; iter < massStatesE.length; ++iter) {
+                //    let searchFlag = false;
+                //    for (let iter2 = 0; iter2 < massStatesE.length; ++iter2) {
+                //        if (massStatesE[iter2].name == massStatesE[iter].id) {
+                //            searchFlag = true;
+                //            break;
+                //        }
+
+                //    }
+                //    if (!searchFlag) {
+                //        //resEndState = massStatesE[iter];
+                //        data_descr_search.stateEnd = massStatesE[iter].id.split('_')[1];
+                //        break;
+                //    }
+                //}
+            }
+            
+
+
+            }
+
             //начальное
             //по фазам
             data_descr_search['objForms[' + 0 + '].Begin'] = true;

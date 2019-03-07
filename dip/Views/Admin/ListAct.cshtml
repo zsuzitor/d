@@ -1,0 +1,73 @@
+﻿
+
+@model dip.Models.ViewModel.AdminV.ListActV
+
+@{
+    ViewBag.Title = "ListAct";
+}
+
+@*<h2>ListAct</h2>*@
+
+<div class="ListAct_MainDiv">
+    <div class="ListAct_OneColumn div_inline_block">
+        <h1>Существующие списки</h1>
+        <div class="ListAct_ExistList" id="ListAct_ExistList_id">
+            @if (Model.Lists.Count == 0)
+            {
+                <p>Пока не создано ни 1 списка</p>
+            }
+            @foreach(var i in Model.Lists)
+            {
+                @Html.Action("ListPhysItem","Helpers",new {item=i })
+               
+            }
+
+        </div>
+        Добавить новый
+        <div>
+            <input class="form-control" placeholder="Название" id="NewListName_id" type="text"/>
+            <button  class="btn btn-default" onclick="AddNewList()">Добавить</button>
+        </div>
+    </div><div  class="ListAct_OneColumn div_inline_block">
+              <h1> В списке</h1>
+       
+        <div id="PhysInCurrentList">
+
+        </div>
+        <div>
+            Добавить
+            <div>
+                <button class="btn btn-default">Добавить</button>
+            </div>
+            @*Id физического эффекта*@
+            <div>
+                <input  class="form-control" placeholder="Id физического эффекта" type="text" />
+            </div>
+            @*Поиск
+            <div>
+                TODO
+            </div>*@
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function AddNewList() {
+        var formData = { name: document.getElementById('NewListName_id').value };
+        goAjaxRequest({
+            url: "/Admin/CreateList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                document.getElementById('ListAct_ExistList_id').innerHTML+=req;
+
+            }, type: 'GET'
+        });
+
+
+
+    }
+
+
+</script>

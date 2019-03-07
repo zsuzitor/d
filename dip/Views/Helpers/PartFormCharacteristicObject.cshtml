@@ -5,7 +5,7 @@
 
 
 <div>
-    <div id=@("PhaseObject_all_"+Model.Type+"_0")>
+    <div id=@("PhaseObject_all_"+Model.Type+"_0")  style="display:none;">
         <p>Фаза 1</p>
         <div id=@("PhaseObject_data_"+Model.Type+"_0")>
             @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase1, type = (Model.Type + "0"), param = Model.Characteristic?.ParamPhase1 })
@@ -13,7 +13,7 @@
 
         </div>
     </div>
-    <div id=@("PhaseObject_all_"+Model.Type+"_1")>
+    <div id=@("PhaseObject_all_"+Model.Type+"_1")  style="display:none;">
         <p>Фаза 2</p>
         <div id=@("PhaseObject_data_"+Model.Type+"_1")>
             @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase2, type = (Model.Type + "1"), param = Model.Characteristic?.ParamPhase2 })
@@ -23,7 +23,7 @@
 
         </div>
     </div>
-    <div id=@("PhaseObject_all_"+Model.Type+"_2")>
+    <div id=@("PhaseObject_all_"+Model.Type+"_2")  style="display:none;">
         <p>Фаза 3</p>
         <div id=@("PhaseObject_data_"+Model.Type+"_2")>
             @Html.Action("ListPhaseObject", "Helpers", new { a = Model.Characteristic?.Phase3, type = (Model.Type + "2"), param = Model.Characteristic?.ParamPhase3 })

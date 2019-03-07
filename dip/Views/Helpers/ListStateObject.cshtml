@@ -20,12 +20,12 @@
                     @if (needSelected == true)
                     {
 
-                        <input type="radio" class="radioClass" name="change_state_radio" checked value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
+                        <input type="radio" class="radioClass" name=@("change_state_radio_"+Model.Type+"_"+i2.Parent) checked value=@("change_state_radio_"+Model.Type+"_"+i2.Id) id=@("change_state_radio_id_"+Model.Type+"_"+i2.Id) />
                     }
                     else
                     {
                         @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
-                        <input type="radio" class="radioClass" name="change_state_radio" value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
+                        <input type="radio" class="radioClass" name=@("change_state_radio_"+Model.Type+"_"+i2.Parent) value=@("change_state_radio_"+Model.Type+"_"+i2.Id) id=@("change_state_radio_id_"+Model.Type+"_"+i2.Id) />
 
                     }
                     @i2.Name
