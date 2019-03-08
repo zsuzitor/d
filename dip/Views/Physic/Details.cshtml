@@ -8,7 +8,7 @@
 }
 
 <h2>Сведения о физическом эффекте</h2>
-
+<input  type="hidden" value="@Model.Effect.IDFE" id="inputIdCurrentPhysEffect" />
 @{
     <div>
         <h4>@Model.EffectName</h4>
@@ -19,6 +19,15 @@
         <hr />
         <div class="details_favourite_star" id="favourite_div_but_@Model.Effect.IDFE" onclick="favouritePhysic(@Model.Effect.IDFE)">
             @Html.Action("Favourite", "Helpers", new { favourite = Model.Favourited })
+        </div>
+
+        <div>
+            <a href="@(Url.Action("GoFirstPhysics","Physic",new {}))">Первый физический эффект</a>
+            <a href="@(Url.Action("GoPrevPhysics","Physic",new { id=Model.Effect.IDFE}))" >Предыдущий физический эффект</a>
+            <input class="form-control" id="inputForGoPhysic" placeholder="Введите id" type="number"/>
+            <button class="btn btn-default" onclick="GoPhysicId()">Перейти</button>
+            <a href="@(Url.Action("GoNextPhysics","Physic",new { id=Model.Effect.IDFE}))" >Следующий  физический эффект</a>
+            <a href="@(Url.Action("GoLastPhysics","Physic",new {}))">Последний физический эффект</a>
         </div>
         <dl class="dl-horizontal">
             <dt>
@@ -110,7 +119,16 @@
 
 
             <script>
-    ;;;;
+                ;;;;
+                $(document).ready(function () {
+                    // ggg(goSave);
+                    let newhref='/Physic/Details/' + document.getElementById('inputIdCurrentPhysEffect').value;
+                    if (document.location.pathname != newhref)
+                        history.pushState(null, null, newhref);
+
+                });
+
+
                 function loadDescrParam(id) {
                     var but = document.getElementById('show_descr_but');
                     var div = document.getElementById('DivDescriptionParams_id');
@@ -164,7 +182,12 @@
 
 
 
-
+                function GoPhysicId() {
+                    var newid = document.getElementById('inputForGoPhysic').value;
+                    if (newid) {
+                        document.location.href = "/Physic/Details/" + newid;
+                    }
+                }
                 
 
 

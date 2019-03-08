@@ -1,0 +1,15 @@
+﻿@model dip.Models.Domain.FEText
+
+
+@if (Model == null)
+{
+    <p>что то пошло не так(возможно запись была добавлена ранее)</p>
+}
+else
+{
+@Html.Action("OnePhysInListsItem", "Helpers", new { item = Model })
+
+}
+
+
+

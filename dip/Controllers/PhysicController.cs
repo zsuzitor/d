@@ -36,27 +36,36 @@ namespace dip.Controllers
 
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
+            //TODO проверять есть ли доступ
             DetailsV res = new DetailsV();
-            res.Effect = FEText.Get(id);
-            if (res.Effect == null)
-                return new HttpStatusCodeResult(404);
-            string check_id = ApplicationUser.GetUserId();
-
-            res.Effect.LoadImage();
-            res.EffectName = res.Effect.Name;
-            //TODO почему именно так?
-            res.TechnicalFunctionId = Request.Params.GetValues(0).First();
-
-            if (check_id != null)
+            try
             {
-                ApplicationUserManager userManager = HttpContext.GetOwinContext()
-                                         .GetUserManager<ApplicationUserManager>();
-                IList<string> roles = userManager?.GetRoles(check_id);
-                if (roles != null)
-                    if (roles.Contains("admin"))
-                        res.Admin = true;
-                res.Favourited = res.Effect.Favourited(check_id);
+                 res.Data(id, HttpContext);
             }
+            catch
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            //res.Effect = FEText.Get(id);
+            //if (res.Effect == null)
+            //    return new HttpStatusCodeResult(404);
+            //string check_id = ApplicationUser.GetUserId();
+
+            //res.Effect.LoadImage();
+            //res.EffectName = res.Effect.Name;
+            ////TODO почему именно так?
+            ////res.TechnicalFunctionId = Request.Params.GetValues(0).First();
+
+            //if (check_id != null)
+            //{
+            //    ApplicationUserManager userManager = HttpContext.GetOwinContext()
+            //                             .GetUserManager<ApplicationUserManager>();
+            //    IList<string> roles = userManager?.GetRoles(check_id);
+            //    if (roles != null)
+            //        if (roles.Contains("admin"))
+            //            res.Admin = true;
+            //    res.Favourited = res.Effect.Favourited(check_id);
+            //}
 
 
 
@@ -328,6 +337,7 @@ namespace dip.Controllers
             //type: 1-actionid ,2-fizvell,3-paramfizvell,4-pros,5-spec,6-vrem
             //TypeAction: 1-добавление ,2-редактирование, 3- удаление
 
+            //TODO REF
             List<JsonSaveDescription> massAddActionId = new List<JsonSaveDescription>();
             List<JsonSaveDescription> massAddFizVels = new List<JsonSaveDescription>();
             List<JsonSaveDescription> massAddParamFizVels = new List<JsonSaveDescription>();
@@ -946,6 +956,73 @@ namespace dip.Controllers
         }
 
 
+
+
+
+        public ActionResult GoNextPhysics(int id)
+        {
+            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
+            FEText phys= FEText.GetNext(id);
+            DetailsV res = new DetailsV();
+            try
+            {
+                res.Data(phys, HttpContext);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return View("Details",res);
+        }
+
+
+        public ActionResult GoPrevPhysics(int id)
+        {
+            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
+            FEText phys = FEText.GetPrev(id);
+            DetailsV res = new DetailsV();
+            try
+            {
+                res.Data(phys, HttpContext);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return View("Details", res);
+        }
+
+        public ActionResult GoLastPhysics()
+        {
+            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
+            FEText phys = FEText.GetLast();
+            DetailsV res = new DetailsV();
+            try
+            {
+                res.Data(phys, HttpContext);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return View("Details", res);
+        }
+
+        public ActionResult GoFirstPhysics()
+        {
+            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
+            FEText phys = FEText.GetFirst();
+            DetailsV res = new DetailsV();
+            try
+            {
+                res.Data(phys, HttpContext);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return View("Details", res);
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------------------------------------

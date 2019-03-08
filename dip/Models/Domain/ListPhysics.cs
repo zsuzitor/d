@@ -21,6 +21,7 @@ namespace dip.Models.Domain
         }
         public ListPhysics(string name):this()
         {
+            this.Name = name;
         }
 
 
@@ -43,7 +44,8 @@ namespace dip.Models.Domain
         public static ListPhysics Create(string name)
         {
             ListPhysics res = new ListPhysics(name);
-            using (var db = new ApplicationDbContext())
+            if (res != null)
+                using (var db = new ApplicationDbContext())
             {
                 
                  db.ListPhysics.Add(res);
@@ -55,7 +57,8 @@ namespace dip.Models.Domain
         public static ListPhysics Edit(int id,string name)
         {
             ListPhysics res = ListPhysics.Get(id) ;
-            using (var db = new ApplicationDbContext())
+            if (res != null)
+                using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
                 res.Name = name;
@@ -67,6 +70,7 @@ namespace dip.Models.Domain
         public static ListPhysics Delete(int id)
         {
             ListPhysics res = ListPhysics.Get(id);
+            if(res!=null)
             using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
@@ -76,10 +80,20 @@ namespace dip.Models.Domain
             return res;
         }
 
-        public static ListPhysics AddPhys(int id)
+        public static ListPhysics AddPhys(int idphys,int idlist)
         {
-            ListPhysics res = ListPhysics.Get(id);
-            FEText phys = FEText.Get(id);
+            ListPhysics res = ListPhysics.Get(idlist);
+            
+            res.LoadPhysics();
+            FEText phys = res.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
+            if (phys != null)
+                return null;
+               
+                phys = FEText.Get(idphys);
+                if (phys == null)
+                    return null;
+            
+            //FEText phys = FEText.Get(idphys);
             using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
@@ -89,19 +103,44 @@ namespace dip.Models.Domain
             }
             return res;
         }
-        public static ListPhysics DeletePhys(int id)
+        public static ListPhysics DeletePhys(int idphys, int idlist)
         {
-            ListPhysics res = ListPhysics.Get(id);
-            FEText phys = FEText.Get(id);
+            ListPhysics res = ListPhysics.Get(idlist);
+            if (res == null)
+                return null;
+            //FEText phys = FEText.Get(idphys);
+            //if (phys == null)
+            //    return null;
+            res.LoadPhysics();
+            FEText phys = res.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
+            if (phys == null)
+                return null;
             using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
-                db.Set<FEText>().Attach(phys);
+                //db.Set<FEText>().Attach(phys);
                 res.Physics.Remove(phys);
                 db.SaveChanges();
             }
             return res;
         }
+
+        public static ListPhysics LoadPhysics(int id)
+        {
+            var obj=ListPhysics.Get(id);
+            obj?.LoadPhysics();
+            return obj;
+        }
+
+        public  void LoadPhysics()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Set<ListPhysics>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+                        }
+            }
 
 
     }

@@ -1,6 +1,12 @@
 ﻿@model dip.Models.Domain.ListPhysics
 
-<div>
-    <button>@Model.Name</button>
 
-</div>
+@if (Model != null)
+{
+    <div>
+        <label><input type="radio"  class="radioClass" name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.Id) />@Model.Name</label>
+        <input id=@("ListHiddenName_id_"+Model.Id) type="hidden" value="@Model.Name"/>
+        @*<button>@Model.Name</button>*@
+
+    </div>
+}

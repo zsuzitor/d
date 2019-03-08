@@ -877,5 +877,54 @@ order by [data].score desc
 
             return res;
         }
+
+        public static FEText GetNext(int id)
+        {
+            FEText res = null;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+            }
+
+            return res;
+        }
+
+        public static FEText GetPrev(int id)
+        {
+            FEText res = null;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+                res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+
+            }
+
+            return res;
+        }
+        public static FEText GetFirst()
+        {
+            FEText res = null;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+                res = db.FEText.FirstOrDefault();
+
+            }
+
+            return res;
+        }
+        public static FEText GetLast()
+        {
+            FEText res = null;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+                res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+
+            }
+
+            return res;
+        }
+
     }
 }

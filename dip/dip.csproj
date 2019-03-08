@@ -202,6 +202,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexesController.cs" />
     <Compile Include="Controllers\LimitsController.cs" />
+    <Compile Include="Controllers\ListPhysicsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperandGroupsController.cs" />
     <Compile Include="Controllers\OperandsController.cs" />
@@ -273,16 +274,18 @@
     <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ObjectInputV.cs" />
     <Compile Include="Models\ViewModel\AdminV\ChangeRoleV.cs" />
-    <Compile Include="Models\ViewModel\AdminV\ListActV.cs" />
     <Compile Include="Models\ViewModel\DescriptionForm.cs" />
     <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\FormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\ListPhysInItemV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\OnePhysInListsItemV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormCharacteristicObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormPhaseObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
+    <Compile Include="Models\ViewModel\ListPhysicsV\ListActV.cs" />
     <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
@@ -436,9 +439,15 @@
     <Content Include="Views\Helpers\ListStateObject.cshtml" />
     <Content Include="Views\Actions\ChangeObjectChanges.cshtml" />
     <Content Include="Views\Actions\ChangeStateObject.cshtml" />
-    <Content Include="Views\Admin\ListAct.cshtml" />
     <Content Include="Views\Helpers\ListPhysItem.cshtml" />
-    <Content Include="Views\Admin\CreateList.cshtml" />
+    <Content Include="Views\ListPhysics\ListAct.cshtml" />
+    <Content Include="Views\ListPhysics\CreateList.cshtml" />
+    <Content Include="Views\ListPhysics\LoadPhysInList.cshtml" />
+    <Content Include="Views\Helpers\ListPhysInItem.cshtml" />
+    <Content Include="Views\ListPhysics\AddToList.cshtml" />
+    <Content Include="Views\Helpers\OnePhysInListsItem.cshtml" />
+    <Content Include="Views\ListPhysics\EditList.cshtml" />
+    <Content Include="Views\ListPhysics\DeleteList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

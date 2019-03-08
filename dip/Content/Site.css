@@ -75,6 +75,13 @@ body{
 }
 
 
+fieldset{
+    padding: 10px !important;
+    margin: 2px !important;
+    border: 1px solid grey !important;
+}
+
+
 .width_100per{
     width:100%;
 }
@@ -637,7 +644,7 @@ color:white;
 }
 
 
-
+/*ListAct*/
 div.ListAct_OneColumn{
     width:50%;
     box-sizing:border-box;
@@ -650,3 +657,11 @@ div.ListAct_ExistList{
 div.ListAct_MainDiv{
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
+
+div.PhysInCurrentList_cl{
+    max-width:500px;
+    overflow-y:auto;
+}
+
+
+/*---------*/

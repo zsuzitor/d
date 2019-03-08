@@ -1,0 +1,13 @@
+﻿@model dip.Models.ViewModel.HelpersV.ListPhysInItemV
+
+@if (Model != null)
+{
+    foreach (var i in Model.Item.Physics)
+    {
+        @Html.Action("OnePhysInListsItem", "Helpers", new { item = i })@*, idlist = Model.Idlist*@
+
+
+    }
+}
+
+

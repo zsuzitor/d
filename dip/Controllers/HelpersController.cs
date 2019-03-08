@@ -230,7 +230,21 @@ namespace dip.Controllers
 
             return PartialView(item);
         }
-        
+        public ActionResult ListPhysInItem(ListPhysics item)//,int idlist
+        {
+            ListPhysInItemV res = new ListPhysInItemV() {Item=item};//,Idlist=idlist 
+
+
+            return PartialView(res);
+        }
+        public ActionResult OnePhysInListsItem(FEText item)//, int idlist
+        {
+            OnePhysInListsItemV res = new OnePhysInListsItemV() { Item = item };//, Idlist = idlist
+
+
+
+            return PartialView(res);
+        }
 
 
     }

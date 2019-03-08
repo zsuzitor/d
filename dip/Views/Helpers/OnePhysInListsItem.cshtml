@@ -1,0 +1,7 @@
+﻿@model dip.Models.ViewModel.HelpersV.OnePhysInListsItemV
+
+<p>
+    <a href="@(Url.Action("Details","Physic",new {id=Model.Item.IDFE }))">@Model.Item.Name</a>
+    <button  class="btn btn-default" onclick="DeleteFromCurrentList(@Model.Item.IDFE)">Удалить из списка</button>
+</p>
+

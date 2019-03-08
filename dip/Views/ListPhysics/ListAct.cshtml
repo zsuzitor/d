@@ -1,0 +1,215 @@
+﻿
+
+
+@model dip.Models.ViewModel.ListPhysicsV.ListActV
+
+@{
+    ViewBag.Title = "ListAct";
+}
+
+@*<h2>ListAct</h2>*@
+
+<div class="ListAct_MainDiv">
+    <div class="ListAct_OneColumn div_inline_block">
+
+        <h1>Существующие списки</h1>
+        <div class="ListAct_ExistList" id="ListAct_ExistList_id">
+            @if (Model.Lists.Count == 0)
+            {
+                <p>Пока не создано ни 1 списка</p>
+            }
+            @foreach (var i in Model.Lists)
+            {
+                @Html.Action("ListPhysItem", "Helpers", new { item = i })
+
+            }
+
+        </div>
+        Добавить новый
+        <div>
+            <input class="form-control" placeholder="Название" id="NewListName_id" type="text" />
+            <button class="btn btn-default" onclick="AddNewList()">Добавить</button>
+        </div>
+    </div><div class="ListAct_OneColumn div_inline_block">
+    <div id="divEditCurrentList_id" style="display:none;">
+        <input class="form-control" placeholder="Название списка" id="inputNameEditCurrentList_id" type="text" />
+        <button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>
+        <button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>
+
+    </div>
+
+
+
+
+        <h1> В списке</h1>
+
+        <div id="PhysInCurrentList" class="PhysInCurrentList_cl">
+
+        </div>
+        <div>
+            Добавить
+            <div>
+                <button onclick="AddNewPhysInCurList()" class="btn btn-default">Добавить</button>
+            </div>
+            @*Id физического эффекта*@
+            <div>
+                <input id="AddNewPhysInCurListInput" class="form-control" placeholder="Id физического эффекта" type="number" />
+            </div>
+            @*Поиск
+                <div>
+                    TODO
+                </div>*@
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function AddNewList() {
+        var formData = { name: document.getElementById('NewListName_id').value };
+        goAjaxRequest({
+            url: "/ListPhysics/CreateList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                document.getElementById('ListAct_ExistList_id').innerHTML+=req;
+
+            }, type: 'GET'
+        });
+
+
+
+    }
+
+
+
+    $(document).on('change', ':radio', function (){
+
+        if (this.name == 'ListPhysExistItem') {
+            let id=this.id.split('ListPhysExistItem_')[1];
+            var formData = { id: id };
+            goAjaxRequest({
+                url: "/ListPhysics/LoadPhysInList",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    document.getElementById('PhysInCurrentList').innerHTML = req;
+                    document.getElementById('divEditCurrentList_id').style.display = 'block';
+                    document.getElementById('inputNameEditCurrentList_id').value = document.getElementById('ListHiddenName_id_' + id).value;
+                    
+                    
+                    
+                }, type: 'GET'
+            });
+        }
+
+    });
+
+
+    function AddNewPhysInCurList() {
+        var formData = { idphys: document.getElementById('AddNewPhysInCurListInput').value };
+        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+            formData.idlist = this.id.split('ListPhysExistItem_')[1];
+        });
+        if (!formData.idlist) {
+            alert("Выберите список");
+            return;
+        }
+        if (!formData.idphys) {
+            alert("Введите id");
+            return;
+        }
+            goAjaxRequest({
+                url: "/ListPhysics/AddToList",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    document.getElementById('PhysInCurrentList').innerHTML += req;
+
+                }, type: 'POST'
+            });
+        
+    }
+
+
+
+    function SaveChangesCurrentList() {
+        //document.getElementById('inputNameEditCurrentList_id').value
+        var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
+        var blockList;
+        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+            blockList = this;
+            formData.id = this.id.split('ListPhysExistItem_')[1];
+        });
+        goAjaxRequest({
+            url: "/ListPhysics/EditList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                if (req.trim()) {
+                    alert("Успешно изменено");
+                }
+                else {
+                    alert("Что то пошло не так");
+                }
+                
+                //todo обновить слева в списке
+            }, type: 'POST'
+        });
+
+
+    }
+
+
+    function DeleteCurrentList() {
+        //document.getElementById('inputNameEditCurrentList_id').value
+        var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
+       
+        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+            
+            formData.id = this.id.split('ListPhysExistItem_')[1];
+        });
+        goAjaxRequest({
+            url: "/ListPhysics/DeleteList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                if (req.trim()) {
+                    alert("Успешно удалено");
+                }
+                else {
+                    alert("Что то пошло не так");
+                }
+
+                //todo обновить слева в списке
+            }, type: 'POST'
+        });
+
+
+    }
+
+
+    function DeleteFromCurrentList(id) {
+
+        var formData = { idphys: id };
+       
+        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+            
+            formData.idlist = this.id.split('ListPhysExistItem_')[1];
+        });
+        goAjaxRequest({
+            url: "/ListPhysics/DeleteFromList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                if (req.trim()) {
+                    alert("Успешно удалено");
+                }
+                else {
+                    alert("Что то пошло не так");
+                }
+
+                //todo обновить слева в списке
+            }, type: 'POST'
+        });
+
+
+    }
+    }
+
+</script>

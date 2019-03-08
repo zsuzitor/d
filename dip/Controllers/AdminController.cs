@@ -77,46 +77,53 @@ namespace dip.Controllers
             return View();
         }
 
-        public ActionResult ListAct()
-        {
-            ListActV res = new ListActV();
-            res.Lists=ListPhysics.GetAll();
+        //public ActionResult ListAct()
+        //{
+        //    ListActV res = new ListActV();
+        //    res.Lists=ListPhysics.GetAll();
 
-            return View(res);
-        }
+        //    return View(res);
+        //}
 
-        public ActionResult CreateList(string name)
-        {
-            var res=ListPhysics.Create(name);
+        //public ActionResult CreateList(string name)
+        //{
+        //    var res=ListPhysics.Create(name);
 
-            return PartialView();
-        }
+        //    return PartialView(res);
+        //}
 
-        public ActionResult EditList(int id,string name)
-        {
-            ListPhysics.Edit(id,name);
+        //public ActionResult LoadPhysInList(int id)
+        //{
+        //    var res = ListPhysics.LoadPhysics(id);
 
-            return PartialView();
-        }
-        public ActionResult DeleteList(int id, string name)
-        {
-            ListPhysics.Delete(id);
+        //    return PartialView(res);
+        //}
 
-            return PartialView();
-        }
+        //public ActionResult EditList(int id,string name)
+        //{
+        //    ListPhysics.Edit(id,name);
 
-        public ActionResult AddToList(int id)
-        {
-            ListPhysics.AddPhys(id);
+        //    return PartialView();
+        //}
+        //public ActionResult DeleteList(int id, string name)
+        //{
+        //    ListPhysics.Delete(id);
 
-            return PartialView();
-        }
-        public ActionResult DeleteFromList(int id)
-        {
-            ListPhysics.DeletePhys(id);
+        //    return PartialView();
+        //}
 
-            return PartialView();
-        }
+        //public ActionResult AddToList(int id)
+        //{
+        //    ListPhysics.AddPhys(id);
+
+        //    return PartialView();
+        //}
+        //public ActionResult DeleteFromList(int id)
+        //{
+        //    ListPhysics.DeletePhys(id);
+
+        //    return PartialView();
+        //}
 
 
     }

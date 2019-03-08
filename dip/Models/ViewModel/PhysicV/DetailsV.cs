@@ -1,4 +1,6 @@
 ﻿using dip.Models.Domain;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace dip.Models.ViewModel.PhysicV
     public class DetailsV
     {
         public string EffectName { get; set; }
-        public string TechnicalFunctionId { get; set; }
+        //public string TechnicalFunctionId { get; set; }
         public bool Admin { get; set; }
         public FEText Effect { get; set; }
         public bool? Favourited { get; set; }
@@ -18,9 +20,47 @@ namespace dip.Models.ViewModel.PhysicV
         {
             Favourited = null;
             EffectName = null;
-            TechnicalFunctionId = null;
+            //TechnicalFunctionId = null;
             Admin = false;
             Effect = null;
+            
         }
+
+        public void Data(int?id,HttpContextBase HttpContext)//bool go
+        {
+
+            FEText phys = FEText.Get(id);
+            Data(phys, HttpContext);
+        }
+
+        public void Data(FEText phys, HttpContextBase HttpContext) 
+        {
+            if (phys == null)
+                throw new Exception("Запись с данным id не найдена");
+            Effect = phys;
+            string check_id = ApplicationUser.GetUserId();
+
+            Effect.LoadImage();
+            EffectName = Effect.Name;
+           
+
+            if (check_id != null)
+            {
+                ApplicationUserManager userManager = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>();
+                IList<string> roles = userManager?.GetRoles(check_id);
+                if (roles != null)
+                    if (roles.Contains("admin"))
+                        Admin = true;
+                Favourited = Effect.Favourited(check_id);
+            }
+        }
+
+
+
+        //public void GetModel(FEText phys)
+        //{
+
+        //}
     }
 }
