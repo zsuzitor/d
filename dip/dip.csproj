@@ -448,6 +448,9 @@
     <Content Include="Views\Helpers\OnePhysInListsItem.cshtml" />
     <Content Include="Views\ListPhysics\EditList.cshtml" />
     <Content Include="Views\ListPhysics\DeleteList.cshtml" />
+    <Content Include="Views\ListPhysics\DeleteFromList.cshtml" />
+    <Content Include="Views\Helpers\MovementPhysicsBlock.cshtml" />
+    <Content Include="Views\ListPhysics\ListUserAct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

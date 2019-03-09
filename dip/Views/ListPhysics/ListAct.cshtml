@@ -74,7 +74,7 @@
             func_success: function (req, status, jqXHR) {
                 document.getElementById('ListAct_ExistList_id').innerHTML+=req;
 
-            }, type: 'GET'
+            }, type: 'POST'
         });
 
 
@@ -144,6 +144,7 @@
             data: formData,
             func_success: function (req, status, jqXHR) {
                 if (req.trim()) {
+                    document.getElementById('ListPhysExistItemNameLabel_' + formData.id).innerHTML = formData.name;
                     alert("Успешно изменено");
                 }
                 else {
@@ -171,7 +172,11 @@
             data: formData,
             func_success: function (req, status, jqXHR) {
                 if (req.trim()) {
-                    alert("Успешно удалено");
+                    //alert("Успешно удалено");
+                    document.getElementById('ListPhysExistItemMainDiv_' + formData.id).remove();
+                    document.getElementById('divEditCurrentList_id').style.display = 'none';
+                    document.getElementById('PhysInCurrentList').innerHTML = '';
+                    
                 }
                 else {
                     alert("Что то пошло не так");
@@ -198,7 +203,8 @@
             data: formData,
             func_success: function (req, status, jqXHR) {
                 if (req.trim()) {
-                    alert("Успешно удалено");
+                    //alert("Успешно удалено");
+                    document.getElementById('oneP_onePhysInListItem_id_'+id).remove();
                 }
                 else {
                     alert("Что то пошло не так");
@@ -210,6 +216,6 @@
 
 
     }
-    }
+    
 
 </script>

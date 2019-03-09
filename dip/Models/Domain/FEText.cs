@@ -884,6 +884,8 @@ order by [data].score desc
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+                if(res==null)
+                    res = db.FEText.FirstOrDefault();
             }
 
             return res;
@@ -896,6 +898,8 @@ order by [data].score desc
             {
                 //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
                 res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+                if (res == null)
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
 
             }
 

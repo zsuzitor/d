@@ -176,7 +176,7 @@ namespace dip.Models.Domain
 
         public static string DeleteNotChildCheckbox(string strIds)
         {
-          
+
             string res = "";
             var listId = strIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var i in listId)
@@ -327,9 +327,9 @@ namespace dip.Models.Domain
 
     }
 
-    public class DescrPhaseI: FEObject
+    public class DescrPhaseI : FEObject
     {
-        
+
         public DescrPhaseI()
         {
 
@@ -365,14 +365,14 @@ namespace dip.Models.Domain
                 MechanicalState + " " +
                 OpticalState + " " +
                 Special + " ";
-                
+
 
             return res;
         }
 
         public void DeleteNotChildCheckbox()
         {
-            this.PhaseState=PhaseCharacteristicObject.DeleteNotChildCheckbox(this.PhaseState);
+            this.PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.PhaseState);
             this.Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.Composition);
             this.MagneticStructure = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.MagneticStructure);
             this.Conductivity = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.Conductivity);
@@ -416,7 +416,7 @@ namespace dip.Models.Domain
             return res;
         }
 
-        }
+    }
 
 
     public class DescrObjectI
@@ -473,7 +473,7 @@ namespace dip.Models.Domain
                 DescrPhaseI.Validation(a.ListSelectedPhase1);
                 DescrPhaseI.Validation(a.ListSelectedPhase2);
                 DescrPhaseI.Validation(a.ListSelectedPhase3);
-               
+
                 //a.ActionId = NullToEmpryStr(a?.ActionId);
                 //a.ActionType = NullToEmpryStr(a?.ActionType);
                 //a.FizVelId = NullToEmpryStr(a?.FizVelId);
@@ -517,7 +517,7 @@ namespace dip.Models.Domain
     }
 
 
-    public class  DescriptionFormWithData{
+    public class DescriptionFormWithData {
 
         public DescriptionForm Form { get; set; }
         public DescrSearchI FormData { get; set; }
@@ -532,7 +532,7 @@ namespace dip.Models.Domain
     //хранит только данные для заполнения в дескрипторной форме, саму форму не хранит
     public class DescrSearchI
     {
-       
+
         public string ActionId { get; set; }
         public bool? Parametric { get; set; }
         public string ActionType { get; set; }
@@ -545,7 +545,7 @@ namespace dip.Models.Domain
         public bool InputForm { get; set; }//вход\выход
 
         [ScaffoldColumn(false)]
-        public bool Valide { get;private  set; }//мб private
+        public bool Valide { get; private set; }//мб private
 
         public DescrSearchI()
         {
@@ -629,9 +629,9 @@ namespace dip.Models.Domain
         {
             if (a == null)
                 return true;
-            if (string.IsNullOrWhiteSpace( a.ActionId ) && string.IsNullOrWhiteSpace(a.ActionType)  && string.IsNullOrWhiteSpace(a.FizVelId )
-                && string.IsNullOrWhiteSpace(a.ParametricFizVelId) && string.IsNullOrWhiteSpace(a.ListSelectedPros )
-                && string.IsNullOrWhiteSpace(a.ListSelectedSpec)  && string.IsNullOrWhiteSpace(a.ListSelectedVrem ))
+            if (string.IsNullOrWhiteSpace(a.ActionId) && string.IsNullOrWhiteSpace(a.ActionType) && string.IsNullOrWhiteSpace(a.FizVelId)
+                && string.IsNullOrWhiteSpace(a.ParametricFizVelId) && string.IsNullOrWhiteSpace(a.ListSelectedPros)
+                && string.IsNullOrWhiteSpace(a.ListSelectedSpec) && string.IsNullOrWhiteSpace(a.ListSelectedVrem))
                 return true;
 
 
@@ -718,7 +718,7 @@ namespace dip.Models.Domain
     }
 
 
-    
+
 
 
 
@@ -743,7 +743,7 @@ namespace dip.Models.Domain
     //    }
     //    public DescrSearchIOut(FEAction a)
     //    {
-            
+
     //        this.actionIdO = a.Name;
     //        this.actionTypeO = a.Type;
     //        this.FizVelIdO = a.FizVelId;
@@ -801,31 +801,31 @@ namespace dip.Models.Domain
     //            //else
     //            //    this.listSelectedVrem = null;
 
-              
 
 
-                
+
+
 
 
     //            a.Valide = true;
-                
+
     //        }
     //        //a.Valide = false;
     //        return true;
     //    }
 
-        ////public static bool IsNull(DescrSearchIOut a)
-        ////{
-        ////    if (a == null)
-        ////        return true;
-        ////    if (a.actionIdO == null && a.actionTypeO == null && a.FizVelIdO == null
-        ////        && a.parametricFizVelIdO == null && a.listSelectedProsO == null
-        ////        && a.listSelectedSpecO == null && a.listSelectedVremO == null)
-        ////        return true;
+    ////public static bool IsNull(DescrSearchIOut a)
+    ////{
+    ////    if (a == null)
+    ////        return true;
+    ////    if (a.actionIdO == null && a.actionTypeO == null && a.FizVelIdO == null
+    ////        && a.parametricFizVelIdO == null && a.listSelectedProsO == null
+    ////        && a.listSelectedSpecO == null && a.listSelectedVremO == null)
+    ////        return true;
 
 
-        ////    return false;
-        ////}
+    ////    return false;
+    ////}
     //}
 
 
@@ -854,7 +854,7 @@ namespace dip.Models.Domain
             //1-создать каталог
             //2- добавить индекс
             //3- апнуть индекс до семантического
-             List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
+            List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
 
             var connection = new SqlConnection();
             connection.ConnectionString = Constants.sql_0;
@@ -862,7 +862,7 @@ namespace dip.Models.Domain
             foreach (var i in files)
             {
                 string script = File.ReadAllText(HostingEnvironment.MapPath($"~/tsqlscripts/{i}.txt"));
-                
+
                 using (var command = new SqlCommand(script, connection))
                 {
                     command.ExecuteNonQuery();
@@ -874,21 +874,562 @@ namespace dip.Models.Domain
     }
 
 
+    public class SaveDescription
+    {
+        //public DescrSearchI test { get; set; }
+        public SaveDescriptionEntry[] MassAddActionId { get; set; }
+        public SaveDescriptionEntry[] MassAddFizVels { get; set; }
+        public SaveDescriptionEntry[] MassAddParamFizVels { get; set; }
+        public SaveDescriptionEntry[] MassAddPros { get; set; }
+        public SaveDescriptionEntry[] MassAddVrems { get; set; }
+        public SaveDescriptionEntry[] MassAddSpecs { get; set; }
 
-    class JsonSaveDescription
+        public SaveDescriptionEntry[] MassEditActionId { get; set; }
+        public SaveDescriptionEntry[] MassEditFizVels { get; set; }
+        public SaveDescriptionEntry[] MassEditParamFizVels { get; set; }
+        public SaveDescriptionEntry[] MassEditPros { get; set; }
+        public SaveDescriptionEntry[] MassEditVrems { get; set; }
+        public SaveDescriptionEntry[] MassEditSpecs { get; set; }
+
+        public SaveDescriptionEntry[] MassDeletedActionId { get; set; }
+        public SaveDescriptionEntry[] MassDeletedFizVels { get; set; }
+        public SaveDescriptionEntry[] MassDeletedParamFizVels { get; set; }
+        public SaveDescriptionEntry[] MassDeletedPros { get; set; }
+        public SaveDescriptionEntry[] MassDeletedVrems { get; set; }
+        public SaveDescriptionEntry[] MassDeletedSpecs { get; set; }
+
+
+        public SaveDescription()
+    {
+       
+    }
+        public void SetNotNullArray()
+        {
+            MassAddActionId=MassAddActionId ?? new SaveDescriptionEntry[0];
+            MassAddFizVels = MassAddFizVels ?? new SaveDescriptionEntry[0];
+            MassAddParamFizVels = MassAddParamFizVels ?? new SaveDescriptionEntry[0];
+            MassAddPros = MassAddPros ?? new SaveDescriptionEntry[0];
+            MassAddVrems = MassAddVrems ?? new SaveDescriptionEntry[0];
+            MassAddSpecs = MassAddSpecs ?? new SaveDescriptionEntry[0];
+
+            MassEditActionId = MassEditActionId ?? new SaveDescriptionEntry[0];
+            MassEditFizVels = MassEditFizVels ?? new SaveDescriptionEntry[0];
+            MassEditParamFizVels = MassEditParamFizVels ?? new SaveDescriptionEntry[0];
+            MassEditPros = MassEditPros ?? new SaveDescriptionEntry[0];
+            MassEditVrems = MassEditVrems ?? new SaveDescriptionEntry[0];
+            MassEditSpecs = MassEditSpecs ?? new SaveDescriptionEntry[0];
+
+            MassDeletedActionId = MassDeletedActionId ?? new SaveDescriptionEntry[0];
+            MassDeletedFizVels = MassDeletedFizVels ?? new SaveDescriptionEntry[0];
+            MassDeletedParamFizVels = MassDeletedParamFizVels ?? new SaveDescriptionEntry[0];
+            MassDeletedPros = MassDeletedPros ?? new SaveDescriptionEntry[0];
+            MassDeletedVrems = MassDeletedVrems ?? new SaveDescriptionEntry[0];
+            MassDeletedSpecs = MassDeletedSpecs ?? new SaveDescriptionEntry[0];
+        }
+
+
+        //public string TryGetCurrentActionId()
+        //{
+        //    //fizvell
+        //    if (currentActionId == null && i.ParentId != "VOZ0")
+        //        currentActionId = i.ParentId;
+
+        //    //paramfizvell
+        //    if (currentActionId == null && !i.ParentId.Contains("VOZ0"))
+        //        currentActionId = i.ParentId.Split('_')[0];
+
+        //}
+
+            public void AddFizVels(string currentActionId,bool? currentActionParametric,ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
+            //if (currentActionParametric == false)
+            //    fizvels=//выберет и не параметрические
+            //else
+            //    fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL_R")).ToList();
+            int lastFizVel = 0;
+            if (fizvels.Count > 0)
+                if (currentActionParametric == false)
+                {
+                    lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                }
+                else
+                {
+                    lastFizVel = fizvels.Max(x1 =>
+                    {
+                        int rs;
+                        int.TryParse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0], out rs);
+                        return rs;
+                    });
+                }
+
+            foreach (var i in MassAddFizVels)
+            {
+                string fizVelId = "";
+                if (currentActionParametric == false)
+                    fizVelId = (currentActionId + "_FIZVEL_" + ++lastFizVel);
+                else
+                    fizVelId = (currentActionId + "_FIZVEL_R" + ++lastFizVel);
+
+
+                db.FizVels.Add(new Models.Domain.FizVel()
+                {
+                    Name = i.Text,
+                    Parent = currentActionId + "_FIZVEL",
+                    Id = fizVelId
+                });
+                db.SaveChanges();
+                foreach (var i2 in MassAddParamFizVels)
+                {
+                    if (i2.ParentId == i.Id)
+                        i2.ParentId = fizVelId;
+                }
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void EditFizVels(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassEditFizVels)
+            {
+                var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (fizVel != null)
+                    fizVel.Name = i.Text;
+                else
+                    i.Id = null;
+
+                db.SaveChanges();
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+        public void AddParamFizVels(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            if (MassAddParamFizVels.Length > 0)
+            {
+
+
+                string currentFizVels = MassAddParamFizVels[0].ParentId;
+
+                var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
+                int lastFizVel = 0;
+                if (fizvels.Count > 0)
+                    lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+
+
+
+                foreach (var i in MassAddParamFizVels)
+                {
+                    db.FizVels.Add(new Models.Domain.FizVel()
+                    {
+                        Name = i.Text,
+                        Parent = currentFizVels,
+                        Id = (currentFizVels + "_" + ++lastFizVel),
+                        Parametric = true
+                    });
+                    db.SaveChanges();
+                }
+            }
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void EditParamFizVels(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            foreach (var i in MassEditParamFizVels)
+            {
+                var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (fizVel != null)
+                    fizVel.Name = i.Text;
+                else
+                    i.Id = null;
+
+                db.SaveChanges();
+            }
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void AddPro(string currentActionId,ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            int last = 0;
+            var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
+            if (pros.Count > 0)
+                last = pros.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_PROS") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
+
+            int countLastIter = 0;
+            List<SaveDescriptionEntry> massAddProsList = MassAddPros.ToList();
+            while (massAddProsList.Count > 0)
+            {
+
+                if (countLastIter == massAddProsList.Count)
+                    throw new Exception("непонятные PRO");
+                countLastIter = massAddProsList.Count;
+                for (int i = 0; i < massAddProsList.Count; ++i)
+                {
+                    //проверить можно ли добавить, и добавить и вынести в массив
+                    if (!massAddProsList[i].ParentId.Contains("_NEW"))
+                    {
+                        var pro = new Models.Domain.Pro()
+                        {
+                            Name = massAddProsList[i].Text,
+                            Parent = (massAddProsList[i].ParentId.Contains("_PROS") ? massAddProsList[i].ParentId : massAddProsList[i].ParentId + "_PROS"),
+                            Id = (currentActionId + "_PROS" + ++last)//VOZ1_PROS1
+                        };
+
+                        db.Pros.Add(pro);
+                        db.SaveChanges();
+                        for (int i2 = 0; i2 < massAddProsList.Count; ++i2)
+                        {
+                            if (massAddProsList[i2].ParentId == massAddProsList[i].Id)
+                            {
+                                massAddProsList[i2].ParentId = pro.Id;
+                            }
+                        }
+                        massAddProsList.Remove(massAddProsList[i--]);
+
+                    }
+
+
+                }
+            }
+
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void EditPro(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassEditPros)
+            {
+                var act = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (act != null)
+                    act.Name = i.Text;
+                else
+                    i.Id = null;
+
+                db.SaveChanges();
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void AddSpec(string currentActionId,ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            int last = 0;
+            var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
+            if (specs.Count > 0)
+                last = specs.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_SPEC") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
+
+            int countLastIter = 0;
+            List<SaveDescriptionEntry> massAddSpecsList = MassAddSpecs.ToList();
+            while (massAddSpecsList.Count > 0)
+            {
+
+                if (countLastIter == massAddSpecsList.Count)
+                    throw new Exception("непонятные Spec");
+                countLastIter = massAddSpecsList.Count;
+                for (int i = 0; i < massAddSpecsList.Count; ++i)
+                {
+                    //проверить можно ли добавить, и добавить и вынести в массив
+                    if (!massAddSpecsList[i].ParentId.Contains("_NEW"))
+                    {
+                        var spec = new Models.Domain.Spec()
+                        {
+                            Name = massAddSpecsList[i].Text,
+                            Parent = (massAddSpecsList[i].ParentId.Contains("_SPEC") ? massAddSpecsList[i].ParentId : massAddSpecsList[i].ParentId + "_SPEC"),
+
+                            Id = (currentActionId + "_SPEC" + ++last)
+                        };
+
+                        db.Specs.Add(spec);
+                        db.SaveChanges();
+                        for (int i2 = 0; i2 < massAddSpecsList.Count; ++i2)
+                        {
+                            if (massAddSpecsList[i2].ParentId == massAddSpecsList[i].Id)
+                            {
+                                massAddSpecsList[i2].ParentId = spec.Id;
+                            }
+                        }
+                        massAddSpecsList.Remove(massAddSpecsList[i--]);
+
+                    }
+
+
+                }
+            }
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void EditSpec(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassEditSpecs)
+            {
+                var act = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (act != null)
+                    act.Name = i.Text;
+                else
+                    i.Id = null;
+
+                db.SaveChanges();
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void AddVrem(string currentActionId,ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            int last = 0;
+            var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
+            if (vrems.Count > 0)
+                last = vrems.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_VREM") }, StringSplitOptions.RemoveEmptyEntries)[0]));
+            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
+
+            int countLastIter = 0;
+
+            List<SaveDescriptionEntry> massAddVremsList = MassAddVrems.ToList();
+            while (massAddVremsList.Count > 0)
+            {
+
+                if (countLastIter == massAddVremsList.Count)
+                    throw new Exception("непонятные Vrem");
+                countLastIter = massAddVremsList.Count;
+                for (int i = 0; i < massAddVremsList.Count; ++i)
+                {
+                    //проверить можно ли добавить, и добавить и вынести в массив
+                    if (!massAddVremsList[i].ParentId.Contains("_NEW"))
+                    {
+                        var vrem = new Models.Domain.Vrem()
+                        {
+                            Name = massAddVremsList[i].Text,
+                            Parent = (massAddVremsList[i].ParentId.Contains("_VREM") ? massAddVremsList[i].ParentId : massAddVremsList[i].ParentId + "_VREM"),
+
+                            Id = (currentActionId + "_VREM" + ++last)
+                        };
+
+                        db.Vrems.Add(vrem);
+                        db.SaveChanges();
+                        for (int i2 = 0; i2 < massAddVremsList.Count; ++i2)
+                        {
+                            if (massAddVremsList[i2].ParentId == massAddVremsList[i].Id)
+                            {
+                                massAddVremsList[i2].ParentId = vrem.Id;
+                            }
+                        }
+                        massAddVremsList.Remove(massAddVremsList[i--]);
+
+                    }
+
+
+                }
+            }
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void EditVrem(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassEditVrems)
+            {
+                var act = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (act != null)
+                    act.Name = i.Text;
+                else
+                    i.Id = null;
+
+                db.SaveChanges();
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+
+        public void EditActionId( ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassEditActionId)
+            {
+                var act = db.AllActions.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (act != null)
+                    act.Name = i.Text;
+                else
+                    i.Id = null;
+
+
+                db.SaveChanges();
+            }
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public bool? AddActionId(int lastAllActionId, ref string currentActionId,ApplicationDbContext db_=null)
+        {
+            bool? currentActionParametric  = null;
+            var db = db_ ?? new ApplicationDbContext();
+            foreach (var i in MassAddActionId)//возможно вытащить из цикла тк сейчас нельзя добавить больше 1
+            {
+                var allAction = new Models.Domain.AllAction() { Name = i.Text, Parent = "ALLACTIONS", Parametric = i.Parametric, Id = ("VOZ" + ++lastAllActionId) };
+                db.AllActions.Add(allAction);
+                db.SaveChanges();
+                //i.NewId = allAction.Id;
+                currentActionId = allAction.Id;
+                currentActionParametric = i.Parametric;
+                //break;//TODO
+
+
+                //надо обновить в pros... parentid там где =="VOZ0"? 
+                foreach (var i2 in MassAddPros)
+                {
+                    i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                    i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                }
+
+                foreach (var i2 in MassAddVrems)
+                {
+                    i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                    i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                }
+
+                foreach (var i2 in MassAddSpecs)
+                {
+                    i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
+                    i2.Id = i2.Id.Replace("VOZ0", currentActionId);
+                }
+
+
+            }
+            if (db_ == null)
+                db.Dispose();
+            return currentActionParametric;
+        }
+
+
+        public void DeletePros(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            List<Pro> forDeleted = new List<Pro>();
+
+            int start = 0;
+            foreach (var i in MassDeletedPros)
+            {
+                var pro = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (pro == null)
+                    continue;
+                forDeleted.Add(pro);
+                //var childs=Pro.GetChild(pro.Id);
+                //    forDeleted.AddRange(childs);
+                for (; start < forDeleted.Count; ++start)
+                {
+                    forDeleted.AddRange(Pro.GetChild(forDeleted[start].Id));
+                }
+            }
+            db.Pros.RemoveRange(forDeleted);
+            db.SaveChanges();
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void DeleteVrem(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            List<Vrem> forDeleted = new List<Vrem>();
+
+            int start = 0;
+            foreach (var i in MassDeletedVrems)
+            {
+                var vrem = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (vrem == null)
+                    continue;
+                forDeleted.Add(vrem);
+                //var childs=Pro.GetChild(pro.Id);
+                //    forDeleted.AddRange(childs);
+                for (; start < forDeleted.Count; ++start)
+                {
+                    forDeleted.AddRange(Vrem.GetChild(forDeleted[start].Id));
+                }
+            }
+            db.Vrems.RemoveRange(forDeleted);
+            db.SaveChanges();
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public void DeleteSpec(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            List<Spec> forDeleted = new List<Spec>();
+
+            int start = 0;
+            foreach (var i in MassDeletedSpecs)
+            {
+                var spec = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (spec == null)
+                    continue;
+                forDeleted.Add(spec);
+                //var childs=Pro.GetChild(pro.Id);
+                //    forDeleted.AddRange(childs);
+                for (; start < forDeleted.Count; ++start)
+                {
+                    forDeleted.AddRange(Spec.GetChild(forDeleted[start].Id));
+                }
+            }
+            db.Specs.RemoveRange(forDeleted);
+            db.SaveChanges();
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+
+    }
+    public class SaveDescriptionEntry
     {
         public string Id { get; set; }
-        public string NewId { get; set; }
+        //public string NewId { get; set; }
         public string ParentId { get; set; }
-        public int Type { get; set; }
+        //public int Type { get; set; }
         public string Text { get; set; }
         public bool Parametric { get; set; }
-        public int TypeAction { get; set; }
+        //public int TypeAction { get; set; }
 
 
-        public JsonSaveDescription()
+        public SaveDescriptionEntry()
         {
-            NewId = null;
+            //NewId = null;
         }
     }
 

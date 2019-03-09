@@ -20,15 +20,11 @@
         <div class="details_favourite_star" id="favourite_div_but_@Model.Effect.IDFE" onclick="favouritePhysic(@Model.Effect.IDFE)">
             @Html.Action("Favourite", "Helpers", new { favourite = Model.Favourited })
         </div>
-
         <div>
-            <a href="@(Url.Action("GoFirstPhysics","Physic",new {}))">Первый физический эффект</a>
-            <a href="@(Url.Action("GoPrevPhysics","Physic",new { id=Model.Effect.IDFE}))" >Предыдущий физический эффект</a>
-            <input class="form-control" id="inputForGoPhysic" placeholder="Введите id" type="number"/>
-            <button class="btn btn-default" onclick="GoPhysicId()">Перейти</button>
-            <a href="@(Url.Action("GoNextPhysics","Physic",new { id=Model.Effect.IDFE}))" >Следующий  физический эффект</a>
-            <a href="@(Url.Action("GoLastPhysics","Physic",new {}))">Последний физический эффект</a>
+            @Html.Action("MovementPhysicsBlock", "Helpers", new { idfe = Model.Effect.IDFE })
+            
         </div>
+        
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayName("Описание")

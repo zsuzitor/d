@@ -247,5 +247,12 @@ namespace dip.Controllers
         }
 
 
+        public ActionResult MovementPhysicsBlock(int idfe)//,string action
+        {
+
+
+            return PartialView(idfe);
+        }
+
     }
 }

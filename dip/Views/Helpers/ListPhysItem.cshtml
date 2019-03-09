@@ -3,8 +3,9 @@
 
 @if (Model != null)
 {
-    <div>
-        <label><input type="radio"  class="radioClass" name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.Id) />@Model.Name</label>
+    <div id=@("ListPhysExistItemMainDiv_"+Model.Id)>
+        <input type="radio" class="radioClass" name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.Id) />
+        <label for=@("ListPhysExistItem_"+Model.Id) id=@("ListPhysExistItemNameLabel_"+Model.Id) >@Model.Name</label>
         <input id=@("ListHiddenName_id_"+Model.Id) type="hidden" value="@Model.Name"/>
         @*<button>@Model.Name</button>*@
 

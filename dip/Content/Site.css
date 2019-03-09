@@ -22,6 +22,14 @@
     }
 }
 
+@media (max-width:1060px) {
+    .container {
+        max-width: 870px !important;
+    }
+
+    
+}
+
 
 body {
     /*padding-top: 50px;*/
@@ -426,6 +434,17 @@ div.listfe_favourite_star{
 
    
    /*-------------------------------DETAILS   and edit---------------*/
+   .MovementPhys_inputId{
+       width:150px !important;
+       display:inline;
+}
+
+   div.MovementPhysIns{
+      
+   }
+   div.MovementPhysMain{
+       text-align: center;
+   }
 
    div.details_one_image{
        border-radius:5%;
@@ -648,20 +667,40 @@ color:white;
 div.ListAct_OneColumn{
     width:50%;
     box-sizing:border-box;
-    background-color:antiquewhite;
-}
-div.ListAct_ExistList{
+    
     min-height:300px;
 }
 
+
 div.ListAct_MainDiv{
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color:antiquewhite;
 }
 
 div.PhysInCurrentList_cl{
-    max-width:500px;
+    max-height:1000px;
+    overflow-y:auto;
+    min-height:300px;
+}
+div.ListAct_ExistList{
+     min-height:300px;
+     max-height:1000px;
     overflow-y:auto;
 }
 
 
-/*---------*/
+/*-----ListUserAct-----------------*/
+div.ListUserAct_MainDiv{
+     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color:antiquewhite;
+}
+
+div.ListUserAct_OneColumn{
+    width:50%;
+    box-sizing:border-box;
+   
+     max-height:1000px;
+    overflow-y:auto;
+    
+    min-height:300px;
+}
