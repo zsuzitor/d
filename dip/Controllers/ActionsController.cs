@@ -18,10 +18,27 @@ namespace dip.Controllers
             return View();
         }
 
-       
+
+        public ActionResult DescriptionFormAll(List<DescrSearchI> inp, List<DescrSearchI> outp, int countInput = 1, 
+            bool changedObject = false, string stateIdBegin = null,
+            string stateIdEnd = null, DescrObjectI objFormsBegin = null, DescrObjectI objFormsEnd = null)
+        {
+            DescriptionFormAllV res = new DescriptionFormAllV()
+            {
+                DescrInp = inp,
+                DescrOutp = outp,
+                DescrCountInput = countInput,
+                ChangedObject=changedObject,
+                ObjectStateIdBegin=stateIdBegin,
+                ObjectStateIdEnd=stateIdEnd,
+                ObjectFormsBegin=objFormsBegin,
+                ObjectFormsEnd=objFormsEnd
+            };
+
+            return PartialView(res);
+        }
 
 
-        
 
 
         //[HttpPost]
@@ -126,7 +143,8 @@ namespace dip.Controllers
 
 
         //stateId-последний выбранный ребенок состояния
-        public ActionResult ObjectInput(bool changedObject=false,string stateIdBegin=null, string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
+        public ActionResult ObjectInput(bool changedObject=false,string stateIdBegin=null, 
+            string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
         {//, DescrObjectI objFormsBegin, DescrObjectI objFormsEnd
          //12;
          //string[] CharacteristicStart = null, string[] CharacteristicEnd = null

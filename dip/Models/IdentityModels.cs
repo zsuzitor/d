@@ -94,6 +94,142 @@ namespace dip.Models
         }
 
 
+        public void LoadListPhysics( ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+            
+                db.Set<ApplicationUser>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.FavouritedPhysics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.FavouritedPhysics).Load();
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+        public static void AddList(string iduser,int idlist)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user.AddList(idlist);
+        }
+
+        public void AddList(int idlist)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
+                ListPhysics list = Domain.ListPhysics.Get(idlist,db);
+                db.Set<ListPhysics>().Attach(list);
+
+                if (this.ListPhysics.FirstOrDefault(x1 => x1.Id == list.Id) == null)
+                {
+                    //return;
+                    this.ListPhysics.Add(list);
+                    db.SaveChanges();
+                }
+                    
+                //
+                list.LoadPhysics(db);
+
+                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+                foreach (var i in list.Physics)
+
+                    if (this.Physics.FirstOrDefault(x1 => x1.IDFE == i.IDFE) == null)
+                        this.Physics.Add(i);
+                db.SaveChanges();
+
+
+            }
+        }
+
+        public static void RemoveList(string iduser, int idlist)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user.RemoveList(idlist);
+        }
+        public void RemoveList(int idlist)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
+                ListPhysics list = this.ListPhysics.FirstOrDefault(x1 => x1.Id == idlist);
+                if (list == null)
+                    return;
+                
+                this.ListPhysics.Remove(list);
+                db.SaveChanges();
+                //
+                list.LoadPhysics(db);
+
+                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+                foreach (var i in list.Physics)
+                {
+                    var ph = this.Physics.FirstOrDefault(x1 => x1.IDFE == i.IDFE);
+                    if (ph != null)
+                        this.Physics.Remove(ph);
+                }
+
+                db.SaveChanges();
+
+
+            }
+        }
+
+
+
+        public static void AddPhysics(string iduser, int idphys)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user.AddPhysics(idphys);
+        }
+
+        public void AddPhysics(int idphys)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+              
+                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+
+                var phys=this.Physics.FirstOrDefault(x1=>x1.IDFE== idphys);
+                    if (phys == null)
+                        this.Physics.Add(phys);
+                db.SaveChanges();
+
+
+            }
+        }
+
+        public static void RemovePhysics(string iduser, int idphys)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user.RemovePhysics(idphys);
+        }
+
+        public void RemovePhysics(int idphys)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+
+                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+
+                var phys = this.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
+                if (phys == null)
+                    return;
+                this.Physics.Remove(phys);
+                db.SaveChanges();
+                
+            }
+        }
+
 
 
 

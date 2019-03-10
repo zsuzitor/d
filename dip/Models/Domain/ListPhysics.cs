@@ -33,12 +33,14 @@ namespace dip.Models.Domain
                 return db.ListPhysics.ToList();
             }
         }
-        public static ListPhysics Get(int id)
+        public static ListPhysics Get(int id, ApplicationDbContext db_=null)
         {
-            using (var db = new ApplicationDbContext())
-            {
-                return db.ListPhysics.FirstOrDefault(x1=>x1.Id== id);
-            }
+            var db = db_ ?? new ApplicationDbContext();
+           
+                
+            if (db_ == null)
+                db.Dispose();
+            return db.ListPhysics.FirstOrDefault(x1 => x1.Id == id);
         }
 
         public static ListPhysics Create(string name)
@@ -100,7 +102,12 @@ namespace dip.Models.Domain
                 db.Set<FEText>().Attach(phys);
                 res.Physics.Add(phys);
                 db.SaveChanges();
+
+                res.LoadUsers(db);
             }
+            foreach (var i in res.Users)
+                i.AddPhysics(phys.IDFE);
+
             return res;
         }
         public static ListPhysics DeletePhys(int idphys, int idlist)
@@ -121,7 +128,12 @@ namespace dip.Models.Domain
                 //db.Set<FEText>().Attach(phys);
                 res.Physics.Remove(phys);
                 db.SaveChanges();
+
+                res.LoadUsers(db);
             }
+
+            foreach (var i in res.Users)
+                i.RemovePhysics(phys.IDFE);
             return res;
         }
 
@@ -132,16 +144,29 @@ namespace dip.Models.Domain
             return obj;
         }
 
-        public  void LoadPhysics()
+        public  void LoadPhysics(ApplicationDbContext db_=null)
         {
-            using (var db = new ApplicationDbContext())
-            {
+            var db = db_ ?? new ApplicationDbContext();
+            
                 db.Set<ListPhysics>().Attach(this);
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.Physics).Load();
-                        }
-            }
 
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void LoadUsers(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            db.Set<ListPhysics>().Attach(this);
+            if (!db.Entry(this).Collection(x1 => x1.Users).IsLoaded)
+                db.Entry(this).Collection(x1 => x1.Users).Load();
+
+            if (db_ == null)
+                db.Dispose();
+        }
 
     }
 }

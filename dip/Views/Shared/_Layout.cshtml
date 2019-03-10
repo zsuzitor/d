@@ -15,6 +15,11 @@
 
 
     <script>
+        function UndefinedToStr(str) {
+            return str === undefined || str === "undefined" || str === "null" || str == null ?//|| str === ""
+            "" : str;
+        }
+
 
         function PreloaderShowChange(on) {
             var pr = document.getElementById('Main_preloader_id');

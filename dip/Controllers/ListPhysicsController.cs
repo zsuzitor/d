@@ -1,4 +1,5 @@
-﻿using dip.Models.Domain;
+﻿using dip.Models;
+using dip.Models.Domain;
 using dip.Models.ViewModel.ListPhysicsV;
 using System;
 using System.Collections.Generic;
@@ -87,36 +88,36 @@ namespace dip.Controllers
         public ActionResult AssignListToUser(string iduser, int idlist)
         {
 
-            ListPhysics res = ListPhysics.DeletePhys(idphys, idlist);
+             ApplicationUser.AddList(iduser, idlist);
 
-            return PartialView(res);
+            return PartialView();
         }
 
         [HttpPost]
-        public ActionResult RemoveListFromUser(int idphys, int idlist)
+        public ActionResult RemoveListFromUser(string iduser, int idlist)
         {
+            ApplicationUser.RemoveList(iduser, idlist);
+           
 
-            ListPhysics res = ListPhysics.DeletePhys(idphys, idlist);
-
-            return PartialView(res);
+            return PartialView();
         }
 
         [HttpPost]
-        public ActionResult AssignPhysicToUser(string iduser, int idlist)
+        public ActionResult AssignPhysicToUser(string iduser, int idphys)
         {
 
-            ListPhysics res = ListPhysics.DeletePhys(idphys, idlist);
-
-            return PartialView(res);
+            ApplicationUser.AddPhysics(iduser, idphys);
+            
+            return PartialView();
         }
 
         [HttpPost]
-        public ActionResult RemovePhysicFromUser(string iduser, int idlist)
+        public ActionResult RemovePhysicFromUser(string iduser, int idphys)
         {
 
-            ListPhysics res = ListPhysics.DeletePhys(idphys, idlist);
+            ApplicationUser.RemovePhysics(iduser, idphys);
 
-            return PartialView(res);
+            return PartialView();
         }
 
 

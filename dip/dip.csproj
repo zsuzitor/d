@@ -267,6 +267,7 @@
     <Compile Include="Models\TechnicalFunctions\Operation.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeStateObjectV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\DescriptionFormAllV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetPhaseObjectV.cs" />
@@ -451,6 +452,7 @@
     <Content Include="Views\ListPhysics\DeleteFromList.cshtml" />
     <Content Include="Views\Helpers\MovementPhysicsBlock.cshtml" />
     <Content Include="Views\ListPhysics\ListUserAct.cshtml" />
+    <Content Include="Views\Actions\DescriptionFormAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

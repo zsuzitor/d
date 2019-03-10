@@ -16,20 +16,13 @@
 
     @Html.Hidden(" ", Url.Action("DescriptionSearch", "Search"), new { id = "descr_search_href_id" })
     
-        <div id="DescriptionFormMainAll" style="display:block;">
-        
-        @*div_form_id*@
+        @*<div id="DescriptionFormMainAll" style="display:block;">
+       
     <div>
-        @*@if (Model.FormInput==null || Model.FormOutput == null)
-        {
-            @Html.Action("DescriptionInput", "Actions", new { })
-        }
-        else
-        {*@
-            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput })@*inp = Model.FormInput, outp = Model.FormOutput*@
+        
+            @Html.Action("DescriptionInput", "Actions", new { inp = Model.FormInput, outp = Model.FormOutput })
 
-        @*}*@
-        @* TODO мб костыль, пока не понятно *@
+        
         
     </div>
 
@@ -39,7 +32,20 @@
             </div>
 
 
-</div>
+</div>*@
+
+    @Html.Action("DescriptionFormAll", "Actions", new { objFormsBegin = Model.FormObjectBegin, objFormsEnd = Model.FormObjectEnd,
+    inp = Model.FormInput,
+    outp = Model.FormOutput
+})
+
+
+
+
+
+
+
+
     <div>
         
         <div class="div_inline_block descrForm_div_search_but">
@@ -210,6 +216,35 @@
 
             //xhr.send(data_descr_search);//formData
         }
+
+
+
+
+
+
+
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //------------------------------------------------------
         //action:true- показать
