@@ -121,5 +121,21 @@ namespace dip.Controllers
         }
 
 
+        
+        public ActionResult AssignsUsersList(string iduser)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user?.LoadListPhysics();
+            
+            return PartialView(user?.ListPhysics);
+        }
+        public ActionResult AssignsUsersPhysics(string iduser)
+        {
+            var user = ApplicationUser.GetUser(iduser);
+            user?.LoadPhysics();
+            
+            return PartialView(user?.Physics);
+        }
+
     }
 }

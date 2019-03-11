@@ -33,6 +33,7 @@
     </div><div class="ListAct_OneColumn div_inline_block">
     <div id="divEditCurrentList_id" style="display:none;">
         <input class="form-control" placeholder="Название списка" id="inputNameEditCurrentList_id" type="text" />
+        <label class="form-control" id="idCurrentList_id"></label>
         <button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>
         <button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>
 
@@ -60,6 +61,13 @@
                     TODO
                 </div>*@
         </div>
+
+    <div>
+        <h1> Выдан пользователям</h1>
+        <div>
+            <button>TODO загрузить</button>
+        </div>
+    </div>
     </div>
 
 </div>
@@ -95,7 +103,7 @@
                     document.getElementById('PhysInCurrentList').innerHTML = req;
                     document.getElementById('divEditCurrentList_id').style.display = 'block';
                     document.getElementById('inputNameEditCurrentList_id').value = document.getElementById('ListHiddenName_id_' + id).value;
-                    
+                    document.getElementById('idCurrentList_id').innerHTML = id;
                     
                     
                 }, type: 'GET'

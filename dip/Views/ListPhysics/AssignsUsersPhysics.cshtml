@@ -1,0 +1,15 @@
+﻿@model IEnumerable<dip.Models.Domain.FEText>
+
+
+@if (Model != null)
+{
+    foreach (var i in Model)
+    {
+        <p>
+            <a href="@Url.Action("Details", "Physic",new {id=i.IDFE })">@i.Name</a>
+            <button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>
+        </p>
+    }
+}
+
+

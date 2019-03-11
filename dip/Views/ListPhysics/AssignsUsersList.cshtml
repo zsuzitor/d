@@ -1,0 +1,20 @@
+﻿@model IEnumerable<dip.Models.Domain.ListPhysics>
+
+
+
+
+@if (Model != null)
+{
+    foreach (var i in Model)
+    {
+        <div>
+            <p>@i.Name</p>
+            <button class="btn btn-default" onclick="">просмотр</button>
+            <button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>
+        </div>
+    }
+}
+
+
+
+

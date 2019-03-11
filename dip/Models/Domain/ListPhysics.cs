@@ -37,10 +37,10 @@ namespace dip.Models.Domain
         {
             var db = db_ ?? new ApplicationDbContext();
            
-                
+                var res= db.ListPhysics.FirstOrDefault(x1 => x1.Id == id);
             if (db_ == null)
                 db.Dispose();
-            return db.ListPhysics.FirstOrDefault(x1 => x1.Id == id);
+            return res;
         }
 
         public static ListPhysics Create(string name)

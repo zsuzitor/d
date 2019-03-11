@@ -99,12 +99,22 @@ namespace dip.Models
             var db = db_ ?? new ApplicationDbContext();
             
                 db.Set<ApplicationUser>().Attach(this);
-                if (!db.Entry(this).Collection(x1 => x1.FavouritedPhysics).IsLoaded)
-                    db.Entry(this).Collection(x1 => x1.FavouritedPhysics).Load();
+                if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
             if (db_ == null)
                 db.Dispose();
         }
 
+        public void LoadPhysics(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            db.Set<ApplicationUser>().Attach(this);
+            if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                db.Entry(this).Collection(x1 => x1.Physics).Load();
+            if (db_ == null)
+                db.Dispose();
+        }
 
         public static void AddList(string iduser,int idlist)
         {
@@ -199,7 +209,13 @@ namespace dip.Models
 
                 var phys=this.Physics.FirstOrDefault(x1=>x1.IDFE== idphys);
                     if (phys == null)
-                        this.Physics.Add(phys);
+                {
+                    //phys = FEText.Get(idphys);
+                    //db.Set<FEText>().Attach(phys);
+                    phys = db.FEText.FirstOrDefault(x1=>x1.IDFE==idphys);
+                    this.Physics.Add(phys);
+                }
+                        
                 db.SaveChanges();
 
 

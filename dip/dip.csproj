@@ -453,6 +453,8 @@
     <Content Include="Views\Helpers\MovementPhysicsBlock.cshtml" />
     <Content Include="Views\ListPhysics\ListUserAct.cshtml" />
     <Content Include="Views\Actions\DescriptionFormAll.cshtml" />
+    <Content Include="Views\ListPhysics\AssignsUsersList.cshtml" />
+    <Content Include="Views\ListPhysics\AssignsUsersPhysics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
