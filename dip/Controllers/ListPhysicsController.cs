@@ -26,9 +26,9 @@ namespace dip.Controllers
             return View();
         }
 
-        public ActionResult ListAct()
+        public ActionResult ListAct(int? currentListId=null)
         {
-            ListActV res = new ListActV();
+            ListActV res = new ListActV() {CurrentListId= currentListId };
             res.Lists = ListPhysics.GetAll();
 
             return View(res);
@@ -37,6 +37,8 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult CreateList(string name)
         {
+            if(string.IsNullOrWhiteSpace(name))
+                return new HttpStatusCodeResult(404);//TODO сообщение об ошибке
             ListPhysics res = ListPhysics.Create(name);
 
             return PartialView(res);

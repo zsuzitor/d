@@ -46,14 +46,19 @@
                      
                       <div class="OneUserNotOwnContent">
                           <div id="ForAssignsList_id" style="display:none;">
-                              <input type="number" id="newAssignList" />
-                              <button onclick="AssignListToUser()">Присвоить</button>
-                              <div><p>список</p><button class="btn btn-default" onclick="">просмотр</button><button class="btn btn-default" onclick="">закинуть пользователю</button></div>
+                              <input onchange="clearListFeLink()" type="number" id="newAssignList" />
+                              <button  class="btn btn-default" onclick="AssignListToUser()">Присвоить</button>
+                              <button class="btn btn-default" onclick="ShowLinkListFe()">Показать Ссылку на список</button>
+                              <div id="divLinkCurrListFe_id"></div>
+                              @*<div><p>список</p><button class="btn btn-default" onclick="">просмотр</button><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
                           </div>
                           <div id="ForAssignsPhys_id" style="display:none;">
-                              <input type="number" id="newAssignPhys" />
-                              <button onclick="AssignPhysicToUser()">Присвоить</button>
-                              <div><p>ФЭ-ссылка</p><button class="btn btn-default" onclick="">закинуть пользователю</button></div>
+                              <input onchange="clearFeLink()" type="number" id="newAssignPhys" />
+                              <button  class="btn btn-default" onclick="AssignPhysicToUser()">Присвоить</button>
+                              <button class="btn btn-default" onclick="ShowLinkFetext()">Показать Ссылку на страницу ФЭ</button>
+                              @*<a onclick="alert()">Страница ФЭ</a>*@
+                              @*<div><p>ФЭ-ссылка</p><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
+                              <div id="divLinkCurrFetext_id"></div>
                           </div>
                           
                       </div>
@@ -164,5 +169,101 @@
         });
     }
     
+
+    function ShowLinkFetext() {
+        let link = '/Physic/Details/';
+        let idfe = document.getElementById("newAssignPhys").value;
+        link += idfe;
+        let tegA = '<a href="'+link+'">Страница ФЭ</a>' ;
+        if (idfe) 
+            document.getElementById('divLinkCurrFetext_id').innerHTML = tegA;
+    }
+    function clearFeLink() {
+        document.getElementById('divLinkCurrFetext_id').innerHTML = '';
+    }
+
+    function ShowLinkListFe() {
+        let link = '/ListPhysics/ListAct?currentListId=';
+        let idfe = document.getElementById("newAssignList").value;
+        link += idfe;
+        let tegA = '<a href="' + link + '">Страница просмотра списка</a>';
+        if (idfe)
+            document.getElementById('divLinkCurrListFe_id').innerHTML = tegA;
+    }
+
+    function clearListFeLink() {
+        document.getElementById('divLinkCurrListFe_id').innerHTML = '';
+    }
+
+
+    function ShowLinkFetextExist() {
+        let link = '/Physic/Details/';
+        let idfe = document.getElementById("AssignPhysForDel").value;
+        link += idfe;
+        let tegA = '<a href="' + link + '">Страница ФЭ</a>';
+        if (idfe)
+            document.getElementById('divLinkCurrFetextExist_id').innerHTML = tegA;
+    }
+    function clearFeExistLink() {
+        document.getElementById('divLinkCurrFetextExist_id').innerHTML = '';
+    }
+
+    function ShowLinkListFeExist() {
+        let link = '/ListPhysics/ListAct?currentListId=';
+        let idfe = document.getElementById("AssignListForDel").value;
+        link += idfe;
+        let tegA = '<a href="' + link + '">Страница просмотра списка</a>';
+        if (idfe)
+            document.getElementById('divLinkCurrListFeExist_id').innerHTML = tegA;
+    }
+
+    function clearListFeLinkExist() {
+        document.getElementById('divLinkCurrListFeExist_id').innerHTML = '';
+    }
+
+
+    function removeListFromUser(id) {
+        if (!id) 
+            id = document.getElementById('AssignListForDel').value;
+
+        if (!id) {
+            alert('Не выбран список');
+            return;
+        }
+            
+        var formData = { iduser: document.getElementById('currentUserId_id').value, idlist: id };
+       
+        goAjaxRequest({
+            url: "/ListPhysics/RemoveListFromUser",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                alert('result removeListFromUser');
+
+            }, type: 'POST'
+        });
+
+    }
+
+    function removePhysFromUser(id) {
+        if (!id) 
+            id = document.getElementById('AssignPhysForDel').value;
+            
+        if (!id) {
+            alert('Не выбран список');
+            return;
+        }
+
+        var formData = { iduser: document.getElementById('currentUserId_id').value, idphys: id };
+
+        goAjaxRequest({
+            url: "/ListPhysics/RemovePhysicFromUser",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                alert('result removePhysFromUser');
+
+            }, type: 'POST'
+        });
+    }
+
 
 </script>

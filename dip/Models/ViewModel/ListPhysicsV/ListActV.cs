@@ -9,11 +9,12 @@ namespace dip.Models.ViewModel.ListPhysicsV
     public class ListActV
     {
         public List<ListPhysics> Lists { get; set; }
-
+        public int? CurrentListId { get; set; }
 
 
         public ListActV()
         {
+            CurrentListId = null;
             Lists = new List<ListPhysics>();
         }
     }

@@ -20,7 +20,8 @@
             }
             @foreach (var i in Model.Lists)
             {
-                @Html.Action("ListPhysItem", "Helpers", new { item = i })
+                bool sel = Model.CurrentListId == i.Id;
+                @Html.Action("ListPhysItem", "Helpers", new { item = i, select = sel })
 
             }
 
@@ -28,15 +29,17 @@
         Добавить новый
         <div>
             <input class="form-control" placeholder="Название" id="NewListName_id" type="text" />
-            <button class="btn btn-default" onclick="AddNewList()">Добавить</button>
+            @*<button class="btn btn-default" onclick="AddNewList()">Добавить</button>*@
+            <div class="button_circle_img_30 button_circle_plus_" onclick="AddNewList()" title="Добавить"></div>
         </div>
     </div><div class="ListAct_OneColumn div_inline_block">
     <div id="divEditCurrentList_id" style="display:none;">
         <input class="form-control" placeholder="Название списка" id="inputNameEditCurrentList_id" type="text" />
         <label class="form-control" id="idCurrentList_id"></label>
-        <button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>
-        <button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>
-
+        @*<button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>*@
+        <div class="button_circle_img_30 button_circle_save_" onclick="SaveChangesCurrentList()" title="Сохранить изменения"></div>
+        @*<button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>*@
+        <div class="button_circle_img_30 button_circle_del_" onclick="DeleteCurrentList()" title="Удалить"></div>
     </div>
 
 
@@ -50,11 +53,20 @@
         <div>
             Добавить
             <div>
-                <button onclick="AddNewPhysInCurList()" class="btn btn-default">Добавить</button>
+                @*<button onclick="AddNewPhysInCurList()" class="btn btn-default">Добавить</button>*@
+                <div class="button_circle_img_30 button_circle_plus_" onclick="AddNewPhysInCurList()" title="Добавить"></div>
             </div>
             @*Id физического эффекта*@
             <div>
-                <input id="AddNewPhysInCurListInput" class="form-control" placeholder="Id физического эффекта" type="number" />
+                <input  onchange="clearFeLink()" id="AddNewPhysInCurListInput" class="form-control" placeholder="Id физического эффекта" type="number" />
+
+                
+                
+                <button class="btn btn-default" onclick="ShowLinkFetext()">Показать Ссылку на страницу ФЭ</button>
+                @*<a onclick="alert()">Страница ФЭ</a>*@
+                @*<div><p>ФЭ-ссылка</p><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
+                <div id="divLinkCurrFetext_id"></div>
+
             </div>
             @*Поиск
                 <div>
@@ -74,6 +86,25 @@
 
 
 <script>
+    var ListActMainObject = {
+        ListId: null
+    };
+
+    $(document).ready(function ()
+    {
+        //let curListId;
+        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+            //curListId = this.id.split('ListPhysExistItem_')[1];
+            ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
+        });
+        if (ListActMainObject.ListId) {
+            
+            
+            LoadOneListData(ListActMainObject.ListId);
+        }
+    });
+
+
     function AddNewList() {
         var formData = { name: document.getElementById('NewListName_id').value };
         goAjaxRequest({
@@ -94,30 +125,40 @@
     $(document).on('change', ':radio', function (){
 
         if (this.name == 'ListPhysExistItem') {
-            let id=this.id.split('ListPhysExistItem_')[1];
-            var formData = { id: id };
-            goAjaxRequest({
-                url: "/ListPhysics/LoadPhysInList",
-                data: formData,
-                func_success: function (req, status, jqXHR) {
-                    document.getElementById('PhysInCurrentList').innerHTML = req;
-                    document.getElementById('divEditCurrentList_id').style.display = 'block';
-                    document.getElementById('inputNameEditCurrentList_id').value = document.getElementById('ListHiddenName_id_' + id).value;
-                    document.getElementById('idCurrentList_id').innerHTML = id;
-                    
-                    
-                }, type: 'GET'
-            });
+            ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
+            //let id = this.id.split('ListPhysExistItem_')[1];
+            LoadOneListData(ListActMainObject.ListId);
         }
 
     });
 
 
+    function LoadOneListData(id) {
+        
+        var formData = { id: id };
+        goAjaxRequest({
+            url: "/ListPhysics/LoadPhysInList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                document.getElementById('PhysInCurrentList').innerHTML = req;
+                document.getElementById('divEditCurrentList_id').style.display = 'block';
+                document.getElementById('inputNameEditCurrentList_id').value = document.getElementById('ListHiddenName_id_' + id).value;
+                document.getElementById('idCurrentList_id').innerHTML = id;
+
+
+            }, type: 'GET'
+        });
+    }
+
+
+
     function AddNewPhysInCurList() {
         var formData = { idphys: document.getElementById('AddNewPhysInCurListInput').value };
-        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-            formData.idlist = this.id.split('ListPhysExistItem_')[1];
-        });
+        //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+        //    formData.idlist = this.id.split('ListPhysExistItem_')[1];
+        //});
+        formData.idlist=ListActMainObject.ListId ;
+
         if (!formData.idlist) {
             alert("Выберите список");
             return;
@@ -143,10 +184,11 @@
         //document.getElementById('inputNameEditCurrentList_id').value
         var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
         var blockList;
-        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-            blockList = this;
-            formData.id = this.id.split('ListPhysExistItem_')[1];
-        });
+        //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+        //    blockList = this;
+        //    formData.id = this.id.split('ListPhysExistItem_')[1];
+        //});
+        formData.id = ListActMainObject.ListId;
         goAjaxRequest({
             url: "/ListPhysics/EditList",
             data: formData,
@@ -171,10 +213,11 @@
         //document.getElementById('inputNameEditCurrentList_id').value
         var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
        
-        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+        //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
             
-            formData.id = this.id.split('ListPhysExistItem_')[1];
-        });
+        //    formData.id = this.id.split('ListPhysExistItem_')[1];
+        //});
+        formData.id = ListActMainObject.ListId;
         goAjaxRequest({
             url: "/ListPhysics/DeleteList",
             data: formData,
@@ -202,10 +245,11 @@
 
         var formData = { idphys: id };
        
-        $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
+        //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
             
-            formData.idlist = this.id.split('ListPhysExistItem_')[1];
-        });
+        //    formData.idlist = this.id.split('ListPhysExistItem_')[1];
+        //});
+        formData.idlist = ListActMainObject.ListId;
         goAjaxRequest({
             url: "/ListPhysics/DeleteFromList",
             data: formData,
@@ -225,5 +269,17 @@
 
     }
     
+
+    function ShowLinkFetext() {
+        let link = '/Physic/Details/';
+        let idfe = document.getElementById("AddNewPhysInCurListInput").value;
+        link += idfe;
+        let tegA = '<a href="' + link + '">Страница ФЭ</a>';
+        if (idfe)
+            document.getElementById('divLinkCurrFetext_id').innerHTML = tegA;
+    }
+    function clearFeLink() {
+        document.getElementById('divLinkCurrFetext_id').innerHTML = '';
+    }
 
 </script>

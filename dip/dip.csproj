@@ -280,6 +280,7 @@
     <Compile Include="Models\ViewModel\HelpersV\FormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ListPhysInItemV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\ListPhysItemV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\OnePhysInListsItemV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormCharacteristicObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\PartFormDescrSearchV.cs" />

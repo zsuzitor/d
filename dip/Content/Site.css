@@ -662,8 +662,31 @@ color:white;
 
 }
 
+/*ListAct     и  -----ListUserAct-----------------*/
+.button_circle_img_30{
+    width: 30px;
+    height: 30px;
+    border-radius:50%;
+    background: url(/Content/images/add_del_icon.jpg) no-repeat;
+        background-size: 340%;
+         cursor:pointer;
+}
+.button_circle_del_{
+        background-position: 78% 23%;
+}
 
-/*ListAct*/
+.button_circle_save_{
+        background-position: 22% 23%;
+}
+.button_circle_plus_{
+        background-position: 22% 77%;
+}
+.button_circle_sub_{
+           background-position: 77% 77%;
+}
+
+
+/*ListAct*/ 
 div.ListAct_OneColumn{
     width:50%;
     box-sizing:border-box;

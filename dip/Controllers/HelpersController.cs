@@ -223,12 +223,12 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ListPhysItem(ListPhysics item)
+        public ActionResult ListPhysItem(ListPhysics item,bool select)
         {
+            ListPhysItemV res = new ListPhysItemV() {Select= select,ListPhysic=item };
 
 
-
-            return PartialView(item);
+            return PartialView(res);
         }
         public ActionResult ListPhysInItem(ListPhysics item)//,int idlist
         {

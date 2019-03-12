@@ -1,12 +1,21 @@
-﻿@model dip.Models.Domain.ListPhysics
+﻿@*@model dip.Models.Domain.ListPhysics*@
+@model dip.Models.ViewModel.HelpersV.ListPhysItemV
 
 
 @if (Model != null)
 {
-    <div id=@("ListPhysExistItemMainDiv_"+Model.Id)>
-        <input type="radio" class="radioClass" name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.Id) />
-        <label for=@("ListPhysExistItem_"+Model.Id) id=@("ListPhysExistItemNameLabel_"+Model.Id) >@Model.Name</label>
-        <input id=@("ListHiddenName_id_"+Model.Id) type="hidden" value="@Model.Name"/>
+    <div id=@("ListPhysExistItemMainDiv_"+Model.ListPhysic.Id)>
+@if (Model.Select)
+{
+    <input type="radio" class="radioClass" checked name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.ListPhysic.Id) />
+}
+else
+{
+    <input type="radio" class="radioClass" name="ListPhysExistItem" id=@("ListPhysExistItem_"+Model.ListPhysic.Id) />
+}
+       
+        <label for=@("ListPhysExistItem_"+Model.ListPhysic.Id) id=@("ListPhysExistItemNameLabel_"+Model.ListPhysic.Id) >@Model.ListPhysic.Name</label>
+        <input id=@("ListHiddenName_id_"+Model.ListPhysic.Id) type="hidden" value="@Model.ListPhysic.Name"/>
         @*<button>@Model.Name</button>*@
 
     </div>
