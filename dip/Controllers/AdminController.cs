@@ -77,6 +77,24 @@ namespace dip.Controllers
             return View();
         }
 
+
+        
+        public ActionResult GetAllUsersShortData()
+        {
+            List<ApplicationUser> users = ApplicationUser.GetAllUsers();
+
+            
+
+            return PartialView(users);
+        }
+
+        public ActionResult AdminsPage()//, string technicalFunctionId
+        {
+
+            return View();
+        }
+
+
         //public ActionResult ListAct()
         //{
         //    ListActV res = new ListActV();

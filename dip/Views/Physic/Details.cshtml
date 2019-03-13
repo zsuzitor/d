@@ -102,6 +102,25 @@
 
             </div>
             <hr />
+            <p>
+                <button class="btn btn-default" onclick="loadObjectFe(@Model.Effect.IDFE)" id="show_descr_but">Показать Объект</button>
+
+            </p>
+            <div id="DivObjectFe_id">
+
+            </div>
+            if (Model.Admin)
+            {
+                <hr />
+                <p>
+                    <button class="btn btn-default" onclick="loadListsFe(@Model.Effect.IDFE)" id="show_descr_but">Показать списки</button>
+
+                </p>
+                <div id="DivListsFe_id" style="display:none;">
+
+                </div>
+            }
+            <hr />
 
             <div id="DivMoreSimilar_id">
                 <p>
@@ -132,7 +151,7 @@
                         //загрузить
                         goAjaxRequest({
                             url: '/Actions/LoadDescr',
-                            type: 'POST',
+                            type: 'GET',
                             data: { id: id },
                             func_success: function (data, status, jqXHR) {
                                 // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -163,7 +182,7 @@
                     document.getElementById('DivMoreSimilar_id').innerHTML= '';
                     goAjaxRequest({
                         url: '/Physic/ShowSimilar',
-                        type:'POST',
+                        type:'GET',
                         data:{id:id},
                         func_success: function (data, status, jqXHR) {
                             // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -186,6 +205,36 @@
                 }
                 
 
+
+
+                function loadObjectFe(){
+                    //TODO
+                    //DivObjectFe_id
+                }
+                function loadListsFe(){
+                    //DivListsFe_id
+                    let div=document.getElementById('DivListsFe_id');
+                    if(div.innerHTML.trim()){
+                        if(div.style.display=='none')
+                            div.style.display='block';
+                        else
+                            div.style.display='none';
+                    }
+                    else{
+                        div.style.display='block';
+                        goAjaxRequest({
+                            url: '/Physic/LoadLists',
+                            type:'GET',
+                            data:{idfe:document.getElementById('inputIdCurrentPhysEffect').value},
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                document.getElementById('DivListsFe_id').innerHTML=data;
+                            }
+                        });
+                    }
+
+                   
+                }
 
 
                 ;;;;

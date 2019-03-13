@@ -1,0 +1,16 @@
+﻿@model IEnumerable<dip.Models.Domain.ListPhysics>
+
+
+
+@foreach (var i in Model)
+{
+    <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
+}
+
+
+
+
+
+
+
+

@@ -34,7 +34,9 @@
         </div>
     </div><div class="ListAct_OneColumn div_inline_block">
     <div id="divEditCurrentList_id" style="display:none;">
-        <input class="form-control" placeholder="Название списка" id="inputNameEditCurrentList_id" type="text" />
+        <label>Название списка</label>
+        <input class="form-control" placeholder="Введите название списка" id="inputNameEditCurrentList_id" type="text" />
+        <label>Id списка</label>
         <label class="form-control" id="idCurrentList_id"></label>
         @*<button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>*@
         <div class="button_circle_img_30 button_circle_save_" onclick="SaveChangesCurrentList()" title="Сохранить изменения"></div>
@@ -77,7 +79,10 @@
     <div>
         <h1> Выдан пользователям</h1>
         <div>
-            <button>TODO загрузить</button>
+            <button class="btn btn-default" onclick="LoadUsersForCurrentList()">Показать пользователей</button>
+            <div id="UsersHasCurrentList_id">
+                 
+            </div>
         </div>
     </div>
     </div>
@@ -86,6 +91,7 @@
 
 
 <script>
+    //ListActMainObject.ListId
     var ListActMainObject = {
         ListId: null
     };
@@ -282,4 +288,25 @@
         document.getElementById('divLinkCurrFetext_id').innerHTML = '';
     }
 
+
+
+
+    function LoadUsersForCurrentList() {
+        var formData = { id: ListActMainObject.ListId };
+        
+
+        if (!formData.id) {
+            alert("Выберите список");
+            return;
+        }
+        
+        goAjaxRequest({
+            url: "/ListPhysics/LoadUsersForList",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                document.getElementById('UsersHasCurrentList_id').innerHTML = req;
+
+            }, type: 'GET'
+        });
+    }
 </script>

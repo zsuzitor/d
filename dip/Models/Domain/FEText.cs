@@ -528,6 +528,18 @@ namespace dip.Models.Domain
         }
 
 
+        public void LoadLists()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Set<FEText>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.Lists).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.Lists).Load();
+            }
+
+        }
+
+
         public static List<int> GetListSimilar(int id, int count = 5)
         {
             List<int> res = new List<int>();

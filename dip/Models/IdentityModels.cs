@@ -82,6 +82,17 @@ namespace dip.Models
             return res;
         }
 
+        public static List<ApplicationUser> GetAllUsers( ApplicationDbContext db_=null)
+        {
+            //string check_id = ApplicationUser.GetUserId();
+            var db = db_ ?? new ApplicationDbContext();
+            List<ApplicationUser> res = db.Users.ToList();
+            
+            if (db_ == null)
+                db.Dispose();
+            return res;
+        }
+
         public  void LoadFavouritedList()
         {
 

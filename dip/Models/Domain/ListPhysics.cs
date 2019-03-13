@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,8 @@ namespace dip.Models.Domain
     public class ListPhysics
     {
         public int Id { get; set; }
-
+        [Required(ErrorMessage = "Название должно быть установлено")]
+        [MinLength(5,ErrorMessage ="Длина должна быть больше 5")]
         public string Name { get; set; }
 
         public List<ApplicationUser> Users { get; set; }
@@ -154,6 +156,15 @@ namespace dip.Models.Domain
 
             if (db_ == null)
                 db.Dispose();
+        }
+
+
+        public static ListPhysics LoadUsers(int id,ApplicationDbContext db_ = null)
+        {
+            var obj = ListPhysics.Get(id);
+            obj?.LoadUsers();
+            return obj;
+
         }
 
         public void LoadUsers(ApplicationDbContext db_ = null)

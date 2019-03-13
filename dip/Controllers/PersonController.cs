@@ -2,6 +2,8 @@
 using dip.Models.Domain;
 using dip.Models.ViewModel.PersonV;
 using dip.Models.ViewModel.PhysicV;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +20,40 @@ namespace dip.Controllers
             return View();
         }
 
-
+        [Authorize]
         public ActionResult PersonalRecord(string personId)
         {
             PersonalRecordV res = new PersonalRecordV();
             res.CurrenUserId = ApplicationUser.GetUserId();
+            
+
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(res.CurrenUserId);
+           
+                res.Admin = roles.Contains("admin");
             if (string.IsNullOrWhiteSpace(personId))
                 personId = res.CurrenUserId;
-            res.User = ApplicationUser.GetUser(personId);
+
+            if (res.Admin)
+                res.User = ApplicationUser.GetUser(personId);
+            else if(personId!= res.CurrenUserId)
+                return RedirectToAction("PersonalRecord",new { personId= res.CurrenUserId });
+            //res.User = ApplicationUser.GetUser(res.CurrenUserId);
 
 
 
             return View(res);
         }
 
+
+        [Authorize(Roles = "admin")]
+        public ActionResult GetRoles(string personId)
+        {
+            List<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(personId).ToList();
+
+            return PartialView(roles);
+        }
 
 
         [HttpPost]

@@ -416,7 +416,6 @@
     <Content Include="Views\Helpers\Favourite.cshtml" />
     <Content Include="Views\Person\ListFavouritePhysics.cshtml" />
     <Content Include="Views\Helpers\ListFeText.cshtml" />
-    <Content Include="Views\Physic\CreateSomething.cshtml" />
     <Content Include="Views\Physic\CreateDescription.cshtml" />
     <Content Include="Views\Actions\GetProsChildEdit.cshtml" />
     <Content Include="Views\Helpers\DescrFormProsEdit.cshtml" />
@@ -456,6 +455,12 @@
     <Content Include="Views\Actions\DescriptionFormAll.cshtml" />
     <Content Include="Views\ListPhysics\AssignsUsersList.cshtml" />
     <Content Include="Views\ListPhysics\AssignsUsersPhysics.cshtml" />
+    <Content Include="Views\ListPhysics\LoadUsersForList.cshtml" />
+    <Content Include="Views\Helpers\ListUsersShortData.cshtml" />
+    <Content Include="Views\Admin\GetAllUsersShortData.cshtml" />
+    <Content Include="Views\Physic\LoadLists.cshtml" />
+    <Content Include="Views\Admin\AdminsPage.cshtml" />
+    <Content Include="Views\Person\GetRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -293,24 +293,30 @@ namespace dip.Controllers
             return RedirectToAction("Details", "Physic", new { id = obj.IDFE });
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        [HttpGet]
         [Authorize(Roles = "admin")]
-        public ActionResult CreateSomething()//, string technicalFunctionId
+        public ActionResult LoadLists(int idfe)//, string technicalFunctionId
         {
+            var fe = FEText.Get(idfe);
+            fe.LoadLists();
 
-            return View();
+            return PartialView(fe.Lists);
         }
+
+
+
+
+
+
+
+
+
+        //[HttpGet]
+        //[Authorize(Roles = "admin")]
+        //public ActionResult CreateSomething()//, string technicalFunctionId
+        //{
+
+        //    return View();
+        //}
 
 
 
@@ -371,54 +377,13 @@ namespace dip.Controllers
                 }
 
                 currentActionParametric=obj.AddActionId(lastAllActionId, ref currentActionId,  db);
-                //foreach (var i in obj.MassAddActionId)//возможно вытащить из цикла тк сейчас нельзя добавить больше 1
-                //{
-                //    var allAction = new Models.Domain.AllAction() { Name = i.Text, Parent = "ALLACTIONS", Parametric = i.Parametric, Id = ("VOZ" + ++lastAllActionId) };
-                //    db.AllActions.Add(allAction);
-                //    db.SaveChanges();
-                //    //i.NewId = allAction.Id;
-                //    currentActionId = allAction.Id;
-                //    currentActionParametric = i.Parametric;
-                //    //break;//TODO
-
-
-                ////надо обновить в pros... parentid там где =="VOZ0"? 
-                //foreach(var i2 in obj.MassAddPros)
-                //    {
-                //        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
-                //        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
-                //    }
-
-                //    foreach (var i2 in obj.MassAddVrems)
-                //    {
-                //        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
-                //        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
-                //    }
-
-                //    foreach (var i2 in obj.MassAddSpecs)
-                //    {
-                //        i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
-                //        i2.Id = i2.Id.Replace("VOZ0", currentActionId);
-                //    }
-
-
-                //}
+               
 
                 if ( currentActionParametric == null)
                     currentActionParametric = db.AllActions.FirstOrDefault(x1 => x1.Id == currentActionId)?.Parametric;
 
                 obj.EditActionId(db);
-                //foreach (var i in obj.MassEditActionId)
-                //{
-                //    var act = db.AllActions.FirstOrDefault(x1 => x1.Id == i.Id);
-                //    if (act != null)
-                //        act.Name = i.Text;
-                //    else
-                //        i.Id = null;
-
-
-                //    db.SaveChanges();
-                //}
+               
 
 
 
@@ -426,61 +391,10 @@ namespace dip.Controllers
                 if ( obj.MassAddFizVels.Length > 0 && currentActionParametric != null)
                 {
                     obj.AddFizVels(currentActionId, currentActionParametric, db);
-                    //List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList(); 
-                    ////if (currentActionParametric == false)
-                    ////    fizvels=//выберет и не параметрические
-                    ////else
-                    ////    fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL_R")).ToList();
-                    //int lastFizVel = 0;
-                    //if (fizvels.Count > 0)
-                    //    if (currentActionParametric == false)
-                    //    {
-                    //        lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                    //    }
-                    //    else
-                    //    {
-                    //        lastFizVel = fizvels.Max(x1 =>
-                    //        {
-                    //            int rs;
-                    //            int.TryParse(x1.Id.Split(new string[] { (currentActionId + "_FIZVEL_R") }, StringSplitOptions.RemoveEmptyEntries)[0],out rs);
-                    //            return rs;
-                    //        });
-                    //    }
-
-                    //foreach (var i in obj.MassAddFizVels)
-                    //{
-                    //    string fizVelId = "";
-                    //    if (currentActionParametric == false)
-                    //        fizVelId = (currentActionId + "_FIZVEL_" + ++lastFizVel);
-                    //    else
-                    //        fizVelId = (currentActionId + "_FIZVEL_R" + ++lastFizVel);
-
-
-                    //    db.FizVels.Add(new Models.Domain.FizVel()
-                    //    {
-                    //        Name = i.Text,
-                    //        Parent = currentActionId + "_FIZVEL",
-                    //        Id = fizVelId
-                    //    });
-                    //    db.SaveChanges();
-                    //    foreach(var i2 in obj.MassAddParamFizVels)
-                    //    {
-                    //        if (i2.ParentId ==i.Id)
-                    //            i2.ParentId = fizVelId;
-                    //    }
-                    //}
+                  
                 }
                 obj.EditFizVels( db);
-                //foreach (var i in obj.MassEditFizVels)
-                //{
-                //    var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
-                //    if (fizVel != null)
-                //        fizVel.Name = i.Text;
-                //    else
-                //        i.Id = null;
-
-                //    db.SaveChanges();
-                //}
+                
 
 
 
@@ -489,42 +403,7 @@ namespace dip.Controllers
                 {
 
                     obj.AddParamFizVels(db);
-                    //if (obj.MassAddParamFizVels.Length > 0)
-                    //{
-
-
-                    //    string currentFizVels = obj.MassAddParamFizVels[0].ParentId;
-
-                    //    var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
-                    //    int lastFizVel = 0;
-                    //    if (fizvels.Count > 0)
-                    //        lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-
-
-
-                    //    foreach (var i in obj.MassAddParamFizVels)
-                    //    {
-                    //        db.FizVels.Add(new Models.Domain.FizVel()
-                    //        {
-                    //            Name = i.Text,
-                    //            Parent = currentFizVels,
-                    //            Id = (currentFizVels + "_" + ++lastFizVel),
-                    //            Parametric = true
-                    //        });
-                    //        db.SaveChanges();
-                    //    }
-                    //}
-
-                    //foreach (var i in obj.MassEditParamFizVels)
-                    //{
-                    //    var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
-                    //    if (fizVel != null)
-                    //        fizVel.Name = i.Text;
-                    //    else
-                    //        i.Id = null;
-
-                    //    db.SaveChanges();
-                    //}
+                   
 
                     obj.EditParamFizVels(db);
                 }
@@ -540,145 +419,19 @@ namespace dip.Controllers
                     //pro
                     {
                         obj.AddPro(currentActionId,db);
-                        //int last = 0;
-                        //var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
-                        //if (pros.Count > 0)
-                        //    last = pros.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_PROS") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                        ////List<JsonSaveDescription> done = new List<JsonSaveDescription>();
-
-                        //int countLastIter = 0;
-                        //List<SaveDescriptionEntry> massAddProsList = obj.MassAddPros.ToList();
-                        //while (massAddProsList.Count > 0)
-                        //{
-
-                        //    if (countLastIter == massAddProsList.Count)
-                        //        throw new Exception("непонятные PRO");
-                        //    countLastIter = massAddProsList.Count;
-                        //    for (int i = 0; i < massAddProsList.Count; ++i)
-                        //    {
-                        //        //проверить можно ли добавить, и добавить и вынести в массив
-                        //        if (!massAddProsList[i].ParentId.Contains("_NEW"))
-                        //        {
-                        //            var pro = new Models.Domain.Pro()
-                        //            {
-                        //                Name = massAddProsList[i].Text,
-                        //                Parent = (massAddProsList[i].ParentId.Contains("_PROS") ? massAddProsList[i].ParentId : massAddProsList[i].ParentId + "_PROS"),
-                        //                Id = (currentActionId + "_PROS" + ++last)//VOZ1_PROS1
-                        //            };
-
-                        //            db.Pros.Add(pro);
-                        //            db.SaveChanges();
-                        //            for (int i2 = 0; i2 < massAddProsList.Count; ++i2)
-                        //            {
-                        //                if (massAddProsList[i2].ParentId == massAddProsList[i].Id)
-                        //                {
-                        //                    massAddProsList[i2].ParentId = pro.Id;
-                        //                }
-                        //            }
-                        //            massAddProsList.Remove(massAddProsList[i--]);
-
-                        //        }
-
-
-                        //    }
-                        //}
+                        
                     }
 
                     //vrem
                     {
                         obj.AddVrem(currentActionId,db);
-                        //int last = 0;
-                        //var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
-                        //if (vrems.Count > 0)
-                        //    last = vrems.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_VREM") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                        ////List<JsonSaveDescription> done = new List<JsonSaveDescription>();
-
-                        //int countLastIter = 0;
-
-                        //List<SaveDescriptionEntry> massAddVremsList = obj.MassAddVrems.ToList();
-                        //while (massAddVremsList.Count > 0)
-                        //{
-
-                        //    if (countLastIter == massAddVremsList.Count)
-                        //        throw new Exception("непонятные Vrem");
-                        //    countLastIter = massAddVremsList.Count;
-                        //    for (int i = 0; i < massAddVremsList.Count; ++i)
-                        //    {
-                        //        //проверить можно ли добавить, и добавить и вынести в массив
-                        //        if (!massAddVremsList[i].ParentId.Contains("_NEW"))
-                        //        {
-                        //            var vrem = new Models.Domain.Vrem()
-                        //            {
-                        //                Name = massAddVremsList[i].Text,
-                        //                Parent = (massAddVremsList[i].ParentId.Contains("_VREM") ? massAddVremsList[i].ParentId : massAddVremsList[i].ParentId + "_VREM"),
-
-                        //                Id = (currentActionId + "_VREM" + ++last)
-                        //            };
-
-                        //            db.Vrems.Add(vrem);
-                        //            db.SaveChanges();
-                        //            for (int i2 = 0; i2 < massAddVremsList.Count; ++i2)
-                        //            {
-                        //                if (massAddVremsList[i2].ParentId == massAddVremsList[i].Id)
-                        //                {
-                        //                    massAddVremsList[i2].ParentId = vrem.Id;
-                        //                }
-                        //            }
-                        //            massAddVremsList.Remove(massAddVremsList[i--]);
-
-                        //        }
-
-
-                        //    }
-                        //}
+                       
                     }
 
                     //spec
                     {
                         obj.AddSpec(currentActionId,db);
-                        //int last = 0;
-                        //var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
-                        //if (specs.Count > 0)
-                        //    last = specs.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_SPEC") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                        ////List<JsonSaveDescription> done = new List<JsonSaveDescription>();
-
-                        //int countLastIter = 0;
-                        //List<SaveDescriptionEntry> massAddSpecsList = obj.MassAddSpecs.ToList();
-                        //while (massAddSpecsList.Count > 0)
-                        //{
-
-                        //    if (countLastIter == massAddSpecsList.Count)
-                        //        throw new Exception("непонятные Spec");
-                        //    countLastIter = massAddSpecsList.Count;
-                        //    for (int i = 0; i < massAddSpecsList.Count; ++i)
-                        //    {
-                        //        //проверить можно ли добавить, и добавить и вынести в массив
-                        //        if (!massAddSpecsList[i].ParentId.Contains("_NEW"))
-                        //        {
-                        //            var spec = new Models.Domain.Spec()
-                        //            {
-                        //                Name = massAddSpecsList[i].Text,
-                        //                Parent = (massAddSpecsList[i].ParentId.Contains("_SPEC") ? massAddSpecsList[i].ParentId : massAddSpecsList[i].ParentId + "_SPEC"),
-
-                        //                Id = (currentActionId + "_SPEC" + ++last)
-                        //            };
-
-                        //            db.Specs.Add(spec);
-                        //            db.SaveChanges();
-                        //            for (int i2 = 0; i2 < massAddSpecsList.Count; ++i2)
-                        //            {
-                        //                if (massAddSpecsList[i2].ParentId == massAddSpecsList[i].Id)
-                        //                {
-                        //                    massAddSpecsList[i2].ParentId = spec.Id;
-                        //                }
-                        //            }
-                        //            massAddSpecsList.Remove(massAddSpecsList[i--]);
-
-                        //        }
-
-
-                        //    }
-                        //}
+                        
                     }
 
 
@@ -686,104 +439,13 @@ namespace dip.Controllers
                     obj.EditVrem(db);
                     obj.EditSpec(db);
 
-                    //foreach (var i in obj.MassEditPros)
-                    //{
-                    //    var act = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
-                    //    if (act != null)
-                    //        act.Name = i.Text;
-                    //    else
-                    //        i.Id = null;
-
-                    //    db.SaveChanges();
-                    //}
-                    //foreach (var i in obj.MassEditSpecs)
-                    //{
-                    //    var act = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
-                    //    if (act != null)
-                    //        act.Name = i.Text;
-                    //    else
-                    //        i.Id = null;
-
-                    //    db.SaveChanges();
-                    //}
-                    //foreach (var i in obj.MassEditVrems)
-                    //{
-                    //    var act = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
-                    //    if (act != null)
-                    //        act.Name = i.Text;
-                    //    else
-                    //        i.Id = null;
-
-                    //    db.SaveChanges();
-                    //}
+                   
 
                     obj.DeletePros(db);
                     obj.DeleteSpec(db);
                     obj.DeleteVrem(db);
-                    {
-                        
-                        //List<Pro> forDeleted = new List<Pro>();
-
-                        //int start = 0;
-                        //foreach (var i in obj.MassDeletedPros)
-                        //{
-                        //    var pro = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
-                        //    if (pro == null)
-                        //        continue;
-                        //    forDeleted.Add(pro);
-                        //    //var childs=Pro.GetChild(pro.Id);
-                        //    //    forDeleted.AddRange(childs);
-                        //    for (; start < forDeleted.Count; ++start)
-                        //    {
-                        //        forDeleted.AddRange(Pro.GetChild(forDeleted[start].Id));
-                        //    }
-                        //}
-                        //db.Pros.RemoveRange(forDeleted);
-                        //db.SaveChanges();
-                    }
-
-                    {
-                        //List<Spec> forDeleted = new List<Spec>();
-
-                        //int start = 0;
-                        //foreach (var i in obj.MassDeletedSpecs)
-                        //{
-                        //    var spec = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
-                        //    if (spec == null)
-                        //        continue;
-                        //    forDeleted.Add(spec);
-                        //    //var childs=Pro.GetChild(pro.Id);
-                        //    //    forDeleted.AddRange(childs);
-                        //    for (; start < forDeleted.Count; ++start)
-                        //    {
-                        //        forDeleted.AddRange(Spec.GetChild(forDeleted[start].Id));
-                        //    }
-                        //}
-                        //db.Specs.RemoveRange(forDeleted);
-                        //db.SaveChanges();
-                    }
-
-                    {
-                        //List<Vrem> forDeleted = new List<Vrem>();
-
-                        //int start = 0;
-                        //foreach (var i in obj.MassDeletedVrems)
-                        //{
-                        //    var vrem = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
-                        //    if (vrem == null)
-                        //        continue;
-                        //    forDeleted.Add(vrem);
-                        //    //var childs=Pro.GetChild(pro.Id);
-                        //    //    forDeleted.AddRange(childs);
-                        //    for (; start < forDeleted.Count; ++start)
-                        //    {
-                        //        forDeleted.AddRange(Vrem.GetChild(forDeleted[start].Id));
-                        //    }
-                        //}
-                        //db.Vrems.RemoveRange(forDeleted);
-                        //db.SaveChanges();
-                    }
-
+                 
+                    
                 }
 
 

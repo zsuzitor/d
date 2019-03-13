@@ -37,7 +37,7 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult CreateList(string name)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if(string.IsNullOrWhiteSpace(name)|| name.Length<5)//TODO в метод валидации
                 return new HttpStatusCodeResult(404);//TODO сообщение об ошибке
             ListPhysics res = ListPhysics.Create(name);
 
@@ -50,6 +50,15 @@ namespace dip.Controllers
 
             return PartialView(res);
         }
+
+
+        public ActionResult LoadUsersForList(int id)
+        {
+            ListPhysics res = ListPhysics.LoadUsers(id);
+
+            return PartialView(res);
+        }
+
 
         [HttpPost]
         public ActionResult EditList(int id, string name)

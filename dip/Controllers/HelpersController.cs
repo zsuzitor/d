@@ -1,4 +1,5 @@
-﻿using dip.Models.Domain;
+﻿using dip.Models;
+using dip.Models.Domain;
 using dip.Models.ViewModel.HelpersV;
 using dip.Models.ViewModel.PhysicV;
 using System;
@@ -246,13 +247,27 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// отображение блока для "перелистывания ФЭ"
+        /// </summary>
+        /// <param name="idfe"></param>
+        /// <returns></returns>
         public ActionResult MovementPhysicsBlock(int idfe)//,string action
         {
 
 
             return PartialView(idfe);
         }
+
+
+
+        public ActionResult ListUsersShortData(List<ApplicationUser> list)//,string action
+        {
+
+
+            return PartialView(list);
+        }
+
 
     }
 }

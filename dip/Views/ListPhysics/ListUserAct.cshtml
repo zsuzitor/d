@@ -15,7 +15,10 @@
             пользователи
             <input type="text" id="currentUserId_id" placeholder="Введите id пользователя"/>
 
+            <button class="btn btn-default" onclick="LoadAllUsers()">Показать всех пользователей</button>
+            <div id="ListAllUsers_id">
 
+            </div>
         </div>
     </div><div class="ListUserAct_OneColumn div_inline_block">
               <div>
@@ -262,6 +265,25 @@
                 alert('result removePhysFromUser');
 
             }, type: 'POST'
+        });
+    }
+
+
+
+
+    function LoadAllUsers() {
+        var formData = { };
+
+
+       
+        
+        goAjaxRequest({
+            url: "/Admin/GetAllUsersShortData",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                document.getElementById('ListAllUsers_id').innerHTML = req;
+
+            }, type: 'GET'
         });
     }
 

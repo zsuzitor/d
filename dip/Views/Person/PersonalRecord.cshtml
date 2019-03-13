@@ -15,10 +15,22 @@
 
 <hr />
 
-@Html.Action("Index", "Manage",new {partial=true })
+@if (Model.CurrenUserId == Model.User.Id)
+{
+    @Html.Action("Index", "Manage", new { partial = true })
+}
 
 
 
+@if (Model.Admin)
+{
+    <div>
+        <div>
+            <button onclick="loadRolesUser('@Model.User.Id')">Просмотреть роли</button>
+        </div>
+        <div id="divRolesUser_id"></div>
+    </div>
+}
 
 
 <div>
@@ -41,7 +53,7 @@
         document.getElementById('FavouritePhysic_div_but_id').innerHTML = '';
         goAjaxRequest({
             url: '/Person/ListFavouritePhysics',
-            type: 'POST',
+            type: 'GET',
             data: { id: id },
             func_success: function (data, status, jqXHR) {
                 // Заменяем часть представления, отвечающего за отображение значений характеристики
@@ -49,7 +61,19 @@
             }
         });
 
+    }
 
+    function loadRolesUser(id) {
+       
+        goAjaxRequest({
+            url: '/Person/GetRoles',
+            type: 'GET',
+            data: { personId: id },
+            func_success: function (data, status, jqXHR) {
+                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                document.getElementById('divRolesUser_id').innerHTML = data;
+            }
+        });
     }
 
 </script>

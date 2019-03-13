@@ -1,0 +1,13 @@
+﻿@model dip.Models.Domain.ListPhysics
+
+@if(Model.Users!=null&&  Model.Users.Count > 0)
+{
+@Html.Action("ListUsersShortData", "Helpers", new { list = Model.Users })
+}
+else
+{
+    <label>Пусто</label>
+}
+
+
+
