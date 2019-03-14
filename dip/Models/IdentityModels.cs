@@ -7,6 +7,7 @@ using System;
 using dip.Models.Domain;
 using System.Collections.Generic;
 using System.Linq;
+using dip.Models.CustomException;
 
 namespace dip.Models
 {
@@ -127,20 +128,33 @@ namespace dip.Models
                 db.Dispose();
         }
 
-        public static void AddList(string iduser,int idlist)
+        //genered exception: NotFoundException
+        public static ListPhysics AddList(string iduser,int idlist)
         {
             var user = ApplicationUser.GetUser(iduser);
-            user.AddList(idlist);
-        }
+            //try
+            //{
+                return user.AddList(idlist);
 
-        public void AddList(int idlist)
+            //}
+            //catch (NotFoundException e)
+            //{
+
+            //}
+            }
+        //genered exception: NotFoundException
+        public ListPhysics AddList(int idlist)
         {
+            ListPhysics list = null;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
                 if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
-                ListPhysics list = Domain.ListPhysics.Get(idlist,db);
+                 list = Domain.ListPhysics.Get(idlist,db);
+                if (list == null)
+                    return list;
+                    //throw new NotFoundException("List Not Founded");
                 db.Set<ListPhysics>().Attach(list);
 
                 if (this.ListPhysics.FirstOrDefault(x1 => x1.Id == list.Id) == null)
@@ -163,6 +177,7 @@ namespace dip.Models
 
 
             }
+            return list;
         }
 
         public static void RemoveList(string iduser, int idlist)

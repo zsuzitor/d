@@ -79,8 +79,8 @@
     <div>
         <h1> Выдан пользователям</h1>
         <div>
-            <button class="btn btn-default" onclick="LoadUsersForCurrentList()">Показать пользователей</button>
-            <div id="UsersHasCurrentList_id">
+            <button id="butLoadUserHasCurList" class="btn btn-default" onclick="LoadUsersForCurrentList()">Показать пользователей</button>
+            <div style="display:none;" id="UsersHasCurrentList_id">
                  
             </div>
         </div>
@@ -233,6 +233,7 @@
                     document.getElementById('ListPhysExistItemMainDiv_' + formData.id).remove();
                     document.getElementById('divEditCurrentList_id').style.display = 'none';
                     document.getElementById('PhysInCurrentList').innerHTML = '';
+                    ListActMainObject.ListId = null;
                     
                 }
                 else {
@@ -262,7 +263,7 @@
             func_success: function (req, status, jqXHR) {
                 if (req.trim()) {
                     //alert("Успешно удалено");
-                    document.getElementById('oneP_onePhysInListItem_id_'+id).remove();
+                    document.getElementById('oneP_onePhysInListItem_id_' + id).remove();
                 }
                 else {
                     alert("Что то пошло не так");
@@ -293,20 +294,39 @@
 
     function LoadUsersForCurrentList() {
         var formData = { id: ListActMainObject.ListId };
-        
+        var div = document.getElementById('UsersHasCurrentList_id');
+        var but = document.getElementById('butLoadUserHasCurList');
 
         if (!formData.id) {
             alert("Выберите список");
             return;
         }
-        
-        goAjaxRequest({
-            url: "/ListPhysics/LoadUsersForList",
-            data: formData,
-            func_success: function (req, status, jqXHR) {
-                document.getElementById('UsersHasCurrentList_id').innerHTML = req;
+        if (!div.innerHTML.trim()) {
+            //загрузить
+            goAjaxRequest({
+                url: "/ListPhysics/LoadUsersForList",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    div.innerHTML = req;
 
-            }, type: 'GET'
-        });
+                }, type: 'GET'
+            });
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть пользователей';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+                but.innerHTML = 'Показать пользователей';
+            }
+            else {
+                //показать
+                div.style.display = 'block';
+                but.innerHTML = 'Скрыть пользователей';
+            }
+        }
+       
     }
 </script>

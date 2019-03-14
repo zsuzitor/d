@@ -6,7 +6,7 @@
         <div class="inline MovementPhysIns">
             <a href="@(Url.Action("GoFirstPhysics","Physic",new {}))" class="btn btn-default" title="Первый физический эффект"><<</a>
             <a href="@(Url.Action("GoPrevPhysics","Physic",new { id=Model}))" class="btn btn-default" title="Предыдущий физический эффект"><</a>
-            <input class="form-control MovementPhys_inputId" id="inputForGoPhysic" placeholder="Введите id" type="number" />
+            <input class="form-control MovementPhys_inputId" id="inputForGoPhysic" placeholder="Введите id" type="number" value="@Model"/>
             <button class="btn btn-default" onclick="GoPhysicId()">Перейти</button>
             <a href="@(Url.Action("GoNextPhysics","Physic",new { id=Model}))" class="btn btn-default" title="Следующий  физический эффект">></a>
             <a href="@(Url.Action("GoLastPhysics","Physic",new {}))" class="btn btn-default" title="Последний физический эффект">>></a>

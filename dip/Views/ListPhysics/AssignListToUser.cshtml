@@ -1,0 +1,13 @@
+﻿@model dip.Models.Domain.ListPhysics
+
+
+
+
+<a href="@Url.Action("ListAct","ListPhysics",new {currentListId=Model.Id })">@Model.Name</a>
+@*<button class="btn btn-default" onclick="">просмотр</button>*@
+@*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
+<div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser(@Model.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
+
+
+
+

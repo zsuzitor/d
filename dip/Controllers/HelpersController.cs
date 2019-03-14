@@ -224,7 +224,7 @@ namespace dip.Controllers
 
 
 
-        public ActionResult ListPhysItem(ListPhysics item,bool select)
+        public ActionResult ListPhysItem(ListPhysics item,bool select=false)
         {
             ListPhysItemV res = new ListPhysItemV() {Select= select,ListPhysic=item };
 

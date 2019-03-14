@@ -35,7 +35,7 @@ namespace dip.Models.Domain
                 return db.ListPhysics.ToList();
             }
         }
-        public static ListPhysics Get(int id, ApplicationDbContext db_=null)
+        public static ListPhysics Get(int? id, ApplicationDbContext db_=null)
         {
             var db = db_ ?? new ApplicationDbContext();
            
@@ -58,7 +58,7 @@ namespace dip.Models.Domain
             return res;
         }
 
-        public static ListPhysics Edit(int id,string name)
+        public static ListPhysics Edit(int? id,string name)
         {
             ListPhysics res = ListPhysics.Get(id) ;
             if (res != null)
@@ -71,7 +71,7 @@ namespace dip.Models.Domain
             return res;
         }
 
-        public static ListPhysics Delete(int id)
+        public static ListPhysics Delete(int? id)
         {
             ListPhysics res = ListPhysics.Get(id);
             if(res!=null)

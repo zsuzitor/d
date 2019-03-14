@@ -15,8 +15,8 @@
             пользователи
             <input type="text" id="currentUserId_id" placeholder="Введите id пользователя"/>
 
-            <button class="btn btn-default" onclick="LoadAllUsers()">Показать всех пользователей</button>
-            <div id="ListAllUsers_id">
+            <button id="butLoadAllUsers" class="btn btn-default" onclick="LoadAllUsers()">Показать всех пользователей</button>
+            <div id="ListAllUsers_id" style="display:none;">
 
             </div>
         </div>
@@ -152,7 +152,11 @@
             url: "/ListPhysics/AssignListToUser",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                alert('result AssignListToUser');
+                //alert('result AssignListToUser');
+                var blockLists=document.getElementById('listListsFeExist');
+                if (blockLists) {
+                    blockLists.innerHTML += req;
+                }
 
             }, type: 'POST'
         });
@@ -273,18 +277,37 @@
 
     function LoadAllUsers() {
         var formData = { };
+        var div = document.getElementById('ListAllUsers_id');
+        var but = document.getElementById('butLoadAllUsers');
+        if (!div.innerHTML.trim()) {
+            //загрузить
+            goAjaxRequest({
+                url: "/Admin/GetAllUsersShortData",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    div.innerHTML = req;
 
-
+                }, type: 'GET'
+            });
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть пользователей';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+                but.innerHTML = 'Показать всех пользователей';
+            }
+            else {
+                //показать
+                div.style.display = 'block';
+                but.innerHTML = 'Скрыть пользователей';
+            }
+        }
        
         
-        goAjaxRequest({
-            url: "/Admin/GetAllUsersShortData",
-            data: formData,
-            func_success: function (req, status, jqXHR) {
-                document.getElementById('ListAllUsers_id').innerHTML = req;
-
-            }, type: 'GET'
-        });
+        
     }
 
 

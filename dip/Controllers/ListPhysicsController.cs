@@ -1,4 +1,5 @@
 ﻿using dip.Models;
+using dip.Models.CustomException;
 using dip.Models.Domain;
 using dip.Models.ViewModel.ListPhysicsV;
 using System;
@@ -80,6 +81,8 @@ namespace dip.Controllers
         public ActionResult AddToList(int idphys,int idlist)
         {
             ListPhysics res =ListPhysics.AddPhys(idphys, idlist);
+            if (res == null)
+                return new HttpStatusCodeResult(400, "что то пошло не так(возможно запись была добавлена ранее)");
 
             return PartialView(res?.Physics.FirstOrDefault(x1=>x1.IDFE== idphys));
         }
@@ -98,10 +101,16 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult AssignListToUser(string iduser, int idlist)
         {
+            //try
+            //{
+               var res= ApplicationUser.AddList(iduser, idlist);
+            //}
+            //catch (NotFoundException e)
+            //{
+            //    //TODO
+            //}
 
-             ApplicationUser.AddList(iduser, idlist);
-
-            return PartialView();
+            return PartialView(res);
         }
 
         [HttpPost]

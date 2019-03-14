@@ -26,9 +26,9 @@
 {
     <div>
         <div>
-            <button onclick="loadRolesUser('@Model.User.Id')">Просмотреть роли</button>
+            <button id="butRolesUser_id"  class="btn btn-default" onclick="loadRolesUser('@Model.User.Id')">Показать роли</button>
         </div>
-        <div id="divRolesUser_id"></div>
+        <div id="divRolesUser_id" style="display:none;"></div>
     </div>
 }
 
@@ -36,7 +36,7 @@
 <div>
     <p>Избранное</p>
     <div id="FavouritePhysic_div_but_id">
-        <button onclick="loadFavouritePhysic('@Model.User.Id')">Загрузить все</button>
+        <button  class="btn btn-default" onclick="loadFavouritePhysic('@Model.User.Id')">Загрузить все</button>
     </div>
     <div id="FavouritePhysic_div_id"></div>
 
@@ -64,16 +64,37 @@
     }
 
     function loadRolesUser(id) {
-       
-        goAjaxRequest({
-            url: '/Person/GetRoles',
-            type: 'GET',
-            data: { personId: id },
-            func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
-                document.getElementById('divRolesUser_id').innerHTML = data;
+        var div = document.getElementById('divRolesUser_id');
+        var but = document.getElementById('butRolesUser_id');
+
+        if (!div.innerHTML.trim()) {
+            //загрузить
+            goAjaxRequest({
+                url: '/Person/GetRoles',
+                type: 'GET',
+                data: { personId: id },
+                func_success: function (data, status, jqXHR) {
+                    // Заменяем часть представления, отвечающего за отображение значений характеристики
+                    div.innerHTML = data;
+                }
+            });
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть роли';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+                but.innerHTML = 'Показать роли';
             }
-        });
+            else {
+                //показать
+                div.style.display = 'block';
+                but.innerHTML = 'Скрыть роли';
+            }
+        }
+        
     }
 
 </script>
