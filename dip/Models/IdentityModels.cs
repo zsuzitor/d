@@ -129,12 +129,13 @@ namespace dip.Models
         }
 
         //genered exception: NotFoundException
-        public static ListPhysics AddList(string iduser,int idlist)
+        public static ListPhysics AddList(string iduser,int idlist, out bool? hadList)
         {
             var user = ApplicationUser.GetUser(iduser);
+            hadList = null;
             //try
             //{
-                return user.AddList(idlist);
+                return user.AddList(idlist,out hadList);
 
             //}
             //catch (NotFoundException e)
@@ -143,9 +144,10 @@ namespace dip.Models
             //}
             }
         //genered exception: NotFoundException
-        public ListPhysics AddList(int idlist)
+        public ListPhysics AddList(int idlist, out bool? hadList)
         {
             ListPhysics list = null;
+            hadList = null;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
@@ -162,8 +164,11 @@ namespace dip.Models
                     //return;
                     this.ListPhysics.Add(list);
                     db.SaveChanges();
+                    hadList = false;
                 }
-                    
+                else
+                    hadList = true;
+
                 //
                 list.LoadPhysics(db);
 
@@ -177,6 +182,7 @@ namespace dip.Models
 
 
             }
+            //hadList = hadList ?? true;
             return list;
         }
 
@@ -218,14 +224,17 @@ namespace dip.Models
 
 
 
-        public static void AddPhysics(string iduser, int idphys)
+        public static FEText  AddPhysics(string iduser, int idphys, out bool? hadPhys)
         {
+            hadPhys = null;
             var user = ApplicationUser.GetUser(iduser);
-            user.AddPhysics(idphys);
+            return user.AddPhysics(idphys,out hadPhys);
         }
 
-        public void AddPhysics(int idphys)
+        public FEText AddPhysics(int idphys, out bool? hadPhys)
         {
+            hadPhys = null;
+            FEText phys = null;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
@@ -233,19 +242,23 @@ namespace dip.Models
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.Physics).Load();
 
-                var phys=this.Physics.FirstOrDefault(x1=>x1.IDFE== idphys);
+                 phys=this.Physics.FirstOrDefault(x1=>x1.IDFE== idphys);
                     if (phys == null)
                 {
                     //phys = FEText.Get(idphys);
                     //db.Set<FEText>().Attach(phys);
                     phys = db.FEText.FirstOrDefault(x1=>x1.IDFE==idphys);
                     this.Physics.Add(phys);
+                    hadPhys = false;
                 }
-                        
+                    else
+                    hadPhys = true;
+
                 db.SaveChanges();
 
 
             }
+            return phys;
         }
 
         public static void RemovePhysics(string iduser, int idphys)

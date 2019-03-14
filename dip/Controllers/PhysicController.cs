@@ -132,15 +132,16 @@ namespace dip.Controllers
 
             if (inpObj != null)
             {
-                var objTmp =  inpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
-                if(objTmp!=null)
-                res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(objTmp);//.Select(x1=>new DescrPhaseI(x1));
-                 objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
+                var objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
+                if (objTmp != null)
+                    res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(objTmp);//.Select(x1=>new DescrPhaseI(x1));
+                objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
                 if (objTmp != null)
                     res.FormObjectBegin.ListSelectedPhase2 = new DescrPhaseI(objTmp);
-                  objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
+                objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
                 if (objTmp != null)
                     res.FormObjectBegin.ListSelectedPhase3 = new DescrPhaseI(objTmp);
+                res.CountPhaseBegin = res.FormObjectBegin.GetCountPhase();
             }
            
             if (outpObj != null)
@@ -154,6 +155,7 @@ namespace dip.Controllers
                  objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
                 if (objTmp != null)
                     res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+                res.CountPhaseEnd = res.FormObjectEnd.GetCountPhase();
             }
            
             //TODO
@@ -194,6 +196,14 @@ namespace dip.Controllers
                     return new HttpStatusCodeResult(404);
                 i.DeleteNotChildCheckbox();
             }
+            foreach (var i in objForms)
+            {
+                DescrObjectI.Validation(i);
+                if (i?.Valide == false)
+                    return new HttpStatusCodeResult(404);
+            }
+            // a.ActionId = NullToEmpryStr(a?.ActionId);
+
             //DescrSearchIInput.ValidationIfNeed(inp);
 
             //DescrSearchIOut.ValidationIfNeed(outp);

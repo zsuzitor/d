@@ -103,13 +103,15 @@ namespace dip.Controllers
         {
             //try
             //{
-               var res= ApplicationUser.AddList(iduser, idlist);
+            bool? hadList;
+               var res= ApplicationUser.AddList(iduser, idlist, out  hadList);
             //}
             //catch (NotFoundException e)
             //{
             //    //TODO
             //}
-
+            if (hadList == true)//TODO
+                res = null;
             return PartialView(res);
         }
 
@@ -125,10 +127,11 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult AssignPhysicToUser(string iduser, int idphys)
         {
-
-            ApplicationUser.AddPhysics(iduser, idphys);
-            
-            return PartialView();
+            bool? had;
+            var res=ApplicationUser.AddPhysics(iduser, idphys,out had);
+            if (had == true)//TODO
+                res = null;
+            return PartialView(res);
         }
 
         [HttpPost]

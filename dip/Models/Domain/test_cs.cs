@@ -439,6 +439,25 @@ namespace dip.Models.Domain
             //NumPhase = 1;
         }
 
+        public int GetCountPhase()
+        {
+            int res = 0;
+            if (this.ListSelectedPhase1 != null)
+            {
+                ++res;
+                if (this.ListSelectedPhase2 != null)
+                {
+                    ++res;
+                    if (this.ListSelectedPhase3 != null)
+                    {
+                        ++res;
+                    }
+                }
+
+            }
+            return res;
+        }
+
         public List<string> GetList_()//TODO
         {
             List<string> res = new List<string>()

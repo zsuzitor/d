@@ -463,6 +463,9 @@
     <Content Include="Views\Admin\AdminsPage.cshtml" />
     <Content Include="Views\Person\GetRoles.cshtml" />
     <Content Include="Views\ListPhysics\AssignListToUser.cshtml" />
+    <Content Include="Views\ListPhysics\AssignPhysicToUser.cshtml" />
+    <Content Include="Views\ListPhysics\RemovePhysicFromUser.cshtml" />
+    <Content Include="Views\ListPhysics\RemoveListFromUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,7 +13,10 @@ namespace dip.Models.ViewModel.PhysicV
         public List<DescrSearchI> FormsOutput { get; set; }
 
         public DescrObjectI FormObjectBegin { get; set; }
+        public int CountPhaseBegin { get; set; }
+
         public DescrObjectI FormObjectEnd { get; set; }
+        public int CountPhaseEnd { get; set; }
 
         //public bool ChangedObject { get; set; }
         //public string StateIdStart { get; set; }
@@ -27,6 +30,9 @@ namespace dip.Models.ViewModel.PhysicV
             FormsOutput = null;
             FormObjectBegin = new DescrObjectI();
             FormObjectEnd = new DescrObjectI();
+
+            CountPhaseBegin = 0;
+            CountPhaseEnd = 0;
         }
 
     }

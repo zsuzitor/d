@@ -1,0 +1,13 @@
+﻿@model dip.Models.Domain.FEText
+
+
+@if (Model != null)
+{
+    <div id=@("divOnePhysExist_" + Model.IDFE)>
+        <p>
+            <a href="@Url.Action("Details", "Physic", new { id = Model.IDFE })">@Model.Name</a>
+            @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
+            <div class="button_circle_img_30 button_circle_sub_" onclick="removePhysFromUser(@Model.IDFE)" title="Забрать у пользователя  ФЭ"></div>
+        </p>
+        </div>
+}

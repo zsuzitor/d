@@ -14,15 +14,15 @@
                             <div id="listListsFeExist">
                                 @foreach (var i in Model)
                                 {
-
-                                <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
-                                @*<button class="btn btn-default" onclick="">просмотр</button>*@
-                                @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
-                                <div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser(@i.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
-
+                                    <div id=@("divOneListFeExist_"+i.Id)>
+                                        <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
+                                        @*<button class="btn btn-default" onclick="">просмотр</button>*@
+                                        @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
+                                        <div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser(@i.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
+                                    </div>
                                 }
-                            </div>
-}
+                                    </div>
+                                }
 
 
 

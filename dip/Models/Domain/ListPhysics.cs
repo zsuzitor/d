@@ -108,7 +108,11 @@ namespace dip.Models.Domain
                 res.LoadUsers(db);
             }
             foreach (var i in res.Users)
-                i.AddPhysics(phys.IDFE);
+            {
+                bool? f;
+                i.AddPhysics(phys.IDFE, out f);
+
+            }
 
             return res;
         }

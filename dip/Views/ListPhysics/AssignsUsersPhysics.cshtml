@@ -7,17 +7,20 @@
     @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
     <div class="button_circle_img_30 button_circle_sub_" onclick="removePhysFromUser()" title="Забрать у пользователя  ФЭ"></div>
                             <button class="btn btn-default" onclick="ShowLinkFetextExist()">Показать Ссылку на страницу ФЭ</button>
-                           
-                            <div id="divLinkCurrFetextExist_id"></div>
 
-    foreach (var i in Model)
-    {
-        <p>
-            <a href="@Url.Action("Details", "Physic",new {id=i.IDFE })">@i.Name</a>
-            @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
-            <div class="button_circle_img_30 button_circle_sub_" onclick="removePhysFromUser(@i.IDFE)" title="Забрать у пользователя  ФЭ"></div>
-        </p>
-    }
+                            <div id="divLinkCurrFetextExist_id"></div>
+                            <div id="divAllFetextExist_id">
+                                @foreach (var i in Model)
+                                {
+                                    <div  id=@("divOnePhysExist_"+i.IDFE)>
+                                        <p>
+                                            <a href="@Url.Action("Details", "Physic", new { id = i.IDFE })">@i.Name</a>
+                                            @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
+                                            <div class="button_circle_img_30 button_circle_sub_" onclick="removePhysFromUser(@i.IDFE)" title="Забрать у пользователя  ФЭ"></div>
+                                        </p>
+                                    </div>
+                                }
+                            </div>
 }
 
 

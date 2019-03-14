@@ -170,7 +170,12 @@
             url: "/ListPhysics/AssignPhysicToUser",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                alert('result AssignListToUser');
+                //alert('result AssignListToUser');
+                var blockfes = document.getElementById('divAllFetextExist_id');
+                if (blockfes) {
+                    blockfes.innerHTML += req;
+                }
+                
 
             }, type: 'POST'
         });
@@ -244,8 +249,12 @@
             url: "/ListPhysics/RemoveListFromUser",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                alert('result removeListFromUser');
+                //alert('result removeListFromUser');
+                if (req.trim()) {
+                    document.getElementById('divOneListFeExist_' + id).remove();
 
+                }
+                
             }, type: 'POST'
         });
 
@@ -256,7 +265,7 @@
             id = document.getElementById('AssignPhysForDel').value;
             
         if (!id) {
-            alert('Не выбран список');
+            alert('Не выбран ФЭ');
             return;
         }
 
@@ -266,7 +275,11 @@
             url: "/ListPhysics/RemovePhysicFromUser",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                alert('result removePhysFromUser');
+                //alert('result removePhysFromUser');
+                if (req.trim()) {
+                    document.getElementById('divOnePhysExist_' + id).remove();
+
+                }
 
             }, type: 'POST'
         });
