@@ -8,6 +8,8 @@ using dip.Models.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using dip.Models.CustomException;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace dip.Models
 {
@@ -283,6 +285,30 @@ namespace dip.Models
                 db.SaveChanges();
                 
             }
+        }
+
+
+        public List<int> CheckAccessPhys(List<int> idphys, HttpContextBase HttpContext)
+        {
+            List<int> res = new List<int>();
+
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
+
+            if (roles.Contains(RolesProject.admin.ToString()))
+                return idphys;
+            if (roles.Contains(RolesProject.subscriber.ToString()))
+                return idphys;
+
+            if (roles.Contains(RolesProject.NotApproveUser.ToString()))
+                return res;
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Set<ApplicationUser>().Attach(this);
+                res = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
+            }
+            return res;
         }
 
 

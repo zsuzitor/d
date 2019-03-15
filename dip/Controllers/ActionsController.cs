@@ -41,15 +41,6 @@ namespace dip.Controllers
 
 
 
-        //[HttpPost]
-        //public ActionResult DescriptionSearch(DescrSearchIInput inp, DescrSearchIOut outp)
-        //{
-        ////    (string actionIdI, string actionTypeI, string FizVelIdI,
-        ////string parametricFizVelIdI, string listSelectedProsI, string listSelectedSpecI, string listSelectedVremI,
-        ////string actionTypeO, string FizVelIdO, string parametricFizVelIdO, string listSelectedProsO, string listSelectedSpecO, string listSelectedVremO)
-
-            //    return View();
-            //}
 
             //TODO мб ограничивать что бы не закинули слишком много
         public ActionResult DescriptionInput( List<DescrSearchI> inp, List<DescrSearchI> outp,int countInput = 1)
@@ -114,23 +105,7 @@ namespace dip.Controllers
             }
 
             
-            //var inp_ = new DescrSearchI(inp);
-            //if(inp_.CheckParametric()==null)
-            //    if (res.InputForm.ActionId.Count > 0)
-            //        inp_.Parametric=res.InputForm.ActionId[0].Parametric;
-            
-            //var outp_ = new DescrSearchI(outp);
-            //if (outp_.CheckParametric() == null)
-            //    if (res.OutpForm.ActionId.Count > 0)
-            //        outp_.Parametric = res.OutpForm.ActionId[0].Parametric;
-            //outp_.CheckParametric();
-            //if (DescrSearchI.IsNull(inp_) || DescrSearchI.IsNull(outp_))
-            //{
-            //    inp_ = null;
-            //    outp_ = null;
-            //}
-            //res.InputFormData = inp_;
-            //res.OutputFormData = outp_;
+           
             res.SetAllParametricAction();
 
             
@@ -152,7 +127,7 @@ namespace dip.Controllers
             if (objFormsBegin!=null)
              CharacteristicStart = objFormsBegin.GetList_();
             List<string> CharacteristicEnd = new List<string>();
-            if (objFormsBegin != null)
+            if (objFormsEnd != null)
                 CharacteristicEnd = objFormsEnd.GetList_();
             //TODO если пришли пустые значения надо загружать пустую форму
             //TODO CharacteristicStart может содержать несколько конечных элементов
@@ -160,22 +135,7 @@ namespace dip.Controllers
             ObjectInputV res = new ObjectInputV();
             res.changedObject = changedObject;
 
-            //CharacteristicStart = CharacteristicStart == null ? new string[0] : CharacteristicStart;
-            //if(changeStateObject)
-            //CharacteristicEnd = CharacteristicEnd == null ? new string[0] : CharacteristicEnd;
-
-            //CharacteristicObject
-            //StateObject StateStart = null;
-            //StateObject StateEnd = null;
-
-            //List<CharacteristicObject> CharacteristicStart1 = new List<CharacteristicObject>();
-            //List<CharacteristicObject> CharacteristicStart2 = new List<CharacteristicObject>();
-            //List<CharacteristicObject> CharacteristicStart3 = new List<CharacteristicObject>();
-
-            //List<CharacteristicObject> CharacteristicEnd1 = new List<CharacteristicObject>();
-            //List<CharacteristicObject> CharacteristicEnd2 = new List<CharacteristicObject>();
-            //List<CharacteristicObject> CharacteristicEnd3 = new List<CharacteristicObject>();
-
+        
 
             List<StateObject> baseState=StateObject.GetBase();
             List<PhaseCharacteristicObject> basePhase= PhaseCharacteristicObject.GetBase(); 
@@ -187,55 +147,31 @@ namespace dip.Controllers
            // if (changeStateObject)
                 res.StatesEnd = baseState.Select(x1 => x1.CloneWithOutRef()).ToList();
 
-            //
-            //res.CharacteristicsStart.Phase1 = basePhase;
-            //res.CharacteristicsStart.Phase2 = basePhase;
-            //res.CharacteristicsStart.Phase3 = basePhase;
-
-            //res.CharacteristicsEnd.Phase1 = basePhase;
-            //res.CharacteristicsEnd.Phase2 = basePhase;
-            //res.CharacteristicsEnd.Phase3 = basePhase;
             {
                
                 StateObject state = StateObject.Get(stateIdBegin);
                 if (state != null)
                 {
-                    int countPhase;
-                    res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin, out countPhase);
-                    res.CharacteristicsStart.SetFirstLvlStates(countPhase, basePhase);
-                    //var stateList = state.GetParentsList();
-                    //stateList.Add(state);
-                    //foreach(var i in stateList)
-                    //    res.StateStartSelected += i.Id + " ";
-                    ////using (var db = new ApplicationDbContext())
-                    ////db.StateObjects.Where(x1=>x1.Parent== "STRUCTOBJECT").ToList();
-                    //foreach(var i in res.StatesStart)
-                    //    if(i.Id== stateList[0].Id)//res.StateStart = stateList[0];
-                    //    {
-                    //        i.LoadPartialTree(stateList);
-                    //        res.CharacteristicsStart.SetFirstLvlStates(i.CountPhase, basePhase);
-                    //        //switch (i.CountPhase)//TODO в метод
-                    //        //{
-                    //        //    case 1:
-                    //        //        res.CharacteristicsStart.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList(); 
-                    //        //        break;
-
-
-                    //        //    case 2:
-                    //        //        //res.CharacteristicsStart.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList(); 
-                    //        //        res.CharacteristicsStart.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                    //        //        goto case 1;
-                    //        //    //break;
-
-                    //        //    case 3:
-                    //        //        //res.CharacteristicsStart.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList(); 
-                    //        //        //res.CharacteristicsStart.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList(); 
-                    //        //        res.CharacteristicsStart.Phase3 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                    //        //        goto case 2;
-                    //        //        //break;
-
-                    //        //}
-                    //    }
+                    //int countPhase;
+                    var massparent=state.GetParentsList();
+                    foreach (var asd in res.StatesBegin)
+                    {
+                        if(massparent.FirstOrDefault(x1=>x1.Id== asd.Id)==null)
+                        {
+                            if (asd.Id == state.Id)
+                            {
+                                asd.LoadPartialTree(massparent);
+                            }
+                            else
+                                continue;
+                        }
+                        asd.LoadPartialTree(massparent);
+                    }
+                    res.StateBeginSelected = string.Join(" ",massparent.Select(x1 => x1.Id).ToList());
+                    res.StateBeginSelected +=" "+ state.Id;
+                    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
+                    res.CharacteristicsStart.SetFirstLvlStates(state.CountPhase, basePhase);
+                   
                 }
                 
             }
@@ -245,47 +181,21 @@ namespace dip.Controllers
 
                 if (state != null)
                 {
-                    int countPhase;
-                    res.StateEndSelected = state.LoadPartialTree(res.StatesEnd, out countPhase);
-                    res.CharacteristicsEnd.SetFirstLvlStates(countPhase, basePhase);
+                    //int countPhase;
+                    //res.StateEndSelected = state.LoadPartialTree(res.StatesEnd);//, out countPhase
+                    //res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
 
-                //    var stateList = state.GetParentsList();
-                //stateList.Add(state);
-                //    foreach (var i in stateList)
-                //        res.StateEndSelected += i + " ";
-                //    // using (var db = new ApplicationDbContext())
-                //    // db.StateObjects.Where(x1 => x1.Parent == "STRUCTOBJECT").ToList();
-                //    foreach (var i in res.StatesEnd)
-                //        if (i.Id == stateList[0].Id)//res.StateStart = stateList[0];
-                //        {
-                //            i.LoadPartialTree(stateList);
-                //            res.CharacteristicsEnd.SetFirstLvlStates(i.CountPhase, basePhase);
-                //            //switch (i.CountPhase)//TODO в метод
-                //            //{
-                //            //    case 1:
-                //            //        res.CharacteristicsEnd.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                //            //        break;
+                    var massparent = state.GetParentsList();
+                    foreach (var asd in res.StatesEnd)
+                    {
+                        asd.LoadPartialTree(massparent);
+                    }
+                    res.StateEndSelected = string.Join(" ", massparent.Select(x1 => x1.Id).ToList());
+                    res.StateEndSelected += " " + state.Id;
+                    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
+                    res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
 
 
-                //            //    case 2:
-                //            //        //res.CharacteristicsEnd.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                //            //        res.CharacteristicsEnd.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                //            //        goto case 1;
-                //            //        //break;
-
-                //            //    case 3:
-                //            //        //res.CharacteristicsEnd.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                //            //        //res.CharacteristicsEnd.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                                    
-                //            //        res.CharacteristicsEnd.Phase3 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                //            //        goto case 2;
-                //            //        //break;
-
-                //            //}
-                //        }
-                           
-                    //res.StateEnd = stateList[0];
-                    //res.StateEnd.LoadPartialTree(stateList);
                 }
             }
 
@@ -317,64 +227,7 @@ namespace dip.Controllers
                 res.CharacteristicsStart.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
                 res.CharacteristicsStart.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2]:null;
             }
-            //for (var charac = 0; charac < CharacteristicStart.Count; ++charac)
-            //{
-            //    //var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-            //    List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
-            //    List<List<PhaseCharacteristicObject>> treeProBase = null;
-            //    var allids = PhaseCharacteristicObject.GetAllIdsFor(CharacteristicStart[charac]);
-            //    if (allids == null)
-            //        break;
-            //    var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            //    if (prosIdList.Length > 0)
-            //    {
-            //        using (var db = new ApplicationDbContext())//TODO using in this controller
-            //        {
-            //            //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
-
-            //            var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-            //            treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
-
-
-            //            switch (charac)
-            //            {
-            //                case 0:
-            //                    prosList = res.CharacteristicsStart.Phase1;
-            //                    break;
-
-
-            //                case 1:
-
-            //                    prosList = res.CharacteristicsStart.Phase2;
-            //                    break;
-
-            //                case 2:
-
-            //                    prosList = res.CharacteristicsStart.Phase3;
-            //                    break;
-
-            //            }
-
-
-            //            //if(charac==0)
-            //            //    res.CharacteristicStart.Phase1.AddRange(prosList);
-            //            //else if(charac==1)
-            //            //    res.CharacteristicStart.Phase2.AddRange(prosList);
-            //            //else
-            //            //    res.CharacteristicStart.Phase3.AddRange(prosList);
-            //            // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
-            //        }
-            //        foreach (var p in prosList)
-            //        {
-            //            foreach (var i in treeProBase)
-            //            {
-            //                if (p.Id == i[0].Id)
-            //                    if (!p.LoadPartialTree(i))
-            //                        throw new Exception("TODO ошибка");
-            //            }
-            //        }
-            //    }
-            //}
+            
 
 
             //TODO че по оптимизации?
@@ -388,69 +241,7 @@ namespace dip.Controllers
                 res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
             }
                 
-            //for (var charac = 0; charac < CharacteristicEnd.Count; ++charac)
-            //{
-            //    //var prosIdList = CharacteristicEnd[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-            //    List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
-            //    List<List<PhaseCharacteristicObject>> treeProBase = null;
-            //    var allids = PhaseCharacteristicObject.GetAllIdsFor(CharacteristicStart[charac]);
-            //    if (allids == null)
-            //        break;
-            //    var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            //    if (prosIdList.Length > 0)
-            //    {
-            //        using (var db = new ApplicationDbContext())//TODO using in this controller
-            //        {
-            //            //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
-
-            //            var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-            //            treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
-
-
-
-            //            //List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
-            //            switch (charac)
-            //            {
-            //                case 0:
-            //                    prosList = res.CharacteristicsEnd.Phase1;
-            //                    break;
-
-
-            //                case 1:
-
-            //                    prosList = res.CharacteristicsEnd.Phase2;
-            //                    break;
-
-            //                case 2:
-
-            //                    prosList = res.CharacteristicsEnd.Phase3;
-            //                    break;
-
-            //            }
-
-
-            //            foreach (var p in prosList)
-            //            {
-            //                foreach (var i in treeProBase)
-            //                {
-            //                    if (p.Id == i[0].Id)
-            //                        if (!p.LoadPartialTree(i))
-            //                            throw new Exception("TODO ошибка");
-            //                }
-            //            }
-
-
-
-            //            //if (charac == 0)
-            //            //    res.CharacteristicEnd.Phase1.AddRange(prosList);
-            //            //else if (charac == 1)
-            //            //    res.CharacteristicEnd.Phase2.AddRange(prosList);
-            //            //else
-            //            //    res.CharacteristicEnd.Phase3.AddRange(prosList);
-            //            // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
-            //        }
-            //    }
-            //}
+            
 
 
 
@@ -776,26 +567,7 @@ namespace dip.Controllers
                 {
                     List<PhaseCharacteristicObject> basePhase = PhaseCharacteristicObject.GetBase();
                     res.Characteristics.SetFirstLvlStates(obj.CountPhase, basePhase);
-                    //switch (obj.CountPhase)//TODO в метод
-                    //{
-                    //    case 1:
-                    //        res.Characteristics.Phase1 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                    //        break;
-
-
-                    //    case 2:
-                           
-                    //        res.Characteristics.Phase2 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                    //        goto case 1;
-                        
-
-                    //    case 3:
-                           
-                    //        res.Characteristics.Phase3 = basePhase.Select(x1 => x1.CloneWithOutRef()).ToList();
-                    //        goto case 2;
-                           
-
-                    //}
+                    
                 }
             }
             

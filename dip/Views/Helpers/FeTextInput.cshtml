@@ -1,0 +1,60 @@
+﻿@model dip.Models.Domain.FEText
+
+<dl class="dl-horizontal">
+    @Html.HiddenFor(x1 => x1.IDFE)
+    <dt>
+        @Html.DisplayName("Название")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.Name)
+    </dd>
+    <dt>
+        @Html.DisplayName("Описание")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.Text)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Входное воздействие")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.TextInp)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Выходное воздействие")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.TextOut)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Объект")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.TextObj)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Применение")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.TextApp)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Литература")
+    </dt>
+
+    <dd>
+        @Html.EditorFor(x1 => x1.TextLit)
+    </dd>
+
+</dl>

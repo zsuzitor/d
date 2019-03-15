@@ -6,7 +6,18 @@
 <div>
     <hr />
     @*@Html.DropDownList("nn", @Model.actionId)*@
-    @Html.CheckBox("changeObjectCheckbox")
+    @*@Html.CheckBox("changeObjectCheckbox")*@
+    @if (Model.changedObject)
+    {
+        <input id="changeObjectCheckbox" name="changeObjectCheckbox" type="checkbox" checked>
+
+    }
+    else
+    {
+        <input id="changeObjectCheckbox" name="changeObjectCheckbox" type="checkbox">
+
+    }
+
     @Html.Label("Объект изменяется")
     <hr />
     <div id="formPartStartId">

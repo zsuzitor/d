@@ -1,4 +1,7 @@
-﻿using dip.Models;
+﻿#define debug
+
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel;
 using dip.Models.ViewModel.PhysicV;
@@ -16,6 +19,11 @@ using Newtonsoft.Json;  //JSON.NET
 using Newtonsoft.Json.Linq;
 
 using static dip.Models.Functions;
+
+
+
+
+
 
 namespace dip.Controllers
 {
@@ -46,28 +54,7 @@ namespace dip.Controllers
             {
                 return new HttpStatusCodeResult(404);
             }
-            //res.Effect = FEText.Get(id);
-            //if (res.Effect == null)
-            //    return new HttpStatusCodeResult(404);
-            //string check_id = ApplicationUser.GetUserId();
-
-            //res.Effect.LoadImage();
-            //res.EffectName = res.Effect.Name;
-            ////TODO почему именно так?
-            ////res.TechnicalFunctionId = Request.Params.GetValues(0).First();
-
-            //if (check_id != null)
-            //{
-            //    ApplicationUserManager userManager = HttpContext.GetOwinContext()
-            //                             .GetUserManager<ApplicationUserManager>();
-            //    IList<string> roles = userManager?.GetRoles(check_id);
-            //    if (roles != null)
-            //        if (roles.Contains("admin"))
-            //            res.Admin = true;
-            //    res.Favourited = res.Effect.Favourited(check_id);
-            //}
-
-
+            
 
             return View(res);
         }
@@ -104,7 +91,7 @@ namespace dip.Controllers
             EditV res = new EditV();
             res.Obj = FEText.Get(id);
 
-            if (res == null)
+            if (res.Obj == null)
                 return new HttpStatusCodeResult(404);
 
             //res.ChangedObject=res.obj
@@ -151,10 +138,10 @@ namespace dip.Controllers
                     res.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(objTmp);
                  objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
                 if (objTmp != null)
-                    res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
+                    res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(objTmp);// outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
                  objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
                 if (objTmp != null)
-                    res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+                    res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(objTmp);//outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
                 res.CountPhaseEnd = res.FormObjectEnd.GetCountPhase();
             }
            
@@ -266,12 +253,29 @@ namespace dip.Controllers
             //{
             //    var pic = System.Web.HttpContext.Current.Request.Files["uploadImage[0]"];
             //}
+#if debug
             if (!ModelState.IsValid)
+            {
+                List<string> errorModel = new List<string>();
+                foreach(var i in ModelState.Keys)
+                {
+                    if (ModelState[i].Errors.Count > 0)
+                    {
+                        errorModel.AddRange( ModelState[i].Errors.Select(x1 => i + "___" + x1.ErrorMessage).ToList());
+                    }
+                }
+                int stop = 0;
+            }
+#endif
+            
+                if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
 
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
+            if(forms.Length<2)
+                return new HttpStatusCodeResult(404);
             foreach (var i in forms)
             {
                 DescrSearchI.Validation(i);
@@ -279,8 +283,15 @@ namespace dip.Controllers
                     return new HttpStatusCodeResult(404);
                 i.DeleteNotChildCheckbox();
             }
+            if (objForms.Length ==0)
+                return new HttpStatusCodeResult(404);
+            foreach (var i in objForms)
+            {
+                DescrObjectI.Validation(i);
+                if (i?.Valide == false)
+                    return new HttpStatusCodeResult(404);
+            }
 
-            
 
             //DescrSearchI inp_ = new DescrSearchI(inp);
             //inp_.DeleteNotChildCheckbox();

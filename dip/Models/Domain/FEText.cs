@@ -86,9 +86,9 @@ namespace dip.Models.Domain
         public StateObject StateEnd { get; set; }
 
 
-        public ICollection<Image> Images { get; set; }
+        public List<Image> Images { get; set; }
 
-        public ICollection<ApplicationUser> FavouritedUser { get; set; }
+        public List<ApplicationUser> FavouritedUser { get; set; }
 
 
         public List<ListPhysics> Lists { get; set; }
@@ -103,6 +103,8 @@ namespace dip.Models.Domain
 
             CountInput = 1;
             ChangedObject = false;
+            Lists = new List<ListPhysics>();
+            Users = new List<ApplicationUser>();
         }
 
         public bool Equal(FEText a)
@@ -118,6 +120,10 @@ namespace dip.Models.Domain
 
             this.CountInput = a.CountInput;
             this.ChangedObject = a.ChangedObject;
+            this.NotApprove=a.NotApprove;
+            this.StateBeginId=a.StateBeginId;
+            this.StateEndId=a.StateEndId;
+            
 
             return true;
         }
@@ -441,13 +447,16 @@ order by [data].score desc
                 }
                 foreach (var i in objForms)
                 {
-                    List<FEObject> objects = new List<FEObject>()
+                    List<FEObject> objects = new List<FEObject>();
+                    var phmass=i.GetActualPhases();//
+                    foreach(var phit in phmass)
                     {
-                        
-                        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
-                        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
-                        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
-                };
+                        objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
+                    }
+                    
+                        //new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
+                        //new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
+                
                     db.FEObjects.AddRange(objects);
                     db.SaveChanges();
                 }
@@ -501,12 +510,18 @@ order by [data].score desc
                 db.FEObjects.RemoveRange(objdb);//без сохранения
                 foreach (var i in objForms)
                 {
-                    List<FEObject> objects = new List<FEObject>()
+                    //    List<FEObject> objects = new List<FEObject>()
+                    //    {
+                    //        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
+                    //        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
+                    //        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
+                    //};
+                    List<FEObject> objects = new List<FEObject>();
+                    var phmass = i.GetActualPhases();//
+                    foreach (var phit in phmass)
                     {
-                        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
-                        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
-                        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
-                };
+                        objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
+                    }
                     db.FEObjects.AddRange(objects);
                     db.SaveChanges();
                 }

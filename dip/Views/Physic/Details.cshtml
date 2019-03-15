@@ -103,7 +103,7 @@
             </div>
             <hr />
             <p>
-                <button class="btn btn-default" onclick="loadObjectFe(@Model.Effect.IDFE)" id="show_descr_but">Показать Объект</button>
+                <button class="btn btn-default" onclick="loadObjectFe(@Model.Effect.IDFE)" id="show_objectfe_but">Показать Объект</button>
 
             </p>
             <div id="DivObjectFe_id">
@@ -113,7 +113,7 @@
             {
                 <hr />
                 <p>
-                    <button class="btn btn-default" onclick="loadListsFe(@Model.Effect.IDFE)" id="show_descr_but">Показать списки</button>
+                    <button class="btn btn-default" onclick="loadListsFe(@Model.Effect.IDFE)" id="show_listsfe_but">Показать списки</button>
 
                 </p>
                 <div id="DivListsFe_id" style="display:none;">
@@ -214,14 +214,12 @@
                 function loadListsFe(){
                     //DivListsFe_id
                     let div=document.getElementById('DivListsFe_id');
-                    if(div.innerHTML.trim()){
-                        if(div.style.display=='none')
-                            div.style.display='block';
-                        else
-                            div.style.display='none';
-                    }
-                    else{
-                        div.style.display='block';
+
+
+                    var but = document.getElementById('show_listsfe_but');
+                   
+                    if (div.innerHTML.trim() == '') {
+                        //загрузить
                         goAjaxRequest({
                             url: '/Physic/LoadLists',
                             type:'GET',
@@ -231,7 +229,35 @@
                                 document.getElementById('DivListsFe_id').innerHTML=data;
                             }
                         });
+                        div.style.display = 'block';
+                        but.innerHTML='Скрыть списки';
                     }
+                    else {
+                        //загружать не надо, надо показать\скрыть
+                        if (div.style.display == 'block') {
+                            //скрыть
+                            div.style.display = 'none';
+                            but.innerHTML='Показать списки';
+                        }
+                        else {
+                            //показать
+                            div.style.display = 'block';
+                            but.innerHTML='Скрыть списки';
+                        }
+                    }
+
+
+
+                    //if(div.innerHTML.trim()){
+                    //    if(div.style.display=='none')
+                    //        div.style.display='block';
+                    //    else
+                    //        div.style.display='none';
+                    //}
+                    //else{
+                    //    div.style.display='block';
+                        
+                    //}
 
                    
                 }

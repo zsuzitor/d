@@ -4,87 +4,98 @@
 <div>
     <div>
         <p>Входные</p>
-        <p>
-            <label>Название воздействия:</label>
-            <label>@(Model.DictDescrData["NameI"])</label>
-        </p>
-        <p>
-            <label>Тип входа:</label>
-            <label>@(Model.DictDescrData["TypeI"])</label>
-        </p>
-        @if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI"]))
+        @for (int i = 1; Model.DictDescrData.ContainsKey("NameI" + i); ++i)
         {
+
             <p>
-                <label>Название физической величины:</label>
-                <label>@(Model.DictDescrData["FizVelIdI"])</label>
+                <label>Название воздействия:</label>
+                <label>@(Model.DictDescrData["NameI"+i])</label>
             </p>
             <p>
-                <label>Пространственные характеристики:</label>
-                <label>@(Model.DictDescrData["ProsI"])</label>
+                <label>Тип входа:</label>
+                <label>@(Model.DictDescrData["TypeI" + i])</label>
             </p>
-            <p>
-                <label>Специальные характеристики:</label>
-                <label>@(Model.DictDescrData["SpecsI"])</label>
-            </p>
-            <p>
-                <label>Временные характеристики:</label>
-                <label>@(Model.DictDescrData["VremsI"])</label>
-            </p>
+            if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI" + i]))
+            {
+                <p>
+                    <label>Название физической величины:</label>
+                    <label>@(Model.DictDescrData["FizVelIdI" + i])</label>
+                </p>
+                <p>
+                    <label>Пространственные характеристики:</label>
+                    <label>@(Model.DictDescrData["ProsI" + i])</label>
+                </p>
+                <p>
+                    <label>Специальные характеристики:</label>
+                    <label>@(Model.DictDescrData["SpecsI" + i])</label>
+                </p>
+                <p>
+                    <label>Временные характеристики:</label>
+                    <label>@(Model.DictDescrData["VremsI" + i])</label>
+                </p>
+            }
+            if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI" + i]))
+            {
+                <p>
+                    <label>Раздел физики:</label>
+                    <label>@(Model.DictDescrData["FizVelIdI" + i])</label>
+                </p>
+                <p>
+                    <label>Название физической величины:</label>
+                    <label>@(Model.DictDescrData["FizVelparamI" + i])</label>
+                </p>
+            }
         }
-@if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI"]))
-{
-    <p>
-        <label>Раздел физики:</label>
-        <label>@(Model.DictDescrData["FizVelIdI"])</label>
-    </p>
-    <p>
-        <label>Название физической величины:</label>
-        <label>@(Model.DictDescrData["FizVelparamI"])</label>
-    </p>
-}
+        
 
     </div>
     <div>
         <p>Выходные</p>
-        <p>
-            <label>Название воздействия:</label>
-            <label>@(Model.DictDescrData["NameO"])</label>
-        </p>
+
+@for (int i = 1; Model.DictDescrData.ContainsKey("NameO" + i); ++i)
+{
+    <p>
+        <label>Название воздействия:</label>
+        <label>@(Model.DictDescrData["NameO" + i])</label>
+    </p>
         <p>
             <label>Тип входа:</label>
-            <label>@(Model.DictDescrData["TypeO"])</label>
+            <label>@(Model.DictDescrData["TypeO" + i])</label>
         </p>
-        @if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO"]))
+        if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO" + i]))
         {
             <p>
                 <label>Название физической величины:</label>
-                <label>@(Model.DictDescrData["FizVelIdO"])</label>
+                <label>@(Model.DictDescrData["FizVelIdO" + i])</label>
             </p>
             <p>
                 <label>Пространственные характеристики:</label>
-                <label>@(Model.DictDescrData["ProsO"])</label>
+                <label>@(Model.DictDescrData["ProsO" + i])</label>
             </p>
             <p>
                 <label>Специальные характеристики:</label>
-                <label>@(Model.DictDescrData["SpecsO"])</label>
+                <label>@(Model.DictDescrData["SpecsO" + i])</label>
             </p>
             <p>
                 <label>Временные характеристики:</label>
-                <label>@(Model.DictDescrData["VremsO"])</label>
+                <label>@(Model.DictDescrData["VremsO" + i])</label>
             </p>
         }
-        @if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO"]))
+        if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO" + i]))
         {
             <p>
                 <label>Раздел физики:</label>
-                <label>@(Model.DictDescrData["FizVelIdO"])</label>
+                <label>@(Model.DictDescrData["FizVelIdO" + i])</label>
             </p>
             <p>
                 <label>Название физической величины:</label>
-                <label>@(Model.DictDescrData["FizVelparamO"])</label>
+                <label>@(Model.DictDescrData["FizVelparamO" + i])</label>
             </p>
         }
 
+
+}
+        
 
 
     </div>

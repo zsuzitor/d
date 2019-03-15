@@ -10,21 +10,24 @@
 
 
 <div >
-    <div >@*id="physCreateFormDescrDiv"*@
+    @*<div >
         @Html.Action("DescriptionInput", "Actions")
     </div>
     <div>
-        @*id="physCreateFormDescrDiv"*@
+     
     @Html.Action("ObjectInput", "Actions")
-</div>
+</div>*@
+    <div>
+        @Html.Action("DescriptionFormAll", "Actions", new { })
+    </div>
     @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
     {
         <div id="physCreateFormDescrRecDiv">
            
         </div>
 
-
-            <dl class="dl-horizontal">
+        @Html.Action("FeTextInput","Helpers",new {obj=Model })
+            @*<dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayName("Название")
                 </dt>
@@ -80,7 +83,7 @@
                     @Html.EditorFor(model => model.TextLit)
                 </dd>
 
-            </dl>
+            </dl>*@
        
         <div id="physCreateFormIMGDiv">
             <input class="btn btn-default" id="upLoadImagesId" type="file" multiple name="uploadImage" />
@@ -98,61 +101,29 @@
     function CreatePhysFunc() {
 
         data_descr_search.function_trigger = function () {
-            //document.getElementById('FormPhysCreate').submit();
-            //var imgEl = document.getElementById('upLoadImagesId');
-            //var dt = imgEl.files;
-            
-            //$.each(dt, function (key, value) {
-            //    //var k=key;
-            //    //var v = value;
-            //    data_descr_search['uploadImage[' + key+']'] = value;
-            //});
-            //goAjaxRequest({
-            //    url: '/Physic/Create',
-            //    func_success: function (data, status, jqXHR) {
-
-            //        if (data.trim()) {
-            //            div.innerHTML = data;
-            //        }
-            //        else {
-            //            div.remove();
-            //        }
-
-            //    }
-            //});
-
-
-
-
-            //$.ajax({
-            //    url: '/Physic/Create',
-            //    type: 'POST', // важно!
-            //    data: data_descr_search,
-            //    cache: false,
-            //    dataType: 'html',
-            //    // отключаем обработку передаваемых данных, пусть передаются как есть
-            //    processData: false,
-            //    // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-            //    contentType: false,
-            //    // функция успешного ответа сервера
-            //    success: function (respond, status, jqXHR) {
-
-            //        var g = 10;
-            //    },
-            //    // функция ошибки ответа сервера
-            //    error: function (jqXHR, status, errorThrown) {
-                  
-            //    }
-
-            //});
+           
 
 
             var divForm = document.getElementById('physCreateFormDescrRecDiv');
             var divFormNewInner = '';// '<H1>Отправляем</H1>';
             for (key in data_descr_search) {
-                if (key != 'function_trigger' && key != 'search')
-                    divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
-            }
+                if (key != 'function_trigger' && key != 'search') {
+                    if (key == 'stateBegin' || key == 'stateEnd')
+                        divFormNewInner += ' <input name="' + key + 'Id" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                    else if (key == 'CountInput' || key == 'ChangedObject')
+                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                    else
+                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
+
+                    if (data_descr_search[key] == 'undefined' || data_descr_search[key] == undefined) {
+                        if (key.indexOf('state')>=0)
+                            alert('Не выбрано состояние');
+                        else
+                            alert('Что то пошло не так');
+                        return;
+                    }
+                }
+                    }
            
             divForm.innerHTML = divFormNewInner;
             //var divImgForm = document.getElementById('physCreateFormIMGDiv');

@@ -40,6 +40,8 @@
         var i = 0;
         var inpdiv = document.getElementById('actionI' + i);
         var twoInput = document.getElementById('changeTwoInputFormDescr_id').checked;
+        data_descr_search['CountInput'] = twoInput?2:1;
+
         var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
 
 
@@ -122,7 +124,7 @@
         //OBJECT
 
         var twoObject = document.getElementById('changeObjectCheckbox').checked;
-
+        data_descr_search['ChangedObject'] = twoObject;
         i = 0;
         inpdiv = document.getElementById('PhaseObject_data_S_' + i);
 
@@ -154,47 +156,19 @@
 
             let massStatesS = [];
             $('#mainBlockStates_S input:radio:checked').each(function () {//[type=checkbox] 
-                massStatesS.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_id_')[1] });//(this.id.split('change_state_radio_id_')[1]);
+                massStatesS.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_')[1] });//(this.id.split('change_state_radio_id_')[1]);
             });
             //let resBeginState = null;
             data_descr_search.stateBegin = funcGetState(massStatesS);
-            //for (let iter = 0; iter < massStatesS.length; ++iter) {
-            //    let searchFlag = false;
-            //    for (let iter2 = 0; iter2 < massStatesS.length; ++iter2) {
-            //        if (massStatesS[iter2].name == massStatesS[iter].id) {
-            //            searchFlag = true;
-            //            break;
-            //        }
-
-            //    }
-            //    if (!searchFlag) {
-            //        //resBeginState = massStatesS[iter];
-            //        data_descr_search.stateBegin = massStatesS[iter].id.split('_')[1];
-            //        break;
-            //    }
-            //        }
+        
             if (twoObject) {
                 let massStatesE = [];
                 $('#mainBlockStates_E input:radio:checked').each(function () {//[type=checkbox] 
-                    massStatesE.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_id_')[1] });//(this.id.split('change_state_radio_id_')[1]);
+                    massStatesE.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_')[1] });//(this.id.split('change_state_radio_id_')[1]);
                 });
                 //let resEndState = null;
                 data_descr_search.stateEnd = funcGetState(massStatesE);
-                //for (let iter = 0; iter < massStatesE.length; ++iter) {
-                //    let searchFlag = false;
-                //    for (let iter2 = 0; iter2 < massStatesE.length; ++iter2) {
-                //        if (massStatesE[iter2].name == massStatesE[iter].id) {
-                //            searchFlag = true;
-                //            break;
-                //        }
-
-                //    }
-                //    if (!searchFlag) {
-                //        //resEndState = massStatesE[iter];
-                //        data_descr_search.stateEnd = massStatesE[iter].id.split('_')[1];
-                //        break;
-                //    }
-                //}
+               
             }
 
 
@@ -389,55 +363,6 @@
 
 
 
-
-
-
-
-        //data_descr_search.actionIdI = UndefinedToStr($('#actionI').val());
-        //data_descr_search.actionTypeI = UndefinedToStr($('#actionTypeI').val());
-        //data_descr_search.FizVelIdI = UndefinedToStr($('#fizVelIdI').val());
-        //data_descr_search.parametricFizVelIdI = UndefinedToStr($('#parametricFizVelIdI').val());
-
-
-
-        //data_descr_search.actionIdO = UndefinedToStr($('#actionO').val());
-        //data_descr_search.actionTypeO = UndefinedToStr($('#actionTypeO').val());
-        //data_descr_search.FizVelIdO = UndefinedToStr($('#fizVelIdO').val());
-        //data_descr_search.parametricFizVelIdO = UndefinedToStr($('#parametricFizVelIdO').val());
-
-
-        //data_descr_search.listSelectedProsO = '';
-        //data_descr_search.listSelectedSpecO = '';
-        //data_descr_search.listSelectedVremO = '';
-
-        //data_descr_search.listSelectedProsI = '';
-        //data_descr_search.listSelectedSpecI = '';
-        //data_descr_search.listSelectedVremI = '';
-        //$('#prosGroupO input:checkbox:checked').each(function () {//[type=checkbox]
-        //    data_descr_search.listSelectedProsO += $(this).attr('value') + ' ';
-        //});
-
-        //$('#specGroupO input:checkbox:checked').each(function () {//[type=checkbox]
-        //   // alert($(this).attr('value'));
-        //    data_descr_search.listSelectedSpecO += $(this).attr('value') + ' ';
-        //});
-
-        //$('#vremGroupO input:checkbox:checked').each(function () {//[type=checkbox]
-        //    data_descr_search.listSelectedVremO += $(this).attr('value') + ' ';
-        //});
-
-        //$('#prosGroupI input:checkbox:checked').each(function () {//[type=checkbox]
-        //    data_descr_search.listSelectedProsI += $(this).attr('value') + ' ';
-        //});
-
-        //$('#specGroupI input:checkbox:checked').each(function () {//[type=checkbox]
-        //    // alert($(this).attr('value'));
-        //    data_descr_search.listSelectedSpecI += $(this).attr('value') + ' ';
-        //});
-
-        //$('#vremGroupI input:checkbox:checked').each(function () {//[type=checkbox]
-        //    data_descr_search.listSelectedVremI += $(this).attr('value') + ' ';
-        //});
 
         //location.href = "xuz";
         if (data_descr_search.function_trigger != null)

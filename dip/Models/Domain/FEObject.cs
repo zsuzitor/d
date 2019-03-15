@@ -39,6 +39,8 @@ namespace dip.Models.Domain
         {
             this.Idfe = idfe;
             this.Begin = begin;
+            this.NumPhase = a.NumPhase;
+            
             //string[] massStr = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             //foreach (var i in massStr)
             //    switch (i[0])

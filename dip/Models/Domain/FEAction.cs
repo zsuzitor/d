@@ -33,6 +33,7 @@ namespace dip.Models.Domain
             Pros = "";
             Spec = "";
             Vrem = "";
+            FizVelId = null;//тк прописано внешним ключом
 
         }
 
@@ -51,7 +52,7 @@ namespace dip.Models.Domain
         {
             Name = a?.ActionId;
             Type = a?.ActionType;
-            FizVelId = a?.FizVelId;
+            FizVelId = string.IsNullOrWhiteSpace(a?.FizVelId)?null: a?.FizVelId;
             FizVelSection = a?.ParametricFizVelId;
             Pros = a?.ListSelectedPros;
             Spec = a?.ListSelectedSpec;

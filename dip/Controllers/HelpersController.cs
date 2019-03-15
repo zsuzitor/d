@@ -267,7 +267,10 @@ namespace dip.Controllers
 
             return PartialView(list);
         }
+        public ActionResult FeTextInput(FEText obj)
+        {
+            return PartialView(obj);
+        }
 
-
-    }
+        }
 }

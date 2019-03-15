@@ -466,6 +466,7 @@
     <Content Include="Views\ListPhysics\AssignPhysicToUser.cshtml" />
     <Content Include="Views\ListPhysics\RemovePhysicFromUser.cshtml" />
     <Content Include="Views\ListPhysics\RemoveListFromUser.cshtml" />
+    <Content Include="Views\Helpers\FeTextInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
