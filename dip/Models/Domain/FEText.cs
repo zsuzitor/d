@@ -13,6 +13,9 @@ using System.Web.Mvc;
 
 //using Mono.Linq.Expressions;
 using Binbin.Linq;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using System.Data.Entity;
 
 namespace dip.Models.Domain
 {
@@ -151,7 +154,7 @@ namespace dip.Models.Domain
         }
 
 
-        public static List<string> GetPropTextSearch()
+        public static List<string> GetPropTextSearch()//TODO
         {
             var res = new List<string>();
             var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser" };//исключаем
@@ -176,8 +179,25 @@ namespace dip.Models.Domain
 
         }
 
+        public static FEText GetIfAccess(int? id, HttpContextBase HttpContext)
+        {
+            FEText res = null;
+            if (id == null)
+                return res;
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            if (user == null)
+                return res;
+            List<int> accessList = user.CheckAccessPhys(new List<int>() { (int)id }, HttpContext);
+            if (accessList.Contains((int)id))
+                res = FEText.Get(id);
+            return res;
+
+        }
+
+
         //при более чем 2х входах и 1 выходах-(||forms>3) эту функцию необходимо будет изменить
-        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects)
+        //[Authorize]
+        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects, HttpContextBase HttpContext)
         {
             int[] list_id = null;
 
@@ -302,10 +322,15 @@ namespace dip.Models.Domain
             //x1.Key x2.Key
 
             //сравниваем состояния и результаты всех запросов
-            list_id = FEText.GetList(checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
+            list_id = FEText.GetList(null,checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
                 .Where(x1 => x1.StateBeginId == stateBegin && x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
-       
 
+
+
+            ApplicationUser user = new ApplicationUser();
+            if (user == null)
+                return null;
+            list_id=user.CheckAccessPhys(list_id.ToList(), HttpContext).ToArray();
 
             return list_id;
         }
@@ -350,7 +375,7 @@ namespace dip.Models.Domain
         }
 
 
-        public static List<int> GetListSimilar(int id, int count = 5)
+        public static List<int> GetListSimilar(int id, HttpContextBase HttpContext, int count = 5)
         {
             List<int> res = new List<int>();
 
@@ -373,43 +398,75 @@ order by [data].score desc
 
 
 
-
+            ApplicationUser user = new ApplicationUser();
+            if (user == null)
+                return null;
+            
 
 
             var dict = DataBase.DataBase.ExecuteQuery(quer, null, "IDFE");
-            foreach (var i in dict)
-            {
-                if (res.Count == count)
-                    break;
-                int idRec = Convert.ToInt32(i["IDFE"]);
-                if (!res.Contains(idRec))
-                    res.Add(idRec);
-            }
+            var accessList = user.CheckAccessPhys(dict.Select(x1 => Convert.ToInt32(x1["IDFE"])).Distinct().ToList(), HttpContext);
+            res.AddRange(accessList.Take(count));
+            //foreach (var i in dict)
+            //{
+            //    if (res.Count == count)
+            //        break;
+            //    int idRec = Convert.ToInt32(i["IDFE"]);
+            //    if (!res.Contains(idRec))
+            //        res.Add(idRec);
+            //}
 
 
 
             return res;
         }
-    
 
 
-        public static List<FEText> GetList(params int[] id)
+
+        public static List<FEText> GetList(string userId,params int[] id)
         {
             var res = new List<FEText>();
             if (id != null&& id.Length>0)
                 using (var db = new ApplicationDbContext())
                 {
                     res = db.FEText.Join(id, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
-                    string check_id = ApplicationUser.GetUserId();
+                    userId= userId?? ApplicationUser.GetUserId();
                     foreach(var i in res)
                     {
-                        i.FavouritedCurrentUser = i.Favourited(check_id);
+                        i.FavouritedCurrentUser = i.Favourited(userId);
                     }
                 }
             
                     
             return res;
         }
+
+        public static List<FEText> GetListIfAccess(HttpContextBase HttpContext,params int[] id)
+        {
+            var res = new List<FEText>();
+
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            if (user == null)
+                return res;
+            List<int>accessList = user.CheckAccessPhys(id?.ToList(), HttpContext);
+
+            res = FEText.GetList(user.Id, accessList.ToArray());
+            //if (accessList != null && accessList.Count > 0)
+            //    using (var db = new ApplicationDbContext())
+            //    {
+            //        res = db.FEText.Join(accessList, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
+
+            //        foreach (var i in res)
+            //        {
+            //            i.FavouritedCurrentUser = i.Favourited(user.Id);
+            //        }
+            //    }
+
+
+            return res;
+        }
+
+
 
 
         public bool Validation()
@@ -556,29 +613,42 @@ order by [data].score desc
 
 
         //res-true- теперь добавлено , без проверки на null
-        public bool ChangeFavourite(string personId)
+        /// <summary>
+        /// меняет(добавляет\удаляет) запись в избранном, если к ней есть доступ
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
+        public bool? ChangeFavourite(string personId, HttpContextBase HttpContext)
         {
-            bool res = false;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                db.Set<FEText>().Attach(this);
-                var userFav = db.Entry(this).Collection(x1 => x1.FavouritedUser).Query().FirstOrDefault(x1 => x1.Id == personId);
-                
-                if (userFav != null)
-                {
-                    db.Entry(this).Collection(x1 => x1.FavouritedUser).Load();
+            bool? res = null;
 
-                    this.FavouritedUser.Remove(userFav);
-                }
-                else
+            ApplicationUser user = ApplicationUser.GetUser(personId);
+            if (user == null)
+                return res;
+            List<int> accessList = user.CheckAccessPhys(new List<int>() { this.IDFE }, HttpContext);
+
+            if (accessList.Contains(this.IDFE))
+                using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    var user = ApplicationUser.GetUser(personId);
-                    db.Set<ApplicationUser>().Attach(user);
-                    this.FavouritedUser.Add(user);
-                    res = true;
+                    db.Set<FEText>().Attach(this);
+                    var userFav = db.Entry(this).Collection(x1 => x1.FavouritedUser).Query().FirstOrDefault(x1 => x1.Id == personId);
+
+                    if (userFav != null)
+                    {
+                        db.Entry(this).Collection(x1 => x1.FavouritedUser).Load();
+
+                        this.FavouritedUser.Remove(userFav);
+                    }
+                    else
+                    {
+
+                        db.Set<ApplicationUser>().Attach(user);
+                        this.FavouritedUser.Add(user);
+                        res = true;
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
-            }
 
 
 
@@ -596,6 +666,12 @@ order by [data].score desc
             
             return res;
         }
+        /// <summary>
+        /// проверка на то добавил ли пользователь в избранное этот ФЭ
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public bool Favourited(string personId, ApplicationDbContext db)
         {
             bool res = false;
@@ -607,74 +683,96 @@ order by [data].score desc
             {
                 res = true;
             }
-
-
-
+            
             return res;
         }
 
 
-        public static FEText Get(int id)
-        {
-            FEText res = null;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                res=db.FEText.FirstOrDefault(x1=>x1.IDFE==id);
-            }
+        //public static FEText Get(int id)
+        //{
+        //    FEText res = null;
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    {
+        //        res=db.FEText.FirstOrDefault(x1=>x1.IDFE==id);
+        //    }
 
-            return res;
+        //    return res;
+        //}
+
+        public static FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
+        {
+            //FEText res = null;
+            ApplicationUser user = ApplicationUser.GetUser( ApplicationUser.GetUserId());
+            return user.GetNextAccessPhysic(id, HttpContext);
+            //IList<string> roles = HttpContext.GetOwinContext()
+            //                             .GetUserManager<ApplicationUserManager>()?.GetRoles(user.Id);
+            //using (ApplicationDbContext db = new ApplicationDbContext())
+            //{
+            //    //DbSet<FEText> collect = null;
+            //if (roles.Contains(RolesProject.admin.ToString())|| roles.Contains(RolesProject.subscriber.ToString()))
+            //    {
+            //        //collect = db.FEText;
+            //        res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+            //    }
+
+            //else if (roles.Contains(RolesProject.user.ToString())){
+            //        db.Set<ApplicationUser>().Attach(user);
+            //        user.LoadPhysics();
+            //        collect = user.Physics;
+            //    }
+
+
+            //    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+            //    if(res==null)
+            //        res = db.FEText.FirstOrDefault();
+            //}
+
+            //return res;
         }
 
-        public static FEText GetNext(int id)
+        public static FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
         {
-            FEText res = null;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
-                if(res==null)
-                    res = db.FEText.FirstOrDefault();
-            }
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            return user.GetPrevAccessPhysic(id, HttpContext);
+            //FEText res = null;
+            //using (ApplicationDbContext db = new ApplicationDbContext())
+            //{
+            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+            //    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+            //    if (res == null)
+            //        res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
 
-            return res;
+            //}
+
+            //return res;
         }
-
-        public static FEText GetPrev(int id)
+        public static FEText GetFirstAccessPhysic( HttpContextBase HttpContext)
         {
-            FEText res = null;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-                res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
-                if (res == null)
-                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            return user.GetFirstAccessPhysic( HttpContext);
+            //FEText res = null;
+            //using (ApplicationDbContext db = new ApplicationDbContext())
+            //{
+            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+            //    res = db.FEText.FirstOrDefault();
 
-            }
+            //}
 
-            return res;
+            //return res;
         }
-        public static FEText GetFirst()
+        public static FEText GetLastAccessPhysic( HttpContextBase HttpContext)
         {
-            FEText res = null;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-                res = db.FEText.FirstOrDefault();
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            return user.GetLastAccessPhysic(HttpContext);
+            //FEText res = null;
+            //using (ApplicationDbContext db = new ApplicationDbContext())
+            //{
+            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
+            //    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
 
-            }
+            //}
 
-            return res;
-        }
-        public static FEText GetLast()
-        {
-            FEText res = null;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-                res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
-
-            }
-
-            return res;
+            //return res;
         }
 
     }

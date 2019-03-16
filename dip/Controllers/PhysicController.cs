@@ -62,7 +62,7 @@ namespace dip.Controllers
         public ActionResult ShowSimilar(int id)//, string technicalFunctionId
         {
             ShowSimilarV res = new ShowSimilarV();
-            res.ListSimilarIds = FEText.GetListSimilar(id);
+            res.ListSimilarIds = FEText.GetListSimilar(id, HttpContext);
 
 
             return PartialView(res);
@@ -77,7 +77,7 @@ namespace dip.Controllers
             {
                 listId = (int[])TempData["list_fe_id"];
             }
-            res.FeTexts = FEText.GetList(listId);
+            res.FeTexts = FEText.GetListIfAccess(HttpContext,listId);
             res.NumLoad = numLoad;
 
 
@@ -485,7 +485,7 @@ namespace dip.Controllers
         public ActionResult GoNextPhysics(int id)
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
-            FEText phys= FEText.GetNext(id);
+            FEText phys= FEText.GetNextAccessPhysic(id,HttpContext);
             DetailsV res = new DetailsV();
             try
             {
@@ -502,7 +502,7 @@ namespace dip.Controllers
         public ActionResult GoPrevPhysics(int id)
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
-            FEText phys = FEText.GetPrev(id);
+            FEText phys = FEText.GetPrevAccessPhysic(id, HttpContext);
             DetailsV res = new DetailsV();
             try
             {
@@ -518,7 +518,7 @@ namespace dip.Controllers
         public ActionResult GoLastPhysics()
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
-            FEText phys = FEText.GetLast();
+            FEText phys = FEText.GetLastAccessPhysic(HttpContext);
             DetailsV res = new DetailsV();
             try
             {
@@ -534,7 +534,7 @@ namespace dip.Controllers
         public ActionResult GoFirstPhysics()
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
-            FEText phys = FEText.GetFirst();
+            FEText phys = FEText.GetFirstAccessPhysic(HttpContext);
             DetailsV res = new DetailsV();
             try
             {

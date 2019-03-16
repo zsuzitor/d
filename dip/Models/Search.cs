@@ -8,11 +8,12 @@ namespace dip.Models
     public class Search
     {
 
-        public static List<int> GetListPhys(string type, string str, int lastId = 0, int lucCount = 1)
+        public static List<int> GetListPhys(string type, string str, HttpContextBase HttpContext, int lastId = 0, int lucCount = 1)
         {
             //var res = new int[0];
             var res = new List<int>();
             //type = "fullTextSearch";
+            var user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             switch (type)
             {
                 case "lucene":
@@ -20,8 +21,13 @@ namespace dip.Models
                     int count;
                     str = Lucene_.ChangeForMap(str);
                     //TODO убрать знаки препинания, стопслова
-                    res = Lucene_.Search(str, Constants.CountForLoad * lucCount, out count).Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
-                    
+                    int limit = 0;
+                    using (ApplicationDbContext db = new ApplicationDbContext())
+                        limit = db.FEText.Count();
+                    res = Lucene_.Search(str, limit, out count);//.Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
+                   
+                    res=user.CheckAccessPhys(res, HttpContext).Skip(Constants.CountForLoad * (lucCount - 1)).ToList();
+
                     //res = Lucene_.Search(str, 100, out count);
                     //res= res.Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
 
@@ -32,10 +38,15 @@ namespace dip.Models
                     {
                         //TODO вынести в функцию sql server и юзать уже из linq
                         //IEnumerable<int> resenum;//= res.AsEnumerable() ;
-                         res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
-                            }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;")
-                            .SkipWhile(x1 => lastId>0?( x1 != lastId) :false).Skip( lastId > 0 ?1:0 ).Take(Constants.CountForLoad).ToList();//.ToArray()
-                        
+                         //res = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
+                         //   }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;")
+                         //   .SkipWhile(x1 => lastId>0?( x1 != lastId) :false).Skip( lastId > 0 ?1:0 ).Take(Constants.CountForLoad).ToList();//.ToArray()
+
+
+                        res = user.CheckAccessPhys(db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
+                            }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").ToList(), HttpContext).
+                            SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+
                         //if (lastId > 0)
                         //{
                         //    resenum = resenum.SkipWhile(x1 => x1 > lastId);
@@ -69,9 +80,14 @@ namespace dip.Models
                         }
                         strquery = strquery.Substring(0, strquery.Length - 1);
                         strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-                        res = db.Database.SqlQuery<int>(strquery)
-                             .SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-                            //.SkipWhile(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+                        //res = db.Database.SqlQuery<int>(strquery).
+                        //    SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                        //.SkipWhile(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+
+                        res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
+                               SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+
+
                     }
 
 
@@ -97,9 +113,12 @@ namespace dip.Models
                         }
                         strquery = strquery.Substring(0, strquery.Length - 1);
                         strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-                        res = db.Database.SqlQuery<int>(strquery)
-                             .SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                        //res = db.Database.SqlQuery<int>(strquery)
+                        //     .SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
                         //.SkipWhile(x1 => x1 > lastId).Take(Constants.CountForLoad).ToList();//.ToArray()
+
+                        res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
+                                   SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
                     }
 
 
@@ -110,6 +129,11 @@ namespace dip.Models
         }
 
 
+        /// <summary>
+        /// вернуть только наиболее значимые слова
+        /// </summary>
+        /// <param name="logParamId"></param>
+        /// <returns></returns>
         public static string StringSemanticParse(int logParamId)
         {
             var res = "";

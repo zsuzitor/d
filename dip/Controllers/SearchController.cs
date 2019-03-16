@@ -57,7 +57,7 @@ namespace dip.Controllers
                 }
 
 
-                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms);
+                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms,HttpContext);
 
                 res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
                 res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); 
@@ -84,12 +84,11 @@ namespace dip.Controllers
                 ApplicationUser.GetUserId(), true);
                 log.SetDescrParam(forms);
                 log.AddLogDb();
-                return RedirectToAction("ListFeText", "Physic");
-                //return RedirectToRoute(new { controller = "Physic", action = "ListFeText", listId = list_id });//new { listId = list_id }
-                //return RedirectToAction("ListFeText", "Physic", new { listId = list_id });
 
+
+                return RedirectToAction("ListFeText", "Physic");
             }
-            //DescrSearchIInput.Validation(res.FormInput);
+            
             return View(res);
         }
 
@@ -97,7 +96,7 @@ namespace dip.Controllers
         {
             //str = "газ";
             TextSearchPartialV res = new TextSearchPartialV();
-            res.ListPhysId = Search.GetListPhys(type, str, lastId, countLoad);
+            res.ListPhysId = Search.GetListPhys(type, str, HttpContext, lastId, countLoad);
             if (res.ListPhysId.Count == 0)
             {
                 Response.StatusCode = 204;
@@ -142,7 +141,7 @@ namespace dip.Controllers
             
             if (!string.IsNullOrWhiteSpace(str))
 
-                res.ListPhysId = Search.GetListPhys(type, str, 0, 1);
+                res.ListPhysId = Search.GetListPhys(type, str, HttpContext, 0, 1);
 
             if (res.ListPhysId.Count < Constants.CountForLoad)
                 res.ShowBtLoad = false;

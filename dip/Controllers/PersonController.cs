@@ -68,7 +68,7 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult FavouritePhysics(int id)
         {
-            bool res = false;
+            bool? res = false;
 
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user != null)

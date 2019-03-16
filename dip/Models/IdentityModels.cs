@@ -42,7 +42,7 @@ namespace dip.Models
             Name = null;
             Surname = null;
             Birthday = null;
-                Dateregistration = DateTime.Now;
+            Dateregistration = DateTime.Now;
             CloseProfile = false;
 
             FavouritedPhysics = new List<FEText>();
@@ -85,18 +85,18 @@ namespace dip.Models
             return res;
         }
 
-        public static List<ApplicationUser> GetAllUsers( ApplicationDbContext db_=null)
+        public static List<ApplicationUser> GetAllUsers(ApplicationDbContext db_ = null)
         {
             //string check_id = ApplicationUser.GetUserId();
             var db = db_ ?? new ApplicationDbContext();
             List<ApplicationUser> res = db.Users.ToList();
-            
+
             if (db_ == null)
                 db.Dispose();
             return res;
         }
 
-        public  void LoadFavouritedList()
+        public void LoadFavouritedList()
         {
 
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -108,17 +108,21 @@ namespace dip.Models
         }
 
 
-        public void LoadListPhysics( ApplicationDbContext db_ = null)
+        public void LoadListPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
-            
-                db.Set<ApplicationUser>().Attach(this);
-                if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
-                    db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
+
+            db.Set<ApplicationUser>().Attach(this);
+            if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
+                db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
             if (db_ == null)
                 db.Dispose();
         }
 
+        /// <summary>
+        /// загрузить разрешенные ФЭ
+        /// </summary>
+        /// <param name="db_"></param>
         public void LoadPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -131,20 +135,20 @@ namespace dip.Models
         }
 
         //genered exception: NotFoundException
-        public static ListPhysics AddList(string iduser,int idlist, out bool? hadList)
+        public static ListPhysics AddList(string iduser, int idlist, out bool? hadList)
         {
             var user = ApplicationUser.GetUser(iduser);
             hadList = null;
             //try
             //{
-                return user.AddList(idlist,out hadList);
+            return user.AddList(idlist, out hadList);
 
             //}
             //catch (NotFoundException e)
             //{
 
             //}
-            }
+        }
         //genered exception: NotFoundException
         public ListPhysics AddList(int idlist, out bool? hadList)
         {
@@ -155,10 +159,10 @@ namespace dip.Models
                 db.Set<ApplicationUser>().Attach(this);
                 if (!db.Entry(this).Collection(x1 => x1.ListPhysics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.ListPhysics).Load();
-                 list = Domain.ListPhysics.Get(idlist,db);
+                list = Domain.ListPhysics.Get(idlist, db);
                 if (list == null)
                     return list;
-                    //throw new NotFoundException("List Not Founded");
+                //throw new NotFoundException("List Not Founded");
                 db.Set<ListPhysics>().Attach(list);
 
                 if (this.ListPhysics.FirstOrDefault(x1 => x1.Id == list.Id) == null)
@@ -203,7 +207,7 @@ namespace dip.Models
                 ListPhysics list = this.ListPhysics.FirstOrDefault(x1 => x1.Id == idlist);
                 if (list == null)
                     return;
-                
+
                 this.ListPhysics.Remove(list);
                 db.SaveChanges();
                 //
@@ -226,11 +230,11 @@ namespace dip.Models
 
 
 
-        public static FEText  AddPhysics(string iduser, int idphys, out bool? hadPhys)
+        public static FEText AddPhysics(string iduser, int idphys, out bool? hadPhys)
         {
             hadPhys = null;
             var user = ApplicationUser.GetUser(iduser);
-            return user.AddPhysics(idphys,out hadPhys);
+            return user.AddPhysics(idphys, out hadPhys);
         }
 
         public FEText AddPhysics(int idphys, out bool? hadPhys)
@@ -240,20 +244,20 @@ namespace dip.Models
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
-              
+
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.Physics).Load();
 
-                 phys=this.Physics.FirstOrDefault(x1=>x1.IDFE== idphys);
-                    if (phys == null)
+                phys = this.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
+                if (phys == null)
                 {
                     //phys = FEText.Get(idphys);
                     //db.Set<FEText>().Attach(phys);
-                    phys = db.FEText.FirstOrDefault(x1=>x1.IDFE==idphys);
+                    phys = db.FEText.FirstOrDefault(x1 => x1.IDFE == idphys);
                     this.Physics.Add(phys);
                     hadPhys = false;
                 }
-                    else
+                else
                     hadPhys = true;
 
                 db.SaveChanges();
@@ -283,7 +287,7 @@ namespace dip.Models
                     return;
                 this.Physics.Remove(phys);
                 db.SaveChanges();
-                
+
             }
         }
 
@@ -291,25 +295,161 @@ namespace dip.Models
         public List<int> CheckAccessPhys(List<int> idphys, HttpContextBase HttpContext)
         {
             List<int> res = new List<int>();
+            if (HttpContext == null)
+                return res;
 
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
 
             if (roles.Contains(RolesProject.admin.ToString()))
-                return idphys;
+                return idphys ?? res;
             if (roles.Contains(RolesProject.subscriber.ToString()))
-                return idphys;
+                return idphys ?? res;
 
-            if (roles.Contains(RolesProject.NotApproveUser.ToString()))
-                return res;
-
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                db.Set<ApplicationUser>().Attach(this);
-                res = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
-            }
+            if (roles.Contains(RolesProject.user.ToString()))
+                if (idphys != null && idphys.Count > 0)
+                    using (ApplicationDbContext db = new ApplicationDbContext())
+                    {
+                        db.Set<ApplicationUser>().Attach(this);
+                        res = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
+                    }
+            //if (roles.Contains(RolesProject.NotApproveUser.ToString()))
+            //    return res;
             return res;
         }
+
+
+
+        public FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
+        {
+            FEText res = null;
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //DbSet<FEText> collect = null;
+                if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
+                {
+                    //collect = db.FEText;
+                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+                    if (res == null)
+                        res = db.FEText.FirstOrDefault();
+                }
+
+                else if (roles.Contains(RolesProject.user.ToString()))
+                {
+                    db.Set<ApplicationUser>().Attach(this);
+                    db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault(x1 => x1.IDFE > id);
+                    if (res == null)
+                        res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
+                    //collect = user.Physics;
+                }
+
+            }
+
+            return res;
+
+        }
+
+
+        public FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
+        {
+            FEText res = null;
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //DbSet<FEText> collect = null;
+                if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
+                {
+                    
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+                    if (res == null)
+                        res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+                }
+
+                else if (roles.Contains(RolesProject.user.ToString()))
+                {
+                    db.Set<ApplicationUser>().Attach(this);
+                    db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+                    if (res == null)
+                        res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+                    //collect = user.Physics;
+                }
+
+            }
+
+            return res;
+
+        }
+
+
+        public FEText GetFirstAccessPhysic(HttpContextBase HttpContext)
+        {
+            FEText res = null;
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //DbSet<FEText> collect = null;
+                if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
+                {
+
+                    res = db.FEText.FirstOrDefault();
+                    
+                }
+
+                else if (roles.Contains(RolesProject.user.ToString()))
+                {
+                    db.Set<ApplicationUser>().Attach(this);
+                    db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
+                    
+                }
+
+            }
+
+            return res;
+
+        }
+
+
+        public FEText GetLastAccessPhysic(HttpContextBase HttpContext)
+        {
+            FEText res = null;
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //DbSet<FEText> collect = null;
+                if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
+                {
+
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+
+                }
+
+                else if (roles.Contains(RolesProject.user.ToString()))
+                {
+                    db.Set<ApplicationUser>().Attach(this);
+                    db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+
+                }
+
+            }
+
+            return res;
+
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 

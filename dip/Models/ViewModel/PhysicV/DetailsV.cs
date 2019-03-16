@@ -29,10 +29,15 @@ namespace dip.Models.ViewModel.PhysicV
         public void Data(int?id,HttpContextBase HttpContext)//bool go
         {
 
-            FEText phys = FEText.Get(id);
+            FEText phys = FEText.GetIfAccess(id, HttpContext);
             Data(phys, HttpContext);
         }
 
+        /// <summary>
+        /// без проверок
+        /// </summary>
+        /// <param name="phys"></param>
+        /// <param name="HttpContext"></param>
         public void Data(FEText phys, HttpContextBase HttpContext) 
         {
             if (phys == null)
