@@ -65,6 +65,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public ActionResult FavouritePhysics(int id)
         {
@@ -79,7 +80,7 @@ namespace dip.Controllers
                 var fetext = FEText.Get(id);
                 if (fetext == null)
                     return new HttpStatusCodeResult(404);
-                res = fetext.ChangeFavourite(user.Id);
+                res = fetext.ChangeFavourite(user.Id,HttpContext);
             }
 
 
@@ -87,21 +88,40 @@ namespace dip.Controllers
         }
 
 
-
+        [Authorize]
         public ActionResult ListFavouritePhysics(string personId)
         {
             ListFeTextV res = new ListFeTextV();
-            string personId_ = personId ?? ApplicationUser.GetUserId();
+            string currenUserId = ApplicationUser.GetUserId();
 
-            var user = ApplicationUser.GetUser(personId_);
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(currenUserId);
+
+            
+            if (string.IsNullOrWhiteSpace(personId))
+                personId = currenUserId;
+
+            bool admin = roles.Contains("admin");
+            if (!admin)
+                if (personId != currenUserId)
+                    //personId = currenUserId;
+                    return RedirectToAction("ListFavouritePhysics", new { personId = currenUserId });
+
+
+
+            //string personId_ = personId ?? ;
+
+            var user = ApplicationUser.GetUser(personId);
             user.LoadFavouritedList();
-            res.FeTexts = user.FavouritedPhysics.ToList();
-            if (personId==null||personId == personId_)
-                foreach (var i in res.FeTexts)
-                {
-                    i.FavouritedCurrentUser = true;
-                }
-            //return PartialView("ListFeText","",);
+            res.FeTexts = user.FavouritedPhysics;//.ToList();
+           
+            //TODO отрисовать кнопки в нужном состоянии, работает не правильно сейчас просто закомментил
+
+                //foreach (var i in res.FeTexts)
+                //{
+                //    i.FavouritedCurrentUser = true;
+                //}
+            
             return PartialView(res);
         }
     }

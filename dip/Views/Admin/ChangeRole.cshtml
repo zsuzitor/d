@@ -1,0 +1,121 @@
+﻿@model dip.Models.ViewModel.AdminV.ChangeRoleV
+@{
+    ViewBag.Title = "AddRole";
+}
+
+<h2>ChangeRole</h2>
+
+
+@*@using (Html.BeginForm("AddRole", "Admin"))
+    {*@
+
+<div class="div_inline_block changeRoleHalfMain">
+    <input class="form-control" name="userId" id="userIdInput_id" type="text" />
+    <button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
+    <div id="idCurrentUser_id"></div>
+    @*<input name="roleName" type="text" />*@
+    <button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>
+    <div id="ListAllUsers_id" style="display:none;">
+
+    </div>
+    
+    </div><div class="div_inline_block changeRoleHalfMain">
+               <select class="cursor_pointer form-control" name="roleName" id="roleNameSelect_id">
+                   @foreach (var i in Model.Roles)
+                   {
+                       <option value="@i">@i</option>
+                   }
+               </select>
+               <button class="btn btn-default" onclick="AddRole()">Выдать роль</button>
+               <button class="btn btn-default" onclick="RemoveRole()">Забрать роль</button>
+    </div>
+
+@*}*@
+
+
+
+
+
+<script>
+    function clearLinkUser() {
+        document.getElementById('idCurrentUser_id').innerHTML = '';
+    }
+
+    function showLinkCurUser() {
+        let id = document.getElementById('userIdInput_id').value;
+        if (id) {
+            let strLink = '/Person/PersonalRecord?personId=' + id;
+            document.getElementById('idCurrentUser_id').innerHTML = '<a href="'+strLink+'">Страница пользователя</a>';
+        }
+        else
+            alert('Введите id пользователя');
+        
+    }
+
+    function AddRole() {
+        var formData = {
+            userId: document.getElementById('userIdInput_id').value,
+            roleName: document.getElementById('roleNameSelect_id').value
+        };
+        goAjaxRequest({
+            url: "/Admin/AddRole",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                alert('Роль успешно добавлена')
+
+            }, type: 'POST'
+        });
+    }
+
+
+    function RemoveRole() {
+        var formData = {
+            userId: document.getElementById('userIdInput_id').value,
+            roleName: document.getElementById('roleNameSelect_id').value
+        };
+        goAjaxRequest({
+            url: "/Admin/RemoveRole",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                alert('Роль успешно удалена')
+
+            }, type: 'POST'
+        });
+    }
+
+
+    function LoadAllUsers() {
+        var formData = {};
+        var div = document.getElementById('ListAllUsers_id');
+        var but = document.getElementById('butLoadAllUsers');
+        if (!div.innerHTML.trim()) {
+            //загрузить
+            goAjaxRequest({
+                url: "/Admin/GetAllUsersShortData",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    div.innerHTML = req;
+
+                }, type: 'GET'
+            });
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть пользователей';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+                but.innerHTML = 'Показать всех пользователей';
+            }
+            else {
+                //показать
+                div.style.display = 'block';
+                but.innerHTML = 'Скрыть пользователей';
+            }
+        }
+
+
+
+    }
+</script>

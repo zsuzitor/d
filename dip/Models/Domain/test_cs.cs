@@ -25,7 +25,7 @@ using dip.Models.ViewModel;
 
 namespace dip.Models.Domain
 {
-    enum RolesProject { admin, subscriber, NotApproveUser, user };//vip
+    enum RolesProject { NotApproveUser, user,subscriber, admin };//vip
     //var a = (RolesProject)Enum.Parse(typeof(RolesProject), "", true);
 
 

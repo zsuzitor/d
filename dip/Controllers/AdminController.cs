@@ -23,10 +23,14 @@ namespace dip.Controllers
             return View();
         }
 
-        public ActionResult AddRole()
+        public ActionResult ChangeRole()
         {
             ChangeRoleV res = new ChangeRoleV();
-
+            foreach (RolesProject roleName in (RolesProject[])Enum.GetValues(typeof(RolesProject)))
+            {
+                res.Roles.Add(roleName.ToString());
+                
+            }
             return View(res);
         }
         [HttpPost]
@@ -47,24 +51,31 @@ namespace dip.Controllers
             }
 
 
-            return View();
+            return new HttpStatusCodeResult(200);
         }
 
-        public ActionResult DeleteRole()
-        {
-            ChangeRoleV res = new ChangeRoleV();
+        //public ActionResult DeleteRole()
+        //{
+        //    ChangeRoleV res = new ChangeRoleV();
 
-            return View(res);
-        }
+        //    return View(res);
+        //}
         [HttpPost]
-        public ActionResult DeleteRole(string roleName, string userId)
+        public ActionResult RemoveRole(string roleName, string userId)
         {
 
-
+            RolesProject role;
             var user = ApplicationUser.GetUser(userId);
-            var role = (RolesProject)Enum.Parse(typeof(RolesProject), roleName, true);
+            try
+            {
+                 role = (RolesProject)Enum.Parse(typeof(RolesProject), roleName, true);
 
-            if (user == null)//TODO проверять существует ли роль
+            }
+            catch {
+                return new HttpStatusCodeResult(404);
+            }
+            
+            if (user == null)
                 return new HttpStatusCodeResult(404);
             using (var db = new ApplicationDbContext())
             {
@@ -73,8 +84,8 @@ namespace dip.Controllers
 
             }
 
-
-            return View();
+            return new HttpStatusCodeResult(200);
+            //return View();
         }
 
 

@@ -7,11 +7,11 @@ namespace dip.Models.ViewModel.AdminV
 {
     public class ChangeRoleV
     {
-
+        public List<string> Roles { get; set; }
 
         public ChangeRoleV()
         {
-
+            Roles = new List<string>();
         }
     }
 }

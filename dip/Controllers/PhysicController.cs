@@ -30,6 +30,7 @@ namespace dip.Controllers
 
 
     //TODO везде проверка на закрытый профиль
+    [Authorize]
     public class PhysicController : Controller
     {
         // GET: Physic

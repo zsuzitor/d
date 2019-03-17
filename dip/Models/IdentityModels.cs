@@ -25,10 +25,10 @@ namespace dip.Models
         public bool CloseProfile { get; set; }
 
         //1--many
-        public ICollection<Log> UserLogs { get; set; }
+        public List<Log> UserLogs { get; set; }
 
 
-        public ICollection<FEText> FavouritedPhysics { get; set; }
+        public List<FEText> FavouritedPhysics { get; set; }
 
 
         public List<FEText> Physics { get; set; }
@@ -308,11 +308,21 @@ namespace dip.Models
 
             if (roles.Contains(RolesProject.user.ToString()))
                 if (idphys != null && idphys.Count > 0)
-                    using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    List<int> tmpRes;
+                        using (ApplicationDbContext db = new ApplicationDbContext())
                     {
                         db.Set<ApplicationUser>().Attach(this);
-                        res = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
+                         tmpRes = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
+
                     }
+                        foreach(var i in idphys)
+                    {
+                        if (tmpRes.Contains(i))
+                            res.Add(i);
+                    }
+                }
+                    
             //if (roles.Contains(RolesProject.NotApproveUser.ToString()))
             //    return res;
             return res;

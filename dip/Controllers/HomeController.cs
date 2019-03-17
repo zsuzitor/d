@@ -71,27 +71,27 @@ namespace dip.Controllers
 
 
 
-        [Authorize(Roles = "admin")]
-        public ActionResult ReloadDataBase()
-        {
-            //OldData.ReloadDataBase();
+        //[Authorize(Roles = "admin")]
+        //public ActionResult ReloadDataBase()
+        //{
+        //    //OldData.ReloadDataBase();
 
             
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
 
 
         //TODO old method for check view
-        public ActionResult CreateInput()
-        {
+        //public ActionResult CreateInput()
+        //{
 
          
 
-            return View();
-        }
+        //    return View();
+        //}
 
     }
 }

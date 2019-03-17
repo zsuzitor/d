@@ -197,16 +197,11 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionsController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\DescriptionQueriesController.cs" />
     <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IndexesController.cs" />
     <Compile Include="Controllers\LimitsController.cs" />
     <Compile Include="Controllers\ListPhysicsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\OperandGroupsController.cs" />
-    <Compile Include="Controllers\OperandsController.cs" />
-    <Compile Include="Controllers\OperationsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\PhysicController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -368,16 +363,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\DescriptionQueries\Create.cshtml" />
-    <Content Include="Views\DescriptionQueries\GetLimits.cshtml" />
-    <Content Include="Views\DescriptionQueries\GetOperands.cshtml" />
-    <Content Include="Views\DescriptionQueries\Results.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Indexes\Index.cshtml" />
     <Content Include="Views\Limits\Index.cshtml" />
-    <Content Include="Views\OperandGroups\Index.cshtml" />
-    <Content Include="Views\Operands\Index.cshtml" />
-    <Content Include="Views\Operations\Index.cshtml" />
     <Content Include="Views\Physic\Create.cshtml" />
     <Content Include="Views\Actions\GetFizVels.cshtml" />
     <Content Include="Views\Actions\GetPros.cshtml" />
@@ -410,8 +397,6 @@
     <Content Include="Views\Helpers\ImageLink.cshtml" />
     <Content Include="Views\Helpers\Image.cshtml" />
     <Content Include="Views\Person\PersonalRecord.cshtml" />
-    <Content Include="Views\Admin\AddRole.cshtml" />
-    <Content Include="Views\Admin\DeleteRole.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Person\FavouritePhysics.cshtml" />
     <Content Include="Views\Helpers\Favourite.cshtml" />
@@ -467,6 +452,7 @@
     <Content Include="Views\ListPhysics\RemovePhysicFromUser.cshtml" />
     <Content Include="Views\ListPhysics\RemoveListFromUser.cshtml" />
     <Content Include="Views\Helpers\FeTextInput.cshtml" />
+    <Content Include="Views\Admin\ChangeRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

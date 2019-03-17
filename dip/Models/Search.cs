@@ -123,7 +123,52 @@ namespace dip.Models
 
 
                     break;
-                   
+
+
+
+                case "fullTextSearchNear"://слова ищутся рядом
+
+                    using (var db = new ApplicationDbContext())
+                    {
+                        //TODO вынести в функцию sql server и юзать уже из linq
+                        str = Lucene_.ChangeForMap(str);
+                        var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'NEAR (";
+                        strquery +=string.Join(",", massWords);
+                        
+                        strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
+                        
+                        res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
+                                   SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                    }
+
+
+                    break;
+
+
+                case "fullTextSearchSemantic"://семантический поиск
+
+                    using (var db = new ApplicationDbContext())
+                    {
+                        //TODO вынести в функцию sql server и юзать уже из linq
+                        str = Lucene_.ChangeForMap(str);
+                        var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'NEAR (";
+                        strquery += string.Join(",", massWords);
+
+                        strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
+
+                        res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
+                                   SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                    }
+
+
+                    break;
+
+
+
             }
             return res;
         }

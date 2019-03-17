@@ -12,6 +12,7 @@ using System.Web.Routing;
 
 namespace dip.Controllers
 {
+    [Authorize]
     public class SearchController : Controller
     {
         // GET: Search
@@ -96,6 +97,12 @@ namespace dip.Controllers
         {
             //str = "газ";
             TextSearchPartialV res = new TextSearchPartialV();
+
+
+            //if (str.Split().Length > 10)
+            //    str = Search.StringSemanticParse(listmaramslog[1]);
+
+
             res.ListPhysId = Search.GetListPhys(type, str, HttpContext, lastId, countLoad);
             if (res.ListPhysId.Count == 0)
             {
@@ -114,37 +121,44 @@ namespace dip.Controllers
 
         //[HttpPost]
         //type - тип запроса lucene и др
+
         //lucCount- номер запроса 
-        public ActionResult TextSearch(string type, string str)//,bool semanticParse=false
+        /// <summary>
+        /// страница для первого текстового запроса
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public ActionResult TextSearch()//string type, string str,bool semanticParse=false
         {
             //TODO валидация строки от sql иньекций и тд
             //TODO полнотекстовый поиск
 
-            TextSearchV res = new TextSearchV();
+            TextSearchV res = new TextSearchV();//TODO возможно класс не используется
 
             //устанавливаем параметры для представления mainHeader
 
-            TempData["textSearchStr"] = str;
-            TempData["textSearchType"] = type;
+            //TempData["textSearchStr"] = str;
+            //TempData["textSearchType"] = type;
 
 
 
-            Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-               ApplicationUser.GetUserId(), true, null, type, str);
-            var listmaramslog = log.AddLogDb();
+            //Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
+            //   ApplicationUser.GetUserId(), true, null, type, str);
+            //var listmaramslog = log.AddLogDb();
             
-            if (str.Split().Length > 10)
-                str = Search.StringSemanticParse(listmaramslog[1]);
+            //if (str.Split().Length > 10)
+            //    str = Search.StringSemanticParse(listmaramslog[1]);
 
 
 
             
-            if (!string.IsNullOrWhiteSpace(str))
+            //if (!string.IsNullOrWhiteSpace(str))
 
-                res.ListPhysId = Search.GetListPhys(type, str, HttpContext, 0, 1);
+            //    res.ListPhysId = Search.GetListPhys(type, str, HttpContext, 0, 1);
 
-            if (res.ListPhysId.Count < Constants.CountForLoad)
-                res.ShowBtLoad = false;
+            //if (res.ListPhysId.Count < Constants.CountForLoad)
+            //    res.ShowBtLoad = false;
             //TODO если произошла ошибка, надо найти лог и поменять флаг
             return View(res);//.Select(x1=>x1.IDFE)
         }

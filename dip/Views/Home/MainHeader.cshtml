@@ -25,12 +25,13 @@
                     <li>@Html.ActionLink("AdminsPage", "AdminsPage", "Admin",new { }, new {@class= "navbar-brand" })</li>
                     <li>@Html.ActionLink("О программе", "About", "Home", new { }, new { @class = "navbar-brand" })</li>
                     <li>@Html.ActionLink("Дескрипторный поиск", "DescriptionSearch", "Search", new { }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("Полнотекстовый поиск", "TextSearch", "Search", new { }, new { @class = "navbar-brand" })</li>
                 </ul>
 
             </div>
             
         </div>
-        <div class="main_header_text_search_form_block">
+        @*<div class="main_header_text_search_form_block">
             @using (Html.BeginForm("TextSearch", "Search", FormMethod.Get))
             {
                 <div class="main_header_text_search_all_block">
@@ -40,14 +41,14 @@
                     <div class="div_inline_block main_header_search_type_div">
                         <select name="type" id="full_text_search_type" class="cursor_pointer form-control">
 
-                            @*selected="selected"          атрибут для проставления активной строки*@
+                          
                             @foreach (var itemSearchType in Model.SearchList)
                             {
-                                //string selected = "";
+                              
 
                                 if (itemSearchType == (string)TempData["textSearchType"])
                                 {
-                                    //selected = @"selected='selected'";
+                                   
                                     <option selected='selected' value="@itemSearchType">@itemSearchType</option>
                                 }
                                 if (itemSearchType != (string)TempData["textSearchType"])
@@ -57,22 +58,17 @@
                                 }
                             }
 
-                            @*<option value="lucene">lucene</option>
-                            <option value="fullTextSearch">fullTextSearch</option>*@
-                            @*<option value="lucene"></option>
-                            <option value="fullTextSearch"></option>*@
-
+                          
                         </select>
                     </div>
                     <div class="div_inline_block main_header_search_but_div"><input class="btn btn-default" type="submit" value="поиск" /></div>
 
-                    @*<hidden name="type" type="text" >@(TempData["textSearchType"])</hidden>*@
-
+                    
 
 
                 </div>
             }
-        </div>
+        </div>*@
         <div class="Main_header_home_link">@Html.ActionLink("Главная страница", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</div>@*col_black*@
         <div class="Main_header_big_log_part">@Html.Partial("_LoginPartial")</div>
         

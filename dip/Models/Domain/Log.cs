@@ -20,7 +20,7 @@ namespace dip.Models.Domain
         public ApplicationUser Person { get; set; }
 
 
-        public ICollection<LogParam> LogParams { get; set; }
+        public List<LogParam> LogParams { get; set; }
 
         [NotMapped]
         public List<string> Params_ { get; set; }

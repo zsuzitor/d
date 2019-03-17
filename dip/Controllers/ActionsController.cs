@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
+    [Authorize]
     public class ActionsController : Controller
     {
         // GET: Actions

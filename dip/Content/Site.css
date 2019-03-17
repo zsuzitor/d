@@ -499,8 +499,11 @@ font-size:25pt;
 
    /*----------------------------------------------*/
 
-
-
+   /*textsearch   */
+   
+   div.textSearchMainHalf{
+       width:50%;
+   }
    
    /*-------------------------------full text search---------------*/
 
@@ -727,3 +730,21 @@ div.ListUserAct_OneColumn{
     
     min-height:300px;
 }
+
+
+
+
+
+/*changerole*/
+
+
+div.changeRoleHalfMain{
+    width:50%;
+}
+
+
+
+
+
+
+
