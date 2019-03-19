@@ -639,6 +639,7 @@ order by [data].score desc
                         db.Entry(this).Collection(x1 => x1.FavouritedUser).Load();
 
                         this.FavouritedUser.Remove(userFav);
+                        res = false;
                     }
                     else
                     {

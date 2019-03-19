@@ -43,11 +43,21 @@
                 <p>
 <input name="searchTypeRadio" type="radio" class="radioClass" id="fullTextSearchSemantic_radio" value="fullTextSearchSemantic" />
                     <label for="fullTextSearchSemantic_radio">fullTextSearchSemantic</label></p>
+
+                <p>
+                    <input name="searchTypeRadio" type="radio" class="radioClass" id="NGrammSearch_radio" value="NGrammSearch" />
+                    <label for="NGrammSearch_radio">NGrammSearch</label>
+                </p>
+
+                <p>
+                    <input name="searchTypeRadio" type="radio" class="radioClass" id="fullTextSearchMainSemanticWord_radio" value="fullTextSearchMainSemanticWord" />
+                    <label for="fullTextSearchMainSemanticWord_radio">fullTextSearchMainSemanticWord</label>
+                </p>
                 
             </div>
     
     </div>
-    <button class="btn btn-default">Поиск</button>
+    <button onclick="loadNewFT()" class="btn btn-default">Поиск</button>
     </div>
 </div>
 
@@ -78,6 +88,8 @@
 
 
 <script>
+    var TextSearchObj = {};
+
     $(document).on('change', ':radio', function () {
 
         if (this.name == 'searchTypeRadio') {
@@ -107,10 +119,17 @@
                     break;
 
                 case 'fullTextSearchSemantic':
-                    strInfo = 'Семантический поиск';
+                    strInfo = 'Семантический поиск TODO сейчас не работает и скорее всего не заработает';
+                    break;
+                case 'NGrammSearch':
+                    strInfo = 'Поиск N граммами, ресурсоемкий, лучше использовать для короткой строки запроса';
+                    break;
+                case 'fullTextSearchMainSemanticWord':
+                    strInfo = 'В каждой записи ФЭ семантически выбираются глаыные слова  результат сопостовляется с запросом'+
+                        'Наименее точный поиск. Поиск происходит не по всем записям(зависит от текста)';
                     break;
 
-               
+                    
             }
             infodiv.innerHTML = strInfo
             
@@ -120,7 +139,26 @@
 
 
 
+    function loadNewFT() {
+        TextSearchObj.curTextS = document.getElementById('TextForSearch_id').value;
 
+        $('#divTypesSearch_id input:radio:checked').each(function () {//[type=checkbox] 
+            //curListId = this.id.split('ListPhysExistItem_')[1];
+            TextSearchObj.curTypeS = this.value;
+        });
+
+        if (!TextSearchObj.curTypeS) {
+            alert('Выберите тип поиска');
+            return;
+        }
+        if (!TextSearchObj.curTextS) {
+            alert('Введите текст');
+            return;
+        }
+
+        document.getElementById('div_search_ft_result_id').innerHTML = '';
+        loadMoreFT();
+    }
 
 
     var block_load = false;
@@ -133,16 +171,19 @@
             block_load = true;
 
             var formData = {
-                
-                str: document.getElementById('TextForSearch_id').value
+                str: TextSearchObj.curTextS
+               // str: document.getElementById('TextForSearch_id').value
             };
-            $('#divTypesSearch_id input:radio:checked').each(function () {//[type=checkbox] 
-                //curListId = this.id.split('ListPhysExistItem_')[1];
-                formData.type = this.value;
-            }); 
+            //$('#divTypesSearch_id input:radio:checked').each(function () {//[type=checkbox] 
+            //    //curListId = this.id.split('ListPhysExistItem_')[1];
+            //    formData.type = this.value;
+            //}); 
 
-
-
+            //if (!formData.type) {
+            //    alert('Выберите тип поиска');
+            //    return;
+            //}
+            formData.type = TextSearchObj.curTypeS;
             
             var div_last_load_c = document.getElementById('div_search_ft_result_id').children;
             if (div_last_load_c.length > 0) {
@@ -158,10 +199,12 @@
                 data: formData,
                 func_success: function (req, status, jqXHR) {
                     if (jqXHR.status == 204) {
-                        document.getElementById('div_search_ft_but_id').innerHTML = '';
+                        //document.getElementById('div_search_ft_but_id').innerHTML = '';
+                        document.getElementById('div_search_ft_but_id').style.display = 'none';
+                        block_load = false;
                     }
                     else {
-                        document.getElementById('div_search_ft_but_id').style.display = 'block';
+                        document.getElementById('div_search_ft_but_id').style.display = 'inline';
                         var div = document.getElementById('div_search_ft_result_id');
                         div.innerHTML += req;
                         //NumLoad++;
