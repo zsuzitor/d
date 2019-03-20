@@ -2,6 +2,8 @@
 using dip.Models.Domain;
 using dip.Models.ViewModel.SearchV;
 using Lucene.Net.Analysis.Ru;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +106,11 @@ namespace dip.Controllers
 
 
             res.ListPhysId = Search.GetListPhys(type, str, HttpContext, lastId, countLoad);
+            if (res.ListPhysId == null)
+            {
+                Response.StatusCode = 207;
+                return Content("", "text/html");//Emty
+            }
             if (res.ListPhysId.Count == 0)
             {
                 Response.StatusCode = 204;
@@ -136,6 +143,14 @@ namespace dip.Controllers
 
             TextSearchV res = new TextSearchV();//TODO возможно класс не используется
 
+            IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(ApplicationUser.GetUserId());
+            if (roles.Contains(RolesProject.admin.ToString()))
+            {
+                res.Admin = true;
+            }
+
+
             //устанавливаем параметры для представления mainHeader
 
             //TempData["textSearchStr"] = str;
@@ -146,13 +161,13 @@ namespace dip.Controllers
             //Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
             //   ApplicationUser.GetUserId(), true, null, type, str);
             //var listmaramslog = log.AddLogDb();
-            
+
             //if (str.Split().Length > 10)
             //    str = Search.StringSemanticParse(listmaramslog[1]);
 
 
 
-            
+
             //if (!string.IsNullOrWhiteSpace(str))
 
             //    res.ListPhysId = Search.GetListPhys(type, str, HttpContext, 0, 1);

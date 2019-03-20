@@ -46,6 +46,8 @@ namespace dip.Controllers
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
             //TODO проверять есть ли доступ
+            if(id== Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+                return new HttpStatusCodeResult(404);
             DetailsV res = new DetailsV();
             try
             {
@@ -63,7 +65,7 @@ namespace dip.Controllers
         public ActionResult ShowSimilar(int id)//, string technicalFunctionId
         {
             ShowSimilarV res = new ShowSimilarV();
-            res.ListSimilarIds = FEText.GetListSimilar(id, HttpContext);
+            res.ListSimilarIds = FEText.GetListSimilar(id, HttpContext,5);
 
 
             return PartialView(res);
@@ -549,7 +551,16 @@ namespace dip.Controllers
         }
 
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public ActionResult ReloadSemanticRecord()
+        {
+            FEText.ReloadSemanticRecord();
+            Response.StatusCode = 200;
+            return Content("", "text/html");//Emty
+        }
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -562,7 +573,7 @@ namespace dip.Controllers
 
 
 
-    }
+        }
 
 
 

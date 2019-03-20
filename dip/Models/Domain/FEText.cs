@@ -65,16 +65,19 @@ namespace dip.Models.Domain
         public string TextLit { get; set; }
 
 
-        //TODO раскомментить
+        
         [ScaffoldColumn(false)]
         public bool NotApprove { get; set; }
 
+        [ScaffoldColumn(false)]
+        public bool Deleted { get; set; }
+
 
         [ScaffoldColumn(false)]
-        public int CountInput { get; set; }
+        public int CountInput { get; set; }//количество входов(дескрипторная часть)
 
         [ScaffoldColumn(false)]
-        public bool ChangedObject { get; set; }
+        public bool ChangedObject { get; set; }//изменяется ли объект(дескрипторная часть)
 
 
 
@@ -106,6 +109,7 @@ namespace dip.Models.Domain
 
             CountInput = 1;
             ChangedObject = false;
+            Deleted = false;
             Lists = new List<ListPhysics>();
             Users = new List<ApplicationUser>();
         }
@@ -121,6 +125,7 @@ namespace dip.Models.Domain
             this.TextLit = a.TextLit;
             this.FavouritedCurrentUser = a.FavouritedCurrentUser;
 
+            this.Deleted = a.Deleted;
             this.CountInput = a.CountInput;
             this.ChangedObject = a.ChangedObject;
             this.NotApprove=a.NotApprove;
@@ -157,7 +162,7 @@ namespace dip.Models.Domain
         public static List<string> GetPropTextSearch()//TODO
         {
             var res = new List<string>();
-            var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser" };//исключаем
+            var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser", "Deleted" };//исключаем
 
 
             PropertyInfo[] myPropertyInfo;
@@ -327,7 +332,7 @@ namespace dip.Models.Domain
 
 
 
-            ApplicationUser user = new ApplicationUser();
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return null;
             list_id=user.CheckAccessPhys(list_id.ToList(), HttpContext).ToArray();
@@ -375,7 +380,7 @@ namespace dip.Models.Domain
         }
 
 
-        public static List<int> GetListSimilar(int id, HttpContextBase HttpContext, int count = 5)
+        public static List<int> GetListSimilar(int id, HttpContextBase HttpContext, int count = -1)
         {
             List<int> res = new List<int>();
 
@@ -398,7 +403,7 @@ order by [data].score desc
 
 
 
-            ApplicationUser user = new ApplicationUser();
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return null;
             
@@ -406,7 +411,11 @@ order by [data].score desc
 
             var dict = DataBase.DataBase.ExecuteQuery(quer, null, "IDFE");
             var accessList = user.CheckAccessPhys(dict.Select(x1 => Convert.ToInt32(x1["IDFE"])).Distinct().ToList(), HttpContext);
+            if(count>=0)
             res.AddRange(accessList.Take(count));
+            else
+                res.AddRange(accessList);
+
             //foreach (var i in dict)
             //{
             //    if (res.Count == count)
@@ -774,6 +783,17 @@ order by [data].score desc
             //}
 
             //return res;
+        }
+
+        public static void ReloadSemanticRecord()
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var fe=db.FEText.FirstOrDefault(x1=>x1.IDFE==Constants.FEIDFORSEMANTICSEARCH);
+                fe.Text = Constants.FeSemanticNullText;
+                db.SaveChanges();
+
+            }
         }
 
     }

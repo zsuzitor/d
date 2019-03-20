@@ -747,29 +747,29 @@ namespace dip.Models.DataBase
 
 
 
-                    try
-                {
-                    command.CommandText = "select * from FeIndex";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.FEIndex();
+                //    try
+                //{
+                //    command.CommandText = "select * from FeIndex";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.FEIndex();
 
-                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                        obj.Index = i["Index"].ToString().Trim();
+                //        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                //        obj.Index = i["Index"].ToString().Trim();
                         
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.FEIndexs.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.FEIndexs.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
@@ -1024,7 +1024,7 @@ namespace dip.Models.DataBase
                     //восстанавливаем бывшие id
                     listFetext= listFetext.OrderBy(x1 => x1.IDFE).ToList();
                     using (var db = new ApplicationDbContext())
-                    
+                    { 
                         foreach (var i in listFetext)
                     {
                             int tmpId = i.IDFE;
@@ -1060,7 +1060,16 @@ namespace dip.Models.DataBase
                             db.SaveChanges();
                         }
 
-
+                    var objsemantic = new Domain.FEText() { Deleted=true , Name ="Временная запись для семантического поиска",Text="---",
+                        TextInp="",
+                        TextOut="",
+                        TextObj="",
+                        TextApp="",
+                        TextLit=""
+                    };
+                    db.FEText.Add(objsemantic);
+                    db.SaveChanges();
+                    }
                 }
                 //catch (Exception e)
                 //{
@@ -1082,30 +1091,30 @@ namespace dip.Models.DataBase
 
 
 
-                try
-                {
-                    command.CommandText = "select * from NeZakon";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "FizVel1", "FizVel2");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.NeZakon();
+                //try
+                //{
+                //    command.CommandText = "select * from NeZakon";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "FizVel1", "FizVel2");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.NeZakon();
                         
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                        obj.FizVel1 = i["FizVel1"].ToString().Trim();
-                        obj.FizVel2 = i["FizVel2"].ToString().Trim();
+                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                //        obj.FizVel1 = i["FizVel1"].ToString().Trim();
+                //        obj.FizVel2 = i["FizVel2"].ToString().Trim();
                         
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.NeZakons.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.NeZakons.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 

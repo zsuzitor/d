@@ -216,11 +216,8 @@
     <Compile Include="Models\DataBase\OldDbContext.cs" />
     <Compile Include="Models\DataBase\PhysicalEffectsSearchEngine.cs" />
     <Compile Include="Models\DataBase\TechnicalFunctionsEntities.cs" />
-    <Compile Include="Models\Domain\ActionPro.cs" />
     <Compile Include="Models\Domain\Action.cs" />
-    <Compile Include="Models\Domain\ActionSpec.cs" />
     <Compile Include="Models\Domain\ActionType.cs" />
-    <Compile Include="Models\Domain\ActionVrem.cs" />
     <Compile Include="Models\Domain\AllAction.cs" />
     <Compile Include="Models\Domain\CharacteristicObject.cs" />
     <Compile Include="Models\Domain\FEAction.cs" />
@@ -234,7 +231,6 @@
     <Compile Include="Models\Domain\Log.cs" />
     <Compile Include="Models\Domain\LogParam.cs" />
     <Compile Include="Models\Domain\NewFEIndex.cs" />
-    <Compile Include="Models\Domain\NeZakon.cs" />
     <Compile Include="Models\Domain\Pro.cs" />
     <Compile Include="Models\Domain\Spec.cs" />
     <Compile Include="Models\Domain\StateObject.cs" />

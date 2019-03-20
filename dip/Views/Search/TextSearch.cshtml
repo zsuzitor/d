@@ -40,9 +40,14 @@
 <input name="searchTypeRadio" type="radio" class="radioClass" id="fullTextSearchNear_radio" value="fullTextSearchNear" />
                     <label for="fullTextSearchNear_radio">fullTextSearchNear</label></p>
                
-                <p>
-<input name="searchTypeRadio" type="radio" class="radioClass" id="fullTextSearchSemantic_radio" value="fullTextSearchSemantic" />
-                    <label for="fullTextSearchSemantic_radio">fullTextSearchSemantic</label></p>
+                @if (Model.Admin)
+                {
+                    <p>
+                        <input name="searchTypeRadio" type="radio" class="radioClass" id="fullTextSearchSemantic_radio" value="fullTextSearchSemantic" />
+                        <label for="fullTextSearchSemantic_radio">fullTextSearchSemantic</label>
+                    </p>
+                }
+                
 
                 <p>
                     <input name="searchTypeRadio" type="radio" class="radioClass" id="NGrammSearch_radio" value="NGrammSearch" />
@@ -115,17 +120,21 @@
                     break;
 
                 case 'fullTextSearchNear':
-                    strInfo = 'Поиск фразы, включенные слова ищутся рядом с другими включенными словами';
+                    strInfo = 'Поиск фразы, включенные слова ищутся рядом с другими включенными словами, поиск для 2+ слов';
                     break;
 
                 case 'fullTextSearchSemantic':
-                    strInfo = 'Семантический поиск TODO сейчас не работает и скорее всего не заработает';
+                    strInfo = 'Семантический поиск. В бд создана запись, в нее заносится строка поиска и'+
+                        'определяются похожие средствами sql server. С данным типом поиска можно работать '+
+                        'одновременно только 1 человеку(тк запись 1 и она блокируется до окончания выполнения запроса, '+
+                        'запись можно насильно разблокировать нажав на кнопку). '+
+                        '<button onclick="ReloadSemantic()">Насильно обнулить запись для поиска</button>';
                     break;
                 case 'NGrammSearch':
                     strInfo = 'Поиск N граммами, ресурсоемкий, лучше использовать для короткой строки запроса';
                     break;
                 case 'fullTextSearchMainSemanticWord':
-                    strInfo = 'В каждой записи ФЭ семантически выбираются глаыные слова  результат сопостовляется с запросом'+
+                    strInfo = 'В каждой записи ФЭ семантически выбираются главные слова  результат сопостовляется с запросом'+
                         'Наименее точный поиск. Поиск происходит не по всем записям(зависит от текста)';
                     break;
 
@@ -197,22 +206,33 @@
             goAjaxRequest({
                 url: '/Search/TextSearchPartial',
                 data: formData,
+                func_complete: function (req, status, jqXHR) {
+                    block_load = false;
+                    //document.getElementById('div_search_ft_but_id').style.display = 'none';
+
+                },
+                func_error: function (req, status, jqXHR) {
+                    document.getElementById('div_search_ft_but_id').style.display = 'none';
+                },
                 func_success: function (req, status, jqXHR) {
                     if (jqXHR.status == 204) {
                         //document.getElementById('div_search_ft_but_id').innerHTML = '';
                         document.getElementById('div_search_ft_but_id').style.display = 'none';
-                        block_load = false;
+                        //block_load = false;
+                    }
+                    else if (jqXHR.status == 207) {
+                        alert('Попробуйте позже, запись занята');
                     }
                     else {
                         document.getElementById('div_search_ft_but_id').style.display = 'inline';
                         var div = document.getElementById('div_search_ft_result_id');
                         div.innerHTML += req;
                         //NumLoad++;
-                        block_load = false;
+                        //block_load = false;
                     }
                     
 
-                }, type: 'GET',
+                }, type: 'POST',
                 beforeSend: function () {
                    
                 }
@@ -223,6 +243,22 @@
 
     }
 
+
+    function ReloadSemantic() {
+        goAjaxRequest({
+            url: '/Physic/ReloadSemanticRecord',
+            data: {},
+            
+            func_success: function (req, status, jqXHR) {
+                
+                alert('Запись очищена');
+            }, type: 'POST',
+            beforeSend: function () {
+
+            }
+
+        });
+    }
 
     ;
 </script>

@@ -11,6 +11,7 @@ namespace dip.Models.ViewModel.SearchV
         public int CountLoad { get; set; }
         public List<int> ListPhysId { get; set; }
         public bool? ShowBtLoad { get; set; }
+        public bool Admin { get; set; }
 
 
 
@@ -19,6 +20,7 @@ namespace dip.Models.ViewModel.SearchV
             CountLoad = 0;
             ListPhysId = new List<int>();
             ShowBtLoad = null;
+            Admin = false;
         }
     }
 }
