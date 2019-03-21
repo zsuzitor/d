@@ -586,6 +586,49 @@ namespace dip.Controllers
 
             return PartialView(res);
         }
+        public ActionResult GetStateObjectEdit(string id = null)
+        {
+            List<StateObject> res = new List<StateObject>();
+            var obj = StateObject.Get(id);
+
+            if (obj != null)
+            {
+                obj.ReLoadChild();
+                res = obj.Childs;
+                
+            }
+            else if (id == "")
+            {
+                res = StateObject.GetBase();
+            }
+
+
+            return PartialView(res);
+        }
+
+
+        public ActionResult GetPhaseObjectEdit(string id = null)
+        {
+            List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+            
+            
+            var obj = PhaseCharacteristicObject.Get(id);
+
+            if (obj != null)
+            {
+                obj.ReLoadChild();
+                res = obj.Childs;
+            }
+            else if (id == "")
+            {
+                res = PhaseCharacteristicObject.GetBase();
+            }
+
+
+
+            return PartialView(res);
+        }
+
 
         //[ChildActionOnly]
         //public ActionResult GetStateObject(string id=null, string type = "")
@@ -594,7 +637,7 @@ namespace dip.Controllers
         //    res.Type= type;
         //    //List<StateObject> res = new List<StateObject>();
         //    var obj = StateObject.Get(id);
-            
+
         //    if (obj != null)
         //    {
         //        obj.ReLoadChild();
@@ -604,16 +647,16 @@ namespace dip.Controllers
         //    {
         //        res.List=StateObject.GetBase();
         //    }
-                
+
 
 
         //    return PartialView(res);
         //}
 
-      
 
 
-       
+
+
         public ActionResult GetPhaseObject(string id=null, string type = "")
         {
             GetPhaseObjectV res = new GetPhaseObjectV();

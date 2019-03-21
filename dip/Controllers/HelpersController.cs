@@ -181,6 +181,19 @@ namespace dip.Controllers
         }
 
 
+        public ActionResult ListStateObjectEdit(List<StateObject> list)
+        {
+            
+            return PartialView(list);
+        }
+
+        public ActionResult ListPhaseObjectEdit(List<PhaseCharacteristicObject> list)
+        {
+         
+            return PartialView(list);
+        }
+
+
 
         //TODO не помню зачем это нужно и нужно ли вообще
         public ActionResult selectList(dynamic a, string label, string id, string name)

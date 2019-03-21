@@ -284,6 +284,7 @@
     <Compile Include="Models\ViewModel\ListPhysicsV\ListActV.cs" />
     <Compile Include="Models\ViewModel\ObjectForm.cs" />
     <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
+    <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionObjectV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\EditV.cs" />
@@ -454,6 +455,11 @@
     <Content Include="Views\Admin\ChangeRole.cshtml" />
     <Content Include="Views\Actions\LoadObject.cshtml" />
     <Content Include="Views\Helpers\ObjectTextOnePhase.cshtml" />
+    <Content Include="Views\Physic\CreateDescriptionObject.cshtml" />
+    <Content Include="Views\Helpers\ListStateObjectEdit.cshtml" />
+    <Content Include="Views\Helpers\ListPhaseObjectEdit.cshtml" />
+    <Content Include="Views\Actions\GetStateObjectEdit.cshtml" />
+    <Content Include="Views\Actions\GetPhaseObjectEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

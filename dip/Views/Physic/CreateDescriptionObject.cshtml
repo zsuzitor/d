@@ -1,0 +1,297 @@
+﻿@model dip.Models.ViewModel.PhysicV.CreateDescriptionObjectV
+
+
+@Html.Action("ListStateObjectEdit","Helpers",new { list = Model.States })
+
+<hr />
+
+@Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model.Characteristic })
+
+
+
+
+<script>
+    //mainObjEdit.maxNewPhase
+    var mainObjEdit = {
+
+
+        massEditState: [],
+        massEditPhase: [],
+
+        //massDeletedState: [],
+        massDeletedPhase: [],
+
+        massOldValue: [],
+
+        maxNewPhase: 1,
+
+    };
+
+
+
+
+
+
+
+
+
+    $(document).on('change', ':checkbox', function () {//$('input[type=radio][name=bedStatus]')
+        var valSplit = this.value.split('_');
+        var formData = {
+            id: valSplit[3]
+
+        };
+        //TODO отправлять только если это не новый элемент
+        switch (this.name) {
+            case 'change_state_radio':
+                if (this.checked) {
+                    goAjaxRequest({
+                        url: "/Actions/GetStateObjectEdit",
+                        data: formData,
+                        func_success: function (req, status, jqXHR) {
+
+                            document.getElementById('stateChilds_' + valSplit[3]).innerHTML = req;
+
+                        }, type: 'GET'
+                    });
+                }
+                else
+                    document.getElementById('stateChilds_' + valSplit[3]).innerHTML = '';
+
+
+                break;
+
+            case 'change_phase_checbox':
+
+            case 'change_state_radio':
+                if (this.checked) {
+                    goAjaxRequest({
+                        url: "/Actions/GetPhaseObjectEdit",
+                        data: formData,
+                        func_success: function (req, status, jqXHR) {
+
+                            document.getElementById('phaseChilds_' + valSplit[3]).innerHTML = req;
+
+                        }, type: 'GET'
+                    });
+                }
+                else
+                    document.getElementById('phaseChilds_' + valSplit[3]).innerHTML = '';
+
+
+                break;
+
+        }
+
+
+
+    });
+
+
+
+
+    function addNewPhase(id) {
+        var div = document.getElementById('phaseChilds_'+id );
+
+        mainObjEdit.maxNewPhase++;
+
+
+
+
+        let elem = '<div><input id="inputPhaseCheckbox_NEW_' + mainObjEdit.maxNewPhase + '" class="checkBoxClass" type="checkbox" name="change_phase_checbox" value="change_phase_checbox_NEW_' + mainObjEdit.maxNewPhase + '"/>' +
+                '<button class="btn btn-default" id="NEW_' + mainObjEdit.maxNewPhase + '_delbut" onclick="deletePhase(\'NEW_' + mainObjEdit.maxNewPhase + '\')">Удалить</button>' +
+                //'<button class="btn btn-default" onclick="changePhase(\''+mainObjEdit.maxNewPhase+'\')">Изменить</button>'+
+                //'<button id="'+restoreInput_but_mainObjEdit.maxNewPhase+'" class="btn btn-default" onclick="restorePhaseValue(\''+mainObjEdit.maxNewPhase+'\')" style="display:none;">Восстановить значение</button>'+
+                '<input class="form-control" type="text" name="id" id="inputPhaseText_NEW_' + mainObjEdit.maxNewPhase + '" value=""/>' +
+                '<div><div id="phaseChilds_NEW_' + mainObjEdit.maxNewPhase + '"></div></div></div>'
+        div.innerHTML += elem;
+
+
+    }
+
+
+    function changeState(id) {
+
+        var inp = $('#inputStateText_' + id );
+        var inpVal = inp.val();
+        if ($(inp).prop('readonly')) {
+            $(inp).removeProp('readonly');
+            if (!mainObjEdit.massEditState.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
+                mainObjEdit.massEditState.push(id);
+
+            }
+
+
+        }
+        else {
+            $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restoreStateValue( id);
+                        return;
+                    }
+                    break;
+                }
+
+        }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
+    }
+
+    function changePhase(id) {
+
+        var inp = $('#inputPhaseText_' + id);
+        var inpVal = inp.val();
+        if ($(inp).prop('readonly')) {
+            $(inp).removeProp('readonly');
+            if (!mainObjEdit.massEditPhase.includes(id)) {
+                mainObjEdit.massOldValue.push({
+                    id: id,
+                    val: inpVal
+                });
+                mainObjEdit.massEditPhase.push(id);
+
+            }
+
+
+        }
+        else {
+            $(inp).prop('readonly', true);
+            for (var i = 0; i < mainObjEdit.massOldValue.length; ++i)
+                if (mainObjEdit.massOldValue[i].id == id) {
+                    if (mainObjEdit.massOldValue[i].val == inpVal) {
+                        restorePhaseValue( id);
+                        return;
+                    }
+                    break;
+                }
+
+        }
+        document.getElementById('restoreInput_but_' + id).style.display = 'inline';
+    }
+
+
+
+
+
+    function deletePhase(id) {
+        // <div id="div_(pro.Id)_all">
+        var delbut = document.getElementById(id + '_delbut');
+        var checkboxChilds = $('#inputPhaseCheckbox_' + id );
+        var inp = $('#inputPhaseText_' + id );
+        if (delbut.innerHTML.trim() == 'Удалить') {
+            //"удаляем"
+            if (id.indexOf('NEW') < 0) {
+                        mainObjEdit.massDeletedPhase.push(id);
+                        
+            }
+
+            delbut.innerHTML = 'Восстановить';
+            var divChilds = document.getElementById('phaseChilds_'+id );
+            divChilds.innerHTML = '';
+            $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
+            $(checkboxChilds).css('display', 'none');
+            $(inp).css('background-color', 'grey');
+            $(inp).prop('readonly', true);
+
+        }
+        else {
+            //восстанавливаем
+            if (id.indexOf('NEW') < 0) {
+                        for (var i = 0; i < mainObjEdit.massDeletedPhase.length; ++i) {
+                            if (mainObjEdit.massDeletedPhase[i] == id) {
+                                mainObjEdit.massDeletedPhase.splice(i, 1);
+                                break;
+                            }
+                        }
+
+            }
+            else {
+                $(inp).removeProp('readonly');
+            }
+            delbut.innerHTML = 'Удалить';
+            $(checkboxChilds).css('display', 'inline');
+            //
+            $(inp).css('background-color', 'white');
+
+
+        }
+    }
+
+
+
+    function restorePhaseValue( id) {
+
+        for (var i = 0; i < mainObjEdit.massOldValue.length; ++i) {
+            if (mainObjEdit.massOldValue[i].id == id) {
+                document.getElementById('inputPhaseText_'+id ).value = mainObjEdit.massOldValue[i].val;
+                mainObjEdit.massOldValue.splice(i, 1);
+               
+                        for (var i2 = 0; i2 < mainObjEdit.massEditPhase.length; ++i2) {
+                            if (mainObjEdit.massEditPhase[i2] == id) {
+                                mainObjEdit.massEditPhase.splice(i2, 1);
+                                break;
+                            }
+                        }
+                        
+                break;
+            }
+
+
+        }
+        var inp = $('#inputPhaseText_' + id);
+        $(inp).prop('readonly', true);
+        document.getElementById('restoreInput_but_' + id).style.display = 'none';
+        
+    }
+
+    function restoreStateValue(id) {
+
+        for (var i = 0; i < mainObjEdit.massOldValue.length; ++i) {
+            if (mainObjEdit.massOldValue[i].id == id) {
+                document.getElementById('inputStateText_' + id).value = mainObjEdit.massOldValue[i].val;
+                mainObjEdit.massOldValue.splice(i, 1);
+
+                for (var i2 = 0; i2 < mainObjEdit.massEditState.length; ++i2) {
+                    if (mainObjEdit.massEditState[i2] == id) {
+                        mainObjEdit.massEditState.splice(i2, 1);
+                        break;
+                    }
+                }
+
+                break;
+            }
+
+
+        }
+        var inp = $('#inputStateText_' + id);
+        $(inp).prop('readonly', true);
+        document.getElementById('restoreInput_but_' + id).style.display = 'none';
+
+    }
+
+
+
+    function saveForm() {
+
+        goAjaxRequest({
+            url: "/Physic/CreateDescription",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                var data = req;//.responseText
+                //var type = data[0].trim();
+
+
+            }, type: 'POST'
+        });
+
+
+    }
+
+
+</script>
+

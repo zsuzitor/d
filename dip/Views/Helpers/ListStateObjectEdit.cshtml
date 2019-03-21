@@ -1,0 +1,29 @@
+﻿@model IEnumerable<dip.Models.Domain.StateObject>
+
+
+
+
+
+@if (Model != null)
+{
+    
+    <div class="objectInputChilds" id=@("stateChildsAll_"+"PARRENT")>
+        @foreach (var i2 in Model)
+        {
+            <input type="checkbox" class="radioClass" name=@("change_state_radio") value=@("change_state_radio_"+i2.Id) id=@("change_state_radio_id_"+i2.Id) />
+            @*<button class="btn btn-default" id=@(i2.Id+"_delbut") onclick="deleteState('@i2.Id')">Удалить</button>*@
+            <button class="btn btn-default" onclick="changeState('@i2.Id')">Изменить</button>
+                <button id="restoreInput_but_@i2.Id" class="btn btn-default" onclick="restoreStateValue('@i2.Id')" style="display:none;">Восстановить значение</button>
+            <input class="form-control" id="inputStateText_@i2.Id" name="@i2.Parent" type="text" value="@i2.Name" readonly/>
+        
+        
+            <div id=@("stateChilds_"+i2.Id)>
+                
+            </div>
+        }
+
+    </div>
+}
+
+
+

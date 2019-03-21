@@ -484,7 +484,21 @@ namespace dip.Controllers
             //return View();
         }
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public ActionResult CreateDescriptionObject()//, string technicalFunctionId
+        {
 
+            CreateDescriptionObjectV res = new CreateDescriptionObjectV();
+           
+           
+                // Получаем список всех воздействий 
+                res.Characteristic = PhaseCharacteristicObject.GetBase();// db.PhaseCharacteristicObjects.ToList();
+                res.States = StateObject.GetBase(); //db.StateObjects.ToList();
+           
+            
+            return View(res);
+        }
 
 
 

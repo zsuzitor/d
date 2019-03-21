@@ -17,12 +17,12 @@
                 @if (needSelected == true)
                 {
 
-                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
+                    <input  class="checkBoxClass" type="checkbox" checked name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
                 }
                 else
                 {
-                    @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
-                    <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
+                  
+                    <input  class="checkBoxClass" type="checkbox" name="change_phase_checbox"  value=@("change_phase_checbox_"+Model.Type+"_"+i2.Id ) />
 
                 }
                 @i2.Name
