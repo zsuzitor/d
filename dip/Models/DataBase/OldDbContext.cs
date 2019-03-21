@@ -735,41 +735,76 @@ namespace dip.Models.DataBase
                     
                     
                 }
-                
-
-                    //catch (Exception e)
-                    //{
-                    //    throw e;
-                    //}
 
 
-                    //FeIndex
-
-
-
-                //    try
-                //{
-                //    command.CommandText = "select * from FeIndex";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new Domain.FEIndex();
-
-                //        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                //        obj.Index = i["Index"].ToString().Trim();
-                        
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.FEIndexs.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
                 //catch (Exception e)
                 //{
                 //    throw e;
                 //}
+
+
+                //FeIndex
+
+
+
+                try
+                {
+                    command.CommandText = "select * from FeIndex";
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
+                    foreach (var i in ldr)
+                    {
+                        var obj = new Domain.FEIndex();
+
+                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                        obj.Index = i["Index"].ToString().Trim();
+
+                        using (var db = new ApplicationDbContext())
+                        {
+                            db.FEIndexs.Add(obj);
+                            db.SaveChanges();
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+
+
+
+
+                using (var db = new ApplicationDbContext())
+                {
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id = "MONOFAZ",
+                        Name = "Однофазное",
+                        Parent = "STRUCTOBJECT",//ALLSTATE
+                        CountPhase = 1
+                    });
+                    db.StateObjects.Add(new StateObject()
+                    {
+                        Id = "POLYFAZ",
+                        Name = "Многофазное",
+                        Parent = "STRUCTOBJECT"
+
+                    });
+                    db.SaveChanges();
+                }
+                //state phase
+                LoadStateObject("MONOFAZ");
+                LoadStateObject("POLYFAZ");
+
+                LoadCharacteristicObject("DESCOBJECT");
+
+
+
+
+
+
 
 
 
@@ -898,29 +933,29 @@ namespace dip.Models.DataBase
                 }
 
 
-                using (var db = new ApplicationDbContext())
-                {
-                    db.StateObjects.Add(new StateObject()
-                    {
-                        Id = "MONOFAZ",
-                        Name = "Однофазное",
-                        Parent = "STRUCTOBJECT",//ALLSTATE
-                        CountPhase = 1
-                    });
-                    db.StateObjects.Add(new StateObject()
-                    {
-                        Id = "POLYFAZ",
-                        Name = "Многофазное",
-                        Parent = "STRUCTOBJECT"
+                //using (var db = new ApplicationDbContext())
+                //{
+                //    db.StateObjects.Add(new StateObject()
+                //    {
+                //        Id = "MONOFAZ",
+                //        Name = "Однофазное",
+                //        Parent = "STRUCTOBJECT",//ALLSTATE
+                //        CountPhase = 1
+                //    });
+                //    db.StateObjects.Add(new StateObject()
+                //    {
+                //        Id = "POLYFAZ",
+                //        Name = "Многофазное",
+                //        Parent = "STRUCTOBJECT"
 
-                    });
-                    db.SaveChanges();
-                }
-                //state phase
-                LoadStateObject("MONOFAZ");
-                LoadStateObject("POLYFAZ");
+                //    });
+                //    db.SaveChanges();
+                //}
+                ////state phase
+                //LoadStateObject("MONOFAZ");
+                //LoadStateObject("POLYFAZ");
 
-                LoadCharacteristicObject("DESCOBJECT");
+                //LoadCharacteristicObject("DESCOBJECT");
 
 
 
@@ -1059,14 +1094,19 @@ namespace dip.Models.DataBase
                             }
                             db.SaveChanges();
                         }
-
-                    var objsemantic = new Domain.FEText() { Deleted=true , Name ="Временная запись для семантического поиска",Text="---",
-                        TextInp="",
-                        TextOut="",
-                        TextObj="",
-                        TextApp="",
-                        TextLit=""
-                    };
+                        
+                        //id этой записи должно быть == Models.Constants.FEIDFORSEMANTICSEARCH
+                        var objsemantic = new Domain.FEText()
+                        {
+                            Deleted = true,
+                            Name = "Временная запись для семантического поиска",
+                            Text = Models.Constants.FeSemanticNullText,
+                            TextInp = "",
+                            TextOut = "",
+                            TextObj = "",
+                            TextApp = "",
+                            TextLit = ""
+                        };
                     db.FEText.Add(objsemantic);
                     db.SaveChanges();
                     }
@@ -1403,13 +1443,14 @@ namespace dip.Models.DataBase
                     FeObjectParseAddValueInObj(indexMass[i2], obj);
                
             }
-            obj.Composition = obj.Composition.Trim();
-            obj.Conductivity = obj.Conductivity.Trim();
-            obj.MagneticStructure = obj.MagneticStructure.Trim();
-            obj.MechanicalState = obj.MechanicalState.Trim();
-            obj.OpticalState = obj.OpticalState.Trim();
-            obj.PhaseState = obj.PhaseState.Trim();
-            obj.Special = obj.Special.Trim();
+            
+            obj.Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Composition.Trim());
+            obj.Conductivity = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Conductivity.Trim());
+            obj.MagneticStructure = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MagneticStructure.Trim()); 
+            obj.MechanicalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MechanicalState.Trim()); 
+            obj.OpticalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.OpticalState.Trim()); 
+            obj.PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.PhaseState.Trim()); 
+            obj.Special = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Special.Trim()); 
 
 
 

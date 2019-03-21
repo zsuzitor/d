@@ -37,7 +37,7 @@ namespace dip.Models.ViewModel
             //ActionParametricIds ="";
         }
 
-        //возвращает только данные для отображения(список полей и чему равны)
+        //возвращает только данные для отображения(список полей и чему равны) (текстовое представление)
         public static Dictionary<string, string> GetFormShow(int idfe)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
@@ -280,19 +280,6 @@ namespace dip.Models.ViewModel
                 }
 
 
-
-
-
-
-                //vremList = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
-                //var treeVremBase = Item<Vrem>.GetQueueParent(vremList);
-
-
-
-
-
-                // vremList = db.Vrems.Where(vrem => vrem.Parent == actionId + "_VREM").ToList();
-                //var listSelectedVrem = GetListSelectedItem(vremList);
 
                 // Готовим данные для отправки в представление
                 res.ActionId = listOfActions;

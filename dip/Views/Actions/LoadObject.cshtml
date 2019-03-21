@@ -1,0 +1,103 @@
+﻿@model dip.Models.ViewModel.FormObjectTextRepresentation
+
+
+@if (Model != null)
+{
+    <div>
+
+        <div>
+            <p><label>Начальное состояние объекта</label></p>
+           
+            <p><label>@Model.StateBegin</label></p>
+            
+            <p><label>Начальные характеристики объекта</label></p>
+            
+            <div>
+                @if (Model.PhaseBegin1.Count > 0)
+                {
+                    <p><label>Фаза 1</label></p>
+
+                    @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseBegin1 })
+                }
+            </div>
+
+            <div>
+                @if (Model.PhaseBegin2.Count > 0)
+                {
+                    <p><label>Фаза 2</label></p>
+
+                    @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseBegin2 })
+                }
+            </div>
+
+            <div>
+                @if (Model.PhaseBegin3.Count > 0)
+                {
+                    <p><label>Фаза 3</label></p>
+
+                    @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseBegin3 })
+                }
+            </div>
+
+
+
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.StateEnd))
+        {
+            <div>
+                <p><label>Конечное состояние объекта</label></p>
+                
+                <p><label>@Model.StateEnd</label></p>
+               
+                <p><label>Начальные характеристики объекта</label></p>
+                
+                <div>
+                    @if (Model.PhaseEnd1.Count > 0)
+                    {
+                        <p><label>Фаза 1</label></p>
+
+                        @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseEnd1 })
+                    }
+                </div>
+
+                <div>
+                    @if (Model.PhaseEnd2.Count > 0)
+                    {
+                        <p><label>Фаза 2</label></p>
+
+                        @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseEnd2 })
+                    }
+                </div>
+
+                <div>
+                    @if (Model.PhaseEnd3.Count > 0)
+                    {
+                        <p><label>Фаза 3</label></p>
+
+                        @Html.Action("ObjectTextOnePhase", "Helpers", new { phasedata = Model.PhaseEnd3 })
+                    }
+                </div>
+
+
+
+
+
+
+
+            </div>
+        }
+       
+
+
+
+    </div>
+}
+
+
+
+
+
+
+
+
+

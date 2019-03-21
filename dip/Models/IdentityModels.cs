@@ -239,8 +239,12 @@ namespace dip.Models
 
         public FEText AddPhysics(int idphys, out bool? hadPhys)
         {
-            hadPhys = null;
             FEText phys = null;
+            hadPhys = null;
+            if (idphys == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+                return phys;
+           
+           
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
@@ -301,6 +305,10 @@ namespace dip.Models
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
 
+            int? semanticFe = idphys.FirstOrDefault(x1=>x1== Models.Constants.FEIDFORSEMANTICSEARCH);
+            if (semanticFe != null)
+                idphys.Remove((int)semanticFe);
+
             if (roles.Contains(RolesProject.admin.ToString()))
                 return idphys ?? res;
             if (roles.Contains(RolesProject.subscriber.ToString()))
@@ -341,7 +349,7 @@ namespace dip.Models
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
                     //collect = db.FEText;
-                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
+                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id&&x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
                     if (res == null)
                         res = db.FEText.FirstOrDefault();
                 }
@@ -373,7 +381,7 @@ namespace dip.Models
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
                     
-                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id&&x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
                     if (res == null)
                         res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
                 }
@@ -405,7 +413,7 @@ namespace dip.Models
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
 
-                    res = db.FEText.FirstOrDefault();
+                    res = db.FEText.FirstOrDefault(x1=>x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
                     
                 }
 
@@ -434,7 +442,7 @@ namespace dip.Models
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
 
-                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1=>x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
 
                 }
 

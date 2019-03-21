@@ -1,0 +1,14 @@
+﻿@model IEnumerable<IEnumerable<string>>
+
+
+@foreach (var i in Model)
+{
+    foreach (var i2 in i)
+    {
+        <p>
+            <label>@i2</label>
+        </p>
+    }
+}
+
+

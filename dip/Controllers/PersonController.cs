@@ -70,16 +70,20 @@ namespace dip.Controllers
         public ActionResult FavouritePhysics(int id)
         {
             bool? res = false;
+            if (id == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+                return PartialView(null);
 
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user != null)
             {
                 List<int> accessList= user.CheckAccessPhys(new List<int>() {id },HttpContext);
                 if(accessList.Count==0)
-                    return PartialView(res);
+                    return PartialView(null);
+                //return PartialView(res);
                 var fetext = FEText.Get(id);
                 if (fetext == null)
-                    return new HttpStatusCodeResult(404);
+                    return PartialView(null);
+                //return new HttpStatusCodeResult(404);
                 res = fetext.ChangeFavourite(user.Id,HttpContext);
             }
 

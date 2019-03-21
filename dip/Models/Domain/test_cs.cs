@@ -54,10 +54,10 @@ namespace dip.Models.Domain
    
 
 
-    public class PhaseCharacteristicObject : AParentDb<PhaseCharacteristicObject>
+    public class PhaseCharacteristicObject : ItemFormCheckbox<PhaseCharacteristicObject>
     {
         // public string Id { get; set; }
-        public string Name { get; set; }
+        //public string Name { get; set; }
         // public string Parent { get; set; }
 
 
@@ -84,7 +84,7 @@ namespace dip.Models.Domain
             return res;
         }
 
-
+        //удаляет прямых родителей если и родитель и ребенок есть в строке
         public static string DeleteNotChildCheckbox(string strIds)
         {
 
@@ -98,6 +98,7 @@ namespace dip.Models.Domain
                 else
                 {
                     bool needAdd = true;
+                    //проверяем содержет ли strIds этот элемент
                     foreach (var i2 in listItem)
                     {
                         if (listId.Contains(i2.Id))
@@ -262,6 +263,7 @@ namespace dip.Models.Domain
             return res;
         }
 
+        //удаляет прямых родителей если и родитель и ребенок есть в строке
         public void DeleteNotChildCheckbox()
         {
             this.PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.PhaseState);
@@ -385,7 +387,7 @@ namespace dip.Models.Domain
         }
 
 
-
+        //удаляет прямых родителей если и родитель и ребенок есть в строке
         public void DeleteNotChildCheckbox()
         {
 
@@ -498,7 +500,7 @@ namespace dip.Models.Domain
             return false;
         }
 
-
+        //удаляет прямых родителей если и родитель и ребенок есть в строке
         public void DeleteNotChildCheckbox()
         {
 

@@ -91,6 +91,8 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
+            if (id == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+                return new HttpStatusCodeResult(404);
             EditV res = new EditV();
             res.Obj = FEText.Get(id);
 
@@ -171,7 +173,8 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
         {
-
+            if (obj.IDFE == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+                return new HttpStatusCodeResult(404);
             if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
 

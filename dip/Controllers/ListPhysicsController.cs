@@ -129,7 +129,7 @@ namespace dip.Controllers
         {
             bool? had;
             var res=ApplicationUser.AddPhysics(iduser, idphys,out had);
-            if (had == true)//TODO
+            if (had == true|| had == null)//TODO
                 res = null;
             return PartialView(res);
         }

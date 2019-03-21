@@ -139,6 +139,7 @@ namespace dip.Models.Domain
         //}
 
         //TODO вынести в обстрактный класс?? сейчас придумал только костыльный способ через объект из за метода Pro.GetChild
+        //удаляет прямых родителей если и родитель и ребенок есть в строке
         public static string DeleteNotChildCheckbox(string strIds)
         {
 

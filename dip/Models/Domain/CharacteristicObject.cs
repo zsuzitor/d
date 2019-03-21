@@ -1,4 +1,5 @@
-﻿using System;
+﻿using dip.Models.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
+    //характеристики объекта(только вход или только выход), все 3 фазы
     public class CharacteristicObject
     {
         public List<PhaseCharacteristicObject> Phase1 { get; set; }
@@ -28,7 +30,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="Characteristics"></param>
         /// <param name="allidslist">список элементов которые нужно выделить</param>
-        public  void LoadTreePhasesForChilds(List<string> Characteristics, List<string>allidslist)
+        public void LoadTreePhasesForChilds(List<string> Characteristics, List<string> allidslist)
         {
             for (var charac = 0; charac < Characteristics.Count; ++charac)
             {
@@ -70,7 +72,7 @@ namespace dip.Models.Domain
                         }
 
 
-                       
+
                     }
                     foreach (var p in prosList)
                     {
@@ -91,9 +93,9 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="countPhase"></param>
         /// <param name="basePhase">если список пустой, попытается его получить из бд</param>
-        public void SetFirstLvlStates(int? countPhase,List<PhaseCharacteristicObject> basePhase)
+        public void SetFirstLvlStates(int? countPhase, List<PhaseCharacteristicObject> basePhase)
         {
-            if(basePhase==null||basePhase.Count==0)
+            if (basePhase == null || basePhase.Count == 0)
                 basePhase = PhaseCharacteristicObject.GetBase();
             switch (countPhase)//TODO в метод
             {
@@ -117,5 +119,6 @@ namespace dip.Models.Domain
 
             }
         }
-        }
+
+    }
 }

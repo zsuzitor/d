@@ -6,10 +6,10 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class StateObject: AParentDb<StateObject>//, ICloneable
+    public class StateObject: ItemFormCheckbox<StateObject>//, ICloneable
     {
         //public string Id { get; set; }
-        public string Name { get; set; }
+        //public string Name { get; set; }
         // public string Parent { get; set; }
 
         public int? CountPhase { get; set; }
@@ -28,32 +28,7 @@ namespace dip.Models.Domain
             CountPhase = null;
         }
 
-        //public StateObject(StateObject obj)
-        //{
-        //    this.
-        //}
-
-        //public  string LoadPartialTree(List<StateObject> States)//, out int countPhase
-        //{
-        //    string res = "";
-        //    //countPhase = (int)this.CountPhase;
-        //    var stateList = this.GetParentsList();
-        //    stateList.Add(this);
-        //    foreach (var i in stateList)
-        //        res += i.Id + " ";
-        //    //using (var db = new ApplicationDbContext())
-        //    //db.StateObjects.Where(x1=>x1.Parent== "STRUCTOBJECT").ToList();
-        //    foreach (var i in States)
-        //        if (i.Id == stateList[0].Id)//res.StateStart = stateList[0];
-        //        {
-        //            i.LoadPartialTree(stateList);
-        //            //countPhase = (int)i.CountPhase;
-        //            //Characteristics.SetFirstLvlStates(i.CountPhase, basePhase);
-        //            break;
-        //        }
-
-        //    return res;
-        //}
+       
 
 
 

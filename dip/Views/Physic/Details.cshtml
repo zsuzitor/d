@@ -155,7 +155,7 @@
                             data: { id: id },
                             func_success: function (data, status, jqXHR) {
                                 // Заменяем часть представления, отвечающего за отображение значений характеристики
-                                document.getElementById('DivDescriptionParams_id').innerHTML = data;
+                                div.innerHTML = data;
                             }
                         });
                         div.style.display = 'block';
@@ -207,9 +207,41 @@
 
 
 
-                function loadObjectFe(){
+                function loadObjectFe(id){
                     //TODO
-                    //DivObjectFe_id
+                    //
+                    var but = document.getElementById('show_objectfe_but');
+                    var div = document.getElementById('DivObjectFe_id');
+                    if (div.innerHTML.trim() == '') {
+                        //загрузить
+                        goAjaxRequest({
+                            url: '/Actions/LoadObject',
+                            type: 'GET',
+                            data: { id: id },
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                div.innerHTML = data;
+                            }
+                        });
+                        div.style.display = 'block';
+                        but.innerHTML='Скрыть Объект';
+                    }
+                    else {
+                        //загружать не надо, надо показать\скрыть
+                        if (div.style.display == 'block') {
+                            //скрыть
+                            div.style.display = 'none';
+                            but.innerHTML='Показать Объект';
+                        }
+                        else {
+                            //показать
+                            div.style.display = 'block';
+                            but.innerHTML='Скрыть Объект';
+                        }
+                    }
+
+
+
                 }
                 function loadListsFe(){
                     //DivListsFe_id

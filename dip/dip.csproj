@@ -265,9 +265,11 @@
     <Compile Include="Models\ViewModel\ActionsV\GetPhaseObjectV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetStateObjectV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\LoadDescrV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\LoadObjectV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ObjectInputV.cs" />
     <Compile Include="Models\ViewModel\AdminV\ChangeRoleV.cs" />
     <Compile Include="Models\ViewModel\DescriptionForm.cs" />
+    <Compile Include="Models\ViewModel\FormObjectTextRepresentation.cs" />
     <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\FormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="Models\ViewModel\HelpersV\PartFormStateObjectV.cs" />
     <Compile Include="Models\ViewModel\HomeV\MainHeaderV.cs" />
     <Compile Include="Models\ViewModel\ListPhysicsV\ListActV.cs" />
+    <Compile Include="Models\ViewModel\ObjectForm.cs" />
     <Compile Include="Models\ViewModel\PersonV\PersonalRecordV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\CreateDescriptionV.cs" />
     <Compile Include="Models\ViewModel\PhysicV\DetailsV.cs" />
@@ -449,6 +452,8 @@
     <Content Include="Views\ListPhysics\RemoveListFromUser.cshtml" />
     <Content Include="Views\Helpers\FeTextInput.cshtml" />
     <Content Include="Views\Admin\ChangeRole.cshtml" />
+    <Content Include="Views\Actions\LoadObject.cshtml" />
+    <Content Include="Views\Helpers\ObjectTextOnePhase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

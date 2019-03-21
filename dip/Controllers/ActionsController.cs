@@ -47,10 +47,7 @@ namespace dip.Controllers
         public ActionResult DescriptionInput( List<DescrSearchI> inp, List<DescrSearchI> outp,int countInput = 1)
         {
 
-            //DescrSearchIInput.ValidationIfNeed(inp);
-
-            //DescrSearchIOut.ValidationIfNeed(outp);
-           // bool withOutDataInput = false;
+           
 
             inp = inp ?? new List<DescrSearchI>();
             //if (inp.Count == 0)
@@ -147,100 +144,101 @@ namespace dip.Controllers
             res.StatesBegin = baseState.Select(x1=>x1.CloneWithOutRef()).ToList();
            // if (changeStateObject)
                 res.StatesEnd = baseState.Select(x1 => x1.CloneWithOutRef()).ToList();
+            { 
+            string tmpStateBeginSelected = "" ;
+            res.StatesBeginFirstLvlPhase(stateIdBegin, basePhase, res.StatesBegin, res.CharacteristicsBegin,ref tmpStateBeginSelected);
+            res.StateBeginSelected = tmpStateBeginSelected;
 
-            {
-               
-                StateObject state = StateObject.Get(stateIdBegin);
-                if (state != null)
-                {
-                    //int countPhase;
-                    var massparent=state.GetParentsList();
-                    foreach (var asd in res.StatesBegin)
-                    {
-                        if(massparent.FirstOrDefault(x1=>x1.Id== asd.Id)==null)
-                        {
-                            if (asd.Id == state.Id)
-                            {
-                                asd.LoadPartialTree(massparent);
-                            }
-                            else
-                                continue;
-                        }
-                        asd.LoadPartialTree(massparent);
-                    }
-                    res.StateBeginSelected = string.Join(" ",massparent.Select(x1 => x1.Id).ToList());
-                    res.StateBeginSelected +=" "+ state.Id;
-                    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
-                    res.CharacteristicsStart.SetFirstLvlStates(state.CountPhase, basePhase);
-                   
-                }
-                
+            List<string> CharacteristicsStartNeedSelect = new List<string>();
+            res.CharacteristicsBegin.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
+            res.CharacteristicsBegin.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0] : null;
+            res.CharacteristicsBegin.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+            res.CharacteristicsBegin.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
             }
-            if (changedObject)
-            {
-                StateObject state = StateObject.Get(stateIdEnd);
-
-                if (state != null)
-                {
-                    //int countPhase;
-                    //res.StateEndSelected = state.LoadPartialTree(res.StatesEnd);//, out countPhase
-                    //res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
-
-                    var massparent = state.GetParentsList();
-                    foreach (var asd in res.StatesEnd)
-                    {
-                        asd.LoadPartialTree(massparent);
-                    }
-                    res.StateEndSelected = string.Join(" ", massparent.Select(x1 => x1.Id).ToList());
-                    res.StateEndSelected += " " + state.Id;
-                    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
-                    res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
-
-
-                }
-            }
-
-
-
-
-
-            //PhaseCharacteristicObject CharacteristicObjPhase1 = null;
             //{
-            //    PhaseCharacteristicObject characteristic = CharacteristicStart.Length>0? PhaseCharacteristicObject.Get(CharacteristicStart[0]):null;
-            //    if (characteristic != null)
+
+            //    StateObject state = StateObject.Get(stateIdBegin);
+            //    if (state != null)
             //    {
-            //        var characteristicList = characteristic.GetParentsList();
-            //        characteristicList.Add(characteristic);
-            //        CharacteristicObjPhase1 = characteristicList[0];
-            //        CharacteristicObjPhase1.LoadPartialTree(characteristicList);
+            //        //int countPhase;
+            //        var massparent=state.GetParentsList();
+            //        foreach (var asd in res.StatesBegin)
+            //        {
+            //            if(massparent.FirstOrDefault(x1=>x1.Id== asd.Id)==null)
+            //            {
+            //                if (asd.Id == state.Id)
+            //                {
+            //                    asd.LoadPartialTree(massparent);
+            //                }
+            //                else
+            //                    continue;
+            //            }
+            //            asd.LoadPartialTree(massparent);
+            //        }
+            //        res.StateBeginSelected = string.Join(" ",massparent.Select(x1 => x1.Id).ToList());
+            //        res.StateBeginSelected +=" "+ state.Id;
+            //        //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
+            //        res.CharacteristicsStart.SetFirstLvlStates(state.CountPhase, basePhase);
+
             //    }
 
             //}
+            if (changedObject)
+            {
+                string tmpStateEndSelected = "";
+                res.StatesBeginFirstLvlPhase(stateIdEnd, basePhase, res.StatesEnd, res.CharacteristicsEnd, ref tmpStateEndSelected);
+                res.StateEndSelected = tmpStateEndSelected;
+
+
+                List<string> CharacteristicsStartNeedSelect = new List<string>();
+                res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
+                res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0] : null;
+                res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+                res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
+                //StateObject state = StateObject.Get(stateIdEnd);
+
+                //if (state != null)
+                //{
+
+
+                //    var massparent = state.GetParentsList();
+                //    foreach (var asd in res.StatesEnd)
+                //    {
+                //        asd.LoadPartialTree(massparent);
+                //    }
+                //    res.StateEndSelected = string.Join(" ", massparent.Select(x1 => x1.Id).ToList());
+                //    res.StateEndSelected += " " + state.Id;
+                //    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
+                //    res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
+
+
+                //}
+            }
 
 
 
             //TODO че по оптимизации?
             // CharacteristicObject
             {
-                List<string> CharacteristicsStartNeedSelect = new List<string>();
-                res.CharacteristicsStart.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
-                res.CharacteristicsStart.ParamPhase1 = CharacteristicsStartNeedSelect.Count>0? CharacteristicsStartNeedSelect[0]:null;
-                res.CharacteristicsStart.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-                res.CharacteristicsStart.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2]:null;
+                //List<string> CharacteristicsStartNeedSelect = new List<string>();
+                //res.CharacteristicsBegin.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
+                //res.CharacteristicsBegin.ParamPhase1 = CharacteristicsStartNeedSelect.Count>0? CharacteristicsStartNeedSelect[0]:null;
+                //res.CharacteristicsBegin.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+                //res.CharacteristicsBegin.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2]:null;
             }
             
 
 
             //TODO че по оптимизации?
 
-            if (changedObject)
-            {
-                List<string> CharacteristicsStartNeedSelect = new List<string>();
-                res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
-                res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0]:null;
-                res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-                res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
-            }
+            //if (changedObject)
+            //{
+            //    List<string> CharacteristicsStartNeedSelect = new List<string>();
+            //    res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
+            //    res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0]:null;
+            //    res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
+            //    res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
+            //}
                 
             
 
@@ -267,7 +265,7 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// загрузить для отображения(не формой а текстом)
+        /// загрузить для отображения дескрипторную часть(не формой а текстом)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -276,6 +274,18 @@ namespace dip.Controllers
             LoadDescrV res = new LoadDescrV();
            res.DictDescrData= DescriptionForm.GetFormShow(id);
             
+            return PartialView(res);
+        }
+
+        /// <summary>
+        /// загрузить для отображения часть объекта(не формой а текстом)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult LoadObject(int id)
+        {
+            FormObjectTextRepresentation res = FormObjectTextRepresentation.GetFormShow(id);
+           
             return PartialView(res);
         }
 

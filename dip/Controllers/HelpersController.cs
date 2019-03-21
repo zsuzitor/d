@@ -272,5 +272,12 @@ namespace dip.Controllers
             return PartialView(obj);
         }
 
+
+        public ActionResult ObjectTextOnePhase(List<List<string>> phasedata)//, int idlist
+        {
+
+            return PartialView(phasedata);
+        }
+
         }
 }
