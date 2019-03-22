@@ -5,10 +5,10 @@
 
 <hr />
 
-@Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model.Characteristic })
+@Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model.Characteristic, parentId="PARENT" })
 
 
-
+<button class="btn btn-default" onclick="saveForm()">Сохранить</button>
 
 <script>
     //mainObjEdit.maxNewPhase
@@ -41,19 +41,45 @@
             id: valSplit[3]
 
         };
-        //TODO отправлять только если это не новый элемент
+        
         switch (this.name) {
-            case 'change_state_radio':
+            case 'change_state_checbox':
                 if (this.checked) {
-                    goAjaxRequest({
-                        url: "/Actions/GetStateObjectEdit",
-                        data: formData,
-                        func_success: function (req, status, jqXHR) {
+                    // отправлять только если это не новый элемент
+                    if (this.value.indexOf('NEW') < 0) {
+                        goAjaxRequest({
+                            url: "/Actions/GetStateObjectEdit",
+                            data: formData,
+                            func_success: function (req, status, jqXHR) {
 
-                            document.getElementById('stateChilds_' + valSplit[3]).innerHTML = req;
+                                document.getElementById('stateChilds_' + valSplit[3]).innerHTML = req;
 
-                        }, type: 'GET'
-                    });
+                            }, type: 'GET'
+                        });
+                    }
+                    else {
+                        let prId=this.value.split('_')[3];
+                        document.getElementById('stateChilds_' + valSplit[3]).innerHTML = '<div class="objectInputChilds" id="phaseChildsAll_"' + prId + '>' +
+       '<div id="phaseChildsInner_"' + prId + '></div>' +
+          '<button class="btn btn-default" onclick="addNewPhase(' + prId + ')">Добавить</button></div>';
+
+
+                        
+       
+
+
+
+
+
+
+
+
+
+
+
+
+                    }
+                   
                 }
                 else
                     document.getElementById('stateChilds_' + valSplit[3]).innerHTML = '';
@@ -63,7 +89,7 @@
 
             case 'change_phase_checbox':
 
-            case 'change_state_radio':
+            
                 if (this.checked) {
                     goAjaxRequest({
                         url: "/Actions/GetPhaseObjectEdit",
@@ -91,22 +117,22 @@
 
 
     function addNewPhase(id) {
-        var div = document.getElementById('phaseChilds_'+id );
+        var div = document.getElementById('phaseChildsInner_' + id);
 
-        mainObjEdit.maxNewPhase++;
-
-
+        
 
 
-        let elem = '<div><input id="inputPhaseCheckbox_NEW_' + mainObjEdit.maxNewPhase + '" class="checkBoxClass" type="checkbox" name="change_phase_checbox" value="change_phase_checbox_NEW_' + mainObjEdit.maxNewPhase + '"/>' +
-                '<button class="btn btn-default" id="NEW_' + mainObjEdit.maxNewPhase + '_delbut" onclick="deletePhase(\'NEW_' + mainObjEdit.maxNewPhase + '\')">Удалить</button>' +
+
+
+        let elem = '<div><input id="inputPhaseCheckbox_NEW' + mainObjEdit.maxNewPhase + '" class="checkBoxClass" type="checkbox" name="change_phase_checbox" value="change_phase_checbox_NEW' + mainObjEdit.maxNewPhase + '"/>' +
+                '<button class="btn btn-default" id="NEW' + mainObjEdit.maxNewPhase + '_delbut" onclick="deletePhase(\'NEW' + mainObjEdit.maxNewPhase + '\')">Удалить</button>' +
                 //'<button class="btn btn-default" onclick="changePhase(\''+mainObjEdit.maxNewPhase+'\')">Изменить</button>'+
                 //'<button id="'+restoreInput_but_mainObjEdit.maxNewPhase+'" class="btn btn-default" onclick="restorePhaseValue(\''+mainObjEdit.maxNewPhase+'\')" style="display:none;">Восстановить значение</button>'+
-                '<input class="form-control" type="text" name="id" id="inputPhaseText_NEW_' + mainObjEdit.maxNewPhase + '" value=""/>' +
-                '<div><div id="phaseChilds_NEW_' + mainObjEdit.maxNewPhase + '"></div></div></div>'
+                '<input class="form-control" type="text" name="'+id+'" id="inputPhaseText_NEW' + mainObjEdit.maxNewPhase + '" value=""/>' +
+                '<div><div id="phaseChilds_NEW' + mainObjEdit.maxNewPhase + '"></div></div></div>'
         div.innerHTML += elem;
 
-
+        mainObjEdit.maxNewPhase++;
     }
 
 
@@ -277,9 +303,61 @@
 
 
     function saveForm() {
+        formData = {};
+
+
+        let iterAdd = 0;
+        for (let i = 1; i < mainObjEdit.maxNewPhase; ++i) {
+            let inp=document.getElementById('inputPhaseText_NEW'+i);
+            if (inp) {
+                formData['obj.MassAddCharacteristic[' + iterAdd + '].Text'] = inp.value;
+                formData['obj.MassAddCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
+                formData['obj.MassAddCharacteristic[' + iterAdd + '].Id'] = 'NEW'+i;
+                
+                iterAdd++;
+            }
+        }
+
+        iterAdd = 0;
+        for (let i = 0; i < mainObjEdit.massEditPhase.length; ++i) {
+            let inp = document.getElementById('inputPhaseText_' + mainObjEdit.massEditPhase[i]);
+            if (inp) {
+                formData['obj.MassEditCharacteristic[' + iterAdd + '].Text'] = inp.value;
+                formData['obj.MassEditCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
+                formData['obj.MassEditCharacteristic[' + iterAdd + '].Id'] = inp.id.split('_')[1];
+
+                iterAdd++;
+            }
+        }
+
+        iterAdd = 0;
+        for (let i = 0; i < mainObjEdit.massEditState.length; ++i) {
+            let inp = document.getElementById('inputStateText_' + mainObjEdit.massEditState[i]);
+            if (inp) {
+                formData['obj.MassEditState[' + iterAdd + '].Text'] = inp.value;
+                formData['obj.MassEditState[' + iterAdd + '].ParentId'] = inp.name;
+                formData['obj.MassEditState[' + iterAdd + '].Id'] = inp.id.split('_')[1];
+
+                iterAdd++;
+            }
+        }
+
+        iterAdd = 0;
+        for (let i = 0; i < mainObjEdit.massDeletedPhase.length; ++i) {
+            let inp = document.getElementById('inputPhaseText_' + mainObjEdit.massDeletedPhase[i]);
+            if (inp) {
+                formData['obj.MassDeleteCharacteristic[' + iterAdd + '].Text'] = inp.value;
+                formData['obj.MassDeleteCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
+                formData['obj.MassDeleteCharacteristic[' + iterAdd + '].Id'] = inp.id.split('_')[1];
+
+                iterAdd++;
+            }
+        }
+
+        
 
         goAjaxRequest({
-            url: "/Physic/CreateDescription",
+            url: "/Physic/CreateDescriptionObject",
             data: formData,
             func_success: function (req, status, jqXHR) {
                 var data = req;//.responseText

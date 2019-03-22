@@ -18,6 +18,7 @@ using Microsoft.SqlServer.Management.Smo;
 using Microsoft.SqlServer.Management.Common;
 using System.Web.Hosting;
 using dip.Models.ViewModel;
+using System.Text.RegularExpressions;
 //using Microsoft.SqlServer.Management.Common;
 
 
@@ -613,8 +614,220 @@ namespace dip.Models.Domain
         }
     }
 
+    public class SaveDescriptionObject
+    {
 
-    public class SaveDescription
+        public SaveDescriptionObjectEntry[] MassAddCharacteristic { get; set; }
+
+        public SaveDescriptionObjectEntry[] MassEditCharacteristic { get; set; }
+        public SaveDescriptionObjectEntry[] MassEditState { get; set; }
+
+        public SaveDescriptionObjectEntry[] MassDeleteCharacteristic { get; set; }
+
+        public SaveDescriptionObject()
+
+        {
+
+        }
+
+        public void SetNotNullArray()
+        {
+            MassAddCharacteristic = MassAddCharacteristic ?? new SaveDescriptionObjectEntry[0];
+            MassEditCharacteristic = MassEditCharacteristic ?? new SaveDescriptionObjectEntry[0];
+            MassEditState = MassEditState ?? new SaveDescriptionObjectEntry[0];
+            MassDeleteCharacteristic = MassDeleteCharacteristic ?? new SaveDescriptionObjectEntry[0];
+
+        }
+
+
+       public static List<SaveDescriptionObjectEntry> AllChildsCharacObj(List<SaveDescriptionObjectEntry> mass, string id)//List<string>
+        {
+            List<SaveDescriptionObjectEntry> res = new List<SaveDescriptionObjectEntry>();
+
+
+            //for(int i = 0; i < mass.Count; ++i)
+            //{
+            //    if (ids.Contains(mass[i].Parent))
+            //    {
+            //        res.Add(mass[i]);
+            //        mass.RemoveAt(i--);
+                    
+            //    }
+            //}
+
+
+            var items=mass.Where(x1=> x1.ParentId==id).ToList();//ids.Contains(
+            res.AddRange(items);
+            //for (int i = 0; i < mass.Count; ++i)
+            //{
+            //    if (items.FirstOrDefault(x1=>x1.Id==mass[i].Id)!=null)
+            //    {
+            //        //res.Add(mass[i]);
+                    
+            //        mass.RemoveAt(i--);
+
+            //    }
+            //}
+            foreach(var i in items)
+            {
+                res.AddRange(SaveDescriptionObject.AllChildsCharacObj(mass, i.Id));
+            }
+
+            //if (items.Count>0)
+            //{
+            //    res.AddRange(items);
+            //    mass.rem(items);
+            //    res.AddRange(test(mass, item.Id));
+
+            //}
+            return res;
+        }
+
+        public void AddCharacteristic(ApplicationDbContext db_ = null)
+        {
+            
+            Dictionary<string,List<SaveDescriptionObjectEntry>> MainTree = new Dictionary<string, List<SaveDescriptionObjectEntry>>();
+            List<SaveDescriptionObjectEntry> MassAddCharacteristicList = this.MassAddCharacteristic.ToList();
+            foreach (var i in this.MassAddCharacteristic)
+                if (!i.ParentId.Contains("NEW"))
+                {
+                    if(!MainTree.ContainsKey(i.ParentId))
+                    MainTree[i.ParentId]=SaveDescriptionObject.AllChildsCharacObj(MassAddCharacteristicList, i.ParentId);
+                }
+            //MainParentId.Add(i.ParentId);
+
+            var db = db_ ?? new ApplicationDbContext();
+            var AllcharDb = db.PhaseCharacteristicObjects.ToList();
+
+            string letterPart = "";
+            string groupName = "letter";
+            Regex letterPartR = new Regex(@"^(?<" + groupName + @">\D+)\d*$");
+            foreach (var i in MainTree)
+            {
+                if (i.Value.Count > 0)
+                {
+                    
+                    
+                    var match=letterPartR.Match(i.Key);
+                    //var sfd = letterPartR.GetGroupNames();
+                    //string groupName=letterPartR.GetGroupNames()[0];
+                    letterPart = match.Groups[groupName].Value;
+
+                    Regex letterPartN = new Regex(@"^"+ letterPart + @"\d*$");
+                    int last = AllcharDb.Where(x1=> { //x1.Id.Contains(i.Key)
+                        return letterPartN.IsMatch(x1.Id);
+                        })
+                        .Max(x1 => {
+                            string[] tmpstr = x1.Id.Split(new string[] { letterPart }, StringSplitOptions.RemoveEmptyEntries);
+                            if (tmpstr.Length > 0)
+                                return int.Parse(tmpstr[0]);
+                            else
+                                return 0;
+                            });
+                    foreach (var i2 in i.Value)//TODO не уверен что не возникнет ошибки, тк они не сортируются специально, сотировка задается в функции AllChildsCharacObj
+                    {
+                        PhaseCharacteristicObject ob = new PhaseCharacteristicObject() {
+                            Id = letterPart + ++last,// i2.Id.Split(new string[] {"NEW" },StringSplitOptions.RemoveEmptyEntries)[0],
+                            Parent = i2.ParentId,
+                            Name = i2.Text
+                        };
+                        db.PhaseCharacteristicObjects.Add(ob);
+                        db.SaveChanges();
+                        AllcharDb.Add(ob);
+                        foreach (var i3 in MainTree[i.Key])
+                        {
+                            if (i3.ParentId == i2.Id)
+                                i3.ParentId = ob.Id;
+                        }
+                        }
+                   
+                }
+                
+            }
+            
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void EditCharacteristic(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            foreach(var i in this.MassEditCharacteristic)
+            {
+                var objCharac=db.PhaseCharacteristicObjects.FirstOrDefault(x1=>x1.Id==i.Id);
+                if (objCharac != null)
+                {
+                    objCharac.Name = i.Text;
+                    db.SaveChanges();
+                }
+            }
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void EditState(ApplicationDbContext db_ = null)
+        {
+            var db = db_ ?? new ApplicationDbContext();
+
+            foreach (var i in this.MassEditState)
+            {
+                var objCharac = db.StateObjects.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (objCharac != null)
+                {
+                    objCharac.Name = i.Text;
+                    db.SaveChanges();
+                }
+            }
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+        public void DeleteCharacteristic(ApplicationDbContext db_ = null)
+        {
+            //запрещать удалять мейн характеристики
+            var db = db_ ?? new ApplicationDbContext();
+           // -----
+
+                List <PhaseCharacteristicObject> forDeleted = new List<PhaseCharacteristicObject>();
+
+            int start = 0;
+            foreach (var i in MassDeleteCharacteristic)
+            {
+                var pro = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == i.Id);
+                if (pro == null||pro.Parent== "DESCOBJECT")
+                    continue;
+                forDeleted.Add(pro);
+                //var childs=Pro.GetChild(pro.Id);
+                //    forDeleted.AddRange(childs);
+                for (; start < forDeleted.Count; ++start)
+                {
+                    forDeleted.AddRange(PhaseCharacteristicObject.GetChild(forDeleted[start].Id));
+                }
+            }
+            db.PhaseCharacteristicObjects.RemoveRange(forDeleted);
+            db.SaveChanges();
+
+
+
+
+            if (db_ == null)
+                db.Dispose();
+        }
+
+
+
+    }
+
+
+
+
+        public class SaveDescription
     {
         //public DescrSearchI test { get; set; }
         public SaveDescriptionEntry[] MassAddActionId { get; set; }
@@ -1163,6 +1376,18 @@ namespace dip.Models.Domain
         }
     }
 
+    public class SaveDescriptionObjectEntry
+    {
+        public string Id { get; set; }
+        public string ParentId { get; set; }
+        public string Text { get; set; }
+        
 
+
+        public SaveDescriptionObjectEntry()
+        {
+            //NewId = null;
+        }
+    }
 
 }

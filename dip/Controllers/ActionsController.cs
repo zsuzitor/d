@@ -609,19 +609,20 @@ namespace dip.Controllers
 
         public ActionResult GetPhaseObjectEdit(string id = null)
         {
-            List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
-            
-            
-            var obj = PhaseCharacteristicObject.Get(id);
+            //List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+            DescrFormListDataV<PhaseCharacteristicObject> res = new DescrFormListDataV<PhaseCharacteristicObject>();
 
+            var obj = PhaseCharacteristicObject.Get(id);
+            res.ParentId = id;
             if (obj != null)
             {
                 obj.ReLoadChild();
-                res = obj.Childs;
+                res.List = obj.Childs;
             }
             else if (id == "")
             {
-                res = PhaseCharacteristicObject.GetBase();
+                res.ParentId = "PARENT";
+                res.List = PhaseCharacteristicObject.GetBase();
             }
 
 

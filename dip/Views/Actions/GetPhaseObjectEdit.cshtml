@@ -1,5 +1,5 @@
-﻿@model IEnumerable<dip.Models.Domain.PhaseCharacteristicObject>
+﻿@*@model IEnumerable<dip.Models.Domain.PhaseCharacteristicObject>*@
+@model dip.Models.ViewModel.ActionsV.DescrFormListDataV<dip.Models.Domain.PhaseCharacteristicObject>
 
 
-
-@Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model })
+@Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model.List, parentId=Model.ParentId })

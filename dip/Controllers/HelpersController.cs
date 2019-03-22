@@ -187,10 +187,12 @@ namespace dip.Controllers
             return PartialView(list);
         }
 
-        public ActionResult ListPhaseObjectEdit(List<PhaseCharacteristicObject> list)
+        public ActionResult ListPhaseObjectEdit(List<PhaseCharacteristicObject> list,string parentId)
         {
-         
-            return PartialView(list);
+            DescrFormListDataV<PhaseCharacteristicObject> res = new DescrFormListDataV<PhaseCharacteristicObject>();
+            res.List = list;
+            res.ParentId = parentId;
+            return PartialView(res);
         }
 
 

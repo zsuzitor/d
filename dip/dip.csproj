@@ -259,6 +259,7 @@
     <Compile Include="Models\TechnicalFunctions\Operation.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeStateObjectV.cs" />
+    <Compile Include="Models\ViewModel\ActionsV\DescrFormListDataV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\DescriptionFormAllV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\DescriptionInputV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\GetListSomethingV.cs" />

@@ -500,6 +500,19 @@ namespace dip.Controllers
             return View(res);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult CreateDescriptionObject(SaveDescriptionObject obj)//, string technicalFunctionId
+        {
+            obj.SetNotNullArray();
+            obj.AddCharacteristic();
+            obj.EditCharacteristic();
+            obj.EditState();
+            obj.DeleteState();
+
+            return View();
+        }
+
 
 
         public ActionResult GoNextPhysics(int id)
