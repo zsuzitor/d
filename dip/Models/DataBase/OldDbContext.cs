@@ -798,7 +798,7 @@ namespace dip.Models.DataBase
                 LoadStateObject("MONOFAZ");
                 LoadStateObject("POLYFAZ");
 
-                LoadCharacteristicObject("DESCOBJECT");
+                LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
 
 
 
@@ -955,7 +955,7 @@ namespace dip.Models.DataBase
                 //LoadStateObject("MONOFAZ");
                 //LoadStateObject("POLYFAZ");
 
-                //LoadCharacteristicObject("DESCOBJECT");
+                //LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
 
 
 
@@ -1094,7 +1094,7 @@ namespace dip.Models.DataBase
                             }
                             db.SaveChanges();
                         }
-                        
+
                         //id этой записи должно быть == Models.Constants.FEIDFORSEMANTICSEARCH
                         var objsemantic = new Domain.FEText()
                         {
@@ -1105,7 +1105,8 @@ namespace dip.Models.DataBase
                             TextOut = "",
                             TextObj = "",
                             TextApp = "",
-                            TextLit = ""
+                            TextLit = "",
+                            CountInput = 0
                         };
                     db.FEText.Add(objsemantic);
                     db.SaveChanges();
@@ -1283,8 +1284,8 @@ namespace dip.Models.DataBase
                 //LoadStateObject("MONOFAZ");
                 //LoadStateObject("POLYFAZ");
 
-                //LoadCharacteristicObject("DESCOBJECT");
-               
+                //LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
+
 
 
 

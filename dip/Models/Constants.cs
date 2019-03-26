@@ -22,6 +22,9 @@ namespace dip.Models
         public const int FEIDFORSEMANTICSEARCH = 1283;
         public const string FeSemanticNullText = "---";
 
+        public const string FeObjectBaseCharacteristic = "DESCOBJECT";
+
+
 
     }
 }

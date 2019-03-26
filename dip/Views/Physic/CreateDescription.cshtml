@@ -596,11 +596,11 @@
 
 
 
-        div.innerHTML += '<div class="one_check_line_edit" id="div_' + div.id + '_all"><input value="' + strCur +
+        $(div).append('<div class="one_check_line_edit" id="div_' + div.id + '_all"><input value="' + strCur +
             '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
             '<button class="btn btn-default" id="' + strCur + '_delbut"  onclick=\'deleteItemPro("' + strCur + '")\'>Удалить</button>' +
             '<input class="form-control" id="'
-            + strCur + '_inp" type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '_inp" type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
 
     }
     function addNewSpec(id) {
@@ -608,22 +608,22 @@
         //    id = mainObjEdit.curentActionId;
         var div = document.getElementById(id + '_SPEC');
         var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
-        div.innerHTML += '<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
+        $(div).append('<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
             '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedSpecsNew" type="checkbox"/>' +
             '<button class="btn btn-default" id="' + strCur + '_delbut"  onclick=\'deleteItemSpec("' + strCur + '")\'>Удалить</button>' +
             '<input class="form-control" id="'
-            + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
     }
     function addNewVrem(id) {
         //if (!id)
         //    id = mainObjEdit.curentActionId;
         var div = document.getElementById(id + '_VREM');
         var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
-        div.innerHTML += '<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
+        $(div).append('<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
             '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedVremsNew" type="checkbox"/>' +
             '<button class="btn btn-default" id="' + strCur + '_delbut" onclick=\'deleteItemVrem("' + strCur + '")\'>Удалить</button>' +
             '<input class="form-control" id="'
-            + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>';
+            + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
     }
 
     function addNewFizVelId() {
@@ -655,7 +655,7 @@
                ' </div>';
 
 
-        div.innerHTML += res;
+        $(div).append(res);
 
     }
 
@@ -665,10 +665,10 @@
         //    '_inp" name="ParamFizVelName" type="text" value="">';
 
 
-        div.innerHTML += ' <div class="padding_10_top">'+
-                        '<button class="btn btn-default" onclick="()">Удалить</button>'+
+        $(div).append(' <div class="padding_10_top">' +
+                        '<button class="btn btn-default" onclick="()">Удалить</button>' +
                         '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentFizVelId + '" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
-            '_inp" > </div>'
+            '_inp" > </div>');
 
 
     }

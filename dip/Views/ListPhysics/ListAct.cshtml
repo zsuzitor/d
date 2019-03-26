@@ -117,8 +117,8 @@
             url: "/ListPhysics/CreateList",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                document.getElementById('ListAct_ExistList_id').innerHTML+=req;
-
+                //document.getElementById('ListAct_ExistList_id').innerHTML+=req;
+                $('#ListAct_ExistList_id').append(req);
             }, type: 'POST'
         });
 

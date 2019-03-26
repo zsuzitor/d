@@ -46,7 +46,7 @@ namespace dip.Models.Domain
                 {
                     using (var db = new ApplicationDbContext())//TODO using in this controller
                     {
-                        //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                        //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == Constants.FeObjectBaseCharacteristic).ToList();
 
                         var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
                         treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);

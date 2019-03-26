@@ -92,8 +92,11 @@ namespace dip.Models.Domain
             FEText phys = res.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
             if (phys != null)
                 return null;
-               
-                phys = FEText.Get(idphys);
+
+            if (idphys == Constants.FEIDFORSEMANTICSEARCH)
+                return null;
+
+            phys = FEText.Get(idphys);
                 if (phys == null)
                     return null;
             

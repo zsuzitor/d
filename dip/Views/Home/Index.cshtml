@@ -12,6 +12,122 @@
     <p class="text-center"><a href="~/Search/DescriptionSearch" class="btn btn-primary btn-lg">Начать поиск</a></p>
 </div>
 
+<input type="file" multiple="multiple" accept=".txt,image/*">
+<button onclick="test_load_img()">TEST LOAD IMG</button>
+
+
+
+<script>
+    var files;
+    $('input[type=file]').change(function () {
+        files = this.files;
+    });
+    function test_load_img() {
+        
+        var data = new FormData();
+        $.each(files, function (key, value) {
+            data.append('uploadImage', value);
+        });
+
+        data.append('obj.Text','this is test text');
+
+        $.ajax({
+            url: '/Physic/Create',
+            type: 'POST',
+            data: data,
+            cache: false,
+            dataType: 'json',
+            processData: false, // Не обрабатываем файлы (Don't process the files)
+            contentType: false, // Так jQuery скажет серверу что это строковой запрос
+            success: function (respond, textStatus, jqXHR) {
+
+                var ttt = 10;
+            }
+        });
+
+
+
+    }
+
+
+
+</script>
+
+
+
+
+@*<div id="prosGroup_all" style="display: block;">
+
+    <label class="">Пространственные характеристики</label>
+
+    <div id="prosGroup">
+
+        <div class="form-group descrCheckBoxChildEdit">
+            <div class="" id="VOZ10_PROS">
+                <div class="one_check_line_edit" id="div_VOZ10_PROS1_all">
+                    <input id="VOZ10_PROS1_chch" class="checkBoxClass" type="checkbox" name="listSelectedPros" value="VOZ10_PROS1">
+                    <button class="btn btn-default" id="VOZ10_PROS1_delbut" onclick="deleteItemPro('VOZ10_PROS1')">Удалить</button>
+                    <button class="btn btn-default" onclick="changePros('VOZ10_PROS1')">Изменить</button>
+                    <button id="restoreInput_but_VOZ10_PROS1" class="btn btn-default" onclick="restoreValue(4,'VOZ10_PROS1')" style="display:none;">Восстановить значение</button>
+                    <input class="form-control" name="VOZ10" id="VOZ10_PROS1_inp" type="text" value="ОДНОРОДНЫЙ" readonly="">
+
+
+                    <div id="VOZ10_PROS1_childs">
+
+                        <div class="form-group descrCheckBoxChildEdit">
+                            <div class="" id="VOZ10_PROS1_PROS">
+                            </div>
+                            <div class="">
+                                <button class="btn btn-default" onclick="addNewPro('VOZ10_PROS1')">Добавить</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="one_check_line_edit" id="div_VOZ10_PROS2_all">
+                    <input id="VOZ10_PROS2_chch" class="checkBoxClass" type="checkbox" name="listSelectedPros" value="VOZ10_PROS2">
+                    <button class="btn btn-default" id="VOZ10_PROS2_delbut" onclick="deleteItemPro('VOZ10_PROS2')">Удалить</button>
+                    <button class="btn btn-default" onclick="changePros('VOZ10_PROS2')">Изменить</button>
+                    <button id="restoreInput_but_VOZ10_PROS2" class="btn btn-default" onclick="restoreValue(4,'VOZ10_PROS2')" style="display:none;">Восстановить значение</button>
+                    <input class="form-control" name="VOZ10" id="VOZ10_PROS2_inp" type="text" value="НЕОДНОРОДНЫЙ" readonly="">
+
+                    <div id="VOZ10_PROS2_childs">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="">
+                <button class="btn btn-default" onclick="addNewPro('VOZ10')">Добавить</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function addNewPro(id) {
+
+        //if (!id)
+        //    id = mainObjEdit.curentActionId;
+        var div = document.getElementById(id + '_PROS');
+        var strCur = id.split('_')[0] + '_PROS_NEW';
+
+
+
+        $(div).append('<div class="one_check_line_edit" id="div_' + div.id + '_all"><input value="' + strCur +
+            '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
+            '<button class="btn btn-default" id="' + strCur + '_delbut"  onclick=\'deleteItemPro("' + strCur + '")\'>Удалить</button>' +
+            '<input class="form-control" id="'
+            + strCur + '_inp" type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
+
+    }
+
+</script>*@
 
 @*<button onclick="GOGOGO()"> TEST</button>*@
 

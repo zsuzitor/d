@@ -12,9 +12,12 @@
                 <div>
 
                     <input id="inputPhaseCheckbox_@i2.Id" class="checkBoxClass" type="checkbox" name="change_phase_checbox" value=@("change_phase_checbox_"+i2.Id ) />
-                    <button class="btn btn-default" id=@(i2.Id+"_delbut") onclick="deletePhase('@i2.Id')">Удалить</button>
+@if (i2.Parent != dip.Models.Constants.FeObjectBaseCharacteristic)
+{
+                    <button class="btn btn-default" id=@(i2.Id + "_delbut") onclick="deletePhase('@i2.Id')">Удалить</button>
+}
                     <button class="btn btn-default" onclick="changePhase('@i2.Id')">Изменить</button>
-                    <button id="restoreInput_but_@i2.Id" class="btn btn-default" onclick="restorePhaseValue('@i2.Id')" style="display:none;">Восстановить значение</button>
+                    <button id="restoreInputPhase_but_@i2.Id" class="btn btn-default" onclick="restorePhaseValue('@i2.Id')" style="display:none;">Восстановить значение</button>
                     <input class="form-control" type="text" name="@i2.Parent" id="inputPhaseText_@i2.Id" value="@i2.Name" readonly />
                     <div>
 
@@ -26,7 +29,7 @@
                 </div>
             }
         </div>
-        @if (Model.ParentId != "PARENT")
+        @if (Model.ParentId != dip.Models.Constants.FeObjectBaseCharacteristic)
         {
             <button class="btn btn-default" onclick="addNewPhase('@Model.ParentId')">Добавить</button>
         }

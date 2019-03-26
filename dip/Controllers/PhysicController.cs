@@ -508,7 +508,7 @@ namespace dip.Controllers
             obj.AddCharacteristic();
             obj.EditCharacteristic();
             obj.EditState();
-            obj.DeleteState();
+            obj.DeleteCharacteristic();
 
             return View();
         }

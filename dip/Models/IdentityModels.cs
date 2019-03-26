@@ -357,7 +357,7 @@ namespace dip.Models
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
-                    db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault(x1 => x1.IDFE > id);
+                    res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault(x1 => x1.IDFE > id);
                     if (res == null)
                         res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
                     //collect = user.Physics;
@@ -389,7 +389,7 @@ namespace dip.Models
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
-                    db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
+                    res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
                     if (res == null)
                         res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
                     //collect = user.Physics;
@@ -420,7 +420,7 @@ namespace dip.Models
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
-                    db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
+                    res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
                     
                 }
 
@@ -449,7 +449,7 @@ namespace dip.Models
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
-                    db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
+                    res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
 
                 }
 

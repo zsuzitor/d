@@ -81,7 +81,7 @@ namespace dip.Models.Domain
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
             using (var db = new ApplicationDbContext())
-                res = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == "DESCOBJECT").ToList();
+                res = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == Constants.FeObjectBaseCharacteristic).ToList();
             return res;
         }
 
@@ -173,7 +173,7 @@ namespace dip.Models.Domain
 
             if (par != null)
             {
-                if (par.Parent != "DESCOBJECT")
+                if (par.Parent != Constants.FeObjectBaseCharacteristic)
                     res.AddRange(par.GetParentsList(db));
 
                 res.Add(par);
@@ -788,6 +788,10 @@ namespace dip.Models.Domain
                 db.Dispose();
         }
 
+
+
+
+
         public void DeleteCharacteristic(ApplicationDbContext db_ = null)
         {
             //запрещать удалять мейн характеристики
@@ -800,7 +804,8 @@ namespace dip.Models.Domain
             foreach (var i in MassDeleteCharacteristic)
             {
                 var pro = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == i.Id);
-                if (pro == null||pro.Parent== "DESCOBJECT")
+                
+                if (pro == null||pro.Parent== Constants.FeObjectBaseCharacteristic)
                     continue;
                 forDeleted.Add(pro);
                 //var childs=Pro.GetChild(pro.Id);

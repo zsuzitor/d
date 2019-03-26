@@ -23,9 +23,13 @@
                     <p class="one_block_body_fetext_list">@i.Text.Substring(0, countInStr) ...</p>
                 </div>
             </a>
-            <div class="listfe_favourite_star" id="favourite_div_but_@i.IDFE" onclick="favouritePhysic(@i.IDFE)">
-                @Html.Action("Favourite", "Helpers", new { favourite = i.FavouritedCurrentUser })
-            </div>
+            @if (i.FavouritedCurrentUser != null)
+            {
+                <div class="listfe_favourite_star" id="favourite_div_but_@i.IDFE" onclick="favouritePhysic(@i.IDFE)">
+                    @Html.Action("Favourite", "Helpers", new { favourite = i.FavouritedCurrentUser })
+                </div>
+            }
+            
         </div>
 
        

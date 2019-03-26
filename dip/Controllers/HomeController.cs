@@ -21,7 +21,29 @@ namespace dip.Controllers
         ////////List<FEObject> res = new List<FEObject>();
         public ActionResult Index()
         {
-            
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        FEText fetext = new FEText() { Text="11111111",Name="111111111111"};
+                        db.FEText.Add(fetext) ;
+                        db.SaveChanges();
+                        transaction.Rollback();
+                        //transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                    }
+
+                }
+            }
+
+
+
             return View();
         }
 

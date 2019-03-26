@@ -136,11 +136,11 @@ namespace dip.Controllers
         
 
             List<StateObject> baseState=StateObject.GetBase();
-            List<PhaseCharacteristicObject> basePhase= PhaseCharacteristicObject.GetBase(); 
-            
-                
-                //db.PhaseCharacteristicObjects.Where(x1=>x1.Parent== "DESCOBJECT").ToList();
-            
+            List<PhaseCharacteristicObject> basePhase= PhaseCharacteristicObject.GetBase();
+
+
+            //db.PhaseCharacteristicObjects.Where(x1=>x1.Parent== Constants.FeObjectBaseCharacteristic).ToList();
+
             res.StatesBegin = baseState.Select(x1=>x1.CloneWithOutRef()).ToList();
            // if (changeStateObject)
                 res.StatesEnd = baseState.Select(x1 => x1.CloneWithOutRef()).ToList();

@@ -42,7 +42,7 @@ namespace dip.Controllers
             else if (personId!= res.CurrenUserId)
                 return RedirectToAction("PersonalRecord",new { personId= res.CurrenUserId });
             //res.User = ApplicationUser.GetUser(res.CurrenUserId);
-
+            res.User = ApplicationUser.GetUser(personId);
 
 
             return View(res);
