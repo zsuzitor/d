@@ -40,6 +40,15 @@
         var i = 0;
         var inpdiv = document.getElementById('actionI' + i);
         var twoInput = document.getElementById('changeTwoInputFormDescr_id').checked;
+
+
+        data_descr_search = {
+            search: data_descr_search.search,
+            function_trigger: data_descr_search.function_trigger
+        };
+
+
+
         data_descr_search['CountInput'] = twoInput?2:1;
 
         var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');

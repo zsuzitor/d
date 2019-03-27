@@ -20,75 +20,19 @@
     <div>
         @Html.Action("DescriptionFormAll", "Actions", new { })
     </div>
-    @using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
-    {
-        <div id="physCreateFormDescrRecDiv">
+    @*@using (Html.BeginForm("Create", "Physic", FormMethod.Post, new { id = "FormPhysCreate", enctype = "multipart/form-data" }))
+    {*@
+        @*<div id="physCreateFormDescrRecDiv">
            
-        </div>
+        </div>*@
 
         @Html.Action("FeTextInput","Helpers",new {obj=Model })
-            @*<dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName("Название")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Name)
-                </dd>
-                <dt>
-                    @Html.DisplayName("Описание")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Text)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Входное воздействие")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.TextInp)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Выходное воздействие")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.TextOut)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Объект")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.TextObj)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Применение")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.TextApp)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Литература")
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.TextLit)
-                </dd>
-
-            </dl>*@
+           
        
         <div id="physCreateFormIMGDiv">
             <input class="btn btn-default" id="upLoadImagesId" type="file" multiple name="uploadImage" />
         </div>
-    }
+    @*}*@
     <input class="btn btn-default" onclick="CreatePhysFunc()" value="отправить" />
     
 
@@ -101,19 +45,23 @@
     function CreatePhysFunc() {
 
         data_descr_search.function_trigger = function () {
-           
+            var data = new FormData();
+            let massFiles=document.getElementById('upLoadImagesId').files;
 
+            $.each(massFiles, function (key, value) {
+                data.append('uploadImage', value);
+            });
 
-            var divForm = document.getElementById('physCreateFormDescrRecDiv');
-            var divFormNewInner = '';// '<H1>Отправляем</H1>';
+            
+            
             for (key in data_descr_search) {
                 if (key != 'function_trigger' && key != 'search') {
                     if (key == 'stateBegin' || key == 'stateEnd')
-                        divFormNewInner += ' <input name="' + key + 'Id" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                        data.append('Obj.' + key + 'Id', data_descr_search[key]);//Obj.
                     else if (key == 'CountInput' || key == 'ChangedObject')
-                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                        data.append('Obj.'+key ,data_descr_search[key] );//Obj.
                     else
-                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
+                        data.append(key ,data_descr_search[key] );
 
                     if (data_descr_search[key] == 'undefined' || data_descr_search[key] == undefined) {
                         if (key.indexOf('state')>=0)
@@ -123,12 +71,40 @@
                         return;
                     }
                 }
-                    }
-           
-            divForm.innerHTML = divFormNewInner;
-            //var divImgForm = document.getElementById('physCreateFormIMGDiv');
-            //divImgForm.style.display = 'none';
-            document.getElementById('FormPhysCreate').submit();
+            }
+
+
+            data.append('obj.Name', document.getElementById('Name').value);
+            data.append('obj.Text', document.getElementById('Text').value);
+            data.append('obj.TextInp', document.getElementById('TextInp').value);
+            data.append('obj.TextOut', document.getElementById('TextOut').value);
+            data.append('obj.TextObj', document.getElementById('TextObj').value);
+            data.append('obj.TextApp', document.getElementById('TextApp').value);
+            data.append('obj.TextLit', document.getElementById('TextLit').value);
+            
+
+            //--
+            ////TODO
+            //changedobject
+            //countinput ?
+            //return;
+            $.ajax({
+                url: '/Physic/Create',
+                type: 'POST',
+                data: data,
+                cache: false,
+                dataType: 'json',
+                processData: false, // Не обрабатываем файлы (Don't process the files)
+                contentType: false, // Так jQuery скажет серверу что это строковой запрос
+                //success: function (respond, textStatus, jqXHR) {
+
+                //    alert("Запись создана успешно, ссылка- " + respond);
+                //},
+                complete: function (respond, textStatus, jqXHR) {
+                    if (respond.status==200)
+                        alert("Запись создана успешно, ссылка- " + window.location.origin + respond.responseText);
+                }
+            });
 
             
 

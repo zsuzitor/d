@@ -230,7 +230,8 @@ namespace dip.Controllers
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
-            return RedirectToAction("Details", "Physic", new { id = oldObj.IDFE });
+            //return RedirectToAction("Details", "Physic", new { id = oldObj.IDFE });
+            return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
         }
 
 
@@ -311,13 +312,18 @@ namespace dip.Controllers
 
 
             //новая
-            obj.AddToDb(forms, objForms, list_img_byte);
+            bool success=obj.AddToDb(forms, objForms, list_img_byte);
 
 
 
             //obj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
-            return RedirectToAction("Details", "Physic", new { id = obj.IDFE });
+            //return RedirectToAction("Details", "Physic", new { id = obj.IDFE });
+            if(success&&obj!=null&&obj.IDFE>0)
+            return Content(Url.Action("Details", "Physic",new {id=obj.IDFE }), "text/html");
+            else
+                return new HttpStatusCodeResult(404);
+
         }
 
         [Authorize(Roles = "admin")]

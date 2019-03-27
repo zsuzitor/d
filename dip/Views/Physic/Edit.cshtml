@@ -53,31 +53,7 @@
         document.getElementById("div_img_hide_block_" + id).style.display = 'block';
 
         document.getElementById("div_img_reset_block_" + id).style.display = 'none';
-        //var del = document.getElementById('one_block_delete_img_id_' + id);
-        //del.remove();
-        //восстанавливаем
-        //var sh = false;
-        //var del_cur = document.getElementById('one_block_delete_img_id_' + 1);
-        //var del_next = document.getElementById('one_block_delete_img_id_' + 2);
-        //for (var i = 1; i < num_delete_img; ++i) {
-           
-        //    if (sh) {
-
-        //    }
-        //    else {
-
-        //    }
-        //    if (del.value == id) {
-        //        //for (; i < num_delete_img; ++i) {
-
-        //        //}
-        //        sh = true;
-
-        //        break;
-        //    }
-        //    del_cur = del_next;
-        //    del_next = document.getElementById('one_block_delete_img_id_' + (i+1));
-        //}
+        
 
     }
 
@@ -86,20 +62,26 @@
 
         data_descr_search.function_trigger = function () {
 
+            
+                var data = new FormData();
+                let massFiles=document.getElementById('upLoadImagesId').files;
 
+                $.each(massFiles, function (key, value) {
+                    data.append('uploadImage', value);
+                });
 
-            var divForm = document.getElementById('physEditFormDescrRecDiv');
-            var divFormNewInner = '';//'<H1>Отправляем</H1>';
+            //var divForm = document.getElementById('physEditFormDescrRecDiv');
+            //var divFormNewInner = '';//'<H1>Отправляем</H1>';
             for (key in data_descr_search) {
                 if (key != 'function_trigger' && key != 'search') {
                     if (key == 'stateBegin' || key == 'stateEnd')
-                        divFormNewInner += ' <input name="' + key + 'Id" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                        data.append('Obj.'+key + 'Id',data_descr_search[key]);//Obj.
                     else if(key == 'CountInput'||key =='ChangedObject'){
-                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';//Obj.
+                        data.append('Obj.'+key ,data_descr_search[key] );//Obj.
                         //document.getElementById('');
                     }
                         else
-                        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
+                        data.append(key ,data_descr_search[key] );
 
                     if (data_descr_search[key] == 'undefined' || data_descr_search[key] == undefined) {
                         if (key.indexOf('state')>=0)
@@ -110,18 +92,46 @@
                     }
                 }
             }
-            //for (key in data_descr_search) {
-            //    if (key != 'function_trigger' && key != 'search')
-            //        divFormNewInner += ' <input name="' + key + '" value="' + data_descr_search[key] + '" type="hidden"/>';
-            //}
+            
 
-            divForm.innerHTML = divFormNewInner;
-            //var divImgForm = document.getElementById('physEditFormIMGDiv');
-            //divImgForm.style.display = 'none';
-            document.getElementById('FormPhysEdit').submit();
+            //divForm.innerHTML = divFormNewInner;
+            ////var divImgForm = document.getElementById('physEditFormIMGDiv');
+            ////divImgForm.style.display = 'none';
+            //document.getElementById('FormPhysEdit').submit();
+            data.append('obj.Name', document.getElementById('Name').value);
+            data.append('obj.Text', document.getElementById('Text').value);
+            data.append('obj.TextInp', document.getElementById('TextInp').value);
+            data.append('obj.TextOut', document.getElementById('TextOut').value);
+            data.append('obj.TextObj', document.getElementById('TextObj').value);
+            data.append('obj.TextApp', document.getElementById('TextApp').value);
+            data.append('obj.TextLit', document.getElementById('TextLit').value);
+            data.append('obj.IDFE', document.getElementById('IDFE').value);
+
+            for(let i=0;i<num_delete_img;++i){
+                
+                data.append('deleteImg_', document.getElementById('one_block_delete_img_id_'+i).value);
+            }
+            
 
 
 
+            $.ajax({
+                url: '/Physic/Edit',
+                type: 'POST',
+                data: data,
+                cache: false,
+                dataType: 'json',
+                processData: false, // Не обрабатываем файлы (Don't process the files)
+                contentType: false, // Так jQuery скажет серверу что это строковой запрос
+                //success: function (respond, textStatus, jqXHR) {
+
+                //    alert("Запись создана успешно, ссылка- " + respond);
+                //},
+                complete: function (respond, textStatus, jqXHR) {
+                    if (respond.status==200)
+                        alert("Запись изменена успешно, ссылка- " + window.location.origin + respond.responseText);
+                }
+            });
         };
         Go_next_step();
     }
@@ -143,15 +153,7 @@
 {
 
     <div>
-        @*<div >
-            @Html.Action("DescriptionInput", "Actions", new { countInput=Model.Obj.CountInput, inp = Model.FormsInput, outp = Model.FormsOutput})
-        </div>
-        <div>
-           
-        @Html.Action("ObjectInput", "Actions", new { changedObject=Model.Obj.ChangedObject, stateIdBegin = Model.Obj.StateBeginId,
-       stateIdEnd = Model.Obj.StateEndId, objFormsBegin = Model.FormObjectBegin, objFormsEnd = Model.FormObjectEnd })
-    </div>*@
-
+        
 
         @Html.Action("DescriptionFormAll", "Actions", new
    {
@@ -167,83 +169,18 @@
 
 
 
-        @using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
+        @*@using (Html.BeginForm("Edit", "Physic", FormMethod.Post, new {id= "FormPhysEdit", enctype = "multipart/form-data" }))
         {
 
             
             <div id="physEditFormDescrRecDiv">
 
-            </div>
-            @*<div style="display:none;">
-                @Html.HiddenFor(x1=>x1.Obj.ChangedObject)
-                @Html.HiddenFor(x1 => x1.Obj.CountInput)
             </div>*@
-
-
+           
 
             
             @Html.Action("FeTextInput", "Helpers", new { obj = Model.Obj })
-            @*<dl class="dl-horizontal">
-                <dt>
-                    @Html.LabelFor(x1=>x1.Obj.Name)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => Model.Obj.Name)
-                </dd>
-                <dt>
-                    @Html.LabelFor(x1=>x1.Obj.Text)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.Text)
-                </dd>
-
-                <dt>
-                    @Html.LabelFor(x1 => x1.Obj.TextInp)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.TextInp)
-                </dd>
-
-                <dt>
-                   @Html.LabelFor(x1 => x1.Obj.TextOut)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.TextOut)
-                </dd>
-
-                <dt>
-                    @Html.LabelFor(x1 => x1.Obj.TextObj)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.TextObj)
-                </dd>
-
-                <dt>
-                   @Html.LabelFor(x1 => x1.Obj.TextApp)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.TextApp)
-                </dd>
-
-                <dt>
-                    @Html.LabelFor(x1 => x1.Obj.TextLit)
-                </dt>
-
-                <dd>
-                    @Html.EditorFor(model => model.Obj.TextLit)
-                </dd>
-
-            </dl>*@
-
-
-
-
+           
 
             <div id="div_delete_img_id">
 
@@ -251,10 +188,10 @@
 
 
             <div id="physEditFormIMGDiv">
-                <input class="btn btn-default" type="file" multiple name="uploadImage" />
+                <input class="btn btn-default" type="file" id="upLoadImagesId" multiple name="uploadImage" />
             </div>
                 @*<input class="btn btn-default" type="submit" value="отправить" />*@
-                }
+                @*}*@
                 <input class="btn btn-default" onclick="EditPhysFunc()" value="отправить" />
                 <div class="block_images">
                     <div class="inline">
