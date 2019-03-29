@@ -17,14 +17,10 @@ namespace dip.Models.ViewModel.ActionsV
         public string StateEndSelected { get; set; }
 
         public CharacteristicObject CharacteristicsBegin { get; set; }
-        //public List<PhaseCharacteristicObject> CharacteristicStart1 { get; set; }
-        //    public List<PhaseCharacteristicObject> CharacteristicStart2 { get; set; }
-        //    public List<PhaseCharacteristicObject> CharacteristicStart3 { get; set; }
+        
 
         public CharacteristicObject CharacteristicsEnd { get; set; }
-        //public List<PhaseCharacteristicObject> CharacteristicEnd1 { get; set; }
-        //public List<PhaseCharacteristicObject> CharacteristicEnd2 { get; set; }
-        //public List<PhaseCharacteristicObject> CharacteristicEnd3 { get; set; }
+        
 
 
         public ObjectInputV()

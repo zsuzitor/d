@@ -27,10 +27,7 @@ namespace dip.Models.DataBase
                 var role = new IdentityRole { Name = roleName.ToString() };
                 roleManager.Create(role);
             }
-            // добавляем роли в бд
-            //roleManager.Create(roleAdmin);
-            //roleManager.Create(roleUser);
-            //roleManager.Create(roleVip);
+            
 
             // создаем пользователей
             //TODO ,EmailConfirmed=true  для пользователей убрать

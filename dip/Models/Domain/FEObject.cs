@@ -14,13 +14,13 @@ namespace dip.Models.Domain
         public int Begin { get; set; }
         public int NumPhase { get; set; }
 
-        public string PhaseState { get; set; }
-        public string Composition { get; set; }
-        public string MagneticStructure { get; set; }
-        public string Conductivity { get; set; }
-        public string MechanicalState { get; set; }
-        public string OpticalState { get; set; }
-        public string Special { get; set; }
+        public string PhaseState { get; set; }//type-checkbox
+        public string Composition { get; set; }//type-checkbox
+        public string MagneticStructure { get; set; }//type-checkbox
+        public string Conductivity { get; set; }//type-checkbox
+        public string MechanicalState { get; set; }//type-checkbox
+        public string OpticalState { get; set; }//type-checkbox
+        public string Special { get; set; }//type-checkbox
 
         public FEObject()
         {
@@ -41,32 +41,6 @@ namespace dip.Models.Domain
             this.Begin = begin;
             this.NumPhase = a.NumPhase;
             
-            //string[] massStr = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            //foreach (var i in massStr)
-            //    switch (i[0])
-            //    {
-            //        case 'F':
-            //            PhaseState += i + " ";
-            //            break;
-            //        case 'X':
-            //            Composition += i + " ";
-            //            break;
-            //        case 'M':
-            //            MagneticStructure += i + " ";
-            //            break;
-            //        case 'E':
-            //            Conductivity += i + " ";
-            //            break;
-            //        case 'D':
-            //            MechanicalState += i + " ";
-            //            break;
-            //        case 'O':
-            //            OpticalState += i + " ";
-            //            break;
-            //        case 'C':
-            //            Special += i + " ";
-            //            break;
-            //    }
             
             PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.PhaseState);
             Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Composition);

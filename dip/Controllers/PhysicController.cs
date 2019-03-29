@@ -150,17 +150,7 @@ namespace dip.Controllers
                 res.CountPhaseEnd = res.FormObjectEnd.GetCountPhase();
             }
            
-            //TODO
-            //res.FormInput.listSelectedProsI = Pro.GetAllIdsFor(res.FormInput.listSelectedProsI);
-            //res.FormInput.listSelectedVremI = Vrem.GetAllIdsFor(res.FormInput.listSelectedVremI);
-            //res.FormInput.listSelectedSpecI = Spec.GetAllIdsFor(res.FormInput.listSelectedSpecI);
-
-            //res.FormOutput.listSelectedProsO = Pro.GetAllIdsFor(res.FormOutput.listSelectedProsO);
-            //res.FormOutput.listSelectedVremO = Vrem.GetAllIdsFor(res.FormOutput.listSelectedVremO);
-            //res.FormOutput.listSelectedSpecO = Spec.GetAllIdsFor(res.FormOutput.listSelectedSpecO);
-
-
-           // DescrObjectI[] objForms = ;//TODO-objForms
+            
 
             res.Obj.LoadImage();
 
@@ -173,11 +163,17 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
         {
+            bool commited = false;
             if (obj.IDFE == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
                 return new HttpStatusCodeResult(404);
             if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(404);
-
+            if (!obj.Validation())
+                return new HttpStatusCodeResult(404);
+            if((obj.CountInput != 1 && forms.Length != 3)||(obj.CountInput == 1 && forms.Length != 2))
+                return new HttpStatusCodeResult(404);
+            if ((obj.ChangedObject&& objForms.Length!=2)||(!obj.ChangedObject && objForms.Length != 1))
+                return new HttpStatusCodeResult(404);
             FEText oldObj = FEText.Get(obj.IDFE);
             if (oldObj == null)
                 return new HttpStatusCodeResult(404);
@@ -195,43 +191,37 @@ namespace dip.Controllers
                 if (i?.Valide == false)
                     return new HttpStatusCodeResult(404);
             }
-            // a.ActionId = NullToEmpryStr(a?.ActionId);
-
-            //DescrSearchIInput.ValidationIfNeed(inp);
-
-            //DescrSearchIOut.ValidationIfNeed(outp);
-            //if (inp?.Valide == false || outp?.Valide == false)
-            //    return new HttpStatusCodeResult(404);
-
+            
 
             var list_img_byte = Get_photo_post(uploadImage);
 
             List<int> deleteImg = null;
             if (deleteImg_ != null)
                 deleteImg = deleteImg_.Distinct().ToList();
-            //using (ApplicationDbContext db=new ApplicationDbContext())
-            //{
+
 
             //TODO валидация
 
 
-            //foreach (var i in forms)
-            //    i.DeleteNotChildCheckbox();
-            //DescrSearchI inp_ = new DescrSearchI(inp);
-            //inp_.DeleteNotChildCheckbox();
-            //DescrSearchI outp_ = new DescrSearchI(outp);
-            //outp_.DeleteNotChildCheckbox();
-
-            if (!oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList()))
+            commited = oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList());
+            if (commited)
+            {
+                //return new HttpStatusCodeResult(404);
+                Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
+                return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
+            }
+            else
                 return new HttpStatusCodeResult(404);
-            Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
 
-            //DescrObjectI[] objForms = ;//TODO-objForms
 
             //oldObj.LoadImage();
             //return View(@"~/Views/Physic/Details.cshtml", oldObj);
             //return RedirectToAction("Details", "Physic", new { id = oldObj.IDFE });
-            return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
+            //if (commited)
+            //    return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
+            //else
+            //    return new HttpStatusCodeResult(404);
+            //return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
         }
 
 
@@ -256,10 +246,7 @@ namespace dip.Controllers
         public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
         {
 
-            //if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
-            //{
-            //    var pic = System.Web.HttpContext.Current.Request.Files["uploadImage[0]"];
-            //}
+            
 #if debug
             if (!ModelState.IsValid)
             {
@@ -281,8 +268,18 @@ namespace dip.Controllers
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
-            if(forms.Length<2)
+            //if(forms.Length<2)
+            //    return new HttpStatusCodeResult(404);
+            //if (objForms.Length == 0)
+            //    return new HttpStatusCodeResult(404);
+
+            if ((obj.CountInput != 1 && forms.Length != 3) || (obj.CountInput == 1 && forms.Length != 2))
                 return new HttpStatusCodeResult(404);
+            if ((obj.ChangedObject && objForms.Length != 2) || (!obj.ChangedObject && objForms.Length != 1))
+                return new HttpStatusCodeResult(404);
+
+
+
             foreach (var i in forms)
             {
                 DescrSearchI.Validation(i);
@@ -290,8 +287,7 @@ namespace dip.Controllers
                     return new HttpStatusCodeResult(404);
                 i.DeleteNotChildCheckbox();
             }
-            if (objForms.Length ==0)
-                return new HttpStatusCodeResult(404);
+            
             foreach (var i in objForms)
             {
                 DescrObjectI.Validation(i);
@@ -300,11 +296,7 @@ namespace dip.Controllers
             }
 
 
-            //DescrSearchI inp_ = new DescrSearchI(inp);
-            //inp_.DeleteNotChildCheckbox();
-            //DescrSearchI outp_ = new DescrSearchI(outp);
-            //outp_.DeleteNotChildCheckbox();
-
+            
             var list_img_byte = Get_photo_post(uploadImage);
 
 
@@ -339,20 +331,6 @@ namespace dip.Controllers
 
 
 
-
-
-
-
-        //[HttpGet]
-        //[Authorize(Roles = "admin")]
-        //public ActionResult CreateSomething()//, string technicalFunctionId
-        //{
-
-        //    return View();
-        //}
-
-
-
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription()//, string technicalFunctionId
@@ -375,13 +353,13 @@ namespace dip.Controllers
         {
             //type: 1-actionid ,2-fizvell,3-paramfizvell,4-pros,5-spec,6-vrem
             //TypeAction: 1-добавление ,2-редактирование, 3- удаление
+            //return Content("+", "text/html");//TODO delete
 
- 
             obj.SetNotNullArray();
             if (string.IsNullOrEmpty(currentActionId))
                 throw new Exception();
             bool notValide = false;
-
+            bool commited = false;
 
 
             //TODO надо найти то к чему все будет относиться, это может вернуть null
@@ -389,7 +367,7 @@ namespace dip.Controllers
             bool? currentActionParametric = null;
 
             //TODO throw new Exception(); убрать
-           
+
             if (obj.MassAddActionId.Length > 1)//TODO
                 throw new Exception("добавлено слишком много ActionId, это не предусмотрено");
 
@@ -397,96 +375,94 @@ namespace dip.Controllers
                 return new HttpStatusCodeResult(404);
             using (var db = new ApplicationDbContext())
             {
-
-                //ActionId
-                int lastAllActionId = 0;
-                if(obj.MassAddActionId.Length>0)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    var allAction = db.AllActions.ToList();
-                    if (allAction.Count > 0)
-                        lastAllActionId = allAction.Max(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                    //.OrderBy(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]))
-                    //.Select(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0])).Last();
-                }
-
-                currentActionParametric=obj.AddActionId(lastAllActionId, ref currentActionId,  db);
-               
-
-                if ( currentActionParametric == null)
-                    currentActionParametric = db.AllActions.FirstOrDefault(x1 => x1.Id == currentActionId)?.Parametric;
-
-                obj.EditActionId(db);
-               
-
-
-
-                //FizVels
-                if ( obj.MassAddFizVels.Length > 0 && currentActionParametric != null)
-                {
-                    obj.AddFizVels(currentActionId, currentActionParametric, db);
-                  
-                }
-                obj.EditFizVels( db);
-                
-
-
-
-                //ParamFizVels
-                if(currentActionParametric == true)
-                {
-
-                    obj.AddParamFizVels(db);
-                   
-
-                    obj.EditParamFizVels(db);
-                }
-
-
-
-
-
-                if ( currentActionParametric == false)
-                {
-                    //add checkbox
-
-                    //pro
+                    try
                     {
-                        obj.AddPro(currentActionId,db);
-                        
-                    }
+                        //ActionId
+                        int lastAllActionId = 0;
+                        if (obj.MassAddActionId.Length > 0)
+                        {
+                            var allAction = db.AllActions.Select(x1 => x1.Id).ToList();
+                            if (allAction.Count > 0)
+                                lastAllActionId = allAction.Max(x1 => int.Parse(x1.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]));
+                            //.OrderBy(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]))
+                            //.Select(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0])).Last();
+                        }
 
-                    //vrem
+                        currentActionParametric = obj.AddActionId(lastAllActionId, ref currentActionId, db);
+
+
+                        if (currentActionParametric == null)
+                            currentActionParametric = db.AllActions.FirstOrDefault(x1 => x1.Id == currentActionId)?.Parametric;
+
+                        obj.EditActionId(db);
+
+                        //FizVels
+                        if (obj.MassAddFizVels.Length > 0 && currentActionParametric != null)
+                        {
+                            obj.AddFizVels(currentActionId, currentActionParametric, db);
+
+                        }
+                        obj.EditFizVels(db);
+
+                        //ParamFizVels
+                        if (currentActionParametric == true)
+                        {
+
+                            obj.AddParamFizVels(db);
+                            obj.EditParamFizVels(db);
+                        }
+
+
+                        if (currentActionParametric == false)
+                        {
+                            //add checkbox
+
+                            obj.AddPro(currentActionId, db);
+
+
+                            obj.AddVrem(currentActionId, db);
+
+
+                            obj.AddSpec(currentActionId, db);
+
+                            obj.EditPro(db);
+                            obj.EditVrem(db);
+                            obj.EditSpec(db);
+
+
+                            obj.DeletePros(db);
+                            obj.DeleteSpec(db);
+                            obj.DeleteVrem(db);
+
+                        }
+                        obj.DeleteFizVels(db);
+                        obj.DeleteActionId(db);
+
+
+
+
+
+
+
+                        db.SaveChanges();
+                        transaction.Commit();
+                        commited = true;
+                        //TODO удаление всего в самом конце начиная с детей
+                    }
+                    catch
                     {
-                        obj.AddVrem(currentActionId,db);
-                       
+                        transaction.Rollback();
                     }
-
-                    //spec
-                    {
-                        obj.AddSpec(currentActionId,db);
-                        
-                    }
-
-
-                    obj.EditPro(db);
-                    obj.EditVrem(db);
-                    obj.EditSpec(db);
-
-                   
-
-                    obj.DeletePros(db);
-                    obj.DeleteSpec(db);
-                    obj.DeleteVrem(db);
-                 
-                    
                 }
-
-
-
-
-                //TODO удаление всего в самом конце начиная с детей
             }
-            return RedirectToAction("CreateDescription");
+            if (commited )
+                return Content("+", "text/html");
+            else
+                return new HttpStatusCodeResult(404);
+
+            //return RedirectToAction("CreateDescription");
             //return View();
         }
 
@@ -510,13 +486,17 @@ namespace dip.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescriptionObject(SaveDescriptionObject obj)//, string technicalFunctionId
         {
+            bool commited = false;
             obj.SetNotNullArray();
-            obj.AddCharacteristic();
-            obj.EditCharacteristic();
-            obj.EditState();
-            obj.DeleteCharacteristic();
+            commited =obj.Save();
+            
 
-            return View();
+            if (commited)
+                return Content("+", "text/html");
+            else
+                return new HttpStatusCodeResult(404);
+
+            //return View();
         }
 
 

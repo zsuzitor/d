@@ -296,7 +296,7 @@
             var type = ch.name.split(key)[1];//[0]
             var div = document.getElementById((ch.value + type));
 
-            if (div && !div.innerHTML.trim()) {
+            if (div && !div.innerHTML.trim() && $(ch).prop("checked")) {
                 goAjaxRequest({
                     url: '/Actions/' + meth + '?id=' + ch.value + '&type=' + type,
                     func_success: function (data, status, jqXHR) {

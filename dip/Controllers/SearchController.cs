@@ -5,6 +5,7 @@ using Lucene.Net.Analysis.Ru;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,20 +30,11 @@ namespace dip.Controllers
         public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
 
-            //TODO сейчас просто проставил null временно
-            //DescrSearchIInput.ValidationIfNeed(inp_);
-
-            //DescrSearchIOut.ValidationIfNeed(outp_);
-            //if (inp_?.Valide == false || outp_?.Valide == false)
-            //    return new HttpStatusCodeResult(404);
-            //if (search != null)
-            //    throw new Exception();
+            
             DescriptionSearchV res = new DescriptionSearchV();
 
 
-            //var inp = new DescrSearchI(inp:null);//inp_
-            //var outp = new DescrSearchI(outp:null);//outp_
-            //if (!DescrSearchI.IsNull(inp) && !DescrSearchI.IsNull(outp))
+            
             
             if (forms!=null&& objForms!=null)
             {
@@ -118,8 +110,13 @@ namespace dip.Controllers
             }
             res.CountLoad = countLoad;
 
+            var dictParams = new Dictionary<string, string>();
+            dictParams.Add("type", type);
+            dictParams.Add("str", str);
+            dictParams.Add("lastId", lastId.ToString());
+            dictParams.Add("countLoad", countLoad.ToString());
             Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-               ApplicationUser.GetUserId(), true, null, type, str, lastId.ToString(), countLoad.ToString());
+               ApplicationUser.GetUserId(), true, dictParams);
             log.AddLogDb();
             return PartialView(res);
         }
@@ -151,30 +148,7 @@ namespace dip.Controllers
             }
 
 
-            //устанавливаем параметры для представления mainHeader
-
-            //TempData["textSearchStr"] = str;
-            //TempData["textSearchType"] = type;
-
-
-
-            //Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
-            //   ApplicationUser.GetUserId(), true, null, type, str);
-            //var listmaramslog = log.AddLogDb();
-
-            //if (str.Split().Length > 10)
-            //    str = Search.StringSemanticParse(listmaramslog[1]);
-
-
-
-
-            //if (!string.IsNullOrWhiteSpace(str))
-
-            //    res.ListPhysId = Search.GetListPhys(type, str, HttpContext, 0, 1);
-
-            //if (res.ListPhysId.Count < Constants.CountForLoad)
-            //    res.ShowBtLoad = false;
-            //TODO если произошла ошибка, надо найти лог и поменять флаг
+         
             return View(res);//.Select(x1=>x1.IDFE)
         }
         //create fulltext catalog DbaLogParamsCatalog;

@@ -1445,15 +1445,15 @@ namespace dip.Models.DataBase
                
             }
             
-            obj.Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Composition.Trim());
-            obj.Conductivity = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Conductivity.Trim());
-            obj.MagneticStructure = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MagneticStructure.Trim()); 
-            obj.MechanicalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MechanicalState.Trim()); 
-            obj.OpticalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.OpticalState.Trim()); 
-            obj.PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.PhaseState.Trim()); 
-            obj.Special = PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Special.Trim()); 
+            obj.Composition = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Composition.Trim()));
+            obj.Conductivity = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Conductivity.Trim()));
+            obj.MagneticStructure = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MagneticStructure.Trim())); 
+            obj.MechanicalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MechanicalState.Trim())); 
+            obj.OpticalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.OpticalState.Trim())); 
+            obj.PhaseState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.PhaseState.Trim())); 
+            obj.Special = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Special.Trim()));
 
-
+            
 
             db.FEObjects.Add(obj);
             db.SaveChanges();

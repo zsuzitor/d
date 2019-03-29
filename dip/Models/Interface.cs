@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace dip.Models
@@ -80,8 +81,32 @@ namespace dip.Models
             return true;
         }
 
-       
 
+        public static void DeleteFromDb(ApplicationDbContext db, System.Data.Entity.DbSet<T> collect, IEnumerable<string> del) //where T : ItemFormCheckbox<T>, new()
+        {
+
+            Type typeT = typeof(T);
+            MethodInfo meth = typeT.GetMethod("GetChild");
+            List<T> forDeleted = new List<T>();
+
+
+            int start = 0;
+
+            foreach (var i in collect.Where(x1 => del.FirstOrDefault(x2 => x2 == x1.Id) != null && x1.Parent != Constants.FeObjectBaseCharacteristic).ToList())
+            {
+
+                forDeleted.Add(i);
+
+                for (; start < forDeleted.Count; ++start)
+                {
+                    var gg = new object[] { forDeleted[start].Id };
+                    forDeleted.AddRange((List<T>)meth.Invoke(null, gg));
+                }
+            }
+
+            collect.RemoveRange(forDeleted);
+            db.SaveChanges();
+        }
 
         public static List<List<T>> GetQueueParent(List<T> list)
         {
@@ -167,7 +192,20 @@ namespace dip.Models
 
         }
 
+        public static string SortIds(string ids)
+        {
+            if (ids == null)
+                return null;
+            if (string.IsNullOrWhiteSpace(ids))
+                return "";
+            var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            Array.Sort(gg);
 
+            string res = string.Join(" ", gg);
+
+            
+            return res;
+        }
 
 
     }

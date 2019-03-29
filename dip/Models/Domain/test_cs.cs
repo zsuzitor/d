@@ -303,11 +303,23 @@ namespace dip.Models.Domain
         public bool SortIds()//TODO
         {
             bool res = true;
-            if (string.IsNullOrWhiteSpace(PhaseState))
-                return false;
-            // var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            string resStr = string.Join(" ", PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-                     OrderBy(x1 => x1).Distinct().ToList());
+            //if (string.IsNullOrWhiteSpace(PhaseState))
+            //    return false;
+            //// var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            //string resStr = string.Join(" ", PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+            //         OrderBy(x1 => x1).Distinct().ToList());
+
+
+            this.PhaseState = PhaseCharacteristicObject.SortIds(this.PhaseState);
+            this.Composition = PhaseCharacteristicObject.SortIds(this.Composition);
+            this.MagneticStructure = PhaseCharacteristicObject.SortIds(this.MagneticStructure);
+            this.Conductivity = PhaseCharacteristicObject.SortIds(this.Conductivity);
+            this.MechanicalState = PhaseCharacteristicObject.SortIds(this.MechanicalState);
+            this.OpticalState = PhaseCharacteristicObject.SortIds(this.OpticalState);
+            this.Special = PhaseCharacteristicObject.SortIds(this.Special);
+
+
+
             return res;
         }
 
@@ -625,9 +637,30 @@ namespace dip.Models.Domain
         public SaveDescriptionObjectEntry[] MassDeleteCharacteristic { get; set; }
 
         public SaveDescriptionObject()
-
         {
 
+        }
+
+        public bool Save()
+        {
+            bool commited = false;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            using (var transaction = db.Database.BeginTransaction())
+                try
+                {
+
+                    this.AddCharacteristic(db);
+                    this.EditCharacteristic(db);
+                    this.EditState(db);
+                    this.DeleteCharacteristic(db);
+                    transaction.Commit();
+                    commited = true;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            return commited;
         }
 
         public void SetNotNullArray()
@@ -640,63 +673,53 @@ namespace dip.Models.Domain
         }
 
 
-       public static List<SaveDescriptionObjectEntry> AllChildsCharacObj(List<SaveDescriptionObjectEntry> mass, string id)//List<string>
+        public static List<SaveDescriptionObjectEntry> AllChildsCharacObj(List<SaveDescriptionObjectEntry> mass, string id)//List<string>
         {
             List<SaveDescriptionObjectEntry> res = new List<SaveDescriptionObjectEntry>();
 
 
-            //for(int i = 0; i < mass.Count; ++i)
-            //{
-            //    if (ids.Contains(mass[i].Parent))
-            //    {
-            //        res.Add(mass[i]);
-            //        mass.RemoveAt(i--);
-                    
-            //    }
-            //}
 
 
-            var items=mass.Where(x1=> x1.ParentId==id).ToList();//ids.Contains(
+            var items = mass.Where(x1 => x1.ParentId == id).ToList();//ids.Contains(
             res.AddRange(items);
-            //for (int i = 0; i < mass.Count; ++i)
-            //{
-            //    if (items.FirstOrDefault(x1=>x1.Id==mass[i].Id)!=null)
-            //    {
-            //        //res.Add(mass[i]);
-                    
-            //        mass.RemoveAt(i--);
 
-            //    }
-            //}
-            foreach(var i in items)
+            foreach (var i in items)
             {
                 res.AddRange(SaveDescriptionObject.AllChildsCharacObj(mass, i.Id));
             }
 
-            //if (items.Count>0)
-            //{
-            //    res.AddRange(items);
-            //    mass.rem(items);
-            //    res.AddRange(test(mass, item.Id));
-
-            //}
             return res;
         }
 
-        public void AddCharacteristic(ApplicationDbContext db_ = null)
+        //public void AddCharacteristic()
+        //{
+        //    using (ApplicationDbContext db=new ApplicationDbContext())
+        //        using (var transaction = db.Database.BeginTransaction())
+        //            try
+        //            {
+        //                AddCharacteristic(db);
+        //                transaction.Commit();
+        //            }
+        //            catch
+        //            {
+        //                transaction.Rollback();
+        //            }
+        //}
+
+        public void AddCharacteristic(ApplicationDbContext db)
         {
-            
-            Dictionary<string,List<SaveDescriptionObjectEntry>> MainTree = new Dictionary<string, List<SaveDescriptionObjectEntry>>();
+
+            Dictionary<string, List<SaveDescriptionObjectEntry>> MainTree = new Dictionary<string, List<SaveDescriptionObjectEntry>>();
             List<SaveDescriptionObjectEntry> MassAddCharacteristicList = this.MassAddCharacteristic.ToList();
             foreach (var i in this.MassAddCharacteristic)
                 if (!i.ParentId.Contains("NEW"))
                 {
-                    if(!MainTree.ContainsKey(i.ParentId))
-                    MainTree[i.ParentId]=SaveDescriptionObject.AllChildsCharacObj(MassAddCharacteristicList, i.ParentId);
+                    if (!MainTree.ContainsKey(i.ParentId))
+                        MainTree[i.ParentId] = SaveDescriptionObject.AllChildsCharacObj(MassAddCharacteristicList, i.ParentId);
                 }
             //MainParentId.Add(i.ParentId);
 
-            var db = db_ ?? new ApplicationDbContext();
+
             var AllcharDb = db.PhaseCharacteristicObjects.ToList();
 
             string letterPart = "";
@@ -706,27 +729,30 @@ namespace dip.Models.Domain
             {
                 if (i.Value.Count > 0)
                 {
-                    
-                    
-                    var match=letterPartR.Match(i.Key);
+
+
+                    var match = letterPartR.Match(i.Key);
                     //var sfd = letterPartR.GetGroupNames();
                     //string groupName=letterPartR.GetGroupNames()[0];
                     letterPart = match.Groups[groupName].Value;
 
-                    Regex letterPartN = new Regex(@"^"+ letterPart + @"\d*$");
-                    int last = AllcharDb.Where(x1=> { //x1.Id.Contains(i.Key)
+                    Regex letterPartN = new Regex(@"^" + letterPart + @"\d*$");
+                    int last = AllcharDb.Where(x1 =>
+                    { //x1.Id.Contains(i.Key)
                         return letterPartN.IsMatch(x1.Id);
-                        })
-                        .Max(x1 => {
+                    })
+                        .Max(x1 =>
+                        {
                             string[] tmpstr = x1.Id.Split(new string[] { letterPart }, StringSplitOptions.RemoveEmptyEntries);
                             if (tmpstr.Length > 0)
                                 return int.Parse(tmpstr[0]);
                             else
                                 return 0;
-                            });
+                        });
                     foreach (var i2 in i.Value)//TODO не уверен что не возникнет ошибки, тк они не сортируются специально, сотировка задается в функции AllChildsCharacObj
                     {
-                        PhaseCharacteristicObject ob = new PhaseCharacteristicObject() {
+                        PhaseCharacteristicObject ob = new PhaseCharacteristicObject()
+                        {
                             Id = letterPart + ++last,// i2.Id.Split(new string[] {"NEW" },StringSplitOptions.RemoveEmptyEntries)[0],
                             Parent = i2.ParentId,
                             Name = i2.Text
@@ -739,24 +765,37 @@ namespace dip.Models.Domain
                             if (i3.ParentId == i2.Id)
                                 i3.ParentId = ob.Id;
                         }
-                        }
-                   
-                }
-                
-            }
-            
+                    }
 
-            if (db_ == null)
-                db.Dispose();
+                }
+
+            }
+
+
+
         }
 
-        public void EditCharacteristic(ApplicationDbContext db_ = null)
+        //public void EditCharacteristic()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //        using (var transaction = db.Database.BeginTransaction())
+        //            try
+        //            {
+        //                EditCharacteristic(db);
+        //                transaction.Commit();
+        //            }
+        //            catch
+        //            {
+        //                transaction.Rollback();
+        //            }
+        //}
+        public void EditCharacteristic(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            // var db = db_ ?? new ApplicationDbContext();
 
-            foreach(var i in this.MassEditCharacteristic)
+            foreach (var i in this.MassEditCharacteristic)
             {
-                var objCharac=db.PhaseCharacteristicObjects.FirstOrDefault(x1=>x1.Id==i.Id);
+                var objCharac = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == i.Id);
                 if (objCharac != null)
                 {
                     objCharac.Name = i.Text;
@@ -765,13 +804,28 @@ namespace dip.Models.Domain
             }
 
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+            //    db.Dispose();
         }
 
-        public void EditState(ApplicationDbContext db_ = null)
+        //public void EditState()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            EditState(db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+
+        public void EditState(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
 
             foreach (var i in this.MassEditState)
             {
@@ -784,46 +838,62 @@ namespace dip.Models.Domain
             }
 
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+            //    db.Dispose();
         }
 
 
-
-
-
-        public void DeleteCharacteristic(ApplicationDbContext db_ = null)
+        public void DeleteCharacteristic(ApplicationDbContext db)
         {
-            //запрещать удалять мейн характеристики
-            var db = db_ ?? new ApplicationDbContext();
-           // -----
+            AParentDb<PhaseCharacteristicObject>.DeleteFromDb(db,db.PhaseCharacteristicObjects, MassDeleteCharacteristic.Select(x1=>x1.Id));
+    }
 
-                List <PhaseCharacteristicObject> forDeleted = new List<PhaseCharacteristicObject>();
+        //public void DeleteCharacteristic()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            DeleteCharacteristic(db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        //public void DeleteCharacteristic(ApplicationDbContext db)
+        //{
+        //    //запрещать удалять мейн характеристики
+        //    //var db = db_ ?? new ApplicationDbContext();
+        //   // -----
 
-            int start = 0;
-            foreach (var i in MassDeleteCharacteristic)
-            {
-                var pro = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == i.Id);
-                
-                if (pro == null||pro.Parent== Constants.FeObjectBaseCharacteristic)
-                    continue;
-                forDeleted.Add(pro);
-                //var childs=Pro.GetChild(pro.Id);
-                //    forDeleted.AddRange(childs);
-                for (; start < forDeleted.Count; ++start)
-                {
-                    forDeleted.AddRange(PhaseCharacteristicObject.GetChild(forDeleted[start].Id));
-                }
-            }
-            db.PhaseCharacteristicObjects.RemoveRange(forDeleted);
-            db.SaveChanges();
+        //        List <PhaseCharacteristicObject> forDeleted = new List<PhaseCharacteristicObject>();
+
+        //    int start = 0;
+        //    foreach (var i in MassDeleteCharacteristic)
+        //    {
+        //        var pro = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == i.Id);
+
+        //        if (pro == null||pro.Parent== Constants.FeObjectBaseCharacteristic)
+        //            continue;
+        //        forDeleted.Add(pro);
+        //        //var childs=Pro.GetChild(pro.Id);
+        //        //    forDeleted.AddRange(childs);
+        //        for (; start < forDeleted.Count; ++start)
+        //        {
+        //            forDeleted.AddRange(PhaseCharacteristicObject.GetChild(forDeleted[start].Id));
+        //        }
+        //    }
+        //    db.PhaseCharacteristicObjects.RemoveRange(forDeleted);
+        //    db.SaveChanges();
 
 
 
 
-            if (db_ == null)
-                db.Dispose();
-        }
+        //    //if (db_ == null)
+        //       // db.Dispose();
+        //}
 
 
 
@@ -832,7 +902,7 @@ namespace dip.Models.Domain
 
 
 
-        public class SaveDescription
+    public class SaveDescription
     {
         //public DescrSearchI test { get; set; }
         public SaveDescriptionEntry[] MassAddActionId { get; set; }
@@ -851,7 +921,7 @@ namespace dip.Models.Domain
 
         public SaveDescriptionEntry[] MassDeletedActionId { get; set; }
         public SaveDescriptionEntry[] MassDeletedFizVels { get; set; }
-        public SaveDescriptionEntry[] MassDeletedParamFizVels { get; set; }
+        //public SaveDescriptionEntry[] MassDeletedParamFizVels { get; set; }
         public SaveDescriptionEntry[] MassDeletedPros { get; set; }
         public SaveDescriptionEntry[] MassDeletedVrems { get; set; }
         public SaveDescriptionEntry[] MassDeletedSpecs { get; set; }
@@ -879,18 +949,31 @@ namespace dip.Models.Domain
 
             MassDeletedActionId = MassDeletedActionId ?? new SaveDescriptionEntry[0];
             MassDeletedFizVels = MassDeletedFizVels ?? new SaveDescriptionEntry[0];
-            MassDeletedParamFizVels = MassDeletedParamFizVels ?? new SaveDescriptionEntry[0];
+           // MassDeletedParamFizVels = MassDeletedParamFizVels ?? new SaveDescriptionEntry[0];
             MassDeletedPros = MassDeletedPros ?? new SaveDescriptionEntry[0];
             MassDeletedVrems = MassDeletedVrems ?? new SaveDescriptionEntry[0];
             MassDeletedSpecs = MassDeletedSpecs ?? new SaveDescriptionEntry[0];
         }
 
 
-        
 
-            public void AddFizVels(string currentActionId,bool? currentActionParametric,ApplicationDbContext db_ = null)
+        //public void AddFizVels(string currentActionId, bool? currentActionParametric)
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            AddFizVels(currentActionId, currentActionParametric, db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void AddFizVels(string currentActionId,bool? currentActionParametric,ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
             //if (currentActionParametric == false)
             //    fizvels=//выберет и не параметрические
@@ -934,13 +1017,27 @@ namespace dip.Models.Domain
                         i2.ParentId = fizVelId;
                 }
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
-        public void EditFizVels(ApplicationDbContext db_ = null)
+        //public void EditFizVels()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            EditFizVels( db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void EditFizVels(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditFizVels)
             {
                 var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -951,12 +1048,27 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
-        public void AddParamFizVels(ApplicationDbContext db_ = null)
+
+        //public void AddParamFizVels()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            AddParamFizVels(db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void AddParamFizVels(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
 
             if (MassAddParamFizVels.Length > 0)
             {
@@ -984,13 +1096,26 @@ namespace dip.Models.Domain
                 }
             }
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+               // db.Dispose();
         }
-
-        public void EditParamFizVels(ApplicationDbContext db_ = null)
+        //public void EditParamFizVels()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            EditParamFizVels(db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void EditParamFizVels(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
 
             foreach (var i in MassEditParamFizVels)
             {
@@ -1003,13 +1128,27 @@ namespace dip.Models.Domain
                 db.SaveChanges();
             }
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
-        public void AddPro(string currentActionId,ApplicationDbContext db_ = null)
+        //public void AddPro(string currentActionId)
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            AddPro(currentActionId,db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void AddPro(string currentActionId,ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
 
             int last = 0;
             var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
@@ -1056,14 +1195,27 @@ namespace dip.Models.Domain
 
 
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+               // db.Dispose();
         }
 
-
-        public void EditPro(ApplicationDbContext db_ = null)
+        //public void EditPro()
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            EditPro(db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void EditPro(ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditPros)
             {
                 var act = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -1074,14 +1226,27 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
-
-        public void AddSpec(string currentActionId,ApplicationDbContext db_ = null)
+        //public void AddSpec(string currentActionId)
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    using (var transaction = db.Database.BeginTransaction())
+        //        try
+        //        {
+        //            AddSpec(currentActionId,db);
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //}
+        public void AddSpec(string currentActionId,ApplicationDbContext db)
         {
-            var db = db_ ?? new ApplicationDbContext();
+           // var db = db_ ?? new ApplicationDbContext();
 
             int last = 0;
             var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
@@ -1128,14 +1293,14 @@ namespace dip.Models.Domain
             }
 
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+            //    db.Dispose();
         }
 
 
-        public void EditSpec(ApplicationDbContext db_ = null)
+        public void EditSpec(ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditSpecs)
             {
                 var act = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -1146,14 +1311,14 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
 
-        public void AddVrem(string currentActionId,ApplicationDbContext db_ = null)
+        public void AddVrem(string currentActionId,ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
 
             int last = 0;
             var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
@@ -1201,14 +1366,14 @@ namespace dip.Models.Domain
             }
 
 
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+               // db.Dispose();
         }
 
 
-        public void EditVrem(ApplicationDbContext db_ = null)
+        public void EditVrem(ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditVrems)
             {
                 var act = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -1219,15 +1384,15 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
 
 
-        public void EditActionId( ApplicationDbContext db_ = null)
+        public void EditActionId( ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditActionId)
             {
                 var act = db.AllActions.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -1239,14 +1404,14 @@ namespace dip.Models.Domain
 
                 db.SaveChanges();
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+                //db.Dispose();
         }
 
-        public bool? AddActionId(int lastAllActionId, ref string currentActionId,ApplicationDbContext db_=null)
+        public bool? AddActionId(int lastAllActionId, ref string currentActionId,ApplicationDbContext db)//db_ = null
         {
             bool? currentActionParametric  = null;
-            var db = db_ ?? new ApplicationDbContext();
+            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassAddActionId)//возможно вытащить из цикла тк сейчас нельзя добавить больше 1
             {
                 var allAction = new Models.Domain.AllAction() { Name = i.Text, Parent = "ALLACTIONS", Parametric = i.Parametric, Id = ("VOZ" + ++lastAllActionId) };
@@ -1279,87 +1444,140 @@ namespace dip.Models.Domain
 
 
             }
-            if (db_ == null)
-                db.Dispose();
+            //if (db_ == null)
+               // db.Dispose();
             return currentActionParametric;
         }
 
 
-        public void DeletePros(ApplicationDbContext db_ = null)
+        public void DeleteFizVels(ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
-            List<Pro> forDeleted = new List<Pro>();
 
-            int start = 0;
-            foreach (var i in MassDeletedPros)
-            {
-                var pro = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
-                if (pro == null)
-                    continue;
-                forDeleted.Add(pro);
-                //var childs=Pro.GetChild(pro.Id);
-                //    forDeleted.AddRange(childs);
-                for (; start < forDeleted.Count; ++start)
-                {
-                    forDeleted.AddRange(Pro.GetChild(forDeleted[start].Id));
-                }
-            }
-            db.Pros.RemoveRange(forDeleted);
+            var list = db.FizVels.Where(x1 => this.MassDeletedFizVels.FirstOrDefault(x2 => x2.Id == x1.Id || x2.Id == x1.Parent) != null);
+            db.FizVels.RemoveRange(list);
             db.SaveChanges();
-            if (db_ == null)
-                db.Dispose();
+
         }
-
-        public void DeleteVrem(ApplicationDbContext db_ = null)
+        public void DeleteActionId(ApplicationDbContext db)//db_ = null
         {
-            var db = db_ ?? new ApplicationDbContext();
-            List<Vrem> forDeleted = new List<Vrem>();
-
-            int start = 0;
-            foreach (var i in MassDeletedVrems)
+            var actionIdList=db.AllActions.Where(x1=>this.MassDeletedActionId.FirstOrDefault(x2=>x2.Id== x1.Id)!=null).ToList();
+            if (actionIdList.Count == 0)
+                return;
+            foreach(var i in actionIdList)
             {
-                var vrem = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
-                if (vrem == null)
-                    continue;
-                forDeleted.Add(vrem);
-                //var childs=Pro.GetChild(pro.Id);
-                //    forDeleted.AddRange(childs);
-                for (; start < forDeleted.Count; ++start)
+                var fizvel=db.FizVels.Where(x1 => x1.Parent == i.Id + "_FIZVEL").ToList();
+                //List<FizVel> paramFizvel = new List<FizVel>();
+                if (i.Parametric)
                 {
-                    forDeleted.AddRange(Vrem.GetChild(forDeleted[start].Id));
+                    fizvel.AddRange( db.FizVels.Where(x1 => fizvel.FirstOrDefault(x2=>x2.Id== x1.Parent)!=null).ToList());
+                }
+                else
+                {
+                    var pros = db.Pros.Where(x1 => x1.Parent == i.Id + "_PROS").Select(x1=>x1.Id).ToList();
+                    Pro.DeleteFromDb(db, db.Pros, pros);
+                    var spec = db.Specs.Where(x1 => x1.Parent == i.Id + "_SPEC").Select(x1 => x1.Id).ToList();
+                    Spec.DeleteFromDb(db, db.Specs, spec);
+                    var vrem = db.Vrems.Where(x1 => x1.Parent == i.Id + "_VREM").Select(x1 => x1.Id).ToList();
+                    Vrem.DeleteFromDb(db, db.Vrems, vrem);
                 }
             }
-            db.Vrems.RemoveRange(forDeleted);
-            db.SaveChanges();
-            if (db_ == null)
-                db.Dispose();
         }
 
 
-        public void DeleteSpec(ApplicationDbContext db_ = null)
-        {
-            var db = db_ ?? new ApplicationDbContext();
-            List<Spec> forDeleted = new List<Spec>();
 
-            int start = 0;
-            foreach (var i in MassDeletedSpecs)
-            {
-                var spec = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
-                if (spec == null)
-                    continue;
-                forDeleted.Add(spec);
-                //var childs=Pro.GetChild(pro.Id);
-                //    forDeleted.AddRange(childs);
-                for (; start < forDeleted.Count; ++start)
-                {
-                    forDeleted.AddRange(Spec.GetChild(forDeleted[start].Id));
-                }
-            }
-            db.Specs.RemoveRange(forDeleted);
-            db.SaveChanges();
-            if (db_ == null)
-                db.Dispose();
+        public void DeleteVrem(ApplicationDbContext db)//db_ = null
+        {
+            Vrem.DeleteFromDb(db, db.Vrems, MassDeletedVrems.Select(x1 => x1.Id));
+
         }
+
+        public void DeleteSpec(ApplicationDbContext db)//db_ = null
+        {
+            Spec.DeleteFromDb(db, db.Specs, MassDeletedSpecs.Select(x1 => x1.Id));
+
+        }
+
+
+        public void DeletePros(ApplicationDbContext db)//db_ = null
+        {
+            Pro.DeleteFromDb(db,db.Pros, MassDeletedPros.Select(x1=>x1.Id));
+            
+        }
+        //public void DeletePros(ApplicationDbContext db)//db_ = null
+        //{
+        //   // var db = db_ ?? new ApplicationDbContext();
+        //    List<Pro> forDeleted = new List<Pro>();
+
+        //    int start = 0;
+        //    foreach (var i in MassDeletedPros)
+        //    {
+        //        var pro = db.Pros.FirstOrDefault(x1 => x1.Id == i.Id);
+        //        if (pro == null)
+        //            continue;
+        //        forDeleted.Add(pro);
+        //        //var childs=Pro.GetChild(pro.Id);
+        //        //    forDeleted.AddRange(childs);
+        //        for (; start < forDeleted.Count; ++start)
+        //        {
+        //            forDeleted.AddRange(Pro.GetChild(forDeleted[start].Id));
+        //        }
+        //    }
+        //    db.Pros.RemoveRange(forDeleted);
+        //    db.SaveChanges();
+        //    //if (db_ == null)
+        //       // db.Dispose();
+        //}
+
+        //public void DeleteVrem(ApplicationDbContext db)//db_ = null
+        //{
+        //    //var db = db_ ?? new ApplicationDbContext();
+        //    List<Vrem> forDeleted = new List<Vrem>();
+
+        //    int start = 0;
+        //    foreach (var i in MassDeletedVrems)
+        //    {
+        //        var vrem = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
+        //        if (vrem == null)
+        //            continue;
+        //        forDeleted.Add(vrem);
+        //        //var childs=Pro.GetChild(pro.Id);
+        //        //    forDeleted.AddRange(childs);
+        //        for (; start < forDeleted.Count; ++start)
+        //        {
+        //            forDeleted.AddRange(Vrem.GetChild(forDeleted[start].Id));
+        //        }
+        //    }
+        //    db.Vrems.RemoveRange(forDeleted);
+        //    db.SaveChanges();
+        //    //if (db_ == null)
+        //        //db.Dispose();
+        //}
+
+
+        //public void DeleteSpec(ApplicationDbContext db)//db_ = null
+        //{
+        //    //var db = db_ ?? new ApplicationDbContext();
+        //    List<Spec> forDeleted = new List<Spec>();
+
+        //    int start = 0;
+        //    foreach (var i in MassDeletedSpecs)
+        //    {
+        //        var spec = db.Specs.FirstOrDefault(x1 => x1.Id == i.Id);
+        //        if (spec == null)
+        //            continue;
+        //        forDeleted.Add(spec);
+        //        //var childs=Pro.GetChild(pro.Id);
+        //        //    forDeleted.AddRange(childs);
+        //        for (; start < forDeleted.Count; ++start)
+        //        {
+        //            forDeleted.AddRange(Spec.GetChild(forDeleted[start].Id));
+        //        }
+        //    }
+        //    db.Specs.RemoveRange(forDeleted);
+        //    db.SaveChanges();
+        //    //if (db_ == null)
+        //       // db.Dispose();
+        //}
 
 
 

@@ -53,17 +53,21 @@ namespace dip.Models.Domain
 
 
 
-        public static string SortIds(string ids)
-        {
-            if (ids == null)
-                return null;
-            if (string.IsNullOrWhiteSpace(ids))
-                return "";
-           // var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-           string res= string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-                    OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
-            return res;
-        }
+        //public static string SortIds(string ids)
+        //{
+        //    if (ids == null)
+        //        return null;
+        //    if (string.IsNullOrWhiteSpace(ids))
+        //        return "";
+        //    var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+        //    Array.Sort(gg);
+
+        //    string res = string.Join(" ", gg);
+
+        //    //string res= string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+        //    //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
+        //    return res;
+        //}
 
 
      

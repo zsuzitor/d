@@ -40,6 +40,7 @@
                 <input name="actionId" type="radio" value="@i.Id" id="@(i.Id+"_radio")" class="radioClass">
                 <button class="btn btn-default" onclick="changeActionId('@i.Id')">Изменить</button>
                 <button id="restoreInput_but_@i.Id" class="btn btn-default" onclick="restoreValue(1,'@i.Id')" style="display:none;">Восстановить значение</button>
+                <button class="btn btn-default" id="@(i.Id+"_delbut")" onclick="deleteItemActionId('@i.Id')">Удалить</button>
                 <input class="form-control" type="text" value="@i.Name" name="@i.Id" id="@(i.Id+"_inp")" readonly />
             </div>
         }
@@ -271,6 +272,9 @@
         massDeletedPros:[],
         massDeletedVrems:[],
         massDeletedSpecs: [],
+        massDeletedFizVels: [],
+        massDeletedActionId: [],
+
 
         massOldValue:[]
 
@@ -892,8 +896,14 @@
     function deleteItemVrem(id) {
         deleteItem(id, 3);
     }
+    function deleteItemFizVels(id) {
+        deleteItem(id, 4);
+    }
+    function deleteItemActionId(id){
+        deleteItem(id, 5);
+    }
 
-    //type: 1-pros 2-spec,3-vrem
+    //type: 1-pros 2-spec,3-vrem,4-fizvels
     function deleteItem(id,type) {
         // <div id="div_(pro.Id)_all">
         var delbut = document.getElementById(id + '_delbut');
@@ -901,7 +911,7 @@
         var inp = $('#' + id + '_inp');
         if (delbut.innerHTML.trim() == 'Удалить') {
             //"удаляем"
-            if (id.indexOf('_NEW') < 0) {
+            if (id.indexOf('NEW') < 0) {
                 switch (type) {
                     case 1:
                         mainObjEdit.massDeletedPros.push(id);
@@ -912,21 +922,31 @@
                     case 3:
                         mainObjEdit.massDeletedVrems.push(id);
                         break;
+                    case 4:
+                        mainObjEdit.massDeletedFizVels.push(id);
+                        break;
+                    case 5:
+                        mainObjEdit.massDeletedActionId.push(id);
+                        break;
                 }
             }
            
             delbut.innerHTML = 'Восстановить';
             var divChilds = document.getElementById(id + '_childs');
+            if ($("div").is('#' + id + '_childs'))//TODO $("div").is('#'+id + '_childs')
             divChilds.innerHTML = '';
-            $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
-            $(checkboxChilds).css('display', 'none');
+            if ($("input").is('#' + id + '_chch')) {//TODO $("div").is('#' + id + '_chch')
+                $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
+                $(checkboxChilds).css('display', 'none');
+            }
+            
             $(inp).css('background-color', 'grey');
             $(inp).prop('readonly', true);
             
         }
         else {
             //восстанавливаем
-            if (id.indexOf('_NEW') < 0) {
+            if (id.indexOf('NEW') < 0) {
                 switch (type) {
                     case 1:
                         for (var i = 0; i < mainObjEdit.massDeletedPros.length; ++i) {
@@ -955,6 +975,24 @@
                             }
                         }
                         break;
+                    case 4:
+                        //mainObjEdit.massDeletedVrems.push(id);
+                        for (var i = 0; i < mainObjEdit.massDeletedFizVels.length; ++i) {
+                            if (mainObjEdit.massDeletedFizVels[i] == id) {
+                                mainObjEdit.massDeletedFizVels.splice(i, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 5:
+                        //mainObjEdit.massDeletedVrems.push(id);
+                        for (var i = 0; i < mainObjEdit.massDeletedActionId.length; ++i) {
+                            if (mainObjEdit.massDeletedActionId[i] == id) {
+                                mainObjEdit.massDeletedActionId.splice(i, 1);
+                                break;
+                            }
+                        }
+                        break;
                 }
             }
             else {
@@ -963,7 +1001,7 @@
             delbut.innerHTML = 'Удалить';
             $(checkboxChilds).css('display', 'inline');
             //
-            $(inp).css('background-color', 'white');
+            $(inp).css('background-color', '');
 
 
         }
@@ -1176,6 +1214,24 @@
             if ($("input").is(strId))
                 construct_(i, 'MassDeletedVrems', mainObjEdit.massDeletedVrems[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
+
+        //удаленные fizvels
+        for (var i = 0; i < mainObjEdit.massDeletedFizVels.length; ++i) {
+            //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
+            var strId = '#' + mainObjEdit.massDeletedFizVels[i] + '_inp';
+            var checkObj = $(strId);
+            if ($("input").is(strId))
+                construct_(i, 'MassDeletedFizVels', mainObjEdit.massDeletedFizVels[i], checkObj.prop('name'), $(checkObj).val(), false);
+        }
+
+        //удаленные actionid
+        for (var i = 0; i < mainObjEdit.massDeletedActionId.length; ++i) {
+            //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
+            var strId = '#' + mainObjEdit.massDeletedActionId[i] + '_inp';
+            var checkObj = $(strId);
+            if ($("input").is(strId))
+                construct_(i, 'MassDeletedActionId', mainObjEdit.massDeletedActionId[i], checkObj.prop('name'), $(checkObj).val(), false);
+        }
        
 
         //добавление actionId
@@ -1246,9 +1302,9 @@
             url: "/Physic/CreateDescription",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                var data = req;//.responseText
+                //var data = req;//.responseText
                 //var type = data[0].trim();
-
+                alert('Изменено, перезагрузите страницу');
 
             }, type: 'POST'
         });

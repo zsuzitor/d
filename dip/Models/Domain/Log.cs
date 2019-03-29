@@ -12,7 +12,7 @@ namespace dip.Models.Domain
         public DateTime DateTime { get; set; }
         public string Action { get; set; }
         public string Controller { get; set; }
-        public bool Succes { get; set; }
+        public bool Success { get; set; }
         public string Info { get; set; }
 
 
@@ -23,63 +23,50 @@ namespace dip.Models.Domain
         public List<LogParam> LogParams { get; set; }
 
         [NotMapped]
-        public List<string> Params_ { get; set; }
+        public Dictionary<string, string> Params_ { get; set; }
 
         public Log()
         {
             DateTime = DateTime.Now;
             Action = null;
             Controller = null;
-            Succes = false;
+            Success = false;
             Info = null;
             Person = null;
             PersonId = null;
             LogParams = new List<LogParam>();
-            Params_ = new List<string>();
+            Params_ = new Dictionary<string, string>();
         }
-        public Log(string Action,string Controller,string PersonId, bool Succes,string Info=null,params string[] param)
+        public Log(string Action,string Controller,string PersonId, bool Success, Dictionary<string, string> param=null, string Info=null)
         {
             DateTime = DateTime.Now;
             this.Action = Action;
             this.Controller = Controller;
-            this.Succes = Succes;
+            this.Success = Success;
             this.Info = Info;
             
             this.PersonId = PersonId;
             this.LogParams = new List<LogParam>();
-            this.Params_ = new List<string>();
-            if (param.Length > 0)
-                this.Params_.AddRange(param.ToList());
+            this.Params_ = new Dictionary<string, string>();
+            if(param!=null)
+            foreach(var i in param)
+                this.Params_.Add(i.Key,i.Value);
         }
 
 
         public void SetDescrParam(DescrSearchI[] param)
         {
-            //при добавлении добавлять в конец
-            //this.Params_.Add(inp.ActionId);
-            //this.Params_.Add(inp.ActionType);
-            //this.Params_.Add(inp.FizVelId);
-            //this.Params_.Add(inp.ParametricFizVelId);
-            //this.Params_.Add(inp.ListSelectedPros);
-            //this.Params_.Add(inp.ListSelectedSpec);
-            //this.Params_.Add(inp.ListSelectedVrem);
-            //this.Params_.Add(outp.ActionId);
-            //this.Params_.Add(outp.ActionType);
-            //this.Params_.Add(outp.FizVelId);
-            //this.Params_.Add(outp.ParametricFizVelId);
-            //this.Params_.Add(outp.ListSelectedPros);
-            //this.Params_.Add(outp.ListSelectedSpec);
-            //this.Params_.Add(outp.ListSelectedVrem);
+          
             foreach(var i in param)
             {
                 //TODO name проставлять
-                this.Params_.Add(i.ActionId);
-                this.Params_.Add(i.ActionType);
-                this.Params_.Add(i.FizVelId);
-                this.Params_.Add(i.ParametricFizVelId);
-                this.Params_.Add(i.ListSelectedPros);
-                this.Params_.Add(i.ListSelectedSpec);
-                this.Params_.Add(i.ListSelectedVrem);
+                this.Params_.Add("ActionId", i.ActionId);
+                this.Params_.Add("ActionType", i.ActionType);
+                this.Params_.Add("FizVelId", i.FizVelId);
+                this.Params_.Add("ParametricFizVelId", i.ParametricFizVelId);
+                this.Params_.Add("ListSelectedPros", i.ListSelectedPros);
+                this.Params_.Add("ListSelectedSpec", i.ListSelectedSpec);
+                this.Params_.Add("ListSelectedVrem", i.ListSelectedVrem);
             }
 
 
@@ -97,7 +84,7 @@ namespace dip.Models.Domain
                 db.SaveChanges();
                 foreach(var i in this.Params_)
                 {
-                    var paramObj = new LogParam() { LogId = this.Id, Param = i };
+                    var paramObj = new LogParam() { LogId = this.Id, Param = i.Value,Name=i.Key };
                     
                     db.LogParams.Add(paramObj);
                     

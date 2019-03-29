@@ -489,113 +489,146 @@ order by [data].score desc
                 string.IsNullOrWhiteSpace(TextLit))
                 return false;
 
-            return true;
+
+            using (var db=new ApplicationDbContext())
+            {
+                var states = db.StateObjects.Where(x1 => x1.Id == this.StateBeginId || x1.Id == this.StateEndId).ToList();
+                foreach (var i in states)
+                    if (i.CountPhase == null)
+                        return false;
+            }
+
+
+                return true;
         }
 
-        public bool AddToDb( DescrSearchI[] forms, DescrObjectI[] objForms , List<byte[]> addImgs = null)
+        public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null)
         {
             //if (!this.Validation())
             //    return false;
-
+            bool commited = false;
 
 
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.FEText.Add(this);
-                db.SaveChanges();
-
-                foreach (var i in forms)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    var act = new FEAction() { Idfe = this.IDFE };//, Input = (i.InputForm ? 1 : 0)
-                    act.SetFromInput(i);
-                    db.FEActions.Add(act);
-                    db.SaveChanges();
-                }
-                foreach (var i in objForms)
-                {
-                    List<FEObject> objects = new List<FEObject>();
-                    var phmass=i.GetActualPhases();//
-                    foreach(var phit in phmass)
+                    try
                     {
-                        objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
+                        db.FEText.Add(this);
+                        db.SaveChanges();
+
+                        foreach (var i in forms)
+                        {
+                            var act = new FEAction() { Idfe = this.IDFE };//, Input = (i.InputForm ? 1 : 0)
+                            act.SetFromInput(i);
+                            db.FEActions.Add(act);
+                            db.SaveChanges();
+                        }
+                        foreach (var i in objForms)
+                        {
+                            List<FEObject> objects = new List<FEObject>();
+                            var phmass = i.GetActualPhases();//
+                            foreach (var phit in phmass)
+                            {
+                                objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
+                            }
+
+                            db.FEObjects.AddRange(objects);
+                            db.SaveChanges();
+                        }
+
+
+                        this.AddImages(addImgs, db);
+
+                        db.SaveChanges();
+                        transaction.Commit();
+                        commited = true;
+                        //DescrObjectI[] objForms = ; //TODO-objForms
                     }
-                    
-                        //new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
-                        //new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
-                
-                    db.FEObjects.AddRange(objects);
-                    db.SaveChanges();
+                    catch
+                    {
+                        transaction.Rollback();
+                    }
                 }
-
-               
-                this.AddImages(addImgs, db);
-
-                db.SaveChanges();
-
-                //DescrObjectI[] objForms = ; //TODO-objForms
-
-
             }
-            Lucene_.BuildIndexSolo(this);
-            return true;
+            if (commited)
+                Lucene_.BuildIndexSolo(this);
+            return commited;
         }
 
-        public bool ChangeDb(FEText new_obj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, List<DescrObjectI> objForms=null)
+        public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, List<DescrObjectI> objForms = null)
         {
-
+            bool commited = false;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Set<FEText>().Attach(this);
-                this.Equal(new_obj);
-                if (deleteImg != null && deleteImg.Count > 0)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    var imgs = db.Images.Where(x1 => x1.FeTextIDFE == this.IDFE).
-                                            Join(deleteImg, x1 => x1.Id, x2 => x2, (x1, x2) => x1).ToList();//Where(x1 => x1.FeTextId == obj.IDFE);
-                    db.Images.RemoveRange(imgs);
-                    db.SaveChanges();
-                }
-                this.AddImages(addImgs, db);
-
-
-                var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
-                db.FEActions.RemoveRange(descrdb);//без сохранения
-                
-              
-                foreach(var i in forms)
-                {
-                    var act=new FEAction() {Idfe=this.IDFE };//,Input=(i.InputForm?1:0)
-                    act.SetFromInput(i);
-                    db.FEActions.Add(act);
-                }
-                
-
-                db.SaveChanges();
-
-
-                var objdb = db.FEObjects.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
-                db.FEObjects.RemoveRange(objdb);//без сохранения
-                foreach (var i in objForms)
-                {
-                    //    List<FEObject> objects = new List<FEObject>()
-                    //    {
-                    //        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
-                    //        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
-                    //        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
-                    //};
-                    List<FEObject> objects = new List<FEObject>();
-                    var phmass = i.GetActualPhases();//
-                    foreach (var phit in phmass)
+                    try
                     {
-                        objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
-                    }
-                    db.FEObjects.AddRange(objects);
-                    db.SaveChanges();
-                }
-                db.SaveChanges();
+                        //var states=db.StateObjects.Where(x1 => x1.Id == newObj.StateBeginId || x1.Id == newObj.StateEndId).ToList();
+                        //foreach (var i in states)
+                        //    if (i.CountPhase == null)
+                        //        return false;
+                        
+                        db.Set<FEText>().Attach(this);
+                        this.Equal(newObj);
+                        if (deleteImg != null && deleteImg.Count > 0)
+                        {
+                            var imgs = db.Images.Where(x1 => x1.FeTextIDFE == this.IDFE).
+                                                    Join(deleteImg, x1 => x1.Id, x2 => x2, (x1, x2) => x1).ToList();//Where(x1 => x1.FeTextId == obj.IDFE);
+                            db.Images.RemoveRange(imgs);
+                            db.SaveChanges();
+                        }
+                        this.AddImages(addImgs, db);
 
-                // DescrObjectI[] objForms = ; //TODO-objForms
+
+                        var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
+                        db.FEActions.RemoveRange(descrdb);//без сохранения
+
+
+                        foreach (var i in forms)
+                        {
+                            var act = new FEAction() { Idfe = this.IDFE };//,Input=(i.InputForm?1:0)
+                            act.SetFromInput(i);
+                            db.FEActions.Add(act);
+                        }
+
+
+                        db.SaveChanges();
+
+
+                        var objdb = db.FEObjects.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
+                        db.FEObjects.RemoveRange(objdb);//без сохранения
+                        foreach (var i in objForms)
+                        {
+                            //    List<FEObject> objects = new List<FEObject>()
+                            //    {
+                            //        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
+                            //        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
+                            //        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
+                            //};
+                            List<FEObject> objects = new List<FEObject>();
+                            var phmass = i.GetActualPhases();//
+                            foreach (var phit in phmass)
+                            {
+                                objects.Add(new FEObject(phit, this.IDFE, (i.Begin ? 1 : 0)));
+                            }
+                            db.FEObjects.AddRange(objects);
+                            db.SaveChanges();
+                        }
+                        db.SaveChanges();
+                        transaction.Commit();
+                        commited = true;
+                        // DescrObjectI[] objForms = ; //TODO-objForms
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                    }
+                }
             }
-            return true;
+            return commited;
         }
 
 

@@ -150,7 +150,7 @@
         var id = valArr[4]
         var div = document.getElementById(("phaseChilds_"+type+"_" + id));
 
-        if (div && !div.innerHTML.trim()) {
+        if (div && !div.innerHTML.trim()&&$(ch).prop("checked")) {
             var dataform = {
                 id: valArr[4],
                 type: valArr[3]
