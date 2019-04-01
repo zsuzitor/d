@@ -25,7 +25,7 @@ namespace dip.Models.Domain
         public FEObject()
         {
             NumPhase = 1;
-
+            Begin = 1;
             PhaseState = "";
             Composition = "";
             MagneticStructure = "";

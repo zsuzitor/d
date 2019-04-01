@@ -96,13 +96,69 @@ https
 
 запись с id 1 сломана feindex
 4?
+
+
+--FEObjects!
+select FETexts.IDFE from FETexts
+left join FEObjects
+on FETexts.IDFE = FEObjects.Idfe
+where FEObjects.Id is null
+
+
+
+
+--FEActions !
+--go
+drop table  tbl;
+--go
+--create table #tbl (id int)
+select Idfe into  tbl  from FEActions 
+
+--declare @count int;
+--set @count =count(#tbl);
+--declare @i int;
+--set @i=0;
+
+select FETexts.IDFE from FETexts where FETexts.IDFE not in (select * from tbl) 
+
+
+
+
+
+select * from FEObjects where Idfe = 1211
+
+
+select * from FETexts
+left join FEObjects 
+on FETexts.IDFE = FEObjects.Idfe 
+left join FEActions
+on FEActions.Idfe=FETexts.IDFE 
+where FETexts.IDFE = 1282
+
+
+
+--группируем id тех у которых что то не в порядке
+select FEObjects_.IDFE as idfe1,FEActions_.IDFE as idfe2 from (select FETexts.IDFE from FETexts
+left join FEObjects
+on FETexts.IDFE = FEObjects.Idfe
+where FEObjects.Id is null) as FEObjects_
+full join (select FETexts.IDFE from FETexts where FETexts.IDFE not in (select Idfe from FEActions )) as FEActions_
+on FEObjects_.IDFE = FEActions_.IDFE
+
+
+
 ------------------------------------------
+полнотекстовый индекс все таки ограничить только телом мб еще названием
+
 !!!!!нормальная обработка всех ошибок(сейчас просто 404 статус), для редактирования\добавления нельзя терять прогресс если неудача(мб отправлять запрос и если неудача НЕ редиректить
 
 класс SaveDescription- вынести в методы куски где последние id из бд получаю, возможно вынести еще и внутренние методы в их классы (add edit в pro и тд)
-!!!!при удалении дескрипторов\ характеристик объекта- подумать что делать с записями физ эффектов
 
+
+!!!!при удалении дескрипторов\ характеристик объекта- подумать что делать с записями физ эффектов
 после редактирования на странице подтверждения показывать записи которые нельзя будет найти если эти изменения принять
+не разрешать удалять пока пользотель не исправить это
+
 
 перед отправкой проверять на пустое значение
 валидация на saveForm , длина и тд

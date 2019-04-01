@@ -13,6 +13,7 @@ using dip.Models.Domain;
 using dip.Models;
 using dip.Models.ViewModel.HomeV;
 using System.Reflection;
+using System.Data;
 
 namespace dip.Controllers
 {
@@ -61,6 +62,31 @@ namespace dip.Controllers
 
 
                 //DeleteFromDb(db,db.Pros, new List<Pro>() { db.Pros.FirstOrDefault() });
+
+
+                // SqlConnection connection;
+                //SqlCommand command;
+                //connection = new SqlConnection();
+                //connection.ConnectionString = Constants.sql_1;
+                //command = new SqlCommand();
+                //command.Connection = connection;
+                //command.CommandType = CommandType.Text;
+                //connection.Open();
+
+
+                //command.CommandText = @"select FEObject_.IDFE as idfe1,FEAction_.IDFE as idfe2 from (select FEText.IDFE from dbo.FEText
+                //left join dbo.FEObject
+                //on FEText.IDFE = FEObject.Idfe
+                //where FEObject.Id is null) as FEObject_
+                //full join (select FEText.IDFE from dbo.FEText where FEText.IDFE not in (select Idfe  from dbo.FEAction)) as FEAction_
+                //on FEObject_.IDFE = FEAction_.IDFE";
+                ////command.CommandText = @"select * from FEText";
+                //var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "idfe1", "idfe2");
+
+
+
+
+
 
             }
 

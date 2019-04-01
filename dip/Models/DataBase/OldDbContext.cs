@@ -1254,9 +1254,10 @@ namespace dip.Models.DataBase
                     throw e;
                 }
 
-
-
-
+                using (var db = new ApplicationDbContext())
+                {
+                    FixOldFeRecord(db);
+                }
 
 
 
@@ -1491,6 +1492,65 @@ namespace dip.Models.DataBase
 
                 }
         }
+
+
+        public static void FixOldFeRecord(ApplicationDbContext db)
+        {
+
+            //            command.CommandText = @"select FEObjects_.IDFE as idfe1,FEActions_.IDFE as idfe2 from (select FETexts.IDFE from dbo.FETexts
+            //left join dbo.FEObjects
+            //on FETexts.IDFE = FEObjects.Idfe
+            //where FEObjects.Id is null) as FEObjects_
+            //full join (select FETexts.IDFE from dbo.FETexts where FETexts.IDFE not in (select Idfe  from dbo.FEActions)) as FEActions_
+            //on FEObjects_.IDFE = FEActions_.IDFE";
+            command.CommandText = @"select FEObject_.IDFE as idfe1,FEAction_.IDFE as idfe2 from (select FEText.IDFE from dbo.FEText
+                left join dbo.FEObject
+                on FEText.IDFE = FEObject.Idfe
+                where FEObject.Id is null) as FEObject_
+                full join (select FEText.IDFE from dbo.FEText where FEText.IDFE not in (select Idfe  from dbo.FEAction)) as FEAction_
+                on FEObject_.IDFE = FEAction_.IDFE";
+
+            var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "idfe1", "idfe2");
+            foreach (var i in ldr)
+            {
+                string idfe1 = i["idfe1"].ToString().Trim();
+                string idfe2 = i["idfe2"].ToString().Trim();
+                //TODO поменять на базовые значние, 1282 не должен заходить в 1 условие
+                if (!string.IsNullOrWhiteSpace(idfe1))
+                {
+                    int intid = int.Parse(idfe1);
+                    if (intid == Constants.FEIDFORSEMANTICSEARCH)
+                        continue;
+                    //установить начальное состояние, добавить дескрипторы и объект
+                    FEText fe = db.FEText.First(x1=>x1.IDFE== intid);
+                    fe.StateBeginId = "MONOFAZ";
+                    db.SaveChanges();
+                    FEAction feactinp = new FEAction() { Idfe= fe.IDFE, Input=1 };
+                    db.FEActions.Add(feactinp);
+                    FEAction feactoutp = new FEAction() { Idfe = fe.IDFE, Input = 0 };
+                    db.FEActions.Add(feactoutp);
+                    db.SaveChanges();
+                    FEObject obj = new FEObject() { Idfe = fe.IDFE, Begin=1, NumPhase=1 };
+                    db.FEObjects.Add(obj);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    int intid = int.Parse(idfe1);
+                    FEText fe = db.FEText.First(x1 => x1.IDFE == intid);
+                    fe.StateBeginId = "2CONFAZ1";
+                    db.SaveChanges();
+                    FEAction feactinp = new FEAction() { Idfe = fe.IDFE, Input = 1 };
+                    db.FEActions.Add(feactinp);
+                    FEAction feactoutp = new FEAction() { Idfe = fe.IDFE, Input = 0 };
+                    db.FEActions.Add(feactoutp);
+                    db.SaveChanges();
+                }
+            }
+
+
+            }
+
 
     }
     
