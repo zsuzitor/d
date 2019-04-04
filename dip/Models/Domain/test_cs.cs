@@ -19,6 +19,7 @@ using Microsoft.SqlServer.Management.Common;
 using System.Web.Hosting;
 using dip.Models.ViewModel;
 using System.Text.RegularExpressions;
+using System.Data.Linq.SqlClient;
 //using Microsoft.SqlServer.Management.Common;
 
 
@@ -117,6 +118,37 @@ namespace dip.Models.Domain
         }
 
 
+        /// <summary>
+        /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
+        /// </summary>
+        /// <param name="db_"></param>
+        /// <returns></returns>
+        //public override List<PhaseCharacteristicObject> GetParentsList(ApplicationDbContext db_ = null)
+        //{
+        //    List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+        //    var db = db_ ?? new ApplicationDbContext();
+
+        //    var par = db.Pros.FirstOrDefault(x1 => x1.Id == this.Parent);
+
+        //    if (par != null)
+        //    {
+        //        if (par.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
+        //            res.AddRange(par.GetParentsList(db));
+
+        //        res.Add(par);
+        //    }
+
+
+
+        //    if (db_ == null)
+        //        db.Dispose();
+
+        //    return res;
+        //}
+
+
+
+
         public static List<PhaseCharacteristicObject> GetChild(string id)
         {
             // Получаем список значений, соответствующий данной характеристике
@@ -163,7 +195,11 @@ namespace dip.Models.Domain
 
 
 
-
+        /// <summary>
+        /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
+        /// </summary>
+        /// <param name="db_"></param>
+        /// <returns></returns>
         public override List<PhaseCharacteristicObject> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
@@ -641,9 +677,10 @@ namespace dip.Models.Domain
 
         }
 
-        public bool Save()
+        public List<int>  Save(out bool commited)
         {
-            bool commited = false;
+             commited = false;
+            List<int> blockFe = new List<int>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             using (var transaction = db.Database.BeginTransaction())
                 try
@@ -652,7 +689,7 @@ namespace dip.Models.Domain
                     this.AddCharacteristic(db);
                     this.EditCharacteristic(db);
                     this.EditState(db);
-                    this.DeleteCharacteristic(db);
+                    blockFe.AddRange(this.DeleteCharacteristic(db));
                     transaction.Commit();
                     commited = true;
                 }
@@ -660,7 +697,7 @@ namespace dip.Models.Domain
                 {
                     transaction.Rollback();
                 }
-            return commited;
+            return blockFe;
         }
 
         public void SetNotNullArray()
@@ -843,10 +880,39 @@ namespace dip.Models.Domain
         }
 
 
-        public void DeleteCharacteristic(ApplicationDbContext db)
+        public List<int> DeleteCharacteristic(ApplicationDbContext db)
         {
-            AParentDb<PhaseCharacteristicObject>.DeleteFromDb(db,db.PhaseCharacteristicObjects, MassDeleteCharacteristic.Select(x1=>x1.Id));
-    }
+            //TODO проверяем можно ли удалить
+            List<int> blockFe = new List<int>();
+            //CharacteristicObject = new CharacteristicObject().GetParentsList();
+            //PhaseCharacteristicObject.get
+            //;
+
+
+            List<string> fordel = new List<string>();
+            var childcol=db.PhaseCharacteristicObjects.Where(x1 => MassDeleteCharacteristic.FirstOrDefault(x2 => x2.Id == x1.Id) != null).ToList();
+            
+            foreach (var i in childcol)
+            {
+                fordel.Add(i.Id);
+                fordel.AddRange(i.GetChildsList(db).Select(x1=>x1.Id));
+
+            }
+            //формировать регулярку по списку удаляемых объектов
+            var blocked=db.FEObjects.Where(x1=> SqlMethods.Like(x1.Composition,"")||
+            SqlMethods.Like(x1.Conductivity, "") ||
+            SqlMethods.Like(x1.MagneticStructure, "") ||
+            SqlMethods.Like(x1.MechanicalState, "") ||
+            SqlMethods.Like(x1.OpticalState, "") ||
+            SqlMethods.Like(x1.PhaseState, "") ||
+            SqlMethods.Like(x1.Special, "")).Select(x1=>x1.Idfe);
+           
+
+
+            qwe
+            AParentDb<PhaseCharacteristicObject>.DeleteFromDbFromListOnly(db,db.PhaseCharacteristicObjects, MassDeleteCharacteristic.Select(x1=>x1.Id));
+            return blockFe;
+        }
 
         //public void DeleteCharacteristic()
         //{
@@ -1450,7 +1516,7 @@ namespace dip.Models.Domain
         }
 
 
-        public void DeleteFizVels(ApplicationDbContext db)//db_ = null
+        public List<int> DeleteFizVels(ApplicationDbContext db)//db_ = null
         {
 
             var list = db.FizVels.Where(x1 => this.MassDeletedFizVels.FirstOrDefault(x2 => x2.Id == x1.Id || x2.Id == x1.Parent) != null);
@@ -1458,11 +1524,14 @@ namespace dip.Models.Domain
             db.SaveChanges();
 
         }
-        public void DeleteActionId(ApplicationDbContext db)//db_ = null
+        public List<int> DeleteActionId(ApplicationDbContext db)//db_ = null
         {
+            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
+            List<int> blockFe = new List<int>();
+            qwe;
             var actionIdList=db.AllActions.Where(x1=>this.MassDeletedActionId.FirstOrDefault(x2=>x2.Id== x1.Id)!=null).ToList();
             if (actionIdList.Count == 0)
-                return;
+                return blockFe;
             foreach(var i in actionIdList)
             {
                 var fizvel=db.FizVels.Where(x1 => x1.Parent == i.Id + "_FIZVEL").ToList();
@@ -1481,27 +1550,37 @@ namespace dip.Models.Domain
                     Vrem.DeleteFromDb(db, db.Vrems, vrem);
                 }
             }
+            return blockFe;
         }
 
 
 
-        public void DeleteVrem(ApplicationDbContext db)//db_ = null
+        public List<int> DeleteVrem(ApplicationDbContext db)//db_ = null
         {
+            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
+            List<int> blockFe = new List<int>();
+            qwe;
             Vrem.DeleteFromDb(db, db.Vrems, MassDeletedVrems.Select(x1 => x1.Id));
-
+            return blockFe;
         }
 
-        public void DeleteSpec(ApplicationDbContext db)//db_ = null
+        public List<int> DeleteSpec(ApplicationDbContext db)//db_ = null
         {
+            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
+            List<int> blockFe = new List<int>();
+            qwe;
             Spec.DeleteFromDb(db, db.Specs, MassDeletedSpecs.Select(x1 => x1.Id));
-
+            return blockFe;
         }
 
 
-        public void DeletePros(ApplicationDbContext db)//db_ = null
+        public List<int> DeletePros(ApplicationDbContext db)//db_ = null
         {
+            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
+            List<int> blockFe = new List<int>();
+            qwe;
             Pro.DeleteFromDb(db,db.Pros, MassDeletedPros.Select(x1=>x1.Id));
-            
+            return blockFe;
         }
         //public void DeletePros(ApplicationDbContext db)//db_ = null
         //{

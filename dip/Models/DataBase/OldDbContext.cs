@@ -1,4 +1,6 @@
-﻿using dip.Models.Domain;
+﻿#define debug
+
+using dip.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1010,7 +1012,9 @@ namespace dip.Models.DataBase
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "name", "text", "textInp", "textOut", "textObj",
                         "textApp", "textLit");
                     var listFetext=new List<FEText>();
-                    foreach (var i in ldr)
+                    using (var db = new ApplicationDbContext())
+                    {
+                        foreach (var i in ldr)
                     {
                         var obj = new Domain.FEText();
 
@@ -1025,54 +1029,91 @@ namespace dip.Models.DataBase
                         obj.TextLit = i["textLit"].ToString().Trim();
                         obj.NotApprove = false;
                         
-                        using (var db = new ApplicationDbContext())
-                        {
+                        
 
                             //db.FEText.Add(obj);
                             //db.SaveChanges();
                             listFetext.Add(obj);
-                            var tmpinp=db.FEActions.Where(x1 => x1.Idfe == obj.IDFE).Count();
-                            switch (tmpinp)
+                            var tmpinp=db.FEActions.Where(x1 => x1.Idfe == obj.IDFE).ToList();
+                            switch (tmpinp.Count)
                             {
-                                case 2:
+                                case 0://вообще нет добавить 1 вход 1 выход
+                                    { 
+                                    obj.CountInput = 1;
+                                    FEAction feactinp = new FEAction() { Idfe = obj.IDFE, Input = 1, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                    db.FEActions.Add(feactinp);
+                                    FEAction feactoutp = new FEAction() { Idfe = obj.IDFE, Input = 0, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                    db.FEActions.Add(feactoutp);
+                                    db.SaveChanges();
+                                    break;
+                                    }
+                                case 1://что то есть добавить то чего нет
+                                    obj.CountInput = 1;
+                                    if (tmpinp.FirstOrDefault(x1 => x1.Input == 1) != null)
+                                    {
+                                        FEAction feactoutp = new FEAction() { Idfe = obj.IDFE, Input = 0, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                        db.FEActions.Add(feactoutp);
+                                        db.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        FEAction feactoutp = new FEAction() { Idfe = obj.IDFE, Input = 1, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                        db.FEActions.Add(feactoutp);
+                                        db.SaveChanges();
+                                    }
+                                    break;
+                                case 2://1 вход и 1 выход
                                     obj.CountInput = 1;
                                     break;
-                                case 3:
+                                case 3://2 вход и 1 выход
                                     obj.CountInput = 2;
                                     break;
                             }
-                            //var tmpphase=db.FEObjects.Where(x1 => x1.Idfe == obj.IDFE && x1.Begin == 0).Count();
-                            //if (tmpphase != 0)
-                            //    obj.ChangedObject = true;
+                           
 
-                            //var tmpNewIndex=db.NewFEIndexs.FirstOrDefault(x1 => x1.Idfe == obj.IDFE);
-                            //if (tmpNewIndex != null)
+
+                            //if (obj.StateBeginId== "MONOFAZ")
                             //{
-                            //    obj.StateBeginId = tmpNewIndex.BeginPhase;
-                            //    obj.StateBeginId = string.IsNullOrEmpty(tmpNewIndex.EndPhase)?null: tmpNewIndex.EndPhase; 
+                            //    if (obj.StateEndId == "MONOFAZ")
+                            //    {
+                            //        if (tmpobj.Count != 2)
+                            //            throw;
+                            //    }
+                            //    else
+                            //    {
+                            //        if (tmpobj.Count != 1)
+                            //            throw;
+                            //    }
+                                
                             //}
-                            
-                            //db.SaveChanges();
-                        }
+                            //switch (tmpobj.Count)
+                            //{
+                            //    case 0:
+                            //        break;
+
+
+                            //}
+
+                            }
                         
-                    }
+                    //}
                     //восстанавливаем бывшие id
                     listFetext= listFetext.OrderBy(x1 => x1.IDFE).ToList();
-                    using (var db = new ApplicationDbContext())
-                    { 
+                    //using (var db = new ApplicationDbContext())
+                    //{
                         foreach (var i in listFetext)
-                    {
+                        {
                             int tmpId = i.IDFE;
                             //try
                             //{
-                                db.FEText.Add(i);
-                                db.SaveChanges();
+                            db.FEText.Add(i);
+                            db.SaveChanges();
                             //}
                             //catch
                             //{
                             //    var asd = 10;
                             //}
-                        
+
 
                             while (tmpId != i.IDFE)
                             {
@@ -1081,6 +1122,28 @@ namespace dip.Models.DataBase
                                 db.FEText.Add(i);
                                 db.SaveChanges();
                             }
+                            //if (i.IDFE == 1)
+                            //{
+                            //    i.StateBeginId = "MONOFAZ";
+                            //}
+                            //else if(i.IDFE==1282){
+                            //    i.StateBeginId = "MONOFAZ";
+                            //    i.StateEndId = "MONOFAZ";
+                            //}
+                            if (string.IsNullOrWhiteSpace(i.StateBeginId))
+                            {
+                                i.StateBeginId = "MONOFAZ";
+                            }
+                            if (i.IDFE == 1282)
+                            {
+                                    i.StateEndId = "MONOFAZ";
+                                }
+                                if (i.IDFE == Constants.FEIDFORSEMANTICSEARCH)
+                            {
+                                db.SaveChanges();
+                                continue;
+                            }
+
                             var tmpphase = db.FEObjects.Where(x1 => x1.Idfe == i.IDFE && x1.Begin == 0).Count();
                             if (tmpphase != 0)
                                 i.ChangedObject = true;
@@ -1088,10 +1151,131 @@ namespace dip.Models.DataBase
                             var tmpNewIndex = db.NewFEIndexs.FirstOrDefault(x1 => x1.Idfe == i.IDFE);
                             if (tmpNewIndex != null)
                             {
-                                i.StateBegin = db.StateObjects.First(x1=>x1.Id== tmpNewIndex.BeginPhase) ;
+                                i.StateBeginId = tmpNewIndex.BeginPhase;// db.StateObjects.First(x1=>x1.Id== tmpNewIndex.BeginPhase) ;
                                 if (!string.IsNullOrEmpty(tmpNewIndex.EndPhase))
-                                    i.StateEnd = db.StateObjects.First(x1 => x1.Id == tmpNewIndex.EndPhase);
+                                    i.StateEndId = tmpNewIndex.EndPhase;// db.StateObjects.First(x1 => x1.Id == tmpNewIndex.EndPhase);
                             }
+
+
+
+                            var tmpobj = db.FEObjects.Where(x1 => x1.Idfe == i.IDFE).ToList();
+                            int allcount = 0;
+                            {
+#if debug
+                                if (i.IDFE == 801|| i.IDFE == 809)
+                                {
+                                    var g = 10;
+                                }
+#endif                   
+                                switch (i.StateBeginId)
+                            {
+                                case "MONOFAZ":
+                                    allcount++;
+                                    break;
+                                case "2CONFAZ1":
+                                    allcount += 2;
+                                    break;
+                                case "2MIXFAZ":
+                                    allcount += 2;
+                                    break;
+                                case "2CONFAZ2":
+                                    allcount += 2;
+                                    break;
+                                case "3CONFAZ1":
+                                    allcount += 3;
+                                    break;
+                                case "3MIXFAZ":
+                                    allcount += 3;
+                                    break;
+                            }
+                            var beginobj = tmpobj.Where(x1 => x1.Begin == 1).ToList();
+                            int difbeginobj = allcount - beginobj.Count;
+                            if (difbeginobj > 0)
+                            {
+                                List<int> free = new List<int>();
+                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 1) == null)
+                                    free.Add(1);
+                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 2) == null)
+                                    free.Add(2);
+                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 3) == null)
+                                    free.Add(3);
+
+                                for (var it = 0; it < difbeginobj; ++it)
+                                {
+                                    FEObject obj = new FEObject() { Idfe = i.IDFE, Begin = 1, NumPhase = free[it] };
+                                    db.FEObjects.Add(obj);
+                                    db.SaveChanges();
+                                }
+
+                            }
+#if debug
+                                if (difbeginobj < 0)
+                            {
+                                var error = 10;
+                            }
+#endif
+                            }
+                            allcount = 0;
+                            {
+
+
+                                switch (i.StateEndId)
+                                {
+                                    case "MONOFAZ":
+                                        allcount++;
+                                        break;
+                                    case "2CONFAZ1":
+                                        allcount += 2;
+                                        break;
+                                    case "2MIXFAZ":
+                                        allcount += 2;
+                                        break;
+                                    case "2CONFAZ2":
+                                        allcount += 2;
+                                        break;
+                                    case "3CONFAZ1":
+                                        allcount += 3;
+                                        break;
+                                    case "3MIXFAZ":
+                                        allcount += 3;
+                                        break;
+                                }
+                                var beginobj = tmpobj.Where(x1 => x1.Begin == 0).ToList();
+                                int difbeginobj = allcount - beginobj.Count;
+                                if (difbeginobj > 0)
+                                {
+                                    List<int> free = new List<int>();
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 1) == null)
+                                        free.Add(1);
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 2) == null)
+                                        free.Add(2);
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 3) == null)
+                                        free.Add(3);
+
+                                    for (var it = 0; it < difbeginobj; ++it)
+                                    {
+                                        FEObject obj = new FEObject() { Idfe = i.IDFE, Begin = 0, NumPhase = free[it] };
+                                        db.FEObjects.Add(obj);
+                                        db.SaveChanges();
+                                    }
+
+                                }
+#if debug
+                                if (difbeginobj < 0)
+                                {
+                                    var error = 10;
+                                }
+#endif
+                            }
+
+
+                            //if (allcount != tmpobj.Count)
+                            //{
+                            //    var error = 10;
+                            //}
+
+
+
                             db.SaveChanges();
                         }
 
@@ -1254,10 +1438,10 @@ namespace dip.Models.DataBase
                     throw e;
                 }
 
-                using (var db = new ApplicationDbContext())
-                {
-                    FixOldFeRecord(db);
-                }
+                //using (var db = new ApplicationDbContext())
+                //{
+                //    FixOldFeRecord(db);
+                //}
 
 
 
@@ -1343,9 +1527,9 @@ namespace dip.Models.DataBase
                     obj.Id = i["id"].ToString().Trim();
                     obj.Name = i["name"].ToString().Trim();
                     obj.Parent = i["parent"].ToString().Trim();
-                    if (obj.Id == "3CONFAZ1")
+                    if (obj.Id == "3CONFAZ1"|| obj.Id == "3MIXFAZ")
                         obj.CountPhase = 3;
-                    if(obj.Id == "2CONFAZ1" || obj.Id == "2CONFAZ2")
+                    if(obj.Id == "2CONFAZ1" || obj.Id == "2CONFAZ2"|| obj.Id == "2MIXFAZ")
                         obj.CountPhase = 2;
 
                     using (var db = new ApplicationDbContext())
@@ -1494,6 +1678,23 @@ namespace dip.Models.DataBase
         }
 
 
+        public static void Fix2OldFeRecord(ApplicationDbContext db)
+        {
+            // проверить состояние и количество фаз
+            //проверить дескрипторы
+            //проверить объект
+
+            command.CommandText = @"";
+            //#TODO
+
+
+
+        }
+
+
+
+
+
         public static void FixOldFeRecord(ApplicationDbContext db)
         {
 
@@ -1516,6 +1717,12 @@ namespace dip.Models.DataBase
                 string idfe1 = i["idfe1"].ToString().Trim();
                 string idfe2 = i["idfe2"].ToString().Trim();
                 //TODO поменять на базовые значние, 1282 не должен заходить в 1 условие
+#if debug
+                if (idfe1=="1282"|| idfe2 == "1282")
+                {
+                    var g = 10;
+                }
+#endif
                 if (!string.IsNullOrWhiteSpace(idfe1))
                 {
                     int intid = int.Parse(idfe1);

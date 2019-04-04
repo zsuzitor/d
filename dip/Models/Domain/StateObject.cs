@@ -116,6 +116,25 @@ namespace dip.Models.Domain
             return res;
         }
 
+        //загружает список ближайших детей, возвращает список всех детей
+        //public override List<StateObject> GetChildsList(ApplicationDbContext db_ = null)
+        //{
+        //    List<StateObject> res = new List<StateObject>();
+        //    var db = db_ ?? new ApplicationDbContext();
+
+        //    //var par = db.StateObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
+        //    this.ReLoadChild();
+        //    res.AddRange(this.Childs);
+        //    foreach (var i in this.Childs)
+        //    {
+        //        res.AddRange(i.GetChildsList(db));
+        //    }
+            
+        //    if (db_ == null)
+        //        db.Dispose();
+
+        //    return res;
+        //}
 
 
         //мб вынести в класс
@@ -130,7 +149,7 @@ namespace dip.Models.Domain
         //        if (list.FirstOrDefault(x1 => x1.Id == i.Id) != null) //if (list.Contains(i))
         //            i.LoadPartialTree(list);
         //    }
-           
+
 
         //    return true;
         //}

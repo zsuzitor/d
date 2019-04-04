@@ -41,6 +41,10 @@ namespace dip.Models
         public abstract List<T> GetParentsList(ApplicationDbContext db_ = null);
 
 
+        //возвращает список всех детей и их детей до "корней древа" для this
+        public abstract List<T> GetChildsList(ApplicationDbContext db_ = null);
+        
+
         /// <summary>
         /// загружает необходимое древо детей
         /// </summary>
@@ -58,6 +62,12 @@ namespace dip.Models
         public string Parent { get; set; }
 
 
+
+        /// <summary>
+        /// загрузит частичное древо детей(загрузит до уровня детей из list включая их уровень)
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         public override bool LoadPartialTree(List<T> list)
         {
             this.LoadChild();
@@ -69,16 +79,17 @@ namespace dip.Models
                 if (list.FirstOrDefault(x1 => x1.Id == i.Id) != null) //if (list.Contains(i))
                     i.LoadPartialTree(list);
             }
-            //foreach(var i in list)
-            // {
-            //     if (i.Id == this.Id)
-            //         break;
-
-
-            // }
-
+          
 
             return true;
+        }
+
+
+        public static void DeleteFromDbFromListOnly(ApplicationDbContext db, System.Data.Entity.DbSet<T> collect, IEnumerable<string> del) //where T : ItemFormCheckbox<T>, new()
+        {
+            
+            collect.RemoveRange(collect.Where(x1 => del.Contains(x1.Id)));
+            db.SaveChanges();
         }
 
 
@@ -145,8 +156,25 @@ namespace dip.Models
             return prosPath;
         }
 
-        
 
+        public override List<T> GetChildsList(ApplicationDbContext db_ = null)
+        {
+            List<T> res = new List<T>();
+            var db = db_ ?? new ApplicationDbContext();
+
+            //var par = db.StateObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
+            this.ReLoadChild();
+            res.AddRange(this.Childs);
+            foreach (var i in this.Childs)
+            {
+                res.AddRange(i.GetChildsList(db));
+            }
+
+            if (db_ == null)
+                db.Dispose();
+
+            return res;
+        }
 
     }
 

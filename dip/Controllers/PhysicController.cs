@@ -360,7 +360,7 @@ namespace dip.Controllers
                 throw new Exception();
             bool notValide = false;
             bool commited = false;
-
+            List<int> blockFe = new List<int>();
 
             //TODO надо найти то к чему все будет относиться, это может вернуть null
             //string currentActionId = obj.TryGetCurrentActionId();// massData.FirstOrDefault(x1 => x1.Type == 1);
@@ -414,7 +414,7 @@ namespace dip.Controllers
                             obj.EditParamFizVels(db);
                         }
 
-
+                        
                         if (currentActionParametric == false)
                         {
                             //add checkbox
@@ -432,20 +432,16 @@ namespace dip.Controllers
                             obj.EditSpec(db);
 
 
-                            obj.DeletePros(db);
-                            obj.DeleteSpec(db);
-                            obj.DeleteVrem(db);
+                            blockFe.AddRange(obj.DeletePros(db));
+                            blockFe.AddRange(obj.DeleteSpec(db));
+                            blockFe.AddRange(obj.DeleteVrem(db));
 
                         }
-                        obj.DeleteFizVels(db);
-                        obj.DeleteActionId(db);
+                        blockFe.AddRange(obj.DeleteFizVels(db));
+                        blockFe.AddRange(obj.DeleteActionId(db));
 
 
-
-
-
-
-
+                        
                         db.SaveChanges();
                         transaction.Commit();
                         commited = true;
@@ -457,6 +453,10 @@ namespace dip.Controllers
                     }
                 }
             }
+            if (blockFe.Count > 0)
+                return Content("Записи которые блокируют удаление:" + string.Join(",", blockFe.Distinct()), "text/html");
+
+
             if (commited )
                 return Content("+", "text/html");
             else
@@ -488,8 +488,9 @@ namespace dip.Controllers
         {
             bool commited = false;
             obj.SetNotNullArray();
-            commited =obj.Save();
-            
+            List<int>blockFe= obj.Save(out commited);
+            if(blockFe.Count>0)
+                return  Content("Записи которые блокируют удаление:"+string.Join(",",blockFe.Distinct()), "text/html");
 
             if (commited)
                 return Content("+", "text/html");
