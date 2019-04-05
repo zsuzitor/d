@@ -82,7 +82,8 @@ namespace dip.Controllers
         {
             ListPhysics res =ListPhysics.AddPhys(idphys, idlist);
             if (res == null)
-                return new HttpStatusCodeResult(400, "что то пошло не так(возможно запись была добавлена ранее)");
+                // return Content("-что то пошло не так(возможно запись была добавлена ранее)", "text/html");
+                return new HttpStatusCodeResult(230);//, "что то пошло не так(возможно запись была добавлена ранее)");
 
             return PartialView(res?.Physics.FirstOrDefault(x1=>x1.IDFE== idphys));
         }

@@ -13,7 +13,7 @@
     <div class="ListUserAct_OneColumn div_inline_block">
         <div>
             пользователи
-            <input type="text" id="currentUserId_id" placeholder="Введите id пользователя"/>
+            <input class="form-control" type="text" id="currentUserId_id" placeholder="Введите id пользователя"/>
 
             <button id="butLoadAllUsers" class="btn btn-default" onclick="LoadAllUsers()">Показать всех пользователей</button>
             <div id="ListAllUsers_id" style="display:none;">
@@ -24,8 +24,8 @@
               <div>
                   то что уже закреплено
                   <div>
-                      <button class="btn btn-default" onclick="ShowAssignList()">Списки</button>
-                      <button class="btn btn-default" onclick="ShowAssignPhys()">ФЭ</button>
+                      <button id="buttonChangeViewHList" class="btn btn-default" onclick="ShowAssignList()">Списки</button>
+                      <button id="buttonChangeViewHPhys" class="btn btn-default" onclick="ShowAssignPhys()">ФЭ</button>
                       <div class="OneUserOwnContent">
                           <div id="AssignsList_id" style="display:none;">
                               
@@ -44,21 +44,26 @@
               <div>
                   то что не закреплено
                   <div>
-                      <button class="btn btn-default" onclick="ShowNotAssignList()">Списки</button>
-                      <button class="btn btn-default" onclick="ShowNotAssignPhys()">ФЭ</button>
+                      <button id="buttonChangeViewNHList" class="btn btn-default" onclick="ShowNotAssignList()">Списки</button>
+                      <button id="buttonChangeViewNHPhys" class="btn btn-default" onclick="ShowNotAssignPhys()">ФЭ</button>
                      
                       <div class="OneUserNotOwnContent">
                           <div id="ForAssignsList_id" style="display:none;">
                               <input onchange="clearListFeLink()" type="number" id="newAssignList" />
-                              <button  class="btn btn-default" onclick="AssignListToUser()">Присвоить</button>
+                              @*<button  class="btn btn-default" onclick="AssignListToUser()">Присвоить</button>*@
                               <button class="btn btn-default" onclick="ShowLinkListFe()">Показать Ссылку на список</button>
+                              <div class="button_circle_img_30 button_circle_plus_ div_inline_block" onclick="AssignListToUser()" title="Присвоить"></div>
+
                               <div id="divLinkCurrListFe_id"></div>
                               @*<div><p>список</p><button class="btn btn-default" onclick="">просмотр</button><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
                           </div>
                           <div id="ForAssignsPhys_id" style="display:none;">
                               <input onchange="clearFeLink()" type="number" id="newAssignPhys" />
-                              <button  class="btn btn-default" onclick="AssignPhysicToUser()">Присвоить</button>
+                              @*<button  class="btn btn-default" onclick="AssignPhysicToUser()">Присвоить</button>*@
+
                               <button class="btn btn-default" onclick="ShowLinkFetext()">Показать Ссылку на страницу ФЭ</button>
+                              <div class="button_circle_img_30 button_circle_plus_ div_inline_block" onclick="AssignPhysicToUser()" title="Присвоить"></div>
+
                               @*<a onclick="alert()">Страница ФЭ</a>*@
                               @*<div><p>ФЭ-ссылка</p><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
                               <div id="divLinkCurrFetext_id"></div>
@@ -86,7 +91,7 @@
         document.getElementById('AssignsList_id').style.display='block';
 
         document.getElementById('AssignsPhys_id').style.display = 'none';
-
+        changeTypeButton('buttonChangeViewHList', 'buttonChangeViewHPhys');
 
         var formData = { iduser: document.getElementById('currentUserId_id').value };
         if (!formData.iduser.trim())
@@ -108,7 +113,7 @@
         document.getElementById('AssignsList_id').style.display = 'none';
 
         document.getElementById('AssignsPhys_id').style.display = 'block';
-
+        changeTypeButton('buttonChangeViewHPhys', 'buttonChangeViewHList');
         var formData = { iduser: document.getElementById('currentUserId_id').value };
         if (!formData.iduser.trim())
             alert('Введите id пользователя');
@@ -123,22 +128,34 @@
     }
     
 
+    function changeTypeButton(idna,ida) {
+        var butlist = document.getElementById(idna);
+        //butlist.style.display = 'block';
+        butlist.classList.remove('btn-default');
+        butlist.classList.add('btn-primary');
+
+        var butphys = document.getElementById(ida);
+        //butphys.style.display = 'none';
+        butphys.classList.add('btn-default');
+        butphys.classList.remove('btn-primary');
+    }
+
+
     function ShowNotAssignList() {
-        document.getElementById('ForAssignsList_id').style.display = 'block';
-
-        document.getElementById('ForAssignsPhys_id').style.display = 'none';
-
-
-        
-
-
+        changeTypeButton('buttonChangeViewNHList', 'buttonChangeViewNHPhys');
+        var butlist = document.getElementById('ForAssignsList_id');
+        butlist.style.display = 'block';
+        var butlist = document.getElementById('ForAssignsPhys_id');
+        butlist.style.display = 'none';
 
     }
 
     function ShowNotAssignPhys() {
-        document.getElementById('ForAssignsList_id').style.display = 'none';
-
-        document.getElementById('ForAssignsPhys_id').style.display = 'block';
+        changeTypeButton('buttonChangeViewNHPhys', 'buttonChangeViewNHList');
+        var butlist = document.getElementById('ForAssignsPhys_id');
+        butlist.style.display = 'block';
+        var butlist = document.getElementById('ForAssignsList_id');
+        butlist.style.display = 'none';
 
         
     }
@@ -148,6 +165,10 @@
         
         var formData = { iduser: document.getElementById('currentUserId_id').value, idlist:document.getElementById('newAssignList').value };
         //string iduser, int idlist)
+        if (!formData.idlist) {
+            alert('Введите id');
+            return;
+        }
         goAjaxRequest({
             url: "/ListPhysics/AssignListToUser",
             data: formData,
@@ -166,6 +187,10 @@
     function AssignPhysicToUser() {
         var formData = { iduser: document.getElementById('currentUserId_id').value, idphys: document.getElementById('newAssignPhys').value };
         //string iduser, int idlist)
+        if (!formData.idphys) {
+            alert('Введите id');
+            return;
+        }
         goAjaxRequest({
             url: "/ListPhysics/AssignPhysicToUser",
             data: formData,
@@ -286,7 +311,9 @@
     }
 
 
-
+    function ListUsersShortDataButton(id) {
+        document.getElementById('currentUserId_id').value = id;
+    }
 
     function LoadAllUsers() {
         var formData = { };
@@ -295,7 +322,7 @@
         if (!div.innerHTML.trim()) {
             //загрузить
             goAjaxRequest({
-                url: "/Admin/GetAllUsersShortData",
+                url: "/Admin/GetAllUsersShortDataWithBut",
                 data: formData,
                 func_success: function (req, status, jqXHR) {
                     div.innerHTML = req;

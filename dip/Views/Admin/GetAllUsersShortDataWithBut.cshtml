@@ -1,0 +1,8 @@
+﻿@model IEnumerable<dip.Models.ApplicationUser>
+
+
+<div>
+    @Html.Action("ListUsersShortDataWithButton", "Helpers", new { list = Model,butText="Выбрать" })
+</div>
+
+

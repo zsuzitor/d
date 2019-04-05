@@ -4,12 +4,14 @@
 
 @if (Model != null)
 {
-    <div id=@("divOneListFeExist_"+Model.Id)>
-        <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=Model.Id })">@Model.Name</a>
-        @*<button class="btn btn-default" onclick="">просмотр</button>*@
-        @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
-        <div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser(@Model.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
-    </div>
+    <div class="bottomGrey" id=@("divOneListFeExist_"+Model.Id)>
+        <div class="div_inline_block listAction_inpbut_inp">
+            <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=Model.Id })">@Model.Name</a>
+        </div>
+            @*<button class="btn btn-default" onclick="">просмотр</button>*@
+            @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
+            <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removeListFromUser(@Model.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
+        </div>
 
 }
 

@@ -99,6 +99,15 @@ namespace dip.Controllers
             return PartialView(users);
         }
 
+        public ActionResult GetAllUsersShortDataWithBut()
+        {
+            List<ApplicationUser> users = ApplicationUser.GetAllUsers();
+
+
+
+            return PartialView(users);
+        }
+
         public ActionResult AdminsPage()//, string technicalFunctionId
         {
 

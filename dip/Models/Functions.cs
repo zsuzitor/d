@@ -7,7 +7,7 @@ using System.Web;
 
 namespace dip.Models
 {
-    public class Functions
+    public static class Functions
     {
         public static string NullToEmpryStr(string str)
         {
@@ -15,7 +15,7 @@ namespace dip.Models
         }
 
 
-        public static List<byte[]> Get_photo_post(HttpPostedFileBase[] uploadImage)
+        public static List<byte[]> Get_photo_post( HttpPostedFileBase[] uploadImage)//this Image a,
         {
 
             /* сохранение картинок как файл ...

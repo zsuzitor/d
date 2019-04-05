@@ -5,24 +5,32 @@
 
 @if (Model != null)
 {
-    <input onchange="clearListFeLinkExist()" type="number" id="AssignListForDel" />
+    
+        <input class="form-control" onchange="clearListFeLinkExist()" type="number" id="AssignListForDel" />
+    
     @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
-    <div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser()" title="Забрать у пользователя все ФЭ включенные в этот список"></div>
-                            <button class="btn btn-default" onclick="ShowLinkListFeExist()">Показать Ссылку на список</button>
-                            <div id="divLinkCurrListFeExist_id"></div>
+    
+    <div class="div_inline_block">
+        <button class="btn btn-default" onclick="ShowLinkListFeExist()">Показать Ссылку на список</button>
+    </div>
+    <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removeListFromUser()" title="Забрать у пользователя все ФЭ включенные в этот список"></div>
 
-                            <div id="listListsFeExist">
-                                @foreach (var i in Model)
-                                {
-                                    <div id=@("divOneListFeExist_"+i.Id)>
-                                        <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
-                                        @*<button class="btn btn-default" onclick="">просмотр</button>*@
-                                        @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
-                                        <div class="button_circle_img_30 button_circle_sub_" onclick="removeListFromUser(@i.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
-                                    </div>
-                                }
-                                    </div>
-                                }
+        <div id="divLinkCurrListFeExist_id"></div>
+
+        <div id="listListsFeExist">
+            @foreach (var i in Model)
+            {
+                <div class="bottomGrey" id=@("divOneListFeExist_"+i.Id)>
+                    <div class="div_inline_block listAction_inpbut_inp">
+                        <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
+                    </div>
+                    @*<button class="btn btn-default" onclick="">просмотр</button>*@
+                    @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
+                    <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removeListFromUser(@i.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
+                </div>
+            }
+        </div>
+        }
 
 
 

@@ -358,8 +358,9 @@ namespace dip.Controllers
 
             obj.SetNotNullArray();
             if (string.IsNullOrEmpty(currentActionId))
-                throw new Exception();
-            bool notValide = false;
+                //throw new Exception();
+                return new HttpStatusCodeResult(404);
+           // bool notValide = false;
             bool commited = false;
             List<int> blockFe = new List<int>();
 
@@ -370,10 +371,11 @@ namespace dip.Controllers
             //TODO throw new Exception(); убрать
 
             if (obj.MassAddActionId.Length > 1)//TODO
-                throw new Exception("добавлено слишком много ActionId, это не предусмотрено");
+                                               //throw new Exception("добавлено слишком много ActionId, это не предусмотрено");
+                return new HttpStatusCodeResult(404);//"добавлено слишком много ActionId, это не предусмотрено"
 
-            if (notValide)//TODO
-                return new HttpStatusCodeResult(404);
+            //if (notValide)//TODO
+            //    return new HttpStatusCodeResult(404);
             using (var db = new ApplicationDbContext())
             {
                 using (var transaction = db.Database.BeginTransaction())
@@ -455,7 +457,7 @@ namespace dip.Controllers
                 }
             }
             if (blockFe.Count > 0)
-                return Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(",", blockFe.Distinct()), "text/html");
+                return Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(", ", blockFe.Distinct()), "text/html");
 
 
             if (commited )
@@ -492,7 +494,7 @@ namespace dip.Controllers
             List<int>blockFe= obj.Save(out commited);
             
             if (blockFe.Count>0)
-                return  Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(",",blockFe.Distinct()), "text/html");
+                return  Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(", ",blockFe.Distinct()), "text/html");
 
             if (commited)
                 return Content("+", "text/html");

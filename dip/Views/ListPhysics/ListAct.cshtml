@@ -28,9 +28,11 @@
         </div>
         Добавить новый
         <div>
-            <input class="form-control" placeholder="Название" id="NewListName_id" type="text" />
+            <div class="listAction_inpbut_inp div_inline_block">
+                <input class="form-control" placeholder="Название" id="NewListName_id" type="text" />
+            </div>
             @*<button class="btn btn-default" onclick="AddNewList()">Добавить</button>*@
-            <div class="button_circle_img_30 button_circle_plus_" onclick="AddNewList()" title="Добавить"></div>
+            <div class="button_circle_img_30 button_circle_plus_ div_inline_block" onclick="AddNewList()" title="Добавить"></div>
         </div>
     </div><div class="ListAct_OneColumn div_inline_block">
     <div id="divEditCurrentList_id" style="display:none;">
@@ -38,10 +40,12 @@
         <input class="form-control" placeholder="Введите название списка" id="inputNameEditCurrentList_id" type="text" />
         <label>Id списка</label>
         <label class="form-control" id="idCurrentList_id"></label>
-        @*<button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>*@
-        <div class="button_circle_img_30 button_circle_save_" onclick="SaveChangesCurrentList()" title="Сохранить изменения"></div>
-        @*<button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>*@
-        <div class="button_circle_img_30 button_circle_del_" onclick="DeleteCurrentList()" title="Удалить"></div>
+        <div>
+            @*<button class="btn btn-default" onclick="SaveChangesCurrentList()">Сохранить изменения</button>*@
+            <div class="button_circle_img_30 button_circle_save_ div_inline_block" onclick="SaveChangesCurrentList()" title="Сохранить изменения"></div>
+            @*<button class="btn btn-default" onclick="DeleteCurrentList()">Удалить</button>*@
+            <div class="button_circle_img_30 button_circle_del_ div_inline_block" onclick="DeleteCurrentList()" title="Удалить"></div>
+        </div>
     </div>
 
 
@@ -54,17 +58,16 @@
         </div>
         <div>
             Добавить
-            <div>
-                @*<button onclick="AddNewPhysInCurList()" class="btn btn-default">Добавить</button>*@
-                <div class="button_circle_img_30 button_circle_plus_" onclick="AddNewPhysInCurList()" title="Добавить"></div>
-            </div>
+            
             @*Id физического эффекта*@
             <div>
                 <input  onchange="clearFeLink()" id="AddNewPhysInCurListInput" class="form-control" placeholder="Id физического эффекта" type="number" />
 
                 
-                
-                <button class="btn btn-default" onclick="ShowLinkFetext()">Показать Ссылку на страницу ФЭ</button>
+                <div class="div_inline_block">
+                    <button class="btn btn-default" onclick="ShowLinkFetext()">Показать Ссылку на страницу ФЭ</button>
+                </div>
+                <div class="button_circle_img_30 button_circle_plus_ div_inline_block" onclick="AddNewPhysInCurList()" title="Добавить"></div>
                 @*<a onclick="alert()">Страница ФЭ</a>*@
                 @*<div><p>ФЭ-ссылка</p><button class="btn btn-default" onclick="">закинуть пользователю</button></div>*@
                 <div id="divLinkCurrFetext_id"></div>
@@ -113,6 +116,10 @@
 
     function AddNewList() {
         var formData = { name: document.getElementById('NewListName_id').value };
+        if (formData.name < 5) {
+            alert('Введите название больше 5 не пробельных символов')
+            return;
+        }
         goAjaxRequest({
             url: "/ListPhysics/CreateList",
             data: formData,
@@ -177,6 +184,10 @@
                 url: "/ListPhysics/AddToList",
                 data: formData,
                 func_success: function (req, status, jqXHR) {
+                    if (jqXHR.status == 230) {
+                        alert('Запись не была добавлена, возможно она была не найдена или добавлена ранее');
+                    }
+                    else
                     document.getElementById('PhysInCurrentList').innerHTML += req;
 
                 }, type: 'POST'
@@ -234,6 +245,11 @@
                     document.getElementById('divEditCurrentList_id').style.display = 'none';
                     document.getElementById('PhysInCurrentList').innerHTML = '';
                     ListActMainObject.ListId = null;
+                    var div = document.getElementById('UsersHasCurrentList_id');
+                    var but = document.getElementById('butLoadUserHasCurList');
+                    div.innerHTML = '';
+                    div.style.display = 'none';
+                    but.innerHTML = 'Показать пользователей';
                     
                 }
                 else {

@@ -135,9 +135,14 @@ a:hover{
 }
 
 
+div.errorDiv{
+    border: 2px solid red;
+     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
 
-
-
+div.bottomGrey{
+    border-bottom: 1px solid grey;
+}
 
 
 
@@ -689,6 +694,8 @@ color:white;
 }
 
 
+
+
 /*ListAct*/ 
 div.ListAct_OneColumn{
     width:50%;
@@ -712,6 +719,10 @@ div.ListAct_ExistList{
      min-height:300px;
      max-height:1000px;
     overflow-y:auto;
+}
+
+div.listAction_inpbut_inp{
+    width:90%;
 }
 
 

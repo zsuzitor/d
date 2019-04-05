@@ -282,6 +282,14 @@ namespace dip.Controllers
 
             return PartialView(list);
         }
+
+        public ActionResult ListUsersShortDataWithButton(List<ApplicationUser> list,string butText)//,string action
+        {
+            ListUsersShortDataWithButtonV res= new ListUsersShortDataWithButtonV() {Users= list,ButText= butText };
+
+            return PartialView(res);
+        }
+
         public ActionResult FeTextInput(FEText obj)
         {
             return PartialView(obj);

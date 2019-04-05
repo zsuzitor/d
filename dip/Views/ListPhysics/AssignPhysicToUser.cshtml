@@ -3,11 +3,12 @@
 
 @if (Model != null)
 {
-    <div id=@("divOnePhysExist_" + Model.IDFE)>
-        <p>
+    <div class="bottomGrey" id=@("divOnePhysExist_" + Model.IDFE)>
+        <div class="div_inline_block listAction_inpbut_inp">
             <a href="@Url.Action("Details", "Physic", new { id = Model.IDFE })">@Model.Name</a>
+        </div>
             @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
-            <div class="button_circle_img_30 button_circle_sub_" onclick="removePhysFromUser(@Model.IDFE)" title="Забрать у пользователя  ФЭ"></div>
-        </p>
+            <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removePhysFromUser(@Model.IDFE)" title="Забрать у пользователя  ФЭ"></div>
+
         </div>
 }

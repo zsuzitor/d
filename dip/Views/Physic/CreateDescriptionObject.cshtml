@@ -15,7 +15,7 @@
 
 @Html.Action("ListPhaseObjectEdit", "Helpers", new { list = Model.Characteristic, parentId= dip.Models.Constants.FeObjectBaseCharacteristic })
 
-
+<div class="errorDiv" id="errorShowDiv"></div>
 <button class="btn btn-default" onclick="saveForm()">Сохранить</button>
 
 <script>
@@ -348,10 +348,17 @@
             func_success: function (req, status, jqXHR) {
                 //var data = req;//.responseText
                 //var type = data[0].trim();
-                if (req == '+')
+                var erdiv = document.getElementById('errorShowDiv');
+                if (req == '+') {
                     alert('Изменено, перезагрузите страницу');
-                else
-                    alert(req);
+                    erdiv.style.display = 'none';
+
+                }
+                else {
+                    erdiv.innerHTML = req;
+                    erdiv.style.display = 'block';
+                }
+                    //alert(req);
 
             }, type: 'POST'
         });

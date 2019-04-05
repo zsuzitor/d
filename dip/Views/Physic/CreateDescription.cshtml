@@ -220,7 +220,7 @@
         </div>
 </div>
 
-
+    <div class="errorDiv" style="display:none;" id="errorShowDiv"></div>
     <button class="btn btn-default" onclick="saveForm()">Сохранить</button>
 
     </div>
@@ -1091,6 +1091,10 @@
             currentActionId: mainObjEdit.curentActionId
 
         };
+        if (!formData.currentActionId) {
+            alert('Необходимо выбрать "Название воздействия" независимо от желаемого действия')
+            return;
+        }
 
         //type: 1-actionid ,2-fizvell,3-paramfizvell,4-pros,5-spec,6-vrem
         //TypeAction: 1-добавление ,2-редактирование, 3- удаление
@@ -1304,10 +1308,18 @@
             func_success: function (req, status, jqXHR) {
                 //var data = req;//.responseText
                 //var type = data[0].trim();
-                if (req == '+')
+                var erdiv=document.getElementById('errorShowDiv');
+                if (req == '+'){
                     alert('Изменено, перезагрузите страницу');
-                else
-                    alert(req);
+                    erdiv.style.display='none';
+
+                }
+                else{
+                    erdiv.innerHTML = req;
+                    erdiv.style.display='block';
+                }
+                    
+                   // alert();
             }, type: 'POST'
         });
 
