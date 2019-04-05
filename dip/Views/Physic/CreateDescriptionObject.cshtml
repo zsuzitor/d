@@ -1,6 +1,14 @@
 ﻿@model dip.Models.ViewModel.PhysicV.CreateDescriptionObjectV
 
 
+
+
+<h1>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h1>
+<h1>при удалении родителя, будут удалены(не будут добавлены новые ) все дети</h1>
+
+
+
+
 @Html.Action("ListStateObjectEdit","Helpers",new { list = Model.States })
 
 <hr />
@@ -338,9 +346,12 @@
             url: "/Physic/CreateDescriptionObject",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                var data = req;//.responseText
+                //var data = req;//.responseText
                 //var type = data[0].trim();
-
+                if (req == '+')
+                    alert('Изменено, перезагрузите страницу');
+                else
+                    alert(req);
 
             }, type: 'POST'
         });

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Binbin.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -93,6 +95,55 @@ namespace dip.Models.Domain
                 db.Dispose();
 
             return res;
+        }
+
+
+        //проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Spec> list)//TODO вынести
+        {
+            if (list.Count == 0)
+                return new List<int>();
+
+            List<Spec> fordel = new List<Spec>();
+            foreach (var i in list)
+            {
+                fordel.Add(i);
+                fordel.AddRange(i.GetChildsList(db));
+
+            }
+
+            return Spec.TryDelete(db, fordel);
+        }
+
+
+        //ищет фэ которые ссылаются, если есть хотя бы 1 то ничего не удаляет
+        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        public static List<int> TryDelete(ApplicationDbContext db, List<Spec> list)//TODO вынести
+        {
+
+            //формировать регулярку по списку удаляемых объектов
+            //List<int> blockFe = new List<int>();
+            var predicate = PredicateBuilder.False<FEAction>();
+            foreach (var i in list)
+            {
+                //foreach (var src in Spec.SqlLikeSerchIdInString(i.Id))
+                //{
+
+                //    predicate = predicate.Or(x1 => SqlMethods.Like(x1.Spec, src));
+                //}
+
+
+                predicate = predicate.Or(x1 => x1.Spec == i.Id || x1.Spec.StartsWith(i.Id + " ") ||
+                   x1.Spec.EndsWith(" " + i.Id) || x1.Spec.Contains(" " + i.Id + " "));
+            }
+
+            var blocked = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
+
+
+            if (blocked.Count > 0)
+                return blocked;
+            Spec.DeleteFromDbFromListOnly(db, db.Specs, list.Select(x1 => x1.Id));
+            return blocked;
         }
 
 

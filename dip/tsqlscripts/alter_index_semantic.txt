@@ -19,6 +19,3 @@ ALTER FULLTEXT INDEX ON [dbo].[FETexts]
 ALTER FULLTEXT INDEX ON [dbo].[FETexts]  
     ALTER COLUMN TextLit  
         ADD Statistical_Semantics ;
-ALTER FULLTEXT INDEX ON [dbo].[LogParams]  
-    ALTER COLUMN Param  
-        ADD Statistical_Semantics ;

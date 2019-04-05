@@ -77,25 +77,25 @@ namespace dip.Models
         /// </summary>
         /// <param name="logParamId"></param>
         /// <returns></returns>
-        public static string StringSemanticParse(int logParamId)
-        {
+//        public static string StringSemanticParse(int logParamId)
+//        {
         
 
-            var res = "";
-            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
-FROM SEMANTICKEYPHRASETABLE  
-    (  
-    LogParams,  
-    Param,  
-    {logParamId}  
-    ) AS KEYP_TBL  
-ORDER BY KEYP_TBL.score DESC;";
-            var ldr = DataBase.DataBase.ExecuteQuery(q, null, "keyphrase");
-            foreach (var i in ldr)
-                res += i["keyphrase"].ToString() + " ";
+//            var res = "";
+//            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
+//FROM SEMANTICKEYPHRASETABLE  
+//    (  
+//    LogParams,  
+//    Param,  
+//    {logParamId}  
+//    ) AS KEYP_TBL  
+//ORDER BY KEYP_TBL.score DESC;";
+//            var ldr = DataBase.DataBase.ExecuteQuery(q, null, "keyphrase");
+//            foreach (var i in ldr)
+//                res += i["keyphrase"].ToString() + " ";
 
-            return res.Trim();
-        }
+//            return res.Trim();
+//        }
 
 
         

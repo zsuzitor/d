@@ -80,6 +80,7 @@ namespace dip.Controllers
             {
                 listId = (int[])TempData["list_fe_id"];
             }
+            listId = listId ?? new int[0];
             res.FeTexts = FEText.GetListIfAccess(HttpContext,listId);
             res.NumLoad = numLoad;
 
@@ -454,7 +455,7 @@ namespace dip.Controllers
                 }
             }
             if (blockFe.Count > 0)
-                return Content("Записи которые блокируют удаление:" + string.Join(",", blockFe.Distinct()), "text/html");
+                return Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(",", blockFe.Distinct()), "text/html");
 
 
             if (commited )
@@ -489,8 +490,9 @@ namespace dip.Controllers
             bool commited = false;
             obj.SetNotNullArray();
             List<int>blockFe= obj.Save(out commited);
-            if(blockFe.Count>0)
-                return  Content("Записи которые блокируют удаление:"+string.Join(",",blockFe.Distinct()), "text/html");
+            
+            if (blockFe.Count>0)
+                return  Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(",",blockFe.Distinct()), "text/html");
 
             if (commited)
                 return Content("+", "text/html");

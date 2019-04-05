@@ -95,7 +95,7 @@ namespace dip.Models
 
         public static void DeleteFromDb(ApplicationDbContext db, System.Data.Entity.DbSet<T> collect, IEnumerable<string> del) //where T : ItemFormCheckbox<T>, new()
         {
-
+            //TODO можно переписать не под рефлексию а под вызов статики для интерфейса
             Type typeT = typeof(T);
             MethodInfo meth = typeT.GetMethod("GetChild");
             List<T> forDeleted = new List<T>();
@@ -235,6 +235,17 @@ namespace dip.Models
             return res;
         }
 
+
+        //public static List<string> SqlLikeSerchIdInString(string id)
+        //{
+        //    List<string> res = new List<string>();
+        //    res.Add(id);
+        //    res.Add(id + " %");
+        //    res.Add("% " + id);
+        //    res.Add("% " + id + " %");
+           
+        //    return res;
+        //    }
 
     }
 

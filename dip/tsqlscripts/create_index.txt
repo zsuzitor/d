@@ -10,9 +10,3 @@ TextLit language  1049
 key index [PK_dbo.FeTexts]
 on DbaFeTextCatalog
 with change_tracking auto;
-create fulltext index on [dbo].[LogParams](
-Param language  1049
-)
-key index [PK_dbo.LogParams]
-on DbaLogParamsCatalog
-with change_tracking auto;

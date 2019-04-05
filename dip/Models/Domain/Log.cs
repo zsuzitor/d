@@ -54,24 +54,42 @@ namespace dip.Models.Domain
         }
 
 
-        public void SetDescrParam(DescrSearchI[] param)
+        public void SetDescrParam(string stateBegin, string stateEnd, DescrSearchI[] param, DescrObjectI[] paramobj)
         {
-          
-            foreach(var i in param)
+            this.Params_.Add("stateBegin", stateBegin);
+            this.Params_.Add("stateEnd", stateEnd);
+            for (int i=0; i< param.Length;++i)
             {
                 //TODO name проставлять
-                this.Params_.Add("ActionId", i.ActionId);
-                this.Params_.Add("ActionType", i.ActionType);
-                this.Params_.Add("FizVelId", i.FizVelId);
-                this.Params_.Add("ParametricFizVelId", i.ParametricFizVelId);
-                this.Params_.Add("ListSelectedPros", i.ListSelectedPros);
-                this.Params_.Add("ListSelectedSpec", i.ListSelectedSpec);
-                this.Params_.Add("ListSelectedVrem", i.ListSelectedVrem);
+                this.Params_.Add("ActionId"+i, param[i].ActionId);
+                this.Params_.Add("ActionType" + i, param[i].ActionType);
+                this.Params_.Add("FizVelId" + i, param[i].FizVelId);
+                this.Params_.Add("ParametricFizVelId" + i, param[i].ParametricFizVelId);
+                this.Params_.Add("ListSelectedPros" + i, param[i].ListSelectedPros);
+                this.Params_.Add("ListSelectedSpec" + i, param[i].ListSelectedSpec);
+                this.Params_.Add("ListSelectedVrem" + i, param[i].ListSelectedVrem);
+            }
+            for (int i=0; i< paramobj.Length;++i)
+            {
+                
+                foreach(var i2 in paramobj[i])
+                {
+                    if (i2 == null)
+                        break;
+                    this.Params_.Add("phase"+ i2.NumPhase+"_Begin" + i, i2.Begin.ToString());
+                    this.Params_.Add("phase" + i2.NumPhase + "_PhaseState" + i, i2.PhaseState);
+                    this.Params_.Add("phase" + i2.NumPhase + "_Composition" + i, i2.Composition);
+                    this.Params_.Add("phase" + i2.NumPhase + "_MagneticStructure" + i, i2.MagneticStructure);
+                    this.Params_.Add("phase" + i2.NumPhase + "_Conductivity" + i, i2.Conductivity);
+                    this.Params_.Add("phase" + i2.NumPhase + "_MechanicalState" + i, i2.MechanicalState);
+                    this.Params_.Add("phase" + i2.NumPhase + "_OpticalState" + i, i2.OpticalState);
+                    this.Params_.Add("phase" + i2.NumPhase + "_Special" + i, i2.Special);
+                }
+                
             }
 
 
-
-        }
+            }
 
 
 

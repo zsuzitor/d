@@ -77,7 +77,7 @@ namespace dip.Controllers
 
                 Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
                 ApplicationUser.GetUserId(), true);
-                log.SetDescrParam(forms);
+                log.SetDescrParam(stateBegin, stateEnd,forms, objForms);
                 log.AddLogDb();
 
 

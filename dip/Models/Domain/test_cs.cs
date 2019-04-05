@@ -20,6 +20,7 @@ using System.Web.Hosting;
 using dip.Models.ViewModel;
 using System.Text.RegularExpressions;
 using System.Data.Linq.SqlClient;
+using Binbin.Linq;
 //using Microsoft.SqlServer.Management.Common;
 
 
@@ -148,7 +149,7 @@ namespace dip.Models.Domain
 
 
 
-
+            //ближайшие дети
         public static List<PhaseCharacteristicObject> GetChild(string id)
         {
             // Получаем список значений, соответствующий данной характеристике
@@ -380,6 +381,54 @@ namespace dip.Models.Domain
             ListSelectedPhase3 = null;
             Valide = false;
             //NumPhase = 1;
+        }
+
+
+
+
+
+        public DescrPhaseI this[int index]{
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return ListSelectedPhase1;
+                        break;
+                    case 1:
+                        return ListSelectedPhase2;
+                        break;
+                    case 2:
+                        return ListSelectedPhase3;
+                        break;
+                    default:
+                        return null;
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case 0:
+                        ListSelectedPhase1 = value ;
+                        break;
+                    case 1:
+                         ListSelectedPhase2 = value;
+                        break;
+                    case 2:
+                         ListSelectedPhase3 = value;
+                        break;
+                  
+                }
+            }
+        }
+
+        public IEnumerator<DescrPhaseI> GetEnumerator()
+        {
+
+            yield return ListSelectedPhase1;
+            yield return ListSelectedPhase2;
+            yield return ListSelectedPhase3;
         }
 
         public int GetCountPhase()
@@ -883,35 +932,82 @@ namespace dip.Models.Domain
         public List<int> DeleteCharacteristic(ApplicationDbContext db)
         {
             //TODO проверяем можно ли удалить
-            List<int> blockFe = new List<int>();
+            //List<int> blockFe = new List<int>();
             //CharacteristicObject = new CharacteristicObject().GetParentsList();
             //PhaseCharacteristicObject.get
             //;
 
 
-            List<string> fordel = new List<string>();
-            var childcol=db.PhaseCharacteristicObjects.Where(x1 => MassDeleteCharacteristic.FirstOrDefault(x2 => x2.Id == x1.Id) != null).ToList();
-            
+            List<PhaseCharacteristicObject> fordel = new List<PhaseCharacteristicObject>();
+            List<string> MassDeleteCharacteristicStr = MassDeleteCharacteristic.Select(x1 => x1.Id).ToList();
+            var childcol=db.PhaseCharacteristicObjects.Where(x1 => MassDeleteCharacteristicStr.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
+            if (childcol.Count == 0)
+                return new List<int>();
             foreach (var i in childcol)
             {
-                fordel.Add(i.Id);
-                fordel.AddRange(i.GetChildsList(db).Select(x1=>x1.Id));
+                fordel.Add(i);
+                fordel.AddRange(i.GetChildsList(db));
 
             }
             //формировать регулярку по списку удаляемых объектов
-            var blocked=db.FEObjects.Where(x1=> SqlMethods.Like(x1.Composition,"")||
-            SqlMethods.Like(x1.Conductivity, "") ||
-            SqlMethods.Like(x1.MagneticStructure, "") ||
-            SqlMethods.Like(x1.MechanicalState, "") ||
-            SqlMethods.Like(x1.OpticalState, "") ||
-            SqlMethods.Like(x1.PhaseState, "") ||
-            SqlMethods.Like(x1.Special, "")).Select(x1=>x1.Idfe);
-           
+            var predicate = PredicateBuilder.False<FEObject>();
+            foreach(var i in fordel)
+            {
+                //string src = "";
+                //for(int i2 = 0; i2 < 4; ++i2)
+
+                //      foreach(var src in PhaseCharacteristicObject.SqlLikeSerchIdInString(i.Id))
+                //      {
+
+                //          predicate = predicate.Or(x1 => SqlMethods.Like(x1.Composition, src) ||
+                //SqlMethods.Like(x1.Conductivity, src) ||
+                //SqlMethods.Like(x1.MagneticStructure, src) ||
+                //SqlMethods.Like(x1.MechanicalState, src) ||
+                //SqlMethods.Like(x1.OpticalState, src) ||
+                //SqlMethods.Like(x1.PhaseState, src) ||
+                //SqlMethods.Like(x1.Special, src));
+                //      }
+                predicate = predicate.Or(x1 => x1.Composition == i.Id || x1.Composition.StartsWith(i.Id + " ") ||
+                x1.Composition.EndsWith(" " + i.Id) || x1.Composition.Contains(" " + i.Id + " ")||
+                x1.Conductivity == i.Id || x1.Conductivity.StartsWith(i.Id + " ") ||
+                x1.Conductivity.EndsWith(" " + i.Id ) || x1.Conductivity.Contains(" " + i.Id + " ") ||
+                x1.MagneticStructure == i.Id || x1.MagneticStructure.StartsWith(i.Id + " ") ||
+                x1.MagneticStructure.EndsWith(" " + i.Id ) || x1.MagneticStructure.Contains(" " + i.Id + " ") ||
+                x1.MechanicalState == i.Id || x1.MechanicalState.StartsWith(i.Id + " ") ||
+                x1.MechanicalState.EndsWith(" " + i.Id ) || x1.MechanicalState.Contains(" " + i.Id + " ") ||
+                x1.OpticalState == i.Id || x1.OpticalState.StartsWith(i.Id + " ") ||
+                x1.OpticalState.EndsWith(" " + i.Id ) || x1.OpticalState.Contains(" " + i.Id + " ") ||
+                x1.PhaseState == i.Id || x1.PhaseState.StartsWith(i.Id + " ") ||
+                x1.PhaseState.EndsWith(" " + i.Id ) || x1.PhaseState.Contains(" " + i.Id + " ") ||
+                x1.Special == i.Id || x1.Special.StartsWith(i.Id + " ") ||
+                x1.Special.EndsWith(" " + i.Id ) || x1.Special.Contains(" " + i.Id + " ")
+                
+                );
 
 
-            qwe
-            AParentDb<PhaseCharacteristicObject>.DeleteFromDbFromListOnly(db,db.PhaseCharacteristicObjects, MassDeleteCharacteristic.Select(x1=>x1.Id));
-            return blockFe;
+
+              //SqlMethods.Like(x1.Conductivity, src) ||
+              //SqlMethods.Like(x1.MagneticStructure, src) ||
+              //SqlMethods.Like(x1.MechanicalState, src) ||
+              //SqlMethods.Like(x1.OpticalState, src) ||
+              //SqlMethods.Like(x1.PhaseState, src) ||
+              //SqlMethods.Like(x1.Special, src));
+
+
+
+
+            }
+
+            var blocked=db.FEObjects.Where(predicate).Select(x1=>x1.Idfe).ToList();
+            
+
+
+             
+                if (blocked.Count > 0)
+                return blocked;
+
+            AParentDb<PhaseCharacteristicObject>.DeleteFromDbFromListOnly(db,db.PhaseCharacteristicObjects, fordel.Select(x1 => x1.Id));
+            return blocked;
         }
 
         //public void DeleteCharacteristic()
@@ -1515,72 +1611,132 @@ namespace dip.Models.Domain
             return currentActionParametric;
         }
 
-
+       
+        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         public List<int> DeleteFizVels(ApplicationDbContext db)//db_ = null
         {
+            if (this.MassDeletedFizVels.Length == 0)
+                return new List<int>();
+            List<string> fizstr = this.MassDeletedFizVels.Select(x1 => x1.Id).ToList() ;
+            var list = db.FizVels.Where(x1 => fizstr.FirstOrDefault(x2 => x2 == x1.Id || x2 == x1.Parent) != null).ToList();
+            return FizVel.TryDelete(db,list);
 
-            var list = db.FizVels.Where(x1 => this.MassDeletedFizVels.FirstOrDefault(x2 => x2.Id == x1.Id || x2.Id == x1.Parent) != null);
-            db.FizVels.RemoveRange(list);
-            db.SaveChanges();
+            //var blocked=db.FEActions.Where(x1=> list.Select(x2=>x2.Id).Contains( x1.FizVelId)).Select(x1=>x1.Idfe).ToList();
+            //if (blocked.Count > 0)
+            //    return blocked;
+
+            //db.FizVels.RemoveRange(list);
+            //db.SaveChanges();
+            //return blocked;
 
         }
         public List<int> DeleteActionId(ApplicationDbContext db)//db_ = null
         {
             //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
             List<int> blockFe = new List<int>();
-            qwe;
-            var actionIdList=db.AllActions.Where(x1=>this.MassDeletedActionId.FirstOrDefault(x2=>x2.Id== x1.Id)!=null).ToList();
-            if (actionIdList.Count == 0)
-                return blockFe;
-            foreach(var i in actionIdList)
-            {
-                var fizvel=db.FizVels.Where(x1 => x1.Parent == i.Id + "_FIZVEL").ToList();
-                //List<FizVel> paramFizvel = new List<FizVel>();
-                if (i.Parametric)
-                {
-                    fizvel.AddRange( db.FizVels.Where(x1 => fizvel.FirstOrDefault(x2=>x2.Id== x1.Parent)!=null).ToList());
-                }
-                else
-                {
-                    var pros = db.Pros.Where(x1 => x1.Parent == i.Id + "_PROS").Select(x1=>x1.Id).ToList();
-                    Pro.DeleteFromDb(db, db.Pros, pros);
-                    var spec = db.Specs.Where(x1 => x1.Parent == i.Id + "_SPEC").Select(x1 => x1.Id).ToList();
-                    Spec.DeleteFromDb(db, db.Specs, spec);
-                    var vrem = db.Vrems.Where(x1 => x1.Parent == i.Id + "_VREM").Select(x1 => x1.Id).ToList();
-                    Vrem.DeleteFromDb(db, db.Vrems, vrem);
-                }
-            }
-            return blockFe;
+            List<string> actionstr = this.MassDeletedActionId.Select(x1 => x1.Id).ToList();
+            var actionIdList=db.AllActions.Where(x1=> actionstr.Contains(x1.Id)).ToList();
+            return AllAction.TryDeleteWithChilds(db, actionIdList);
+
+            //if (actionIdList.Count == 0)
+            //    return blockFe;
+            //foreach(var i in actionIdList)
+            //{
+            //    blockFe.AddRange(db.FEActions.Where(x1=>x1.Name==i.Id).Select(x1=>x1.Idfe).ToList());
+
+            //    var fizvel=db.FizVels.Where(x1 => x1.Parent == i.Id + "_FIZVEL").ToList();
+            //    //List<FizVel> paramFizvel = new List<FizVel>();
+            //    if (i.Parametric)
+            //    {
+            //        List<string> fizveldtr = fizvel.Select(x1 => x1.Id).ToList();
+            //        fizvel.AddRange( db.FizVels.Where(x1 => fizveldtr.FirstOrDefault(x2=>x2== x1.Parent)!=null).ToList());
+            //    }
+            //    else
+            //    {
+            //        var pros = db.Pros.Where(x1 => x1.Parent == i.Id + "_PROS").Select(x1=>x1.Id).ToList();
+            //        //Pro.DeleteFromDb(db, db.Pros, pros);
+            //        blockFe.AddRange(Pro.TryDeleteWithChilds(db, db.Pros.Where(x1 => pros.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList()));
+
+            //        var spec = db.Specs.Where(x1 => x1.Parent == i.Id + "_SPEC").Select(x1 => x1.Id).ToList();
+            //        //Spec.DeleteFromDb(db, db.Specs, spec);
+            //        blockFe.AddRange(Spec.TryDeleteWithChilds(db, db.Specs.Where(x1 => spec.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList()));
+            //        var vrem = db.Vrems.Where(x1 => x1.Parent == i.Id + "_VREM").Select(x1 => x1.Id).ToList();
+            //        //Vrem.DeleteFromDb(db, db.Vrems, vrem);
+            //        blockFe.AddRange(Vrem.TryDeleteWithChilds(db, db.Vrems.Where(x1 => vrem.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList()));
+            //    }
+            //    blockFe.AddRange(FizVel.TryDelete(db, fizvel));
+            //}
+            //if (blockFe.Count == 0)
+            //{
+            //    db.AllActions.RemoveRange(actionIdList);
+            //    db.SaveChanges();
+
+            //}
+
+            //return blockFe;
         }
+
+        
 
 
 
         public List<int> DeleteVrem(ApplicationDbContext db)//db_ = null
         {
             //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            List<int> blockFe = new List<int>();
-            qwe;
-            Vrem.DeleteFromDb(db, db.Vrems, MassDeletedVrems.Select(x1 => x1.Id));
-            return blockFe;
+            //List<int> blockFe = new List<int>();
+            List<string> MassDeletedVremsS = MassDeletedVrems.Select(x1 => x1.Id).ToList();
+            var childcol = db.Vrems.Where(x1 => MassDeletedVremsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
+            
+            
+            return Vrem.TryDeleteWithChilds(db, childcol);
         }
+
+
+        
+
+
 
         public List<int> DeleteSpec(ApplicationDbContext db)//db_ = null
         {
             //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            List<int> blockFe = new List<int>();
-            qwe;
-            Spec.DeleteFromDb(db, db.Specs, MassDeletedSpecs.Select(x1 => x1.Id));
-            return blockFe;
+            //List<int> blockFe = new List<int>();
+            List<string> MassDeletedSpecsS = MassDeletedSpecs.Select(x1 => x1.Id).ToList();
+            var childcol = db.Specs.Where(x1 => MassDeletedSpecsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
+            return Spec.TryDeleteWithChilds(db, childcol);
+            //if (childcol.Count == 0)
+            //    return new List<int>();
+
+            //List<Spec> fordel = new List<Spec>();
+            //foreach (var i in childcol)
+            //{
+            //    fordel.Add(i);
+            //    fordel.AddRange(i.GetChildsList(db));
+
+            //}
+            //return SaveDescription.DeleteSpec(db,fordel);
         }
 
+
+        
 
         public List<int> DeletePros(ApplicationDbContext db)//db_ = null
         {
             //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            List<int> blockFe = new List<int>();
-            qwe;
-            Pro.DeleteFromDb(db,db.Pros, MassDeletedPros.Select(x1=>x1.Id));
-            return blockFe;
+            //List<int> blockFe = new List<int>();
+            List<string> MassDeletedProsS = MassDeletedPros.Select(x1 => x1.Id).ToList();
+            var childcol = db.Pros.Where(x1 => MassDeletedProsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
+            return Pro.TryDeleteWithChilds(db, childcol);
+            //if (childcol.Count == 0)
+            //    return new List<int>();
+
+            //List<Pro> fordel = new List<Pro>();
+            //foreach (var i in childcol)
+            //{
+            //    fordel.Add(i);
+            //    fordel.AddRange(i.GetChildsList(db));
+
+            //}
+            //return SaveDescription.DeletePros(db, fordel);
         }
         //public void DeletePros(ApplicationDbContext db)//db_ = null
         //{

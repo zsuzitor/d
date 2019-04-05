@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Binbin.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Core.Objects;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -172,6 +175,55 @@ namespace dip.Models.Domain
             return res.Trim();
 
         }
+
+        //проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Pro> list)//TODO вынести
+        {
+            if (list.Count == 0)
+                return new List<int>();
+
+            List<Pro> fordel = new List<Pro>();
+            foreach (var i in list)
+            {
+                fordel.Add(i);
+                fordel.AddRange(i.GetChildsList(db));
+
+            }
+
+            return Pro.TryDelete(db, fordel);
+        }
+
+
+        //ищет фэ которые ссылаются, если есть хотя бы 1 то ничего не удаляет
+        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        public static List<int> TryDelete(ApplicationDbContext db, List<Pro> list)//TODO вынести
+        {
+            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
+            //List<int> blockFe = new List<int>();
+
+            //формировать регулярку по списку удаляемых объектов
+            var predicate = PredicateBuilder.False<FEAction>();
+            foreach (var i in list)
+            {
+                //foreach (var src in Pro.SqlLikeSerchIdInString(i.Id))
+                //{
+
+                //    //predicate = predicate.Or(x1 => SqlMethods.Like(x1.Pros, src));
+                //    predicate = predicate.Or(x1 => SqlMethods.Like(x1.Pros, src));
+                //}
+                predicate = predicate.Or(x1 => x1.Pros == i.Id || x1.Pros.StartsWith(i.Id + " ") ||
+                 x1.Pros.EndsWith(" "+i.Id ) || x1.Pros.Contains(" " + i.Id + " "));
+            }
+           // var people = db.FEActions.Where("it.Pros LIKE @searchTerm", new ObjectParameter("searchTerm", ""));
+            var blocked = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
+
+
+            if (blocked.Count > 0)
+                return blocked;
+            Pro.DeleteFromDbFromListOnly(db, db.Pros, list.Select(x1 => x1.Id));
+            return blocked;
+        }
+
 
         public static List<Pro> GetChild(string id)
         {
