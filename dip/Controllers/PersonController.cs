@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace dip.Controllers
 {
+    [RequireHttps]
     public class PersonController : Controller
     {
         // GET: Person

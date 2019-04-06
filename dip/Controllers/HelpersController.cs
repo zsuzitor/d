@@ -13,6 +13,7 @@ namespace dip.Controllers
 
     //контроллер заменяющий хелперы тк они ломаются
     [ChildActionOnly]
+    [RequireHttps]
     public class HelpersController : Controller
     {
         // GET: Helpers

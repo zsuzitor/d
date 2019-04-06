@@ -11,6 +11,7 @@ using System.Web.Mvc;
 namespace dip.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class ActionsController : Controller
     {
         // GET: Actions

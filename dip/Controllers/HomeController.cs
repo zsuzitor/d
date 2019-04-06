@@ -17,6 +17,7 @@ using System.Data;
 
 namespace dip.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
 

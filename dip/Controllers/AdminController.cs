@@ -14,6 +14,7 @@ namespace dip.Controllers
 
    
     [Authorize(Roles = "admin")]
+    [RequireHttps]
     public class AdminController : Controller
     {
         // GET: Admin

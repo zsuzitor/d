@@ -11,6 +11,7 @@ using System.Web.Mvc;
 namespace dip.Controllers
 {
     [Authorize(Roles = "admin")]
+    [RequireHttps]
     public class ListPhysicsController : Controller
     {
         // GET: ListPhysics

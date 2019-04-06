@@ -16,6 +16,7 @@ using System.Web.Routing;
 namespace dip.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class SearchController : Controller
     {
         // GET: Search
