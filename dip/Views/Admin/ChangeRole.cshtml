@@ -15,6 +15,7 @@
     <button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
     <div id="idCurrentUser_id"></div>
     @*<input name="roleName" type="text" />*@
+    <div class="padding_50_top"></div>
     <button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>
     <div id="ListAllUsers_id" style="display:none;">
 
@@ -84,7 +85,9 @@
         });
     }
 
-
+    function ListUsersShortDataButton(id) {
+        document.getElementById('userIdInput_id').value = id;
+    }
     function LoadAllUsers() {
         var formData = {};
         var div = document.getElementById('ListAllUsers_id');
@@ -92,7 +95,7 @@
         if (!div.innerHTML.trim()) {
             //загрузить
             goAjaxRequest({
-                url: "/Admin/GetAllUsersShortData",
+                url: "/Admin/GetAllUsersShortDataWithBut",
                 data: formData,
                 func_success: function (req, status, jqXHR) {
                     div.innerHTML = req;

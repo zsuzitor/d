@@ -22,7 +22,7 @@
             {
                 <div class="bottomGrey" id=@("divOneListFeExist_"+i.Id)>
                     <div class="div_inline_block listAction_inpbut_inp">
-                        <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
+                        <a title="@i.Name" href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
                     </div>
                     @*<button class="btn btn-default" onclick="">просмотр</button>*@
                     @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@

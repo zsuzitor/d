@@ -213,8 +213,7 @@ namespace dip.Models.Domain
                 i.DeleteNotChildCheckbox();
             foreach (var i in objects)
                 i.DeleteNotChildCheckbox();
-            //inp.DeleteNotChildCheckbox();
-            //outp.DeleteNotChildCheckbox();
+          
 
             List<FEAction> formsList = new List<FEAction>();
             List<FEObject> objectsList = new List<FEObject>();
@@ -253,7 +252,7 @@ namespace dip.Models.Domain
             }
             //.ToList() .ToArray()
             
-            //checkInp=formsList.GroupBy(x1 => x1.Idfe).Where(x1=>x1.Count()== forms.Length).ToList();
+            
             if (checkInp.Count < 1)
                 return null;
 
@@ -416,15 +415,6 @@ order by [data].score desc
             else
                 res.AddRange(accessList);
 
-            //foreach (var i in dict)
-            //{
-            //    if (res.Count == count)
-            //        break;
-            //    int idRec = Convert.ToInt32(i["IDFE"]);
-            //    if (!res.Contains(idRec))
-            //        res.Add(idRec);
-            //}
-
 
 
             return res;
@@ -460,18 +450,7 @@ order by [data].score desc
             List<int>accessList = user.CheckAccessPhys(id?.ToList(), HttpContext);
 
             res = FEText.GetList(user.Id, accessList.ToArray());
-            //if (accessList != null && accessList.Count > 0)
-            //    using (var db = new ApplicationDbContext())
-            //    {
-            //        res = db.FEText.Join(accessList, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
-
-            //        foreach (var i in res)
-            //        {
-            //            i.FavouritedCurrentUser = i.Favourited(user.Id);
-            //        }
-            //    }
-
-
+          
             return res;
         }
 
@@ -504,8 +483,7 @@ order by [data].score desc
 
         public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null)
         {
-            //if (!this.Validation())
-            //    return false;
+            
             bool commited = false;
 
 
@@ -566,11 +544,7 @@ order by [data].score desc
                 {
                     try
                     {
-                        //var states=db.StateObjects.Where(x1 => x1.Id == newObj.StateBeginId || x1.Id == newObj.StateEndId).ToList();
-                        //foreach (var i in states)
-                        //    if (i.CountPhase == null)
-                        //        return false;
-                        
+                      
                         db.Set<FEText>().Attach(this);
                         this.Equal(newObj);
                         if (deleteImg != null && deleteImg.Count > 0)
@@ -602,12 +576,7 @@ order by [data].score desc
                         db.FEObjects.RemoveRange(objdb);//без сохранения
                         foreach (var i in objForms)
                         {
-                            //    List<FEObject> objects = new List<FEObject>()
-                            //    {
-                            //        new FEObject(i.ListSelectedPhase1, this.IDFE,(i.Begin?1:0)),
-                            //        new FEObject(i.ListSelectedPhase2, this.IDFE,(i.Begin?1:0)),
-                            //        new FEObject(i.ListSelectedPhase3, this.IDFE,(i.Begin?1:0))
-                            //};
+                           
                             List<FEObject> objects = new List<FEObject>();
                             var phmass = i.GetActualPhases();//
                             foreach (var phit in phmass)

@@ -2,6 +2,12 @@
 id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
 
 
+admin@mail.ru  Admin1!
+asa123A@mail.ru  Admin1!
+asa123NA@mail.ru  Admin1!
+
+
+
 полнотекстовый поиск:
 lucene - обычный полнотекстовый поиск lucene
 fullTextSearchF - обычный полнотекстовый поиск fullTextSearch

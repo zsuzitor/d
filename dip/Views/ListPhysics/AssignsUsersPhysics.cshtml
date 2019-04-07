@@ -18,7 +18,7 @@
             {
                 <div class="bottomGrey" id=@("divOnePhysExist_"+i.IDFE)>
                     <div class="div_inline_block listAction_inpbut_inp">
-                        <a href="@Url.Action("Details", "Physic", new { id = i.IDFE })">@i.Name</a>
+                        <a title="@i.Name" href="@Url.Action("Details", "Physic", new { id = i.IDFE })">@i.Name</a>
                     </div>
                         @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
                         <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removePhysFromUser(@i.IDFE)" title="Забрать у пользователя  ФЭ"></div>

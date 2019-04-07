@@ -100,61 +100,8 @@ namespace dip.Controllers
 
             if (res.Obj == null)
                 return new HttpStatusCodeResult(404);
-
-            //res.ChangedObject=res.obj
-            List < FEAction> inp = null;
-            List<FEAction> outp = null;
-            FEAction.Get((int)id, ref inp, ref outp);
-            List < FEObject> inpObj = null;
-            List < FEObject> outpObj = null;
-            FEObject.Get((int)id, ref inpObj, ref outpObj);
-
-            res.FormsInput = inp.Select(x1=> {
-                var rs = new DescrSearchI(x1);
-                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
-                return rs;
-            }).ToList();
-            res.FormsOutput = outp.Select(x1 => {
-                var rs = new DescrSearchI(x1);
-                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
-                return rs;
-            }).ToList();// new DescrSearchI(outp);
-
-            if (inpObj != null)
-            {
-                var objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
-                if (objTmp != null)
-                    res.FormObjectBegin.ListSelectedPhase1 = new DescrPhaseI(objTmp);//.Select(x1=>new DescrPhaseI(x1));
-                objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
-                if (objTmp != null)
-                    res.FormObjectBegin.ListSelectedPhase2 = new DescrPhaseI(objTmp);
-                objTmp = inpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
-                if (objTmp != null)
-                    res.FormObjectBegin.ListSelectedPhase3 = new DescrPhaseI(objTmp);
-                res.CountPhaseBegin = res.FormObjectBegin.GetCountPhase();
-            }
-           
-            if (outpObj != null)
-            {
-                var objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 1);
-                if (objTmp != null)
-                    res.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(objTmp);
-                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
-                if (objTmp != null)
-                    res.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(objTmp);// outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
-                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
-                if (objTmp != null)
-                    res.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(objTmp);//outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
-                res.CountPhaseEnd = res.FormObjectEnd.GetCountPhase();
-            }
-           
             
-
-            res.Obj.LoadImage();
+            res.Data(id);
 
 
 

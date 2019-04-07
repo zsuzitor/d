@@ -11,7 +11,7 @@
 <input  type="hidden" value="@Model.Effect.IDFE" id="inputIdCurrentPhysEffect" />
 @{
     <div>
-        <h4>@Model.EffectName</h4>
+        <h4 class="breakWord">@Model.EffectName</h4>
         @if (Model.Admin)
         {
             @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })
@@ -31,7 +31,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.Text)
+                @*@Html.DisplayFor(model => model.Effect.Text)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.Text </span >
             </dd>
 
             <dt>
@@ -39,7 +41,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.TextInp)
+                @*@Html.DisplayFor(model => model.Effect.TextInp)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.TextInp </span>
             </dd>
 
             <dt>
@@ -47,7 +51,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.TextOut)
+                @*@Html.DisplayFor(model => model.Effect.TextOut)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.TextOut </span>
             </dd>
 
             <dt>
@@ -55,7 +61,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.TextObj)
+                @*@Html.DisplayFor(model => model.Effect.TextObj)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.TextObj </span>
             </dd>
 
             <dt>
@@ -63,7 +71,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.TextApp)
+                @*@Html.DisplayFor(model => model.Effect.TextApp)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.TextApp </span>
             </dd>
 
             <dt>
@@ -71,7 +81,9 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Effect.TextLit)
+                @*@Html.DisplayFor(model => model.Effect.TextLit)*@
+                <div class="padding_10_top"></div>
+                <span class="breakWord">@Model.Effect.TextLit </span>
             </dd>
 
         </dl>

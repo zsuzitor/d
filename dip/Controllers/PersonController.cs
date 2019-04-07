@@ -35,16 +35,18 @@ namespace dip.Controllers
             if (string.IsNullOrWhiteSpace(personId))
                 personId = res.CurrenUserId;
 
-            if (res.Admin)
-                res.User = ApplicationUser.GetUser(personId);
+            //if (res.Admin)
+            //    res.User = ApplicationUser.GetUser(personId);
 
             //res.User.CheckAccessPhys(HttpContext);
 
-            else if (personId!= res.CurrenUserId)
+            //else 
+            if (!res.Admin&&personId != res.CurrenUserId)
                 return RedirectToAction("PersonalRecord",new { personId= res.CurrenUserId });
             //res.User = ApplicationUser.GetUser(res.CurrenUserId);
             res.User = ApplicationUser.GetUser(personId);
-
+            if(res.User==null)
+                return new HttpStatusCodeResult(404);
 
             return View(res);
         }

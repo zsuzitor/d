@@ -148,28 +148,32 @@
 
         function clearForm() {
             //$("#actionI option[value='VOZ1']").prop("selected", true);
-            $("#actionO option[value='VOZ1']").prop("selected", true);
+            //$("#actionO option[value='VOZ1']").prop("selected", true);
             //$("#actionTypeI option[value='NO_ACTIONS']").prop("selected", true);
-            $("#actionTypeO option[value='NO_ACTIONS']").prop("selected", true);
+            //$("#actionTypeO option[value='NO_ACTIONS']").prop("selected", true);
             
             
             var i = 0;
             var inpdiv = document.getElementById('actionI'+i);
             while (inpdiv) {
-                var valFirstAction = $("#actionI" + i)[0].value;
-                var valFirstActionType = $("#actionTypeI" + i)[0].value;
-               $("#actionI" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
-               $("#actionTypeI" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
+                //var valFirstAction = $("#actionI" + i)[0].value;
+                //var valFirstActionType = $("#actionTypeI" + i)[0].value;
+                //$("#actionI" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
+                $("#actionI" + i).val($("#actionI" + i + " option:first").val());
+                $("#actionTypeI" + i).val($("#actionTypeI" + i + " option:first").val());
+               //$("#actionTypeI" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
                 changeParams('I' + i);
                 inpdiv = document.getElementById('actionI' + ++i);
             }
              i = 0;
              inpdiv = document.getElementById('actionO' + i);
              while (inpdiv) {
-                 var valFirstAction = $("#actionO" + i)[0].value;
-                 var valFirstActionType = $("#actionTypeO" + i)[0].value;
-                 $("#actionO" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
-                 $("#actionTypeO" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
+                 //var valFirstAction = $("#actionO" + i)[0].value;
+                 //var valFirstActionType = $("#actionTypeO" + i)[0].value;
+                 //$("#actionO" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
+                 //$("#actionTypeO" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
+                 $("#actionO" + i).val($("#actionO" + i + " option:first").val());
+                 $("#actionTypeO" + i).val($("#actionTypeO" + i + " option:first").val());
                 changeParams('O' + i);
                 inpdiv = document.getElementById('actionO' + ++i);
              }

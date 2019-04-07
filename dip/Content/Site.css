@@ -105,6 +105,9 @@ a:hover{
     color: black; /* Цвет ссылки */
     
 }
+.padding_50_top{
+    padding-top:50px;
+}
 
 .padding_10_top{
     padding-top:10px;
@@ -143,6 +146,14 @@ div.errorDiv{
 div.bottomGrey{
     border-bottom: 1px solid grey;
 }
+
+.breakWord{
+    word-wrap: break-word;
+
+
+}
+
+
 
 
 
@@ -700,7 +711,7 @@ color:white;
 div.ListAct_OneColumn{
     width:50%;
     box-sizing:border-box;
-    
+    overflow:hidden;
     min-height:300px;
 }
 
@@ -723,6 +734,7 @@ div.ListAct_ExistList{
 
 div.listAction_inpbut_inp{
     width:90%;
+    overflow:hidden;
 }
 
 

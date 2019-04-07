@@ -2,6 +2,7 @@
 3MIXFAZ это 3 фазы ?
 2MIXFAZ это 2 фазы?
 latex
+полнотекстовый поиск, искать в столбцах название и тело или во всех?
 
 разграничение по ролям какая роль что может?
 левинштайн- не для поиска
@@ -102,83 +103,23 @@ https
 
 
 
-----------------------------------------
-//!!!!для fetext нет feobject -- @список таких фэ, им надо пустые закинуть@
-
-//запись с id 1 сломана feindex
-
-
-
---FEObjects!
-select FETexts.IDFE from FETexts
-left join FEObjects
-on FETexts.IDFE = FEObjects.Idfe
-where FEObjects.Id is null
-
-
-
-
---FEActions !
---go
-drop table  tbl;
---go
---create table #tbl (id int)
-select Idfe into  tbl  from FEActions 
-
---declare @count int;
---set @count =count(#tbl);
---declare @i int;
---set @i=0;
-
-select FETexts.IDFE from FETexts where FETexts.IDFE not in (select * from tbl) 
-
-
-
-
-
-select * from FEObjects where Idfe = 1211
-
-
-select * from FETexts
-left join FEObjects 
-on FETexts.IDFE = FEObjects.Idfe 
-left join FEActions
-on FEActions.Idfe=FETexts.IDFE 
-where FETexts.IDFE = 1282
-
-
-
---группируем id тех у которых что то не в порядке
-select FEObjects_.IDFE as idfe1,FEActions_.IDFE as idfe2 from (select FETexts.IDFE from FETexts
-left join FEObjects
-on FETexts.IDFE = FEObjects.Idfe
-where FEObjects.Id is null) as FEObjects_
-full join (select FETexts.IDFE from FETexts where FETexts.IDFE not in (select Idfe from FEActions )) as FEActions_
-on FEObjects_.IDFE = FEActions_.IDFE
-
-
-
-
-пустая форма дескрипторы
-VOZ1
-NO_ACTIONS
-NO_FIZVEL
-
-MONOFAZ
-
 
 
 ------------------------------------------
 //при удалении дескрипторов нужен див в котором будут написаны id фэ которые блочат удаление и закидывать их туда
 //на странице присвоения списков и фэ при загрузке все пользователей добавить кнопку возле каждого юзера для выбора его в качестве редактируемого
 //кнопки удаления добавления выровнять и сделать справа в 1 строку
----класс functions раскидать   расщирением для image
+---класс functions раскидать   расщирением для image, нельзя сделать статическое расширение
 ограничить максимальную длину ника и тд?
 
 
+changerole не делать на 2 экрана?
+
+на странице выдачи ролей пользователей,  к списку пользователей добавить тоже кнопку
+
 полнотекстовый индекс все таки ограничить только телом мб еще названием
 "показать похожие- сравнивать только по описанию"
-
+personal record хоть как то
 
 !!!!!нормальная обработка всех ошибок(сейчас просто 404 статус), для редактирования\добавления нельзя терять прогресс если неудача(мб отправлять запрос и если неудача НЕ редиректить
 ?логирование ошибок?
@@ -204,8 +145,8 @@ olddbcontext переписать что бы не было лишних классов
 
 
 
-!в списках почти все функции сейчас не обновляют текущую страницу или просто показывают сообщение об ошибке даже если все выполнено
-для радио проверить если ди дети для других
+//!в списках почти все функции сейчас не обновляют текущую страницу или просто показывают сообщение об ошибке даже если все выполнено
+//для радио проверить если ди дети для других
 
 
 попробовать списки с длинными названиями посоздавать, посмотреть где что поедет, и присваивать ФЭ с длинными названиями
@@ -716,6 +657,88 @@ actionspec actionId с 1 а в old 212
 actionvrem actionid 1         212
 feindexes    на 30 строк больше получилось хз откуда и почему
 fetext    на 30 строк больше
+
+
+
+
+
+
+
+
+
+
+----------------------------------------++++++++++++++
+//!!!!для fetext нет feobject -- @список таких фэ, им надо пустые закинуть@
+
+//запись с id 1 сломана feindex
+
+
+
+--FEObjects!
+select FETexts.IDFE from FETexts
+left join FEObjects
+on FETexts.IDFE = FEObjects.Idfe
+where FEObjects.Id is null
+
+
+
+
+--FEActions !
+--go
+drop table  tbl;
+--go
+--create table #tbl (id int)
+select Idfe into  tbl  from FEActions 
+
+--declare @count int;
+--set @count =count(#tbl);
+--declare @i int;
+--set @i=0;
+
+select FETexts.IDFE from FETexts where FETexts.IDFE not in (select * from tbl) 
+
+
+
+
+
+select * from FEObjects where Idfe = 1211
+
+
+select * from FETexts
+left join FEObjects 
+on FETexts.IDFE = FEObjects.Idfe 
+left join FEActions
+on FEActions.Idfe=FETexts.IDFE 
+where FETexts.IDFE = 1282
+
+
+
+--группируем id тех у которых что то не в порядке
+select FEObjects_.IDFE as idfe1,FEActions_.IDFE as idfe2 from (select FETexts.IDFE from FETexts
+left join FEObjects
+on FETexts.IDFE = FEObjects.Idfe
+where FEObjects.Id is null) as FEObjects_
+full join (select FETexts.IDFE from FETexts where FETexts.IDFE not in (select Idfe from FEActions )) as FEActions_
+on FEObjects_.IDFE = FEActions_.IDFE
+
+
+
+
+пустая форма дескрипторы
+VOZ1
+NO_ACTIONS
+NO_FIZVEL
+
+MONOFAZ
+
+
+
+
+
+
+
+
+
 
 
 

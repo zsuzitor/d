@@ -5,8 +5,8 @@
 @if (Model != null)
 {
     <div class="bottomGrey" id=@("divOneListFeExist_"+Model.Id)>
-        <div class="div_inline_block listAction_inpbut_inp">
-            <a href="@Url.Action("ListAct","ListPhysics",new {currentListId=Model.Id })">@Model.Name</a>
+        <div  class="div_inline_block listAction_inpbut_inp">
+            <a title="@Model.Name" href="@Url.Action("ListAct","ListPhysics",new {currentListId=Model.Id })">@Model.Name</a>
         </div>
             @*<button class="btn btn-default" onclick="">просмотр</button>*@
             @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
