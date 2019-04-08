@@ -5,11 +5,8 @@
 
 
 
-
-@*<div class="" id=@("fizVel"+Model.Type)>*@
-   
     <div class="col-md-10">
-        @*@Html.DropDownList("fizVelId"+ ((string)ViewBag.type), null, htmlAttributes: new { id = "fizVelId"+ ((string)ViewBag.type), @class = "form-control" })*@
+   
         <select name=@("fizVelId"+ Model.Type) class="form-control" id=@("fizVelId"+ Model.Type)>
 
             @foreach (var i in Model.List)
@@ -28,11 +25,6 @@
 
         </select>
 
-
-
-
-
-        @*@Html.ValidationMessageFor(model => model.FizVelId, "", new { @class = "text-danger" })*@
     </div>
-@*</div>*@
+
 

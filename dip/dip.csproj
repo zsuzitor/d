@@ -199,7 +199,6 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HelpersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LimitsController.cs" />
     <Compile Include="Controllers\ListPhysicsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PersonController.cs" />

@@ -26,7 +26,16 @@ namespace dip.Controllers
         }
 
 
-        
+
+        /// <summary>
+        /// Отрисовывает форму для дескрипторного поиска
+        /// </summary>
+        /// <param name="search">Нужен ли результат(список ФЭ)</param>
+        /// <param name="stateBegin">Начальное состояние объекта</param>
+        /// <param name="stateEnd">Конечное состояние объекта</param>
+        /// <param name="forms">Входные\Выходные параметры дескрипторной формы</param>
+        /// <param name="objForms">Характеристики объекта дескрипторной формы</param>
+        /// <returns></returns>
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
@@ -88,15 +97,22 @@ namespace dip.Controllers
             return View(res);
         }
 
+
+        /// <summary>
+        /// Отрисовывает список подходящих ФЭ согласно запросу пользователя
+        /// </summary>
+        /// <param name="type">Тип поиска</param>
+        /// <param name="str">Строка поиска</param>
+        /// <param name="lastId">id последней загруженной записи(для пагинации)</param>
+        /// <param name="countLoad">Номер последней загрузки (для пагинации)</param>
+        /// <returns></returns>
         public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int countLoad = 1)
         {
+            //TODO валидация строки от sql иньекций и тд
+            //TODO полнотекстовый поиск
             //str = "газ";
             TextSearchPartialV res = new TextSearchPartialV();
-
-
-            //if (str.Split().Length > 10)
-            //    str = Search.StringSemanticParse(listmaramslog[1]);
-
+            
 
             res.ListPhysId = Search.GetListPhys(type, str, HttpContext, lastId, countLoad);
             if (res.ListPhysId == null)
@@ -127,17 +143,13 @@ namespace dip.Controllers
         //[HttpPost]
         //type - тип запроса lucene и др
 
-        //lucCount- номер запроса 
         /// <summary>
-        /// страница для первого текстового запроса
+        /// Отрисовывает страницу с формой для полнотекстового поиска
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="str"></param>
         /// <returns></returns>
         public ActionResult TextSearch()//string type, string str,bool semanticParse=false
         {
-            //TODO валидация строки от sql иньекций и тд
-            //TODO полнотекстовый поиск
+           
 
             TextSearchV res = new TextSearchV();//TODO возможно класс не используется
 
@@ -152,9 +164,6 @@ namespace dip.Controllers
          
             return View(res);//.Select(x1=>x1.IDFE)
         }
-        //create fulltext catalog DbaLogParamsCatalog;
-
-
-
+        
     }
 }

@@ -20,6 +20,10 @@ namespace dip.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Отрисовывает страницу для присвоения\удаления у пользователей списков фэ
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ListUserAct()
         {
             //ListActV res = new ListActV();
@@ -28,6 +32,11 @@ namespace dip.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Отрисовывает страницу для создания\редактирования списков ФЭ
+        /// </summary>
+        /// <param name="currentListId"> Выбранный id списка</param>
+        /// <returns></returns>
         public ActionResult ListAct(int? currentListId=null)
         {
             ListActV res = new ListActV() {CurrentListId= currentListId };
@@ -36,6 +45,11 @@ namespace dip.Controllers
             return View(res);
         }
 
+        /// <summary>
+        /// post-создание нового списка ФЭ
+        /// </summary>
+        /// <param name="name">имя нового списка</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CreateList(string name)
         {
@@ -46,6 +60,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// Отрисовывает список всех ФЭ включенных в список
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <returns></returns>
         public ActionResult LoadPhysInList(int id)
         {
             ListPhysics res = ListPhysics.LoadPhysics(id);
@@ -53,7 +72,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает пользователей которым выдан список
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <returns></returns>
         public ActionResult LoadUsersForList(int id)
         {
             ListPhysics res = ListPhysics.LoadUsers(id);
@@ -61,7 +84,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// post- редактирование списка ФЭ
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <param name="name">Имя списка</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult EditList(int id, string name)
         {
@@ -70,6 +98,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// post-удаление списка
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult DeleteList(int id)
         {
@@ -78,6 +111,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// post-добавить ФЭ к списку ФЭ
+        /// </summary>
+        /// <param name="idphys">id ФЭ</param>
+        /// <param name="idlist">id списка ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddToList(int idphys,int idlist)
         {
@@ -88,7 +127,12 @@ namespace dip.Controllers
 
             return PartialView(res?.Physics.FirstOrDefault(x1=>x1.IDFE== idphys));
         }
-
+        /// <summary>
+        /// post-удаление ФЭ из списка ФЭ
+        /// </summary>
+        /// <param name="idphys">id ФЭ</param>
+        /// <param name="idlist">id списка ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult DeleteFromList(int idphys, int idlist)
         {
@@ -99,7 +143,12 @@ namespace dip.Controllers
         }
 
 
-
+        /// <summary>
+        /// post-присвоить пользователю список ФЭ
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idlist">id списка ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AssignListToUser(string iduser, int idlist)
         {
@@ -117,6 +166,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// post-удалить у пользователя список ФЭ
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idlist">id списка ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RemoveListFromUser(string iduser, int idlist)
         {
@@ -126,6 +181,12 @@ namespace dip.Controllers
             return PartialView();
         }
 
+        /// <summary>
+        /// post-добавить пользователю ФЭ
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idphys">id ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AssignPhysicToUser(string iduser, int idphys)
         {
@@ -136,6 +197,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// post-удалить у пользователя ФЭ
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idphys">id ФЭ</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RemovePhysicFromUser(string iduser, int idphys)
         {
@@ -146,7 +213,11 @@ namespace dip.Controllers
         }
 
 
-        
+        /// <summary>
+        /// Отрисовывает списки присвоенные пользователю
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <returns></returns>
         public ActionResult AssignsUsersList(string iduser)
         {
             var user = ApplicationUser.GetUser(iduser);
@@ -154,6 +225,12 @@ namespace dip.Controllers
             
             return PartialView(user?.ListPhysics);
         }
+
+        /// <summary>
+        /// Отрисовывает ФЭ присвоенные пользователю
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <returns></returns>
         public ActionResult AssignsUsersPhysics(string iduser)
         {
             var user = ApplicationUser.GetUser(iduser);

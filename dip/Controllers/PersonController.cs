@@ -21,6 +21,12 @@ namespace dip.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// Отрисовывает страницу пользователя
+        /// </summary>
+        /// <param name="personId">id пользователя чью страницу запрашивают для отображения</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult PersonalRecord(string personId)
         {
@@ -35,12 +41,7 @@ namespace dip.Controllers
             if (string.IsNullOrWhiteSpace(personId))
                 personId = res.CurrenUserId;
 
-            //if (res.Admin)
-            //    res.User = ApplicationUser.GetUser(personId);
-
-            //res.User.CheckAccessPhys(HttpContext);
-
-            //else 
+            
             if (!res.Admin&&personId != res.CurrenUserId)
                 return RedirectToAction("PersonalRecord",new { personId= res.CurrenUserId });
             //res.User = ApplicationUser.GetUser(res.CurrenUserId);
@@ -51,7 +52,11 @@ namespace dip.Controllers
             return View(res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает список ролей пользователя
+        /// </summary>
+        /// <param name="personId">id пользователя</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ActionResult GetRoles(string personId)
         {
@@ -64,7 +69,7 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// добавление в избранное
+        /// post-добавление в избранное ФЭ
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -95,6 +100,11 @@ namespace dip.Controllers
         }
 
 
+        /// <summary>
+        /// Отрисовывает список фэ пользователя добавленных в избранное 
+        /// </summary>
+        /// <param name="personId">id пользователя</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ListFavouritePhysics(string personId)
         {
