@@ -15,6 +15,7 @@ namespace dip.Models.ViewModel.PhysicV
         public bool Admin { get; set; }
         public FEText Effect { get; set; }
         public bool? Favourited { get; set; }
+        //public byte[] Lat { get; set; }
 
         public DetailsV()
         {
@@ -46,6 +47,8 @@ namespace dip.Models.ViewModel.PhysicV
             string check_id = ApplicationUser.GetUserId();
 
             Effect.LoadImage();
+            Effect.AddByteToLatexImages();
+            Effect.SetListAllImages();
             EffectName = Effect.Name;
            
 

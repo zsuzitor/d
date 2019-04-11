@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "UsersData";
+}
+
+<h2>UsersData</h2>
+
+
+<p>Введите id  пользователя или выберите пользователя из списка</p>
+<input placeholder="id пользователя" class="form-control" name="userId" id="userIdInput_id" type="text" />
+<p>Получить id пользователя по username</p>
+<input placeholder="username пользователя" class="form-control" name="username" id="usernameInput_id" type="text" />
+<button class="btn btn-default" onclick="GetIdByUsername()">Получить id</button>
+
+<button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
+<div id="idCurrentUser_id"></div>
+
+<div class="padding_50_top"></div>
+<button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>
+
+
+
+<div class="changeRoleAllUserList" id="ListAllUsers_id" style="display:none;">
+
+</div>
+
+
+
+
+<script>
+
+    function ListUsersShortDataButton(id) {
+        document.getElementById('userIdInput_id').value = id;
+    }
+
+    function GetIdByUsername() {
+
+        goAjaxRequest({
+            url: "/Admin/GetUserIdByUsername",
+            data: { username: document.getElementById('usernameInput_id').value },
+            func_success: function (req, status, jqXHR) {
+                if (req.trim()) {
+                    document.getElementById('userIdInput_id').value = req;
+                }
+                else {
+                    alert('Не найдено');
+                    document.getElementById('userIdInput_id').value = '';
+                }
+
+            }, type: 'GET'
+        });
+    }
+
+
+
+
+    function showLinkCurUser() {
+        let id = document.getElementById('userIdInput_id').value;
+        if (id) {
+            let strLink = '/Person/PersonalRecord?personId=' + id;
+            document.getElementById('idCurrentUser_id').innerHTML = '<a href="' + strLink + '">Страница пользователя</a>';
+        }
+        else
+            alert('Введите id пользователя');
+
+    }
+
+
+
+
+    function LoadAllUsers() {
+        var formData = {};
+        var div = document.getElementById('ListAllUsers_id');
+        var but = document.getElementById('butLoadAllUsers');
+        if (!div.innerHTML.trim()) {
+            //загрузить
+            goAjaxRequest({
+                url: "/Admin/GetAllUsersShortDataWithBut",
+                data: formData,
+                func_success: function (req, status, jqXHR) {
+                    div.innerHTML = req;
+
+                }, type: 'GET'
+            });
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть пользователей';
+        }
+        else {
+            //загружать не надо, надо показать\скрыть
+            if (div.style.display == 'block') {
+                //скрыть
+                div.style.display = 'none';
+                but.innerHTML = 'Показать всех пользователей';
+            }
+            else {
+                //показать
+                div.style.display = 'block';
+                but.innerHTML = 'Скрыть пользователей';
+            }
+        }
+
+
+
+    }
+
+
+
+
+</script>

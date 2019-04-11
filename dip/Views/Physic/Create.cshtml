@@ -32,15 +32,40 @@
         <div id="physCreateFormIMGDiv">
             <input class="btn btn-default" id="upLoadImagesId" type="file" multiple name="uploadImage" />
         </div>
+
+    <p>Laetex</p>
+    <div id="physCreateFormLatexImagesAll">
+        <div id="physCreateFormLatexImagesImg">
+
+        </div>
+        <button onclick="addLatex()">Добавить</button>
+    </div>
+
+
     @*}*@
     <input class="btn btn-default" onclick="CreatePhysFunc()" value="отправить" />
     
-
+    
    
 </div>
 
 
 <script>
+    var countLatex = 0;
+
+    function addLatex() {
+        var strappend = '<div id="latexImgIdDiv_' + countLatex + '"><input id="latexImgId_' + countLatex 
+            + '" type="text"/><button onclick="deleteLatex('+countLatex+')">Удалить</button></div>';
+        countLatex++;
+        $('#physCreateFormLatexImagesImg').append(strappend);
+
+
+    }
+
+
+    function deleteLatex(num) {
+        $('#latexImgIdDiv_' + num).remove();
+    }
 
     function CreatePhysFunc() {
 
@@ -81,6 +106,13 @@
             data.append('obj.TextObj', document.getElementById('TextObj').value);
             data.append('obj.TextApp', document.getElementById('TextApp').value);
             data.append('obj.TextLit', document.getElementById('TextLit').value);
+            
+            for (let i = 0; i < countLatex; ++i) {
+                let inp = document.getElementById('latexImgId_' + i);
+                if (inp)
+                data.append('latexformulas', inp.value);
+            
+            }
             
 
             //--

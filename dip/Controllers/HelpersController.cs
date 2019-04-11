@@ -301,7 +301,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="a">Изображение</param>
         /// <returns></returns>
-        public ActionResult ImageLink(Image a )
+        public ActionResult ImageLink(ShowsImage a )
         {
             ImageV res = new ImageV();
             res.Image = a;
@@ -315,14 +315,35 @@ namespace dip.Controllers
         /// <param name="a">Изображение</param>
         /// <param name="show_empty_img">нужно ли отобразить замену изображения если a==null </param>
         /// <returns></returns>
-        public ActionResult Image(Image a, bool show_empty_img)
+        public ActionResult Image(ShowsImage a, bool show_empty_img)
         {
             ImageV res = new ImageV();
             res.Image = a;
-            res.Show_empty_img = show_empty_img;
+            res.ShowEmptyImage = show_empty_img;
 
             return PartialView(res);
         }
+
+        //TODO
+        //public ActionResult ImageLatexLink(FELatexFormula a)
+        //{
+        //    ImageLatexV res = new ImageLatexV();
+        //    res.Formula = a;
+
+
+        //    return PartialView(res);
+        //}
+
+        //public ActionResult ImageLatex(FELatexFormula a, bool show_empty_img)
+        //{
+        //    ImageLatexV res = new ImageLatexV();
+        //    res.Formula = a;
+        //    res.ShowEmptyFormula = show_empty_img;
+
+        //    return PartialView(res);
+        //}
+
+
         /// <summary>
         /// Отрисовывает кнопку для добавления\удаления из избранного
         /// </summary>

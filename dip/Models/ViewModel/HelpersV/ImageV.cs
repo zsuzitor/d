@@ -8,15 +8,15 @@ namespace dip.Models.ViewModel.HelpersV
 {
     public class ImageV
     {
-        public Image Image { get; set; }
-        public bool? Show_empty_img { get; set; }
+        public ShowsImage Image { get; set; }
+        public bool? ShowEmptyImage { get; set; }
 
 
         public ImageV()
         {
             Image = null;
 
-            Show_empty_img = null;
+            ShowEmptyImage = null;
         }
     }
 }

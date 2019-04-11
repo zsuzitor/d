@@ -137,6 +137,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WpfMath, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfMath.0.6.0\lib\net40\WpfMath.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -221,6 +225,7 @@
     <Compile Include="Models\Domain\CharacteristicObject.cs" />
     <Compile Include="Models\Domain\FEAction.cs" />
     <Compile Include="Models\Domain\FEIndex.cs" />
+    <Compile Include="Models\Domain\FELatexFormula.cs" />
     <Compile Include="Models\Domain\FEObject.cs" />
     <Compile Include="Models\Domain\FeState.cs" />
     <Compile Include="Models\Domain\FEText.cs" />
@@ -272,6 +277,7 @@
     <Compile Include="Models\ViewModel\FormObjectTextRepresentation.cs" />
     <Compile Include="Models\ViewModel\HelpersV\DescrFormListDataV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\FormStateObjectV.cs" />
+    <Compile Include="Models\ViewModel\HelpersV\ImageLatexV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ImageV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ListPhysInItemV.cs" />
     <Compile Include="Models\ViewModel\HelpersV\ListPhysItemV.cs" />
@@ -463,6 +469,7 @@
     <Content Include="Views\Actions\GetPhaseObjectEdit.cshtml" />
     <Content Include="Views\Admin\GetAllUsersShortDataWithBut.cshtml" />
     <Content Include="Views\Helpers\ListUsersShortDataWithButton.cshtml" />
+    <Content Include="Views\Admin\UsersData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

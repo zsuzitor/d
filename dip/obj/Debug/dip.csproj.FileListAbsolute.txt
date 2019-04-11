@@ -91,3 +91,5 @@ E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.Dmf.Common.resources.dll
 E:\csharp\dip1\dip\dip\bin\ru\Microsoft.SqlServer.ServiceBrokerEnum.resources.dll
 E:\csharp\dip1\dip\dip\bin\Binbin.Linq.PredicateBuilder.dll
 E:\csharp\dip1\dip\dip\bin\Mono.Linq.Expressions.dll
+E:\csharp\dip1\dip\dip\bin\WpfMath.dll
+E:\csharp\dip1\dip\dip\bin\WpfMath.pdb

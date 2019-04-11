@@ -9,7 +9,9 @@
 
 <script>
     var num_delete_img = 0;
-
+    var deleteLatexImage=[];
+    var countLatex = 0;
+    var countLatexExist = @Model.Obj.LatexFormulas.Count;
 
     $(document).ready(function () {
         let countPhaseBegin=@Model.CountPhaseBegin;
@@ -55,6 +57,51 @@
         document.getElementById("div_img_reset_block_" + id).style.display = 'none';
         
 
+    }
+
+    function restoreLatexImg(id,num){
+        var div=document.getElementById('oneLatexExist_'+id);
+        if(div){
+            let old;
+            for(let i=0;i<deleteLatexImage.length;++i)
+                if(deleteLatexImage[i].id==id){
+                    old=deleteLatexImage[i];
+                    deleteLatexImage.splice(i, 1);
+                    break;
+                }
+            //div.style.backgroundColor='white';
+            var strappend = '<div id="latexImgIdDiv_' + id + '"><input  type="hidden" id="numForExistLatex_id'+num+'" value="'+id+'" /><input id="oneLatexExistInput_' + id 
+           + '" value="'+old.value+'" type="text"/><button class="btn btn-default" onclick="deleteLatexImg(\''+id+'\',\''+num+'\')">Удалить</button></div>';
+            
+            div.innerHTML=strappend;
+            
+        }
+    }
+
+
+    function deleteLatexImg(id,num){
+        var div=document.getElementById('oneLatexExist_'+id);
+        if(div){
+            //div.style.backgroundColor='grey';
+            let obj={
+                id:id,
+                value:document.getElementById('oneLatexExistInput_'+id).value
+            };
+            deleteLatexImage.push(obj);
+            let newstr='<button class="btn btn-default" onclick="restoreLatexImg(\''+id+'\',\''+num+'\')">Восстановить</button>';
+            div.innerHTML=newstr;
+           
+        }
+        else{
+            document.getElementById('latexImgIdDiv_'+id).remove();
+        }
+       
+    }
+    function addLatex(){
+        var strappend = '<div id="latexImgIdDiv_new_' + countLatex + '"><input id="latexImgId_new_' + countLatex 
+            + '" type="text"/><button class="btn btn-default" onclick="deleteLatexImg(\'new_'+countLatex+'\')">Удалить</button></div>';
+        countLatex++;
+        $('#physCreateFormLatexImagesImg').append(strappend);
     }
 
 
@@ -109,9 +156,44 @@
 
             for(let i=0;i<num_delete_img;++i){
                 
-                data.append('deleteImg_', document.getElementById('one_block_delete_img_id_'+i).value);
+                data.append('deleteImg_', parseInt(document.getElementById('one_block_delete_img_id_'+i).value));
             }
             
+            //add latex
+            let numForMass=0;
+            for (let i = 0; i < countLatex; ++i) {
+                let inp = document.getElementById('latexImgId_new_' + i);
+                if (inp){
+                    data.append('latexformulas['+numForMass+'].Text', inp.value);
+                    data.append('latexformulas['+numForMass+'].Action', 0);
+                    ++numForMass;
+                }
+                    
+            }
+
+            //change latex
+            //numForMass=0;
+            for (let i = 0; i < countLatexExist; ++i) {
+                let inp = document.getElementById('numForExistLatex_id' + i);
+                if (inp){
+                    let idlatex=inp.value;
+                    data.append('latexformulas['+numForMass+'].Id', idlatex);
+                    data.append('latexformulas['+numForMass+'].Text', document.getElementById('oneLatexExistInput_' + idlatex).value);
+                    data.append('latexformulas['+numForMass+'].Action', 1);
+                    ++numForMass;
+                }
+                    
+            }
+
+            //delete latex
+            //numForMass=0;
+            for (let i = 0; i < deleteLatexImage.length; ++i) {
+               
+                data.append('latexformulas['+numForMass+'].Id', deleteLatexImage[i].id);
+                    data.append('latexformulas['+numForMass+'].Action', 2);
+                    ++numForMass;
+            }
+
 
 
 
@@ -192,34 +274,63 @@
             </div>
                 @*<input class="btn btn-default" type="submit" value="отправить" />*@
                 @*}*@
-                <input class="btn btn-default" onclick="EditPhysFunc()" value="отправить" />
+               
                 <div class="block_images">
                     <div class="inline">
                         @foreach (var i in Model.Obj.Images)
                         {
-                            @*<div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                                    <div class="one_effect_img" style="background:url( data:image/jpeg;base64,@Convert.ToBase64String(i.Data)) no-repeat;background-size: cover;">
-                                    </div>
-                                    <button id="buttonDeleteId_@i.Id" onclick="delete_img(this)">Удалить</button>
-                                </div>*@
-                            <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.Id">
-                                <div id="div_img_hide_block_@i.Id">
+                           
+                            <div class="div_img_record_show_block div_inline_block" id="div_img_show_block_@i.IdForShow">
+                                <div id="div_img_hide_block_@i.IdForShow">
                                     <div class="details_one_image">
                                         @Html.Action("ImageLink", "Helpers", new { a = i })
 
                                     </div>
                                     <div class="edit_button_image_action">
-                                        <button id="buttonDeleteId_@i.Id" class="btn btn-default" onclick="delete_img(this)">Удалить</button>
+                                        <button id="buttonDeleteId_@i.IdForShow" class="btn btn-default" onclick="delete_img(this)">Удалить</button>
                                     </div>
                                 </div>
-                                <div class="edit_button_image_action" id="div_img_reset_block_@i.Id" style="display:none;">
-                                    <button id="buttonResetId_@i.Id" class="btn btn-default" onclick="reset_img(this)">Восстановить</button>
+                                <div class="edit_button_image_action" id="div_img_reset_block_@i.IdForShow" style="display:none;">
+                                    <button id="buttonResetId_@i.IdForShow" class="btn btn-default" onclick="reset_img(this)">Восстановить</button>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
+        <div class="block_latex">
+            <div class="block_latexAdd">
+                <p>Добавление Latex</p>
+                <div id="physCreateFormLatexImagesAll">
+                    <div id="physCreateFormLatexImagesImg">
 
+                    </div>
+                    <button  class="btn btn-default" onclick="addLatex()">Добавить</button>
+                </div>
+
+
+            </div>
+            <div class="block_latexExist">
+                @{
+                    int numForExistLatex = 0;
+                    foreach (var i in Model.Obj.LatexFormulas)
+                    {
+                        <div id=@("oneLatexExist_" + i.Id)>
+                            <input  type="hidden" id="@(string.Concat("numForExistLatex_id", numForExistLatex))" value="@i.Id" />
+                            <input class="form-control" id=@("oneLatexExistInput_" + i.Id) type="text" value="@i.Formula" />
+                            <button class="btn btn-default" onclick="deleteLatexImg('@i.Id','@numForExistLatex')">Удалить</button>
+                        </div>
+                        
+                            numForExistLatex++;
+                            
+                    }
+
+                }
+                
+
+            </div>
+
+        </div>
+        <input class="btn btn-default" onclick="EditPhysFunc()" value="Отправить" />
             </div>
 
 

@@ -6,7 +6,7 @@
 {
     <div class="bottomGrey">
         @*<a href="/Person/PersonalRecord/"></a>*@
-        @Html.ActionLink(@i.Name, "PersonalRecord", "Person",new { personId=i.Id },new { })
+        @Html.ActionLink(@i.UserName, "PersonalRecord", "Person",new { personId=i.Id },new { })
         @*<lavel title="Имя пользователя">@i.Name</lavel>*@
         <lavel title="Id пользователя">@i.Id</lavel>
 

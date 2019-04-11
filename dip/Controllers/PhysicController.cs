@@ -19,7 +19,7 @@ using Newtonsoft.Json;  //JSON.NET
 using Newtonsoft.Json.Linq;
 
 using static dip.Models.Functions;
-
+using WpfMath;
 
 
 
@@ -43,7 +43,11 @@ namespace dip.Controllers
 
 
 
-
+        /// <summary>
+        /// Отрисовывает страницу для просмотра ФЭ
+        /// </summary>
+        /// <param name="id">id ФЭ</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
             //TODO проверять есть ли доступ
@@ -58,11 +62,20 @@ namespace dip.Controllers
             {
                 return new HttpStatusCodeResult(404);
             }
-            
+
+           
+
+
+
 
             return View(res);
         }
 
+        /// <summary>
+        /// Отрисовывает список семантически похожих записей
+        /// </summary>
+        /// <param name="id"> id ФЭ для которого необходимо найти схожие</param>
+        /// <returns></returns>
         public ActionResult ShowSimilar(int id)//, string technicalFunctionId
         {
             ShowSimilarV res = new ShowSimilarV();
@@ -72,7 +85,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает список Фэ
+        /// </summary>
+        /// <param name="listId">Список id ФЭ</param>
+        /// <param name="numLoad">Номер загрузки</param>
+        /// <returns></returns>
         public ActionResult ListFeText(int[] listId = null, int numLoad = 1)
         {
             ListFeTextV res = new ListFeTextV();
@@ -89,7 +107,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает страницу для редактирования ФЭ
+        /// </summary>
+        /// <param name="id">id ФЭ который нужно отредактировать</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
@@ -108,9 +130,19 @@ namespace dip.Controllers
             return View(res);
         }
 
+        /// <summary>
+        /// post- сохранение измененного ФЭ
+        /// </summary>
+        /// <param name="obj">Новые данные ФЭ</param>
+        /// <param name="uploadImage">Добавленные изображения</param>
+        /// <param name="deleteImg_">Удаленные изображения</param>
+        /// <param name="forms">Входные\выходные дескрипторы</param>
+        /// <param name="objForms">Начальные\конечные характеристики объекта</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
+        public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null,
+            DescrObjectI[] objForms = null, ChangeLatex[] latexformulas=null)//string[] latexformulasAdd = null, int[] latexformulasDel = null)
         {
             bool commited = false;
             if (obj.IDFE == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
@@ -152,7 +184,7 @@ namespace dip.Controllers
             //TODO валидация
 
 
-            commited = oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList());
+            commited = oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList(),latexformulas);
             if (commited)
             {
                 //return new HttpStatusCodeResult(404);
@@ -162,15 +194,7 @@ namespace dip.Controllers
             else
                 return new HttpStatusCodeResult(404);
 
-
-            //oldObj.LoadImage();
-            //return View(@"~/Views/Physic/Details.cshtml", oldObj);
-            //return RedirectToAction("Details", "Physic", new { id = oldObj.IDFE });
-            //if (commited)
-            //    return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
-            //else
-            //    return new HttpStatusCodeResult(404);
-            //return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
+            
         }
 
 
@@ -178,7 +202,10 @@ namespace dip.Controllers
 
 
 
-
+        /// <summary>
+        /// Отрисовывает страницу создания нового ФЭ
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
@@ -189,10 +216,18 @@ namespace dip.Controllers
             return View(res);
         }
 
-
+        /// <summary>
+        /// post- сохраняет новый ФЭ
+        /// </summary>
+        /// <param name="obj">Данные нового ФЭ</param>
+        /// <param name="uploadImage">Загруженные изображения</param>
+        /// <param name="forms">Входные\выходные дескрипторы </param>
+        /// <param name="objForms">Начальные\конечные характеристики объекта</param>
+        /// <param name="latexformulas">Формулы latex</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null)
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null,string[]latexformulas=null)
         {
 
             
@@ -217,10 +252,6 @@ namespace dip.Controllers
             if (!obj.Validation())
                 return new HttpStatusCodeResult(404);
 
-            //if(forms.Length<2)
-            //    return new HttpStatusCodeResult(404);
-            //if (objForms.Length == 0)
-            //    return new HttpStatusCodeResult(404);
 
             if ((obj.CountInput != 1 && forms.Length != 3) || (obj.CountInput == 1 && forms.Length != 2))
                 return new HttpStatusCodeResult(404);
@@ -249,17 +280,9 @@ namespace dip.Controllers
             var list_img_byte = Get_photo_post(uploadImage);
 
 
-            //DescrObjectI[] objForms = ; //TODO-objForms
-
-
             //новая
-            bool success=obj.AddToDb(forms, objForms, list_img_byte);
-
-
-
-            //obj.LoadImage();
-            //return View(@"~/Views/Physic/Details.cshtml", oldObj);
-            //return RedirectToAction("Details", "Physic", new { id = obj.IDFE });
+            bool success=obj.AddToDb(forms, objForms, list_img_byte, latexformulas);
+            
             if(success&&obj!=null&&obj.IDFE>0)
             return Content(Url.Action("Details", "Physic",new {id=obj.IDFE }), "text/html");
             else
@@ -267,6 +290,12 @@ namespace dip.Controllers
 
         }
 
+
+        /// <summary>
+        /// Отрисовывает списки к которым относится ФЭ
+        /// </summary>
+        /// <param name="idfe">id ФЭ</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ActionResult LoadLists(int idfe)//, string technicalFunctionId
         {
@@ -279,7 +308,10 @@ namespace dip.Controllers
 
 
 
-
+        /// <summary>
+        /// Отрисовывает страницу для редактирования входных\выходных дескрипторов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription()//, string technicalFunctionId
@@ -296,14 +328,17 @@ namespace dip.Controllers
             return View(res);
         }
 
+        /// <summary>
+        /// post- сохраняет изменения входных\выходных дескрипторов
+        /// </summary>
+        /// <param name="obj">Изменные данные</param>
+        /// <param name="currentActionId">id Action для которого нужно применить изменения</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription(SaveDescription obj, string currentActionId)//, string technicalFunctionId
         {
-            //type: 1-actionid ,2-fizvell,3-paramfizvell,4-pros,5-spec,6-vrem
-            //TypeAction: 1-добавление ,2-редактирование, 3- удаление
-            //return Content("+", "text/html");//TODO delete
-
+           
             obj.SetNotNullArray();
             if (string.IsNullOrEmpty(currentActionId))
                 //throw new Exception();
@@ -417,6 +452,10 @@ namespace dip.Controllers
             //return View();
         }
 
+        /// <summary>
+        /// Отрисовывает страницу для изменения начальных\конечных характеристик объекта и состояний объекта
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescriptionObject()//, string technicalFunctionId
@@ -433,6 +472,11 @@ namespace dip.Controllers
             return View(res);
         }
 
+        /// <summary>
+        /// post -сохраняет изменения начальных\конечных характеристик объекта и состояний объекта
+        /// </summary>
+        /// <param name="obj">Изменные данные</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescriptionObject(SaveDescriptionObject obj)//, string technicalFunctionId
@@ -453,7 +497,11 @@ namespace dip.Controllers
         }
 
 
-
+        /// <summary>
+        /// Отрисовывает страницу с следующим ФЭ(по бд)
+        /// </summary>
+        /// <param name="id">id тукущего ФЭ</param>
+        /// <returns></returns>
         public ActionResult GoNextPhysics(int id)
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -470,7 +518,11 @@ namespace dip.Controllers
             return View("Details",res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает страницу с предыдущим ФЭ(по бд)
+        /// </summary>
+        /// <param name="id">id тукущего ФЭ</param>
+        /// <returns></returns>
         public ActionResult GoPrevPhysics(int id)
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -487,6 +539,10 @@ namespace dip.Controllers
             return View("Details", res);
         }
 
+        /// <summary>
+        /// Отрисовывает страницу с последним ФЭ(по бд)
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GoLastPhysics()
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -503,6 +559,10 @@ namespace dip.Controllers
             return View("Details", res);
         }
 
+        /// <summary>
+        /// Отрисовывает страницу с первым ФЭ(по бд)
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GoFirstPhysics()
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -520,6 +580,10 @@ namespace dip.Controllers
         }
 
 
+        /// <summary>
+        /// post- насильное обнуление записи ФЭ которая служит для семантического поиска
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult ReloadSemanticRecord()

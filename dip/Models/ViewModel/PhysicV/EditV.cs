@@ -92,6 +92,7 @@ namespace dip.Models.ViewModel.PhysicV
 
 
             this.Obj.LoadImage();
+            this.Obj.LoadLatex();
         }
 
     }

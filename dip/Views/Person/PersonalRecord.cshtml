@@ -9,8 +9,19 @@
 
 @Html.Label("id пользователя")
 @Html.DisplayFor(x1=>x1.User.Id)
-@Html.DisplayFor(x1 => x1.User.Name)
+<br />
+@*@Html.DisplayFor(x1 => x1.User.Name)*@
+@Html.Label("UserName пользователя")
+
 @Html.DisplayFor(x1 => x1.User.UserName)
+
+<br />
+@Html.Label("Mail пользователя")
+
+@Html.DisplayFor(x1 => x1.User.Email)
+
+
+<p></p>
 
 
 <hr />

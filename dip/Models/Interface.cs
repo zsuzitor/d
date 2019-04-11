@@ -1,4 +1,5 @@
-﻿using System;
+﻿using dip.Models.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -311,8 +312,32 @@ namespace dip.Models
     //}
 
 
+    public interface ShowsImage
+    {
+        int Id { get; set; }
+        
+        string IdForShow { get; }//set;
+        byte[] Data { get; set; }
 
-    interface Idsf
+        //int FeTextIDFE { get; set; }
+        //FEText FeText { get; set; }
+    }
+
+
+    public interface ShowsFEImage : ShowsImage
+    {
+         //int Id { get; set; }
+
+        // byte[] Data { get; set; }
+
+         int FeTextIDFE { get; set; }
+         FEText FeText { get; set; }
+    }
+
+
+
+
+    public interface Idsf
     {
         
     }

@@ -17,11 +17,12 @@
     List<Tuple<string, string, string, string>> List = new List<Tuple<string, string, string, string>>();
 
     List.Add(Tuple.Create("Добавить физ. эффект", "Страница для создания физических эффектов", "Create", "Physic"));@*<br>*@
-    List.Add(Tuple.Create("Добавить дескрипторы", "Страница для создания, редактирования и удаления дескрипторов", "CreateDescription", "Physic"));
-    List.Add(Tuple.Create("Добавить дескрипторы объекта", "Страница для создания, редактирования и удаления дескрипторов объекта", "CreateDescriptionObject", "Physic"));
-    List.Add(Tuple.Create("Работа с списками", "Страница для создания, редактирования, удаления самих списков и работы с отношениями список-физ эффект", "ListAct", "ListPhysics"));
-    List.Add(Tuple.Create("Работа с списками и пользователями", "Страница для добавления/удаления отношения список-пользователь, физ эффект-пользователь", "ListUserAct", "ListPhysics"));
-    List.Add(Tuple.Create("Работа с ролями системы", "добавление, удаление ролей пользователям", "ChangeRole", "Admin"));
+List.Add(Tuple.Create("Добавить дескрипторы", "Страница для создания, редактирования и удаления дескрипторов", "CreateDescription", "Physic"));
+List.Add(Tuple.Create("Добавить дескрипторы объекта", "Страница для создания, редактирования и удаления дескрипторов объекта", "CreateDescriptionObject", "Physic"));
+List.Add(Tuple.Create("Работа с списками", "Страница для создания, редактирования, удаления самих списков и работы с отношениями список-физ эффект", "ListAct", "ListPhysics"));
+List.Add(Tuple.Create("Работа с списками и пользователями", "Страница для добавления/удаления отношения список-пользователь, физ эффект-пользователь", "ListUserAct", "ListPhysics"));
+List.Add(Tuple.Create("Работа с ролями системы", "добавление, Удаление ролей пользователям", "ChangeRole", "Admin"));
+List.Add(Tuple.Create("Информация о пользователях системы", "Получение данных о пользователях", "UsersData", "Admin"));
 }
 @foreach (var i in List)
 {

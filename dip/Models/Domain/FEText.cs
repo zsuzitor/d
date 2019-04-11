@@ -94,6 +94,12 @@ namespace dip.Models.Domain
 
         public List<Image> Images { get; set; }
 
+        [NotMapped]
+        public List<ShowsFEImage> AllImages { get; set; }
+        
+
+        public List<FELatexFormula> LatexFormulas { get; set; }
+
         public List<ApplicationUser> FavouritedUser { get; set; }
 
 
@@ -103,6 +109,8 @@ namespace dip.Models.Domain
         public FEText()
         {
             this.Images = new List<Image>();
+            LatexFormulas = new List<FELatexFormula>();
+            AllImages = new List<ShowsFEImage>();
             FavouritedUser = new List<ApplicationUser>();
             NotApprove = true;
             FavouritedCurrentUser = null;
@@ -366,6 +374,33 @@ namespace dip.Models.Domain
 
         }
 
+        public void LoadLatex()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Set<FEText>().Attach(this);
+                if (!db.Entry(this).Collection(x1 => x1.LatexFormulas).IsLoaded)
+                    db.Entry(this).Collection(x1 => x1.LatexFormulas).Load();
+            }
+
+        }
+
+        public void AddByteToLatexImages()
+        {
+            this.LoadLatex();
+            //this.LatexFormulas.AddRange(this.LatexFormulas.Select(x1=>Image.GetFromLatex(x1.Data)));
+            foreach (var i in this.LatexFormulas)
+                i.SetBytes();
+        }
+
+
+        public void SetListAllImages()
+        {
+            this.AllImages.AddRange(this.Images);
+
+            this.AllImages.AddRange(this.LatexFormulas);
+        }
+
 
         public void LoadLists()
         {
@@ -481,7 +516,7 @@ order by [data].score desc
                 return true;
         }
 
-        public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null)
+        public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null, string[] latexformulas = null)
         {
             
             bool commited = false;
@@ -520,6 +555,16 @@ order by [data].score desc
                         this.AddImages(addImgs, db);
 
                         db.SaveChanges();
+
+                        if (latexformulas != null && latexformulas.Length > 0)
+                        {
+
+
+                            db.FELatexFormulas.AddRange(latexformulas.Select(x1 => new FELatexFormula() { Formula = x1, FeTextIDFE = this.IDFE }));
+                            db.SaveChanges();
+                        }
+
+
                         transaction.Commit();
                         commited = true;
                         //DescrObjectI[] objForms = ; //TODO-objForms
@@ -535,7 +580,8 @@ order by [data].score desc
             return commited;
         }
 
-        public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, List<DescrObjectI> objForms = null)
+        public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, 
+            List<DescrObjectI> objForms = null,ChangeLatex[] latexformulas=null)
         {
             bool commited = false;
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -587,6 +633,46 @@ order by [data].score desc
                             db.SaveChanges();
                         }
                         db.SaveChanges();
+
+
+                        //latex
+                        if (latexformulas != null&& latexformulas.Length>0)
+                        {
+                            //add
+                            var ladd = latexformulas.Where(x1=>x1.Action==0);
+                            
+                            db.FELatexFormulas.AddRange(ladd.Select(x1 => new FELatexFormula() { Formula = x1.Text??"", FeTextIDFE = this.IDFE }));
+                            db.SaveChanges();
+
+                            //change
+                            var lchange = latexformulas.Where(x1 => x1.Action == 1);
+                            var lchangeid = lchange.Select(x1=>x1.Id);
+                             var oldchange=db.FELatexFormulas.Where(x1 => lchangeid.FirstOrDefault(x2 => x2 == x1.Id) != 0 && x1.FeTextIDFE == this.IDFE).ToList();
+                            foreach(var i in oldchange)
+                            {
+                                var tmp=lchange.FirstOrDefault(x1=>x1.Id==i.Id);
+                                if (tmp != null&& i.Formula != tmp.Text)
+                                    i.Formula = tmp.Text??"";
+                            }
+                            db.SaveChanges();
+
+                            //delete
+                            var ldel = latexformulas.Where(x1 => x1.Action == 2).Select(x1=>x1.Id).ToList();
+                            var delst = db.FELatexFormulas.Where(x1 => x1.FeTextIDFE == this.IDFE&&ldel.Contains(x1.Id) );
+                            db.FELatexFormulas.RemoveRange(delst);
+                            db.SaveChanges();
+
+                        }
+                        
+                        //if (latexformulasDel != null && latexformulasDel.Length > 0)
+                        //{
+                        //   // var lstdel = latexformulasDel;//.Select(x1=>x1)
+                        //    var delst = db.FELatexFormulas.Where(x1=> latexformulasDel.Contains(x1.Id)&&x1.FeTextIDFE==this.IDFE);
+                        //    db.FELatexFormulas.RemoveRange(delst);
+                        //    db.SaveChanges();
+                        //}
+
+
                         transaction.Commit();
                         commited = true;
                         // DescrObjectI[] objForms = ; //TODO-objForms

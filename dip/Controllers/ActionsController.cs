@@ -20,7 +20,18 @@ namespace dip.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Отрисовывает форму для дескрипторного поиска, необходимые части заполнены согласно переданным параметрам
+        /// </summary>
+        /// <param name="inp">Список входных дескрипторов</param>
+        /// <param name="outp">Список выходных дескрипторов</param>
+        /// <param name="countInput">Количество входов</param>
+        /// <param name="changedObject">Изменяется ли объект</param>
+        /// <param name="stateIdBegin">Начальное состояние объекта</param>
+        /// <param name="stateIdEnd">Конечное состояние объекта</param>
+        /// <param name="objFormsBegin">Начальные характеристики объекта</param>
+        /// <param name="objFormsEnd">Конечные характеристики объекта</param>
+        /// <returns></returns>
         public ActionResult DescriptionFormAll(List<DescrSearchI> inp, List<DescrSearchI> outp, int countInput = 1, 
             bool changedObject = false, string stateIdBegin = null,
             string stateIdEnd = null, DescrObjectI objFormsBegin = null, DescrObjectI objFormsEnd = null)
@@ -43,7 +54,14 @@ namespace dip.Controllers
 
 
 
-
+        /// <summary>
+        ///  Отрисовывает часть формы для дескрипторного поиска(входные\выходные дескрипторы),
+        ///  необходимые части заполнены согласно переданным параметрам
+        /// </summary>
+        /// <param name="inp">Список входных дескрипторов</param>
+        /// <param name="outp">Список выходных дескрипторов</param>
+        /// <param name="countInput">Количество входов</param>
+        /// <returns></returns>
             //TODO мб ограничивать что бы не закинули слишком много
         public ActionResult DescriptionInput( List<DescrSearchI> inp, List<DescrSearchI> outp,int countInput = 1)
         {
@@ -115,8 +133,18 @@ namespace dip.Controllers
 
 
 
-
-        //stateId-последний выбранный ребенок состояния
+        /// <summary>
+        ///  Отрисовывает часть формы для дескрипторного поиска(начальное\конечное состояние и фазы для состояний),
+        ///  необходимые части заполнены согласно переданным параметрам
+        ///  stateId-последний выбранный ребенок состояния
+        /// </summary>
+        /// <param name="changedObject">Изменяется ли объект</param>
+        /// <param name="stateIdBegin">>Начальное состояние объекта</param>
+        /// <param name="stateIdEnd">Конечное состояние объекта</param>
+        /// <param name="objFormsBegin">Начальные характеристики объекта</param>
+        /// <param name="objFormsEnd">Конечные характеристики объекта</param>
+        /// <returns></returns>
+        
         public ActionResult ObjectInput(bool changedObject=false,string stateIdBegin=null, 
             string stateIdEnd = null, DescrObjectI objFormsBegin=null, DescrObjectI objFormsEnd = null)
         {//, DescrObjectI objFormsBegin, DescrObjectI objFormsEnd
@@ -156,34 +184,7 @@ namespace dip.Controllers
             res.CharacteristicsBegin.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
             res.CharacteristicsBegin.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
             }
-            //{
-
-            //    StateObject state = StateObject.Get(stateIdBegin);
-            //    if (state != null)
-            //    {
-            //        //int countPhase;
-            //        var massparent=state.GetParentsList();
-            //        foreach (var asd in res.StatesBegin)
-            //        {
-            //            if(massparent.FirstOrDefault(x1=>x1.Id== asd.Id)==null)
-            //            {
-            //                if (asd.Id == state.Id)
-            //                {
-            //                    asd.LoadPartialTree(massparent);
-            //                }
-            //                else
-            //                    continue;
-            //            }
-            //            asd.LoadPartialTree(massparent);
-            //        }
-            //        res.StateBeginSelected = string.Join(" ",massparent.Select(x1 => x1.Id).ToList());
-            //        res.StateBeginSelected +=" "+ state.Id;
-            //        //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
-            //        res.CharacteristicsStart.SetFirstLvlStates(state.CountPhase, basePhase);
-
-            //    }
-
-            //}
+           
             if (changedObject)
             {
                 string tmpStateEndSelected = "";
@@ -196,73 +197,12 @@ namespace dip.Controllers
                 res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0] : null;
                 res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
                 res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
-                //StateObject state = StateObject.Get(stateIdEnd);
-
-                //if (state != null)
-                //{
-
-
-                //    var massparent = state.GetParentsList();
-                //    foreach (var asd in res.StatesEnd)
-                //    {
-                //        asd.LoadPartialTree(massparent);
-                //    }
-                //    res.StateEndSelected = string.Join(" ", massparent.Select(x1 => x1.Id).ToList());
-                //    res.StateEndSelected += " " + state.Id;
-                //    //res.StateBeginSelected=state.LoadPartialTree(res.StatesBegin);//, out countPhase
-                //    res.CharacteristicsEnd.SetFirstLvlStates(state.CountPhase, basePhase);
-
-
-                //}
+               
             }
-
-
-
-            //TODO че по оптимизации?
-            // CharacteristicObject
-            {
-                //List<string> CharacteristicsStartNeedSelect = new List<string>();
-                //res.CharacteristicsBegin.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
-                //res.CharacteristicsBegin.ParamPhase1 = CharacteristicsStartNeedSelect.Count>0? CharacteristicsStartNeedSelect[0]:null;
-                //res.CharacteristicsBegin.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-                //res.CharacteristicsBegin.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2]:null;
-            }
-            
-
-
-            //TODO че по оптимизации?
-
-            //if (changedObject)
-            //{
-            //    List<string> CharacteristicsStartNeedSelect = new List<string>();
-            //    res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
-            //    res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0]:null;
-            //    res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-            //    res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
-            //}
-                
-            
-
-
 
 
             return PartialView(res);
         }
-
-
-
-        //public ActionResult ChangeObjectChanges()
-        //{
-        //    List<StateObject> res = StateObject.GetBase();
-
-
-        //    return PartialView(res);
-        //}
-
-
-
-
-
 
 
         /// <summary>
@@ -279,9 +219,9 @@ namespace dip.Controllers
         }
 
         /// <summary>
-        /// загрузить для отображения часть объекта(не формой а текстом)
+        /// Отрисовывает (в виде текста) информацию об объекте
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">id ФЭ</param>
         /// <returns></returns>
         public ActionResult LoadObject(int id)
         {
@@ -290,12 +230,13 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-        //------------------------------------------------------
 
-
-        //////------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+        /// <summary>
+        /// Отрисовывает часть формы для отображения при смене  Action
+        /// </summary>
+        /// <param name="fizVelId">id Action для которого нужно отрисоваться часть формы</param>//TODO переименовать параметр
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
         public ActionResult ChangeAction(string fizVelId, string type)
         {
             ChangeActionV res = new ChangeActionV();
@@ -310,11 +251,7 @@ namespace dip.Controllers
                 {
                     res.ParametricFizVelsId =db.FizVels.Where(x1=>x1.Parent==(act.Id+ "_FIZVEL")).OrderBy(fizVel => fizVel.Id).FirstOrDefault()?.Id;
                 }
-
-
-
-
-
+                
             }
             else
             {
@@ -322,22 +259,22 @@ namespace dip.Controllers
 
                 res.ParametricFizVelsId =null;
             }
-
-            ////-----
-
+            
             res.FizVelId = fizVelId;
-
-
-
+            
             res.Type = type;
 
             return PartialView(res);
         }
 
-        
 
 
 
+        /// <summary>
+        /// Отрисовывает часть формы для редактирования при смене  Action
+        /// </summary>
+        /// <param name="fizVelId">id Action для которого нужно отрисоваться часть формы</param>//TODO переименовать параметр
+        /// <returns></returns>
         public ActionResult ChangeActionEdit(string fizVelId)
         {
             ChangeActionV res = new ChangeActionV();
@@ -359,25 +296,19 @@ namespace dip.Controllers
             else
             {
                 res.CheckboxParamsId = fizVelId;
-
                 res.ParametricFizVelsId = null;
             }
-
-            ////-----
-
             res.FizVelId = fizVelId;
-
             
-
             return PartialView(res);
         }
 
 
 
         /// <summary>
-        /// GET-метод обновления физических величин
+        /// Отрисовывает часть формы(FizVel) для просмотра   GET-метод обновления физических величин
         /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
         /// <returns> результат действия ActionResult </returns>
         [ChildActionOnly]
         public ActionResult GetFizVels(string id, string type = "") 
@@ -404,7 +335,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        /// Отрисовывает часть формы(FizVel) для редактирования   GET-метод обновления физических величин
+        /// </summary>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
+        /// <returns></returns>
         [ChildActionOnly]
         public ActionResult GetFizVelsEdit(string id)
         {
@@ -433,10 +368,10 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// GET-метод обновления пространственных характеристик
+        ///Отрисовывает часть формы(Pro) для отображения   
         /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
+        /// <returns>  </returns>
         [ChildActionOnly]
         public ActionResult GetPros(string id, string type)
         {
@@ -453,7 +388,11 @@ namespace dip.Controllers
             res.ParentId = id;
             return PartialView(res);
         }
-
+        /// <summary>
+        /// Отрисовывает часть формы(Pro) для редактирования  
+        /// </summary>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия)</param>
+        /// <returns></returns>
         [ChildActionOnly]
         public ActionResult GetProsEdit(string id)
         {
@@ -474,10 +413,10 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// GET-метод обновления специальных характеристик
+        /// Отрисовывает часть формы(Spec) для отображения   GET-метод обновления специальных характеристик
         /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns> 
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
+        /// <returns>  </returns> 
         [ChildActionOnly]
         public ActionResult GetSpec(string id, string type)
         {
@@ -497,6 +436,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// Отрисовывает часть формы(Spec) для редактирования   GET-метод обновления специальных характеристик
+        /// </summary>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия)</param>
+        /// <returns></returns>
         [ChildActionOnly]
         public ActionResult GetSpecEdit(string id)
         {
@@ -518,10 +462,10 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// GET-метод обновления временных характеристик
+        /// Отрисовывает часть формы(Vrem) для отображения  GET-метод обновления временных характеристик
         /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns> 
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
+        /// <returns>  </returns> 
         [ChildActionOnly]
         public ActionResult GetVrem(string id, string type)
         {
@@ -541,7 +485,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        ///  Отрисовывает часть формы(Vrem) для редактирования  GET-метод обновления временных характеристик
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ChildActionOnly]
         public ActionResult GetVremEdit(string id)
         {
@@ -561,7 +509,12 @@ namespace dip.Controllers
         }
 
 
-       
+        /// <summary>
+        /// Отрисовывает часть формы(состояние объекта) для отображения  
+        /// </summary>
+        /// <param name="id">id состояния объекта</param>
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
         public ActionResult ChangeStateObject(string id = null, string type = "")
         {
             ChangeStateObjectV res = new ChangeStateObjectV();
@@ -587,6 +540,12 @@ namespace dip.Controllers
 
             return PartialView(res);
         }
+
+        /// <summary>
+        /// Отрисовывает часть формы(состояние объекта) для редактирования  
+        /// </summary>
+        /// <param name="id">id состояния объекта</param>
+        /// <returns></returns>
         public ActionResult GetStateObjectEdit(string id = null)
         {
             List<StateObject> res = new List<StateObject>();
@@ -607,10 +566,14 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        ///  Отрисовывает один item одной фазы и его childs для редактирования
+        /// </summary>
+        /// <param name="id">id item</param>
+        /// <returns></returns>
         public ActionResult GetPhaseObjectEdit(string id = null)
         {
-            //List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
+           
             DescrFormListDataV<PhaseCharacteristicObject> res = new DescrFormListDataV<PhaseCharacteristicObject>();
 
             var obj = PhaseCharacteristicObject.Get(id);
@@ -632,33 +595,14 @@ namespace dip.Controllers
         }
 
 
-        //[ChildActionOnly]
-        //public ActionResult GetStateObject(string id=null, string type = "")
-        //{
-        //    GetStateObjectV res = new GetStateObjectV();
-        //    res.Type= type;
-        //    //List<StateObject> res = new List<StateObject>();
-        //    var obj = StateObject.Get(id);
-
-        //    if (obj != null)
-        //    {
-        //        obj.ReLoadChild();
-        //        res.List = obj.Childs;
-        //    }
-        //    else if(id=="")
-        //    {
-        //        res.List=StateObject.GetBase();
-        //    }
 
 
-
-        //    return PartialView(res);
-        //}
-
-
-
-
-
+        /// <summary>
+        ///  Отрисовывает один item одной фазы и его childs для отображения
+        /// </summary>
+        /// <param name="id">id item</param>
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
         public ActionResult GetPhaseObject(string id=null, string type = "")
         {
             GetPhaseObjectV res = new GetPhaseObjectV();
@@ -681,15 +625,12 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-        //////------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
         /// <summary>
-        /// GET-метод обновления параметрических физических величин
+        /// Отрисовывает часть формы(параметрические физические величины) для отображения
         /// </summary>
-        /// <param name="id"> дескриптор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns>
+        /// <param name="id"> id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия) </param>
+        /// <returns>  </returns>
         //[ChildActionOnly]
         public ActionResult GetParametricFizVels(string id, string type)//TODO GetParametricFizVelsEdit  оптимизация
         {
@@ -707,6 +648,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// Отрисовывает часть формы(параметрические физические величины) для редактирования
+        /// </summary>
+        /// <param name="id">id Action для которого нужно отрисоваться часть формы( дескриптор выбранного воздействия)</param>
+        /// <returns></returns>
         public ActionResult GetParametricFizVelsEdit(string id)//TODO GetParametricFizVels  оптимизация
         {
             GetListSomethingV<FizVel> res = new GetListSomethingV<FizVel>();
@@ -725,13 +671,14 @@ namespace dip.Controllers
 
 
 
-
+        
 
         /// <summary>
-        /// GET-метод добавления на представление дополнительных значений пространственной характеристики
+        ///  Отрисовывает часть формы(следующий уровень Pros) для отображения
         /// </summary>
-        /// <param name="id"> дескриптор выбранной пространственной характеристики + идентификатор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns> 
+        /// <param name="id">id родительского item</param>
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
         //[ChildActionOnly]
         public ActionResult GetProsChild(string id, string type)
         {
@@ -743,7 +690,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
-
+        /// <summary>
+        ///  Отрисовывает часть формы(следующий уровень Pros) для редактирования
+        /// </summary>
+        /// <param name="id">id родительского item</param>
+        /// <returns></returns>
         public ActionResult GetProsChildEdit(string id)
         {
             GetListSomethingV<Pro> res = new GetListSomethingV<Pro>();
@@ -759,12 +710,13 @@ namespace dip.Controllers
 
 
 
-
         /// <summary>
-        /// GET-метод добавления на представление дополнительных значений специальной характеристики
+        /// Отрисовывает часть формы(следующий уровень Spec) для отображения
         /// </summary>
-        /// <param name="id"> дескриптор выбранной специальной характеристики + идентификатор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns> 
+        /// <param name="id">id родительского item</param>
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
+
         //[ChildActionOnly]
         public ActionResult GetSpecChild(string id, string type)
         {
@@ -777,6 +729,11 @@ namespace dip.Controllers
             return PartialView(res);
         }
 
+        /// <summary>
+        /// Отрисовывает часть формы(следующий уровень Spec) для редактирования
+        /// </summary>
+        /// <param name="id">id родительского item</param>
+        /// <returns></returns>
         public ActionResult GetSpecChildEdit(string id)
         {
             GetListSomethingV<Spec> res = new GetListSomethingV<Spec>();
@@ -795,10 +752,11 @@ namespace dip.Controllers
 
 
         /// <summary>
-        /// GET-метод добавления на представление дополнительных значений временной характеристики
+        /// Отрисовывает часть формы(следующий уровень Vrem) для отображения
         /// </summary>
-        /// <param name="id"> дескриптор выбранной временной характеристики + идентификатор выбранного воздействия </param>
-        /// <returns> результат действия ActionResult </returns> 
+        /// <param name="id">id родительского item</param>
+        /// <param name="type">Тип</param>
+        /// <returns></returns>
         //[ChildActionOnly]
         public ActionResult GetVremChild(string id, string type)
         {
@@ -809,7 +767,11 @@ namespace dip.Controllers
             res.ParentId = id;
             return PartialView(res);
         }
-
+        /// <summary>
+        ///  Отрисовывает часть формы(следующий уровень Vrem) для редактирования
+        /// </summary>
+        /// <param name="id">id родительского item</param>
+        /// <returns></returns>
         public ActionResult GetVremChildEdit(string id)
         {
             GetListSomethingV<Vrem> res = new GetListSomethingV<Vrem>();
@@ -832,15 +794,15 @@ namespace dip.Controllers
         /// <param name="id"> дескриптор выбранной характеристики </param>
         /// <returns> результат действия ActionResult </returns>
         //[ChildActionOnly]
-        public ActionResult GetEmptyChild(string id, string type)
-        {
-            //TODO для отладки
-            throw new Exception("Используется? TODO");
-            // Передаем в представление дескриптор характеристики
-            ViewBag.parent = id;
-            ViewBag.type = type;
-            return PartialView();
-        }
+        //public ActionResult GetEmptyChild(string id, string type)
+        //{
+        //    //TODO для отладки
+        //    throw new Exception("Используется? TODO");
+        //    // Передаем в представление дескриптор характеристики
+        //    ViewBag.parent = id;
+        //    ViewBag.type = type;
+        //    return PartialView();
+        //}
 
 
 

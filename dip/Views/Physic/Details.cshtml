@@ -90,7 +90,7 @@
 
         <div class="block_images">
             <div class="inline">
-                @foreach (var i in Model.Effect.Images)
+                @foreach (var i in Model.Effect.AllImages)
                 {
                     <div class="div_img_record_show_block div_inline_block">
                         <div class="details_one_image">
@@ -99,6 +99,15 @@
                         </div>
                     </div>
                 }
+                @*@foreach (var i in Model.Effect.LatexFormulas)
+                {
+                    <div class="div_img_record_show_block div_inline_block">
+                        <div class="details_one_image">
+                            @Html.Action("ImageLink", "Helpers", new { a = i})
+
+                        </div>
+                    </div>
+                }*@
             </div>
         </div>
 

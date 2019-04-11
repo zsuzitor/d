@@ -47,13 +47,20 @@ namespace dip.Controllers
         [HttpPost]
         public ActionResult AddRole(string roleName,string userId)
         {
-            
 
+            RolesProject role;
             var user = ApplicationUser.GetUser(userId);
-            var role = (RolesProject)Enum.Parse(typeof(RolesProject), roleName, true);
-
-            if(user==null)//TODO проверять существует ли роль
+            try
+            {
+                 role = (RolesProject)Enum.Parse(typeof(RolesProject), roleName, true);
+            }
+            catch
+            {
                 return new HttpStatusCodeResult(404);
+            }
+
+            if (user==null)//TODO проверять существует ли роль
+                return Content("Пользователь не найден", "text/html");
             using (var db=new ApplicationDbContext())
             {
                 var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
@@ -61,8 +68,8 @@ namespace dip.Controllers
                 
             }
 
-
-            return new HttpStatusCodeResult(200);
+            return Content("Роль успешно добавлена", "text/html");
+            // return new HttpStatusCodeResult(200);
         }
 
         /// <summary>
@@ -87,15 +94,15 @@ namespace dip.Controllers
             }
             
             if (user == null)
-                return new HttpStatusCodeResult(404);
+                return Content("Пользователь не найден", "text/html");
             using (var db = new ApplicationDbContext())
             {
                 var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
                 userManager.RemoveFromRole(user.Id, role.ToString());
 
             }
-
-            return new HttpStatusCodeResult(200);
+            return Content("Роль успешно удалена", "text/html");
+            /* return new HttpStatusCodeResult(200);*/
         }
 
 
@@ -121,6 +128,33 @@ namespace dip.Controllers
 
             return PartialView(users);
         }
+
+
+        public ActionResult GetUserIdByUsername(string username)
+        {
+            using (var db = new ApplicationDbContext())//TODO
+            {
+                var user =db.Users.FirstOrDefault(x1=>x1.UserName==username);
+                if (user!=null)
+                {
+                    return Content(user.Id, "text/html");
+                }
+                else
+                    return new EmptyResult();
+                //return Content("Не найдено", "text/html");
+            }
+
+            
+    }
+
+        public ActionResult UsersData()//, string technicalFunctionId
+        {
+
+            return View();
+        }
+
+        
+
         /// <summary>
         /// страница на которой можно выбрать дальнейшие действия
         /// </summary>

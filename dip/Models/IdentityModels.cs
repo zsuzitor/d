@@ -141,8 +141,10 @@ namespace dip.Models
             hadList = null;
             //try
             //{
-            return user.AddList(idlist, out hadList);
-
+            if (user != null)
+                return user.AddList(idlist, out hadList);
+            else
+                return null;
             //}
             //catch (NotFoundException e)
             //{
@@ -234,7 +236,9 @@ namespace dip.Models
         {
             hadPhys = null;
             var user = ApplicationUser.GetUser(iduser);
+            if(user!=null)
             return user.AddPhysics(idphys, out hadPhys);
+            return null;
         }
 
         public FEText AddPhysics(int idphys, out bool? hadPhys)
@@ -520,6 +524,7 @@ namespace dip.Models
         public DbSet<Log> Logs{ get; set; }
         public DbSet<LogParam> LogParams { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<FELatexFormula> FELatexFormulas { get; set; }
 
         //
         public DbSet<StateObject> StateObjects { get; set; }

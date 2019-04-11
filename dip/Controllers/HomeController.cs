@@ -14,6 +14,7 @@ using dip.Models;
 using dip.Models.ViewModel.HomeV;
 using System.Reflection;
 using System.Data;
+using WpfMath;
 
 namespace dip.Controllers
 {
@@ -23,7 +24,11 @@ namespace dip.Controllers
         
         public ActionResult Index()
         {
-          
+            
+            
+
+
+
             return View();
         }
 
