@@ -188,7 +188,7 @@ namespace dip.Controllers
             if (commited)
             {
                 //return new HttpStatusCodeResult(404);
-                Lucene_.UpdateDocument(obj.IDFE.ToString(), obj);
+              
                 return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
             }
             else

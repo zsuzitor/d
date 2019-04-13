@@ -4,7 +4,7 @@
 @if (Model != null)
 {
     
-        <input class="form-control" onchange="clearFeExistLink()" type="number" id="AssignPhysForDel" />
+        <input class="form-control" onchange="clearFeExistLink()" placeholder="id ФЭ для удаления" type="number" id="AssignPhysForDel" />
     
     @*<button class="btn btn-default" onclick="">забрать у пользователя  ФЭ</button>*@
     <div class="div_inline_block">
@@ -29,6 +29,6 @@
 }
 else
 {
-    <p>Пользователь не найден</p>
+    <h1>Пользователь не найден</h1>
 }
 

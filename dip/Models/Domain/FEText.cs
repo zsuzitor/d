@@ -16,6 +16,7 @@ using Binbin.Linq;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity;
+using Lucene.Net.Documents;
 
 namespace dip.Models.Domain
 {
@@ -156,12 +157,12 @@ namespace dip.Models.Domain
         {
             //TODO pattern?
             Text = Lucene_.ChangeForMap(Text);
-            Name = Lucene_.ChangeForMap(Name);
-            TextApp = Lucene_.ChangeForMap(TextApp);
-            TextInp = Lucene_.ChangeForMap(TextInp);
-            TextLit = Lucene_.ChangeForMap(TextLit);
-            TextObj = Lucene_.ChangeForMap(TextObj);
-            TextOut = Lucene_.ChangeForMap(TextOut);
+            //Name = Lucene_.ChangeForMap(Name);
+            //TextApp = Lucene_.ChangeForMap(TextApp);
+            //TextInp = Lucene_.ChangeForMap(TextInp);
+            //TextLit = Lucene_.ChangeForMap(TextLit);
+            //TextObj = Lucene_.ChangeForMap(TextObj);
+            //TextOut = Lucene_.ChangeForMap(TextOut);
 
 
         }
@@ -170,17 +171,25 @@ namespace dip.Models.Domain
         public static List<string> GetPropTextSearch()//TODO
         {
             var res = new List<string>();
-            var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser", "Deleted" };//исключаем
-
-
-            PropertyInfo[] myPropertyInfo;
-            Type myType = typeof(FEText);
-            // Get the type and fields of FieldInfoClass.
-            myPropertyInfo = myType.GetProperties();
-            res = myPropertyInfo.Where(x1 => listNM.FirstOrDefault(x2 => x2 == x1.Name) == null).Select(x1 => x1.Name).ToList();
-
+            //var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser", "Deleted" };//исключаем
+            //PropertyInfo[] myPropertyInfo;
+            //Type myType = typeof(FEText);
+            //// Get the type and fields of FieldInfoClass.
+            //myPropertyInfo = myType.GetProperties();
+            //res = myPropertyInfo.Where(x1 => listNM.FirstOrDefault(x2 => x2 == x1.Name) == null).Select(x1 => x1.Name).ToList();
+            res.Add("Text");
             return res;
         }
+
+        public Document GetDocumentForLucene()
+        {
+            var document = new Document();
+            // document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
+            document.Add(new Field("IDFE", this.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("Text", this.Text, Field.Store.YES, Field.Index.ANALYZED));
+            return document;
+        }
+
 
         public static FEText Get(int? id)
         {
@@ -426,14 +435,24 @@ namespace dip.Models.Domain
             //            txt on data.matched_document_key = txt.IDFE
             //order by data.score desc";
 
+//            var quer = $@"
+//select   [txt].IDFE
+//from
+//       semanticsimilaritytable (FETexts, *, {id}  ) as data
+//            inner join dbo.FETexts as
+//            txt on data.matched_document_key = [txt].IDFE
+//order by [data].score desc
+//";
+
+
+
             var quer = $@"
-select   [txt].IDFE
+select   txt.IDFE
 from
        semanticsimilaritytable (FETexts, *, {id}  ) as data
             inner join dbo.FETexts as
-            txt on data.matched_document_key = [txt].IDFE
-order by [data].score desc
-";
+            txt on data.matched_document_key = txt.IDFE
+order by data.score desc";
 
 
 
@@ -584,6 +603,7 @@ order by [data].score desc
             List<DescrObjectI> objForms = null,ChangeLatex[] latexformulas=null)
         {
             bool commited = false;
+            bool chengedText = false;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 using (var transaction = db.Database.BeginTransaction())
@@ -592,6 +612,8 @@ order by [data].score desc
                     {
                       
                         db.Set<FEText>().Attach(this);
+                        if (this.Text == newObj.Text)
+                            chengedText = true;
                         this.Equal(newObj);
                         if (deleteImg != null && deleteImg.Count > 0)
                         {
@@ -671,7 +693,8 @@ order by [data].score desc
                         //    db.FELatexFormulas.RemoveRange(delst);
                         //    db.SaveChanges();
                         //}
-
+                        if(chengedText)
+                            Lucene_.UpdateDocument(this.IDFE.ToString(), this);
 
                         transaction.Commit();
                         commited = true;

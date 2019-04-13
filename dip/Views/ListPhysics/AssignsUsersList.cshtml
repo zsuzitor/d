@@ -6,7 +6,7 @@
 @if (Model != null)
 {
     
-        <input class="form-control" onchange="clearListFeLinkExist()" type="number" id="AssignListForDel" />
+        <input class="form-control" onchange="clearListFeLinkExist()" placeholder="id списка для удаления" type="number" id="AssignListForDel" />
     
     @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
     
@@ -33,7 +33,7 @@
 }
 else
 {
-    <p>Пользователь не найден</p>
+    <h1>Пользователь не найден</h1>
 }
 
 

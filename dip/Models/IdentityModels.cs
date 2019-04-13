@@ -20,7 +20,7 @@ namespace dip.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime? Birthday { get; set; }
-        public DateTime Dateregistration { get; set; }
+        public DateTime DateRegistration { get; set; }
         //TODO раскомментить
         public bool CloseProfile { get; set; }
 
@@ -42,7 +42,7 @@ namespace dip.Models
             Name = null;
             Surname = null;
             Birthday = null;
-            Dateregistration = DateTime.Now;
+            DateRegistration = DateTime.Now;
             CloseProfile = false;
 
             FavouritedPhysics = new List<FEText>();

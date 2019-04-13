@@ -20,7 +20,7 @@
     <button class="btn btn-default" onclick="RemoveRole()">Забрать роль</button>
     <hr />
     <p>Введите id пользователя или выберите пользователя из списка</p>
-    <input placeholder="id пользователя" class="form-control" name="userId" id="userIdInput_id" type="text" />
+    <input onchange="changeUserId()" placeholder="id пользователя" class="form-control" name="userId" id="userIdInput_id" type="text" />
     @*<p>Получить id пользователя по username</p>или username
     <input placeholder="username пользователя" class="form-control" name="username" id="usernameInput_id" type="text" />
     <button class="btn btn-default" onclick="GetIdByUsername()">Получить id</button>*@
@@ -70,6 +70,12 @@
 
 
 <script>
+
+    function changeUserId() {
+        document.getElementById('idCurrentUser_id').innerHTML = '';
+    }
+
+
     function clearLinkUser() {
         document.getElementById('idCurrentUser_id').innerHTML = '';
     }

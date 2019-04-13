@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 
 namespace dip.Models
@@ -224,27 +225,69 @@ namespace dip.Models
             {
                 return res;
             }
-
+            FEText fesemantic = null;
             using (var db = new ApplicationDbContext())
             {
-
-
-                //TODO транзакция
-                var fesemantic = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
+                 fesemantic = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
                 if (fesemantic == null)
                     return null;
                 if (fesemantic.Text != Constants.FeSemanticNullText)
                     return null;
+                fesemantic.Text = str;
+                db.SaveChanges();
+            //}
+            //using (var db = new ApplicationDbContext())
+            //{
+
+
+                //TODO транзакция
+
                 //using (var transaction = db.Database.BeginTransaction())
                 //{
-                    try
+                //var g = db.FEText.First(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
+                try
                     {
-                        fesemantic.Text = str;
-                        db.SaveChanges();
 
-                        res = FEText.GetListSimilar(fesemantic.IDFE, HttpContext).
-                                   SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-                        fesemantic.Text = Constants.FeSemanticNullText;
+                    //Constants.FeSemanticNullText  829
+                    var strquery = $@"
+                    select   txt.IDFE
+                    from
+                           semanticsimilaritytable (FETexts, *, {Constants.FEIDFORSEMANTICSEARCH}  ) as data
+                                inner join FETexts as
+                                txt on data.matched_document_key = txt.IDFE
+                    order by data.score desc";
+
+                    Thread.Sleep(1000);
+                    res = db.Database.SqlQuery<int>(strquery).ToList();
+                    for (int i = 0; i < 5 && res.Count == 0;++i)
+                    {
+                        Thread.Sleep(500);
+                        res = db.Database.SqlQuery<int>(strquery).ToList();
+                    }
+                    if (res.Count > 0)
+                    {
+                        res = user.CheckAccessPhys(res, HttpContext).ToList().
+                              SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+                    }
+                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).ToList();
+
+                    //
+
+                    //res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).ToList();
+
+
+
+                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).ToList();
+
+
+
+                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).
+                    //          SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
+
+
+
+                    //db.Set<FEText>().Attach(fesemantic);
+                    fesemantic.Text = Constants.FeSemanticNullText;
                         db.SaveChanges();
                         //transaction.Commit();//transaction.Rollback();
                 }

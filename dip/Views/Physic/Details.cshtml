@@ -24,7 +24,23 @@
             @Html.Action("MovementPhysicsBlock", "Helpers", new { idfe = Model.Effect.IDFE })
             
         </div>
-        
+        <div>
+            <ul class="detailsMenu">
+                <li>Текст</li>
+                <li>Дескрипторы</li>
+                <li>Объект</li>
+                <li>Похожие</li>
+@if (Model.Admin)
+{
+                <li>Списки</li>
+
+                <li>РЕД</li>
+}
+            </ul>
+
+
+
+        </div>
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayName("Описание")

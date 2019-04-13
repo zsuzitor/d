@@ -163,6 +163,8 @@ namespace dip.Controllers
             //}
             if (hadList == true)//TODO
                 res = null;
+            if(res==null)
+                return new EmptyResult();
             return PartialView(res);
         }
 
@@ -192,8 +194,10 @@ namespace dip.Controllers
         {
             bool? had;
             var res=ApplicationUser.AddPhysics(iduser, idphys,out had);
-            if (had == true|| had == null)//TODO
+            if (had!=false)//TODO //had == true|| had == null
                 res = null;
+            if (res == null)
+                return new EmptyResult();
             return PartialView(res);
         }
 

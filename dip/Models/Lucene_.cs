@@ -28,35 +28,7 @@ using System.Web.Hosting;
 
 namespace dip.Models
 {
-
-
-
-    //static string[] Search(string searchTerm)
-    //{
-    //    Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Snowball.SnowballAnalyzer("English");
-    //    //Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer();
-    //    Lucene.Net.QueryParsers.QueryParser parser = new Lucene.Net.QueryParsers.QueryParser(Lucene.Net.Util.Version.LUCENE_29, "text", analyzer);
-    //    Lucene.Net.Search.Query query = parser.Parse(searchTerm);
-
-    //    Lucene.Net.Search.Searcher searcher = new Lucene.Net.Search.IndexSearcher(Lucene.Net.Store.FSDirectory.Open(new DirectoryInfo("./index/")), true);
-    //    var topDocs = searcher.Search(query, null, 10);
-
-    //    List<string> results = new List<string>();
-
-    //    foreach (var scoreDoc in topDocs.scoreDocs)
-    //    {
-    //        results.Add(searcher.Doc(scoreDoc.doc).Get("raw"));
-    //    }
-
-    //    return results.ToArray();
-    //}
-
-
-
-
-
-
-
+    
 
     public class Lucene_
     {
@@ -86,40 +58,10 @@ namespace dip.Models
             using (var analyzer = GetAnalyzer())
             using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
-                //obj.ChangeForMap();
-                //writer.DeleteDocuments(new Term("IDFE", obj.IDFE.ToString()));
-                //BuildIndexSolo(writer,obj);
+               
                 obj.ChangeForMap();
                 writer.UpdateDocument(new Term("IDFE", idfe), MapProduct(obj), analyzer);
-                // writer.del
-
-
-
-
-                //var query = new BooleanQuery();
-                
-
-
-                //var phraseQuery = new PhraseQuery();
-                
-                //    phraseQuery.Add(new Term("IDFE", idfe));
-
-                
-                //query.Add(phraseQuery, Occur.SHOULD);
-
-
-                //var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "IDFE", analyzer);
-                //var keywordsQuery = parser.Parse(keyword);
-                
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-
-
-
-
-
-
-
+               
             }
         }
 
@@ -150,11 +92,8 @@ namespace dip.Models
 
         public static  string ChangeForMap(string s)
         {
-            // string s = "Мама  мыла  раму. ";
-            //string pattern = @"\s+";
-            string pattern = "";
-
-            pattern = @"\s+а\s+|\s+без\s+|\s+более\s+|\s+бы\s+|\s+был\s+|" +
+           
+            string pattern = @"\s+а\s+|\s+без\s+|\s+более\s+|\s+бы\s+|\s+был\s+|" +
                 @"\s+была\s+|\s+были\s+|\s+было\s+|\s+быть\s+|\s+в\s+|\s+вам\s+|\s+вас\s+|" +
                 @"\s+весь\s+|\s+во\s+|\s+вот\s+|\s+все\s+|\s+всего\s+|\s+всех\s+|\s+вы\s+|" +
                 @"\s+где\s+|\s+да\s+|\s+даже\s+|\s+для\s+|\s+до\s+|\s+его\s+|\s+ее\s+|\s+ей\s+|" +
@@ -205,55 +144,6 @@ namespace dip.Models
             return res;
 
 
-
-
-
-            //result = regex.Replace(result, target);
-            //result = regex.Replace(result, target);
-
-
-
-            //String[] RUSSIAN_STOP_WORDS = {
-            //                                                                   "а", "без", "более", "бы", "был", "была", "были",
-            //                                                                   "было", "быть", "в",
-            //                                                                   "вам", "вас", "весь", "во", "вот", "все", "всего",
-            //                                                                   "всех", "вы", "где",
-            //                                                                   "да", "даже", "для", "до", "его", "ее", "ей", "ею",
-            //                                                                   "если", "есть",
-            //                                                                   "еще", "же", "за", "здесь", "и", "из", "или", "им",
-            //                                                                   "их", "к", "как",
-            //                                                                   "ко", "когда", "кто", "ли", "либо", "мне", "может",
-            //                                                                   "мы", "на", "надо",
-            //                                                                   "наш", "не", "него", "нее", "нет", "ни", "них", "но",
-            //                                                                   "ну", "о", "об",
-            //                                                                   "однако", "он", "она", "они", "оно", "от", "очень",
-            //                                                                   "по", "под", "при",
-            //                                                                   "с", "со", "так", "также", "такой", "там", "те", "тем"
-            //                                                                   , "то", "того",
-            //                                                                   "тоже", "той", "только", "том", "ты", "у", "уже",
-            //                                                                   "хотя", "чего", "чей",
-            //                                                                   "чем", "что", "чтобы", "чье", "чья", "эта", "эти",
-            //                                                                   "это", "я"
-            //                                                               };
-            //string hh = "";
-            //foreach (var i in RUSSIAN_STOP_WORDS)
-            //    hh += @"\s+" + i + @"\s+|";
-
-            //string h1 = hh;
-
-
-            //h1 += "|.|";
-            //h1 += @"|\W";
-            //\s    -- пробельный
-            // \d   - цифра
-            // \W   -  любой не буква\цифра\_
-            //return "";
-
-
-
-
-
-
         }
 
 
@@ -263,19 +153,19 @@ namespace dip.Models
         //TODO мб нормализация
         static Document MapProduct(FEText obj)
         {
-            var document = new Document();
-            // document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
-            document.Add(new Field("IDFE", obj.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Name", obj.Name, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("Text", obj.Text, Field.Store.YES, Field.Index.ANALYZED));
+            //var document = new Document();
+            //// document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
+            //document.Add(new Field("IDFE", obj.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            //document.Add(new Field("Name", obj.Name, Field.Store.YES, Field.Index.ANALYZED));
+            //document.Add(new Field("Text", obj.Text, Field.Store.YES, Field.Index.ANALYZED));
 
-            document.Add(new Field("TextInp", obj.TextInp, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("TextOut", obj.TextOut, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("TextObj", obj.TextObj, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("TextApp", obj.TextApp, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("TextLit", obj.TextLit, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("Brand", obj.Brand, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            return document;
+            //document.Add(new Field("TextInp", obj.TextInp, Field.Store.YES, Field.Index.ANALYZED));
+            //document.Add(new Field("TextOut", obj.TextOut, Field.Store.YES, Field.Index.ANALYZED));
+            //document.Add(new Field("TextObj", obj.TextObj, Field.Store.YES, Field.Index.ANALYZED));
+            //document.Add(new Field("TextApp", obj.TextApp, Field.Store.YES, Field.Index.ANALYZED));
+            //document.Add(new Field("TextLit", obj.TextLit, Field.Store.YES, Field.Index.ANALYZED));
+            ////document.Add(new Field("Brand", obj.Brand, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            return obj.GetDocumentForLucene();
         }
 
 
@@ -319,40 +209,7 @@ namespace dip.Models
                     query.Add(keywordsQuery, Occur.SHOULD);
 
                 }
-                //var phraseQuery = new PhraseQuery();
-                //phraseQuery.Add(new Term("Name", "electric"));
-                //phraseQuery.Add(new Term("Name", "guitar"));
-                //query.Add(phraseQuery, Occur.SHOULD);
-
-
-
-                //var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Name", analyzer);
-                //var keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "Text", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextInp", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextOut", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextObj", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextApp", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
-
-                //parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "TextLit", analyzer);
-                //keywordsQuery = parser.Parse(keyword);
-                //query.Add(keywordsQuery, Occur.SHOULD);
+               
 
 
 
@@ -460,16 +317,6 @@ namespace dip.Models
                   // var g= scoreDoc.Score;
                     var doc = searcher.Doc(scoreDoc.Doc);
                     
-                    //var product = new FEText { IDFE = int.Parse(doc.Get("IDFE")),
-                    //    Name = doc.Get("Name"),
-                    //    Text = doc.Get("Text"),
-                    //    TextApp = doc.Get("TextApp"),
-                    //     TextInp= doc.Get("TextInp"),
-                    //    TextLit = doc.Get("TextLit"),
-                    //    TextObj = doc.Get("TextObj"),
-                    //    TextOut = doc.Get("TextOut")
-                    //};
-                    //doc.Boost
                     products.Add(int.Parse(doc.Get("IDFE")));//,g
                 }
                 return products;

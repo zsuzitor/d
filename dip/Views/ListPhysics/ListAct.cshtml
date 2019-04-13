@@ -116,7 +116,7 @@
 
     function AddNewList() {
         var formData = { name: document.getElementById('NewListName_id').value };
-        if (formData.name < 5) {
+        if (formData.name.length < 5) {
             alert('Введите название больше 5 не пробельных символов')
             return;
         }
@@ -141,6 +141,14 @@
             ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
             //let id = this.id.split('ListPhysExistItem_')[1];
             LoadOneListData(ListActMainObject.ListId);
+
+            //список пользователей чистим
+            var divlistuser = document.getElementById('UsersHasCurrentList_id');
+            var butlistuser = document.getElementById('butLoadUserHasCurList');
+            divlistuser.innerHTML = '';
+            divlistuser.style.display = 'none';
+            butlistuser.innerHTML = 'Показать пользователей';
+
         }
 
     });
