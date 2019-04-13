@@ -520,6 +520,37 @@ font-size:25pt;
 }
 
 
+   ul.detailsMenu{
+       position:relative;
+       text-align: center;
+   }
+   ul.detailsMenu li {
+    
+    /*margin-right: 5px;*/ 
+    /*border: 1px solid #cccccc;*/
+    /*padding: 3px;*/ 
+    /*background-color:rgba(0,0,0,0.2);*/
+    /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
+    height:40px;
+    /*min-width:100px;*/
+    cursor:pointer;
+    color:black;
+    display:inline-block;
+    transition:.3s;
+    
+   }
+    ul.detailsMenu li a{
+        color:black;
+    }
+    ul.detailsMenu li:hover{
+        margin-top:-5px;
+        box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+        /*background-color:black;*/
+    }
+
+    div.detailsBodyBody{
+        min-height:600px;
+    }
 
    /*----------------------------------------------*/
 

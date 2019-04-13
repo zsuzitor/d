@@ -12,159 +12,162 @@
 @{
     <div>
         <h4 class="breakWord">@Model.EffectName</h4>
-        @if (Model.Admin)
-        {
-            @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })
-        }
+        @*@if (Model.Admin)
+            {
+                @Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })
+            }*@
         <hr />
         <div class="details_favourite_star" id="favourite_div_but_@Model.Effect.IDFE" onclick="favouritePhysic(@Model.Effect.IDFE)">
             @Html.Action("Favourite", "Helpers", new { favourite = Model.Favourited })
         </div>
         <div>
             @Html.Action("MovementPhysicsBlock", "Helpers", new { idfe = Model.Effect.IDFE })
-            
+
         </div>
         <div>
             <ul class="detailsMenu">
-                <li>Текст</li>
-                <li>Дескрипторы</li>
-                <li>Объект</li>
-                <li>Похожие</li>
-@if (Model.Admin)
-{
-                <li>Списки</li>
-
-                <li>РЕД</li>
-}
+                <li class="btn btn-default" onclick="detailsLoadText()" style="border-bottom:3px solid red;" id="detailsUl_text">Текст</li>
+                <li class="btn btn-default"  onclick="detailsLoadDescr()" id="detailsUl_descr">Дескрипторы</li>
+                <li class="btn btn-default"  onclick="detailsLoadObj()" id="detailsUl_obj">Объект</li>
+                <li class="btn btn-default"  onclick="detailsLoadSimilar()" id="detailsUl_similar">Похожие</li>
+                @if (Model.Admin)
+                {
+                    <li class="btn btn-default"  onclick="detailsLoadLists()" id="detailsUl_lists">Списки</li>
+                    //onclick = "detailsLoadEdit()"
+                    <li class="btn btn-default"  id="detailsUl_edit">@Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })</li>
+                }
             </ul>
 
 
 
         </div>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Описание")
-            </dt>
+        <div class="detailsBodyBody">
+        <div id="detailsdiv_text">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Описание")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.Text)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.Text </span >
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.Text)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.Text </span>
+                </dd>
 
-            <dt>
-                @Html.DisplayName("Входное воздействие")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Входное воздействие")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.TextInp)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.TextInp </span>
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.TextInp)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.TextInp </span>
+                </dd>
 
-            <dt>
-                @Html.DisplayName("Выходное воздействие")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Выходное воздействие")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.TextOut)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.TextOut </span>
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.TextOut)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.TextOut </span>
+                </dd>
 
-            <dt>
-                @Html.DisplayName("Объект")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Объект")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.TextObj)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.TextObj </span>
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.TextObj)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.TextObj </span>
+                </dd>
 
-            <dt>
-                @Html.DisplayName("Применение")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Применение")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.TextApp)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.TextApp </span>
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.TextApp)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.TextApp </span>
+                </dd>
 
-            <dt>
-                @Html.DisplayName("Литература")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Литература")
+                </dt>
 
-            <dd>
-                @*@Html.DisplayFor(model => model.Effect.TextLit)*@
-                <div class="padding_10_top"></div>
-                <span class="breakWord">@Model.Effect.TextLit </span>
-            </dd>
+                <dd>
+                    @*@Html.DisplayFor(model => model.Effect.TextLit)*@
+                    <div class="padding_10_top"></div>
+                    <span class="breakWord">@Model.Effect.TextLit </span>
+                </dd>
 
-        </dl>
+            </dl>
 
-        <div class="block_images">
-            <div class="inline">
-                @foreach (var i in Model.Effect.AllImages)
-                {
-                    <div class="div_img_record_show_block div_inline_block">
-                        <div class="details_one_image">
-                            @Html.Action("ImageLink", "Helpers", new { a = i })
-                           
+            <div class="block_images">
+                <div class="inline">
+                    @foreach (var i in Model.AllImages)
+                    {
+                        <div class="div_img_record_show_block div_inline_block">
+                            <div class="details_one_image">
+                                @Html.Action("ImageLink", "Helpers", new { a = i })
+
+                            </div>
                         </div>
-                    </div>
-                }
-                @*@foreach (var i in Model.Effect.LatexFormulas)
-                {
-                    <div class="div_img_record_show_block div_inline_block">
-                        <div class="details_one_image">
-                            @Html.Action("ImageLink", "Helpers", new { a = i})
+                    }
 
-                        </div>
-                    </div>
-                }*@
+                </div>
             </div>
         </div>
 
-    </div>
+
+        <div style="display:none;" id="detailsdiv_descr">
             @*<p>
-                    @Html.ActionLink("Назад к списку эффектов", "Results", new { id = ViewBag.TechnicalFunctionId })
-                </p>*@
-            <p>
-                <button class="btn btn-default" onclick="loadDescrParam(@Model.Effect.IDFE)" id="show_descr_but">Показать дескрипторы</button>
+                    <button class="btn btn-default" onclick="loadDescrParam(@Model.Effect.IDFE)" id="show_descr_but">Показать дескрипторы</button>
 
-            </p>
-            <div id="DivDescriptionParams_id">
+                </p>
+                <div id="DivDescriptionParams_id">
 
-            </div>
-            <hr />
-            <p>
-                <button class="btn btn-default" onclick="loadObjectFe(@Model.Effect.IDFE)" id="show_objectfe_but">Показать Объект</button>
+                </div>*@
 
-            </p>
-            <div id="DivObjectFe_id">
+        </div>
+        <div style="display:none;" id="detailsdiv_obj">
+            @*<p>
+                    <button class="btn btn-default" onclick="loadObjectFe(@Model.Effect.IDFE)" id="show_objectfe_but">Показать Объект</button>
 
-            </div>
-            if (Model.Admin)
+                </p>
+                <div id="DivObjectFe_id">
+
+                </div>*@
+
+        </div>
+        <div style="display:none;" id="detailsdiv_similar">
+
+            @*<div id="DivMoreSimilar_id">
+                    <p>
+                        <button class="btn btn-default" onclick="loadSimilar(@Model.Effect.IDFE)">Показать похожие</button>
+
+                    </p>
+                </div>*@
+        </div>
+        @if (Model.Admin)
             {
-                <hr />
-                <p>
-                    <button class="btn btn-default" onclick="loadListsFe(@Model.Effect.IDFE)" id="show_listsfe_but">Показать списки</button>
+            <div style="display:none;" id="detailsdiv_lists">
+                @*<p>
+                        <button class="btn btn-default" onclick="loadListsFe(@Model.Effect.IDFE)" id="show_listsfe_but">Показать списки</button>
 
-                </p>
-                <div id="DivListsFe_id" style="display:none;">
+                    </p>
+                    <div id="DivListsFe_id" style="display:none;">
 
-                </div>
-            }
-            <hr />
+                    </div>*@
 
-            <div id="DivMoreSimilar_id">
-                <p>
-                    <button class="btn btn-default" onclick="loadSimilar(@Model.Effect.IDFE)">Показать похожие</button>
-
-                </p>
             </div>
+        }
+    </div>
+        </div>
+           
             }
 
 
@@ -172,6 +175,8 @@
 
             <script>
                 ;;;;
+                var detailsCurrentLiMenuId = 'detailsUl_text';
+
                 $(document).ready(function () {
                     // ggg(goSave);
                     let newhref='/Physic/Details/' + document.getElementById('inputIdCurrentPhysEffect').value;
@@ -181,52 +186,189 @@
                 });
 
 
-                function loadDescrParam(id) {
-                    var but = document.getElementById('show_descr_but');
-                    var div = document.getElementById('DivDescriptionParams_id');
-                    if (div.innerHTML.trim() == '') {
+
+
+                function hidenLastOnLiMenu() {
+                    var li=document.getElementById(detailsCurrentLiMenuId);
+                    li.style.borderBottom = '';
+                    var cr=li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'none';
+
+                }
+
+
+                function detailsLoadText() {
+                    hidenLastOnLiMenu();
+                    detailsCurrentLiMenuId = 'detailsUl_text';
+                    var li = document.getElementById('detailsUl_text');
+                    li.style.borderBottom = '3px solid red';
+                    var cr = li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'block';
+
+
+                }
+
+                function detailsLoadDescr() {
+                    hidenLastOnLiMenu();
+                    detailsCurrentLiMenuId = 'detailsUl_descr';
+                    var li = document.getElementById('detailsUl_descr');
+                    li.style.borderBottom = '3px solid red';
+                    var cr = li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'block';
+                    if (!div.innerHTML.trim()) {
                         //загрузить
                         goAjaxRequest({
                             url: '/Actions/LoadDescr',
                             type: 'GET',
-                            data: { id: id },
+                            data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
                             func_success: function (data, status, jqXHR) {
                                 // Заменяем часть представления, отвечающего за отображение значений характеристики
                                 div.innerHTML = data;
                             }
                         });
-                        div.style.display = 'block';
-                        but.innerHTML='Скрыть дескрипторы';
-                    }
-                    else {
-                        //загружать не надо, надо показать\скрыть
-                        if (div.style.display == 'block') {
-                            //скрыть
-                            div.style.display = 'none';
-                            but.innerHTML='Показать дескрипторы';
-                        }
-                        else {
-                            //показать
-                            div.style.display = 'block';
-                            but.innerHTML='Скрыть дескрипторы';
-                        }
+                       
                     }
 
 
-                }
 
-                function loadSimilar(id){
-                    document.getElementById('DivMoreSimilar_id').innerHTML= '';
-                    goAjaxRequest({
-                        url: '/Physic/ShowSimilar',
-                        type:'GET',
-                        data:{id:id},
-                        func_success: function (data, status, jqXHR) {
-                            // Заменяем часть представления, отвечающего за отображение значений характеристики
-                            document.getElementById('DivMoreSimilar_id').innerHTML=data;
-                        }
-                    });
                 }
+                function detailsLoadObj() {
+                    hidenLastOnLiMenu();
+                    detailsCurrentLiMenuId = 'detailsUl_obj';
+                    var li = document.getElementById('detailsUl_obj');
+                    li.style.borderBottom = '3px solid red';
+                    var cr = li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'block';
+                    if (!div.innerHTML.trim()) {
+                        //загрузить
+                        goAjaxRequest({
+                            url: '/Actions/LoadObject',
+                            type: 'GET',
+                            data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                div.innerHTML = data;
+                            }
+                        });
+                        
+                    }
+
+
+
+                }
+                function detailsLoadSimilar() {
+                    hidenLastOnLiMenu();
+                    detailsCurrentLiMenuId = 'detailsUl_similar';
+                    var li = document.getElementById('detailsUl_similar');
+                    li.style.borderBottom = '3px solid red';
+                    var cr = li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'block';
+                    if (!div.innerHTML.trim()) {
+                        //загрузить
+                        goAjaxRequest({
+                            url: '/Physic/ShowSimilar',
+                            type: 'GET',
+                            data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                div.innerHTML = data;
+                            }
+                        });
+
+                    }
+
+
+                   
+
+                }
+                function detailsLoadLists() {
+                    hidenLastOnLiMenu();
+                    detailsCurrentLiMenuId = 'detailsUl_lists';
+                    var li = document.getElementById('detailsUl_lists');
+                    li.style.borderBottom = '3px solid red';
+                    var cr = li.id.split('_')[1];
+                    var div = document.getElementById('detailsdiv_' + cr);
+                    div.style.display = 'block';
+                    if (!div.innerHTML.trim()) {
+                        //загрузить
+                        goAjaxRequest({
+                            url: '/Physic/LoadLists',
+                            type: 'GET',
+                            data: { idfe: document.getElementById('inputIdCurrentPhysEffect').value },
+                            func_success: function (data, status, jqXHR) {
+                                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                                document.getElementById('DivListsFe_id').innerHTML = data;
+                            }
+                        });
+
+                    }
+
+                }
+                //function detailsLoadEdit() {
+
+                //}
+
+
+
+
+
+
+
+
+
+
+
+                //function loadDescrParam(id) {
+                //    var but = document.getElementById('show_descr_but');
+                //    var div = document.getElementById('DivDescriptionParams_id');
+                //    if (div.innerHTML.trim() == '') {
+                //        //загрузить
+                //        goAjaxRequest({
+                //            url: '/Actions/LoadDescr',
+                //            type: 'GET',
+                //            data: { id: id },
+                //            func_success: function (data, status, jqXHR) {
+                //                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                //                div.innerHTML = data;
+                //            }
+                //        });
+                //        div.style.display = 'block';
+                //        but.innerHTML='Скрыть дескрипторы';
+                //    }
+                //    else {
+                //        //загружать не надо, надо показать\скрыть
+                //        if (div.style.display == 'block') {
+                //            //скрыть
+                //            div.style.display = 'none';
+                //            but.innerHTML='Показать дескрипторы';
+                //        }
+                //        else {
+                //            //показать
+                //            div.style.display = 'block';
+                //            but.innerHTML='Скрыть дескрипторы';
+                //        }
+                //    }
+
+
+                //}
+
+                //function loadSimilar(id){
+                //    document.getElementById('DivMoreSimilar_id').innerHTML= '';
+                //    goAjaxRequest({
+                //        url: '/Physic/ShowSimilar',
+                //        type:'GET',
+                //        data:{id:id},
+                //        func_success: function (data, status, jqXHR) {
+                //            // Заменяем часть представления, отвечающего за отображение значений характеристики
+                //            document.getElementById('DivMoreSimilar_id').innerHTML=data;
+                //        }
+                //    });
+                //}
 
 
 
@@ -244,79 +386,79 @@
 
 
 
-                function loadObjectFe(id){
-                    //TODO
-                    //
-                    var but = document.getElementById('show_objectfe_but');
-                    var div = document.getElementById('DivObjectFe_id');
-                    if (div.innerHTML.trim() == '') {
-                        //загрузить
-                        goAjaxRequest({
-                            url: '/Actions/LoadObject',
-                            type: 'GET',
-                            data: { id: id },
-                            func_success: function (data, status, jqXHR) {
-                                // Заменяем часть представления, отвечающего за отображение значений характеристики
-                                div.innerHTML = data;
-                            }
-                        });
-                        div.style.display = 'block';
-                        but.innerHTML='Скрыть Объект';
-                    }
-                    else {
-                        //загружать не надо, надо показать\скрыть
-                        if (div.style.display == 'block') {
-                            //скрыть
-                            div.style.display = 'none';
-                            but.innerHTML='Показать Объект';
-                        }
-                        else {
-                            //показать
-                            div.style.display = 'block';
-                            but.innerHTML='Скрыть Объект';
-                        }
-                    }
+                //function loadObjectFe(id){
+                //    //TODO
+                //    //
+                //    var but = document.getElementById('show_objectfe_but');
+                //    var div = document.getElementById('DivObjectFe_id');
+                //    if (div.innerHTML.trim() == '') {
+                //        //загрузить
+                //        goAjaxRequest({
+                //            url: '/Actions/LoadObject',
+                //            type: 'GET',
+                //            data: { id: id },
+                //            func_success: function (data, status, jqXHR) {
+                //                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                //                div.innerHTML = data;
+                //            }
+                //        });
+                //        div.style.display = 'block';
+                //        but.innerHTML='Скрыть Объект';
+                //    }
+                //    else {
+                //        //загружать не надо, надо показать\скрыть
+                //        if (div.style.display == 'block') {
+                //            //скрыть
+                //            div.style.display = 'none';
+                //            but.innerHTML='Показать Объект';
+                //        }
+                //        else {
+                //            //показать
+                //            div.style.display = 'block';
+                //            but.innerHTML='Скрыть Объект';
+                //        }
+                //    }
 
 
 
-                }
-                function loadListsFe(){
-                    //DivListsFe_id
-                    let div=document.getElementById('DivListsFe_id');
+                //}
+                //function loadListsFe(){
+                //    //DivListsFe_id
+                //    let div=document.getElementById('DivListsFe_id');
 
 
-                    var but = document.getElementById('show_listsfe_but');
+                //    var but = document.getElementById('show_listsfe_but');
                    
-                    if (div.innerHTML.trim() == '') {
-                        //загрузить
-                        goAjaxRequest({
-                            url: '/Physic/LoadLists',
-                            type:'GET',
-                            data:{idfe:document.getElementById('inputIdCurrentPhysEffect').value},
-                            func_success: function (data, status, jqXHR) {
-                                // Заменяем часть представления, отвечающего за отображение значений характеристики
-                                document.getElementById('DivListsFe_id').innerHTML=data;
-                            }
-                        });
-                        div.style.display = 'block';
-                        but.innerHTML='Скрыть списки';
-                    }
-                    else {
-                        //загружать не надо, надо показать\скрыть
-                        if (div.style.display == 'block') {
-                            //скрыть
-                            div.style.display = 'none';
-                            but.innerHTML='Показать списки';
-                        }
-                        else {
-                            //показать
-                            div.style.display = 'block';
-                            but.innerHTML='Скрыть списки';
-                        }
-                    }
+                //    if (div.innerHTML.trim() == '') {
+                //        //загрузить
+                //        goAjaxRequest({
+                //            url: '/Physic/LoadLists',
+                //            type:'GET',
+                //            data:{idfe:document.getElementById('inputIdCurrentPhysEffect').value},
+                //            func_success: function (data, status, jqXHR) {
+                //                // Заменяем часть представления, отвечающего за отображение значений характеристики
+                //                document.getElementById('DivListsFe_id').innerHTML=data;
+                //            }
+                //        });
+                //        div.style.display = 'block';
+                //        but.innerHTML='Скрыть списки';
+                //    }
+                //    else {
+                //        //загружать не надо, надо показать\скрыть
+                //        if (div.style.display == 'block') {
+                //            //скрыть
+                //            div.style.display = 'none';
+                //            but.innerHTML='Показать списки';
+                //        }
+                //        else {
+                //            //показать
+                //            div.style.display = 'block';
+                //            but.innerHTML='Скрыть списки';
+                //        }
+                //    }
 
                    
-                }
+                //}
 
 
                 ;;;;

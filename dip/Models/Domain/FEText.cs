@@ -95,8 +95,8 @@ namespace dip.Models.Domain
 
         public List<Image> Images { get; set; }
 
-        [NotMapped]
-        public List<ShowsFEImage> AllImages { get; set; }
+        //[NotMapped]
+        //public List<ShowsFEImage> AllImages { get; set; }
         
 
         public List<FELatexFormula> LatexFormulas { get; set; }
@@ -111,7 +111,7 @@ namespace dip.Models.Domain
         {
             this.Images = new List<Image>();
             LatexFormulas = new List<FELatexFormula>();
-            AllImages = new List<ShowsFEImage>();
+            //AllImages = new List<ShowsFEImage>();
             FavouritedUser = new List<ApplicationUser>();
             NotApprove = true;
             FavouritedCurrentUser = null;
@@ -403,12 +403,7 @@ namespace dip.Models.Domain
         }
 
 
-        public void SetListAllImages()
-        {
-            this.AllImages.AddRange(this.Images);
-
-            this.AllImages.AddRange(this.LatexFormulas);
-        }
+        
 
 
         public void LoadLists()
@@ -612,7 +607,7 @@ order by data.score desc";
                     {
                       
                         db.Set<FEText>().Attach(this);
-                        if (this.Text == newObj.Text)
+                        if (this.Text != newObj.Text)
                             chengedText = true;
                         this.Equal(newObj);
                         if (deleteImg != null && deleteImg.Count > 0)

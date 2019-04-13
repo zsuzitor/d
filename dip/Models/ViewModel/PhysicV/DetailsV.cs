@@ -17,6 +17,9 @@ namespace dip.Models.ViewModel.PhysicV
         public bool? Favourited { get; set; }
         //public byte[] Lat { get; set; }
 
+        public List<ShowsFEImage> AllImages { get; set; }
+
+
         public DetailsV()
         {
             Favourited = null;
@@ -24,7 +27,9 @@ namespace dip.Models.ViewModel.PhysicV
             //TechnicalFunctionId = null;
             Admin = false;
             Effect = null;
-            
+            AllImages = new List<ShowsFEImage>();
+
+
         }
 
         public void Data(int?id,HttpContextBase HttpContext)//bool go
@@ -48,7 +53,7 @@ namespace dip.Models.ViewModel.PhysicV
 
             Effect.LoadImage();
             Effect.AddByteToLatexImages();
-            Effect.SetListAllImages();
+            this.SetListAllImages();
             EffectName = Effect.Name;
            
 
@@ -64,7 +69,13 @@ namespace dip.Models.ViewModel.PhysicV
             }
         }
 
-
+        public void SetListAllImages()
+        {
+            if(this.Effect?.Images!=null)
+            this.AllImages.AddRange(this.Effect.Images);
+            if (this.Effect?.LatexFormulas != null)
+                this.AllImages.AddRange(this.Effect.LatexFormulas);
+        }
 
         //public void GetModel(FEText phys)
         //{
