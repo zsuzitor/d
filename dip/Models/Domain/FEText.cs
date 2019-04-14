@@ -157,12 +157,7 @@ namespace dip.Models.Domain
         {
             //TODO pattern?
             Text = Lucene_.ChangeForMap(Text);
-            //Name = Lucene_.ChangeForMap(Name);
-            //TextApp = Lucene_.ChangeForMap(TextApp);
-            //TextInp = Lucene_.ChangeForMap(TextInp);
-            //TextLit = Lucene_.ChangeForMap(TextLit);
-            //TextObj = Lucene_.ChangeForMap(TextObj);
-            //TextOut = Lucene_.ChangeForMap(TextOut);
+
 
 
         }
@@ -171,12 +166,7 @@ namespace dip.Models.Domain
         public static List<string> GetPropTextSearch()//TODO
         {
             var res = new List<string>();
-            //var listNM = new List<string>() { "IDFE", "CountInput", "ChangedObject", "NotApprove", "FavouritedCurrentUser", "Images", "FavouritedUser", "Deleted" };//исключаем
-            //PropertyInfo[] myPropertyInfo;
-            //Type myType = typeof(FEText);
-            //// Get the type and fields of FieldInfoClass.
-            //myPropertyInfo = myType.GetProperties();
-            //res = myPropertyInfo.Where(x1 => listNM.FirstOrDefault(x2 => x2 == x1.Name) == null).Select(x1 => x1.Name).ToList();
+
             res.Add("Text");
             return res;
         }
@@ -356,20 +346,6 @@ namespace dip.Models.Domain
             return list_id;
         }
 
-        //алгоритм левинштайна
-        //public static int[] GetByText(string text)
-        //{
-        //    using (var db = new ApplicationDbContext())
-        //    {
-        //        System.Data.SqlClient.SqlParameter param1 = new System.Data.SqlClient.SqlParameter("@searched_str", "Затухание");
-        //        System.Data.SqlClient.SqlParameter param2 = new System.Data.SqlClient.SqlParameter("@max_lev", 5);
-        //        var lst = db.Database.SqlQuery<test>("SELECT * FROM GetListLev (@searched_str,@max_lev)", param1, param2).ToList();
-
-
-        //    }
-
-        //    return null;
-        //}
 
 
         public void LoadImage()
@@ -681,13 +657,7 @@ order by data.score desc";
 
                         }
                         
-                        //if (latexformulasDel != null && latexformulasDel.Length > 0)
-                        //{
-                        //   // var lstdel = latexformulasDel;//.Select(x1=>x1)
-                        //    var delst = db.FELatexFormulas.Where(x1=> latexformulasDel.Contains(x1.Id)&&x1.FeTextIDFE==this.IDFE);
-                        //    db.FELatexFormulas.RemoveRange(delst);
-                        //    db.SaveChanges();
-                        //}
+
                         if(chengedText)
                             Lucene_.UpdateDocument(this.IDFE.ToString(), this);
 

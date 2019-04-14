@@ -11,62 +11,14 @@ namespace dip.Models.Domain
 {
     public class Vrem: ItemDescrFormCheckbox<Vrem>
     {
-        //[Key]
-        //public string Id { get; set; }
-
-        //public string Name { get; set; }
-
-        //public string Parent { get; set; }
-
-        //public List<Action> Actions { get; set; }
-
-        //[NotMapped]
-        //public List<Vrem> VremChilds { get; set; }
+     
 
         public Vrem()
         {
-            Actions = new List<Action>();
+            //Actions = new List<Action>();
             Childs = new List<Vrem>();
 
         }
-
-
-        //public static string SortIds(string ids)
-        //{
-        //    if (ids == null)
-        //        return null;
-        //    if (string.IsNullOrWhiteSpace(ids))
-        //        return "";
-        //    var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-        //    Array.Sort(gg);
-        //    string res = string.Join(" ", gg);
-
-        //    //string res = string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-        //    //         OrderBy(x1 => int.Parse(x1.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
-        //    return res;
-        //}
-
-
-        //public static string GetParentsId(string id, ApplicationDbContext db_ = null)
-        //{
-        //    string res = "";
-        //    var db = db_ ?? new ApplicationDbContext();
-
-        //    var cur = db.Vrems.FirstOrDefault(x1 => x1.Id == id)?.Parent;
-        //    if (!string.IsNullOrWhiteSpace(cur))
-        //        if (cur.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
-        //        {
-        //            res += cur + " ";
-        //            res += Vrem.GetParentsId(cur, db);
-
-        //        }
-
-
-        //    if (db_ == null)
-        //        db.Dispose();
-
-        //    return res;
-        //}
 
 
 

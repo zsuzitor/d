@@ -391,90 +391,98 @@ namespace dip.Models.DataBase
 
 
                 //Actions
-
-                try
-                {
-
-                    //костль для восстановления id, для того что бы начиналось с 134, можно при создании таблицы указывать начальный id
-                    for (var i = 0; i < 133; ++i)
-                    {
-                        using (var db = new ApplicationDbContext())
-                        {
-                            var obj = new Domain.Action();
-                            db.Actions.Add(obj);
-                            db.SaveChanges();
-                            db.Actions.Remove(obj);
-                            db.SaveChanges();
-                        }
-                    }
+               // List<dynamic> ActionsList = new List<dynamic>();
+                //try
+                //{
 
 
+                //    //костль для восстановления id, для того что бы начиналось с 134, можно при создании таблицы указывать начальный id
+                //    for (var i = 0; i < 133; ++i)
+                //    {
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            var obj = new Domain.Action();
+                //            db.Actions.Add(obj);
+                //            db.SaveChanges();
+                //            db.Actions.Remove(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
 
-                    command.CommandText = "select * from Actions";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "actionId", "actionType", "fizVelId");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.Action();
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                        obj.AllActionId = i["actionId"].ToString().Trim();
-                        obj.ActionType_Id = i["actionType"].ToString().Trim();
-                        obj.FizVelId = i["fizVelId"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Actions.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+
+
+                //    command.CommandText = "select * from Actions";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "actionId", "actionType", "fizVelId");
+                //    foreach (var i in ldr)
+                //    {
+                //        //ActionsList.Add(new {
+                //        //    Id = Convert.ToInt32(i["id"].ToString().Trim()),
+                //        //    AllActionId = i["actionId"].ToString().Trim(),
+                //        //    ActionType_Id = i["actionType"].ToString().Trim(),
+                //        //    FizVelId = i["fizVelId"].ToString().Trim(),
+
+                //        //});
+                //        var obj = new Domain.Action();
+                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                //        obj.AllActionId = i["actionId"].ToString().Trim();
+                //        obj.ActionType_Id = i["actionType"].ToString().Trim();
+                //        obj.FizVelId = i["fizVelId"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Actions.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
 
                 //ActionPros
 
-                try
-                {
-                    //костль для восстановления id, для того что бы начиналось с 207, по идеи это не нужно, 
-                    //for (var i = 0; i < 207; ++i)
-                    //{
-                    //    using (var db = new ApplicationDbContext())
-                    //    {
-                    //        var obj = new Domain.ActionPro();
-                    //        db.ActionPros.Add(obj);
-                    //        db.SaveChanges();
-                    //        db.ActionPros.Remove(obj);
-                    //        db.SaveChanges();
-                    //    }
-                    //}
+                //try
+                //{
+                //    //костль для восстановления id, для того что бы начиналось с 207, по идеи это не нужно, 
+                //    //for (var i = 0; i < 207; ++i)
+                //    //{
+                //    //    using (var db = new ApplicationDbContext())
+                //    //    {
+                //    //        var obj = new Domain.ActionPro();
+                //    //        db.ActionPros.Add(obj);
+                //    //        db.SaveChanges();
+                //    //        db.ActionPros.Remove(obj);
+                //    //        db.SaveChanges();
+                //    //    }
+                //    //}
 
 
 
-                    //после action, pro
-                    command.CommandText = "select * from ActionPros";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "prosId");
-                    foreach (var i in ldr)
-                    {
-                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                        var ProId = i["prosId"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                            act.Pros.Add(db.Pros.First(x1 => x1.Id == ProId));
-                            db.SaveChanges();
-                        }
-                    }
+                //    //после action, pro
+                //    command.CommandText = "select * from ActionPros";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "prosId");
+                //    foreach (var i in ldr)
+                //    {
+                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                //        var ProId = i["prosId"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                //            act.Pros.Add(db.Pros.First(x1 => x1.Id == ProId));
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
 
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
               
 
 
@@ -511,43 +519,43 @@ namespace dip.Models.DataBase
                 //ActionSpec
 
 
-                try
-                {
-                    //костль для восстановления id, для того что бы начиналось с 212
-                    //for (var i = 0; i < 211; ++i)
-                    //{
-                    //    using (var db = new ApplicationDbContext())
-                    //    {
-                    //        var obj = new Domain.ActionSpec();
-                    //        db.ActionSpecs.Add(obj);
-                    //        db.SaveChanges();
-                    //        db.ActionSpecs.Remove(obj);
-                    //        db.SaveChanges();
-                    //    }
-                    //}
+                //try
+                //{
+                //    //костль для восстановления id, для того что бы начиналось с 212
+                //    //for (var i = 0; i < 211; ++i)
+                //    //{
+                //    //    using (var db = new ApplicationDbContext())
+                //    //    {
+                //    //        var obj = new Domain.ActionSpec();
+                //    //        db.ActionSpecs.Add(obj);
+                //    //        db.SaveChanges();
+                //    //        db.ActionSpecs.Remove(obj);
+                //    //        db.SaveChanges();
+                //    //    }
+                //    //}
 
 
-                    command.CommandText = "select * from ActionSpec";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "specId");
-                    foreach (var i in ldr)
-                    {
-                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                        var SpecId = i["specId"].ToString().Trim();
+                //    command.CommandText = "select * from ActionSpec";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "specId");
+                //    foreach (var i in ldr)
+                //    {
+                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                //        var SpecId = i["specId"].ToString().Trim();
 
-                        using (var db = new ApplicationDbContext())
-                        {
-                            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                            act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
-                            db.SaveChanges();
-                        }
-                    }
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                //            act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
+                //            db.SaveChanges();
+                //        }
+                //    }
 
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
@@ -592,40 +600,40 @@ namespace dip.Models.DataBase
 
 
 
-                try
-                {
-                    //костль для восстановления id, для того что бы начиналось с 212
-                    //for(var i = 0; i < 211; ++i)
-                    //{
-                    //    using (var db = new ApplicationDbContext())
-                    //    {
-                    //        var obj = new Domain.ActionVrem();
-                    //        db.ActionVrems.Add(obj);
-                    //        db.SaveChanges();
-                    //        db.ActionVrems.Remove(obj);
-                    //        db.SaveChanges();
-                    //    }
-                    //}
-                    command.CommandText = "select * from ActionVrem";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "vremId");
-                    foreach (var i in ldr)
-                    {
-                        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                        var VremId = i["vremId"].ToString().Trim();
-                        using (var db = new ApplicationDbContext())
-                        {
-                            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                            act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
+                //try
+                //{
+                //    //костль для восстановления id, для того что бы начиналось с 212
+                //    //for(var i = 0; i < 211; ++i)
+                //    //{
+                //    //    using (var db = new ApplicationDbContext())
+                //    //    {
+                //    //        var obj = new Domain.ActionVrem();
+                //    //        db.ActionVrems.Add(obj);
+                //    //        db.SaveChanges();
+                //    //        db.ActionVrems.Remove(obj);
+                //    //        db.SaveChanges();
+                //    //    }
+                //    //}
+                //    command.CommandText = "select * from ActionVrem";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "vremId");
+                //    foreach (var i in ldr)
+                //    {
+                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
+                //        var VremId = i["vremId"].ToString().Trim();
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
+                //            act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
 
-                            db.SaveChanges();
-                        }
-                    }
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
@@ -666,9 +674,9 @@ namespace dip.Models.DataBase
                             obj.FizVelSection = tmp;
                         }
                             //
-                            obj.FizVelChange = i["fizVelChange"].ToString().Trim();
-                        obj.FizVelLeftBorder = Convert.ToDouble(i["fizVelLeftBorder"].ToString().Trim());
-                        obj.FizVelRightBorder = Convert.ToDouble(i["fizVelRightBorder"].ToString().Trim());
+                        //    obj.FizVelChange = i["fizVelChange"].ToString().Trim();
+                        //obj.FizVelLeftBorder = Convert.ToDouble(i["fizVelLeftBorder"].ToString().Trim());
+                        //obj.FizVelRightBorder = Convert.ToDouble(i["fizVelRightBorder"].ToString().Trim());
 
                         //
                         {
@@ -748,23 +756,29 @@ namespace dip.Models.DataBase
                 //FeIndex
 
 
-
+                List<dynamic> FeIndexList = new List<dynamic>();
                 try
                 {
                     command.CommandText = "select * from FeIndex";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
                     foreach (var i in ldr)
                     {
-                        var obj = new Domain.FEIndex();
+                        FeIndexList.Add(new {
+                            IDFE= Convert.ToInt32(i["IDFE"].ToString().Trim()),
+                            Index= i["Index"].ToString().Trim().Replace("\u0002\u0003\u0004", "\n")
+                        });
 
-                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                        obj.Index = i["Index"].ToString().Trim();
 
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.FEIndexs.Add(obj);
-                            db.SaveChanges();
-                        }
+                        //var obj = new Domain.FEIndex();
+
+                        //obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
+                        //obj.Index = i["Index"].ToString().Trim();
+
+                        //using (var db = new ApplicationDbContext())
+                        //{
+                        //    db.FEIndexs.Add(obj);
+                        //    db.SaveChanges();
+                        //}
                     }
 
                 }
@@ -895,13 +909,13 @@ namespace dip.Models.DataBase
                 using (var db = new ApplicationDbContext())
                 {
                     
-                    var test = db.FEIndexs.ToList();
-                    foreach (var i in test)
+                    //var test = db.FEIndexs.ToList();
+                    foreach (var i in FeIndexList)
                     {
                        
-                        i.Index = i.Index.Replace("\u0002\u0003\u0004", "\n");
-                        var indexMass = i.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        
+                        //i.Index = i.Index.Replace("\u0002\u0003\u0004", "\n");
+                        var indexMass = ((string[])i.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" }, StringSplitOptions.RemoveEmptyEntries)).ToList();
+                        //var indexMass = indexMass1.ToList();
                         for (int i2 = 0; i2 < indexMass.Count; ++i2)
                         {
                             if (indexMass[i2] == "2" || indexMass[i2] == "3" || indexMass[i2].IndexOf("2\n") == 0 || indexMass[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
@@ -964,7 +978,7 @@ namespace dip.Models.DataBase
                 //NewFeIndex
 
 
-
+                List<dynamic> NewFeIndexList = new List<dynamic>();
                 try
                 {
                     command.CommandText = "select * from NewFeIndex";
@@ -972,22 +986,31 @@ namespace dip.Models.DataBase
                        "beginPhase", "endPhase");
                     foreach (var i in ldr)
                     {
-                        var obj = new Domain.NewFEIndex();
+                        NewFeIndexList.Add(new {
+                            BeginPhase= i["beginPhase"].ToString().Trim(),
+                            EndPhase= i["endPhase"].ToString().Trim(),
+                            Idfe= Convert.ToInt32(i["idfe"].ToString().Trim())
+                        });
+                        
 
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
-                        obj.Input = i["input"].ToString().Trim();
-                        obj.Output = i["output"].ToString().Trim();
-                        obj.BeginObjectState = i["beginObjectState"].ToString().Trim();
-                        obj.EndObjectState = i["endObjectState"].ToString().Trim();
-                        obj.BeginPhase = i["beginPhase"].ToString().Trim();
-                        obj.EndPhase = i["endPhase"].ToString().Trim();
 
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.NewFEIndexs.Add(obj);
-                            db.SaveChanges();
-                        }
+
+                        //var obj = new Domain.NewFEIndex();
+
+                        //obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                        //obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
+                        //obj.Input = i["input"].ToString().Trim();
+                        //obj.Output = i["output"].ToString().Trim();
+                        //obj.BeginObjectState = i["beginObjectState"].ToString().Trim();
+                        //obj.EndObjectState = i["endObjectState"].ToString().Trim();
+                        //obj.BeginPhase = i["beginPhase"].ToString().Trim();
+                        //obj.EndPhase = i["endPhase"].ToString().Trim();
+
+                        //using (var db = new ApplicationDbContext())
+                        //{
+                        //    db.NewFEIndexs.Add(obj);
+                        //    db.SaveChanges();
+                        //}
                     }
 
 
@@ -1148,7 +1171,7 @@ namespace dip.Models.DataBase
                             if (tmpphase != 0)
                                 i.ChangedObject = true;
 
-                            var tmpNewIndex = db.NewFEIndexs.FirstOrDefault(x1 => x1.Idfe == i.IDFE);
+                            var tmpNewIndex = NewFeIndexList.FirstOrDefault(x1 => x1.Idfe == i.IDFE);
                             if (tmpNewIndex != null)
                             {
                                 i.StateBeginId = tmpNewIndex.BeginPhase;// db.StateObjects.First(x1=>x1.Id== tmpNewIndex.BeginPhase) ;
@@ -1366,40 +1389,40 @@ namespace dip.Models.DataBase
                 //Thes
 
 
-                try
-                {
-                    command.CommandText = "select * from Thes";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent", "compatible", "path");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.The();
+                //try
+                //{
+                //    command.CommandText = "select * from Thes";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent", "compatible", "path");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.The();
                         
-                        obj.Id = i["id"].ToString().Trim();
-                        obj.Name = i["name"].ToString().Trim();
-                        obj.Parent = i["parent"].ToString().Trim();
+                //        obj.Id = i["id"].ToString().Trim();
+                //        obj.Name = i["name"].ToString().Trim();
+                //        obj.Parent = i["parent"].ToString().Trim();
                         
-                        if (string.IsNullOrWhiteSpace(i["compatible"].ToString().Trim()))
-                            obj.Compatible = null;
-                        else
-                            obj.Compatible = i["compatible"].ToString().Trim();
+                //        if (string.IsNullOrWhiteSpace(i["compatible"].ToString().Trim()))
+                //            obj.Compatible = null;
+                //        else
+                //            obj.Compatible = i["compatible"].ToString().Trim();
                         
-                        if (string.IsNullOrWhiteSpace(i["path"].ToString().Trim()))
-                            obj.Path = null;
-                        else
-                            obj.Path = i["path"].ToString().Trim();
+                //        if (string.IsNullOrWhiteSpace(i["path"].ToString().Trim()))
+                //            obj.Path = null;
+                //        else
+                //            obj.Path = i["path"].ToString().Trim();
                         
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.Thes.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.Thes.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
 
 
@@ -1409,34 +1432,34 @@ namespace dip.Models.DataBase
 
 
 
-                try
-                {
-                    command.CommandText = "select * from ThesChild";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "nodeID", "childID", "order");
-                    foreach (var i in ldr)
-                    {
-                        var obj = new Domain.ThesChild();
+                //try
+                //{
+                //    command.CommandText = "select * from ThesChild";
+                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "nodeID", "childID", "order");
+                //    foreach (var i in ldr)
+                //    {
+                //        var obj = new Domain.ThesChild();
                         
-                        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                        obj.NodeID = i["nodeID"].ToString().Trim();
-                        obj.ChildID = i["childID"].ToString().Trim();
-                        if (i["order"].ToString().Trim() == null || i["order"].ToString().Trim() == "")
-                            obj.Order = null;
-                        else
-                            obj.Order = Convert.ToInt32(i["order"].ToString().Trim());
+                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
+                //        obj.NodeID = i["nodeID"].ToString().Trim();
+                //        obj.ChildID = i["childID"].ToString().Trim();
+                //        if (i["order"].ToString().Trim() == null || i["order"].ToString().Trim() == "")
+                //            obj.Order = null;
+                //        else
+                //            obj.Order = Convert.ToInt32(i["order"].ToString().Trim());
                         
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.ThesChilds.Add(obj);
-                            db.SaveChanges();
-                        }
-                    }
+                //        using (var db = new ApplicationDbContext())
+                //        {
+                //            db.ThesChilds.Add(obj);
+                //            db.SaveChanges();
+                //        }
+                //    }
                     
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
 
                 //using (var db = new ApplicationDbContext())
                 //{
@@ -1583,7 +1606,7 @@ namespace dip.Models.DataBase
             }
         }
 
-        static void FeObjectParseStep(ref int i2, List<string> indexMass, FEObject obj, int numPhase, FEIndex index, ApplicationDbContext db)
+        static void FeObjectParseStep(ref int i2, List<string> indexMass, FEObject obj, int numPhase, dynamic index, ApplicationDbContext db)
         {
             
             for (; i2 < indexMass.Count && (indexMass[i2].Length == 0 || (indexMass[i2][0] != '4' && indexMass[i2][0] != '5')); ++i2)//g[i2][0] != '3' && 

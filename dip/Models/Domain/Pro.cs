@@ -12,68 +12,14 @@ namespace dip.Models.Domain
 {
     public class Pro: ItemDescrFormCheckbox<Pro>
     {
-        //[Key]
-        //public string Id { get; set; }
-
-        //public string Name { get; set; }
-
-        //public string Parent { get; set; }
-
-        //public List<Action> Actions { get; set; }
-
-        //[NotMapped]
-        //public List<Pro> ProsChilds { get; set; }
-
+ 
         public Pro()
         {
-            Actions = new List<Action>();
+            //Actions = new List<Action>();
             Childs = new List<Pro>();
         }
 
 
-
-        /// <summary>
-        /// загружает необходимое древо детей
-        /// </summary>
-        /// <param name="list">список детей</param>
-        /// <returns></returns>
-        //public override bool LoadPartialTree(List<Pro> list)
-        //{
-        //    this.LoadChild();
-        //    if (list == null || list.Count < 1)
-        //        return false;
-        //    //this.LoadChild();
-        //    foreach(var i in this.Childs)
-        //    {
-        //        if (list.FirstOrDefault(x1=>x1.Id== i.Id)!=null)
-        //            i.LoadPartialTree(list);
-        //    }
-        
-
-
-        //    return true;
-        //}
-
-
-
-        //public static string SortIds(string ids)
-        //{
-        //    if (ids == null)
-        //        return null;
-        //    if (string.IsNullOrWhiteSpace(ids))
-        //        return "";
-        //    var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-        //    Array.Sort(gg);
-
-        //    string res = string.Join(" ", gg);
-
-        //    //string res= string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-        //    //        OrderBy(x1 => int.Parse(x1.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
-        //    return res;
-        //}
-
-
-     
 
         /// <summary>
         /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
@@ -124,26 +70,6 @@ namespace dip.Models.Domain
 
         }
 
-        //public static string GetParentsId(string id, ApplicationDbContext db_ = null)
-        //{
-        //    string res = "";
-        //    var db = db_ ?? new ApplicationDbContext();
-
-        //    var cur = db.Pros.FirstOrDefault(x1 => x1.Id == id)?.Parent;
-        //    if (!string.IsNullOrWhiteSpace(cur))
-        //        if(cur.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
-        //        {
-        //            res += cur + " ";
-        //            res += Pro.GetParentsid(cur, db);
-
-        //        }
-
-
-        //    if (db_ == null)
-        //        db.Dispose();
-
-        //    return res;
-        //}
 
         //TODO вынести в обстрактный класс?? сейчас придумал только костыльный способ через объект из за метода Pro.GetChild
         //удаляет прямых родителей если и родитель и ребенок есть в строке
@@ -205,12 +131,7 @@ namespace dip.Models.Domain
             var predicate = PredicateBuilder.False<FEAction>();
             foreach (var i in list)
             {
-                //foreach (var src in Pro.SqlLikeSerchIdInString(i.Id))
-                //{
-
-                //    //predicate = predicate.Or(x1 => SqlMethods.Like(x1.Pros, src));
-                //    predicate = predicate.Or(x1 => SqlMethods.Like(x1.Pros, src));
-                //}
+              
                 predicate = predicate.Or(x1 => x1.Pros == i.Id || x1.Pros.StartsWith(i.Id + " ") ||
                  x1.Pros.EndsWith(" "+i.Id ) || x1.Pros.Contains(" " + i.Id + " "));
             }

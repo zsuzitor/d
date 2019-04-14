@@ -14,9 +14,9 @@ namespace dip.Models.Domain
         public string Name { get; set; }
         
         public string FizVelSection { get; set; }
-        public string FizVelChange { get; set; }
-        public double FizVelLeftBorder { get; set; }
-        public double FizVelRightBorder { get; set; }
+        //public string FizVelChange { get; set; }
+        //public double FizVelLeftBorder { get; set; }
+       // public double FizVelRightBorder { get; set; }
         public string Pros { get; set; }
         public string Spec { get; set; }
         public string Vrem { get; set; }
@@ -29,7 +29,7 @@ namespace dip.Models.Domain
             Type = "";
             Name = "";
             FizVelSection = "";
-            FizVelChange = "";
+           // FizVelChange = "";
             Pros = "";
             Spec = "";
             Vrem = "";
@@ -62,18 +62,6 @@ namespace dip.Models.Domain
 
 
         }
-        //public void SetFromInput(DescrSearchIOut a)
-        //{
-
-        //    Type = a?.actionTypeO;
-        //    FizVelId = a?.FizVelIdO;
-        //    FizVelSection = a?.parametricFizVelIdO;
-        //    Pros = a?.listSelectedProsO;
-        //    Spec = a?.listSelectedSpecO;
-        //    Vrem = a?.listSelectedVremO;
-
-        //}
-
 
     }
 }

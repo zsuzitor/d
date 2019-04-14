@@ -11,62 +11,16 @@ namespace dip.Models.Domain
 {
     public class Spec: ItemDescrFormCheckbox<Spec>
     {
-        //[Key]
-        //public string Id { get; set; }
-
-        //public string Name { get; set; }
-
-        //public string Parent { get; set; }
-
-        //public List<Action> Actions { get; set; }
-
-        //[NotMapped]
-        //public List<Spec> SpecChilds { get; set; }
-
+   
         public Spec()
         {
-            Actions = new List<Action>();
+            //Actions = new List<Action>();
             Childs = new List<Spec>();
 
         }
 
 
-        //public static string SortIds(string ids)
-        //{
-        //    if (ids == null)
-        //        return null;
-        //    if (string.IsNullOrWhiteSpace(ids))
-        //        return "";
-        //    var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-        //    Array.Sort(gg);
-        //    string res = string.Join(" ", gg);
-        //    //string res = string.Join(" ", ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-        //    //         OrderBy(x1 => int.Parse(x1.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries)[1])).Distinct().ToList());
-        //    return res;
-        //}
-
-
-        //public static string GetParentsId(string id, ApplicationDbContext db_ = null)
-        //{
-        //    string res = "";
-        //    var db = db_ ?? new ApplicationDbContext();
-
-        //    var cur = db.Specs.FirstOrDefault(x1 => x1.Id == id)?.Parent;
-        //    if (!string.IsNullOrWhiteSpace(cur))
-        //        if (cur.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
-        //        {
-        //            res += cur + " ";
-        //            res += Spec.GetParentsId(cur, db);
-
-        //        }
-
-
-        //    if (db_ == null)
-        //        db.Dispose();
-
-        //    return res;
-        //}
-
+   
 
 
         /// <summary>
@@ -126,12 +80,6 @@ namespace dip.Models.Domain
             var predicate = PredicateBuilder.False<FEAction>();
             foreach (var i in list)
             {
-                //foreach (var src in Spec.SqlLikeSerchIdInString(i.Id))
-                //{
-
-                //    predicate = predicate.Or(x1 => SqlMethods.Like(x1.Spec, src));
-                //}
-
 
                 predicate = predicate.Or(x1 => x1.Spec == i.Id || x1.Spec.StartsWith(i.Id + " ") ||
                    x1.Spec.EndsWith(" " + i.Id) || x1.Spec.Contains(" " + i.Id + " "));

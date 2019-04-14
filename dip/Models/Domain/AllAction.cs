@@ -13,11 +13,11 @@ namespace dip.Models.Domain
         public bool Parametric { get; set; }
 
 
-        public ICollection<Action> Actions { get; set; }
+        //public ICollection<Action> Actions { get; set; }
 
         public AllAction()
         {
-            Actions = new List<Action>();
+           // Actions = new List<Action>();
             Parametric = false;
         }
 

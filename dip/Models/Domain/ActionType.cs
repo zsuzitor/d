@@ -6,7 +6,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    //---
+    
     public class ActionType//: Item
     {
         [Key]
@@ -14,7 +14,7 @@ namespace dip.Models.Domain
         public string Name { get; set; }
         public string Parent { get; set; }
 
-        public ICollection<Action> Action { get; set; }
+        //public ICollection<Action> Action { get; set; }
 
         public ActionType()
         {

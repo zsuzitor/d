@@ -270,7 +270,7 @@ namespace dip.Models
         //[NotMapped]
         //public T ParentItem { get; set; }
 
-        public List<Models.Domain.Action> Actions { get; set; }
+       // public List<Models.Domain.Action> Actions { get; set; }
 
 
 

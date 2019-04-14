@@ -8,16 +8,10 @@ namespace dip.Models.Domain
 {
     public class StateObject: ItemFormCheckbox<StateObject>//, ICloneable
     {
-        //public string Id { get; set; }
-        //public string Name { get; set; }
-        // public string Parent { get; set; }
-
+       
         public int? CountPhase { get; set; }
 
-        //[NotMapped]
-        //public List<StateObject> Childs { get; set; }
-        //[NotMapped]
-        //public StateObject ParentItem { get; set; }
+      
 
         public List<FEText> FeTextBegin { get; set; }
         public List<FEText> FeTextEnd { get; set; }
@@ -74,11 +68,6 @@ namespace dip.Models.Domain
         }
 
 
-        //public override void LoadChild()
-        //{
-        //    if (this.Childs.Count < 1)
-        //        this.ReLoadChild();
-        //}
 
         public override void ReLoadChild()
         {
@@ -116,42 +105,6 @@ namespace dip.Models.Domain
             return res;
         }
 
-        //загружает список ближайших детей, возвращает список всех детей
-        //public override List<StateObject> GetChildsList(ApplicationDbContext db_ = null)
-        //{
-        //    List<StateObject> res = new List<StateObject>();
-        //    var db = db_ ?? new ApplicationDbContext();
-
-        //    //var par = db.StateObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
-        //    this.ReLoadChild();
-        //    res.AddRange(this.Childs);
-        //    foreach (var i in this.Childs)
-        //    {
-        //        res.AddRange(i.GetChildsList(db));
-        //    }
-            
-        //    if (db_ == null)
-        //        db.Dispose();
-
-        //    return res;
-        //}
-
-
-        //мб вынести в класс
-        //public override bool LoadPartialTree(List<StateObject> list)
-        //{
-        //    this.LoadChild();
-        //    if (list == null || list.Count < 1)
-        //        return false;
-        //    //this.LoadChild();
-        //    foreach (var i in this.Childs)
-        //    {
-        //        if (list.FirstOrDefault(x1 => x1.Id == i.Id) != null) //if (list.Contains(i))
-        //            i.LoadPartialTree(list);
-        //    }
-
-
-        //    return true;
-        //}
+      
     }
 }

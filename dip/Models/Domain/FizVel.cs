@@ -13,7 +13,7 @@ namespace dip.Models.Domain
         public string Parent { get; set; }
         public bool Parametric { get; set; }//если этот экземпляр ЯВЛЯЕТСЯ параметрическим(именно ребенком)
 
-        public ICollection< Action >Actions { get; set; }
+       // public ICollection< Action >Actions { get; set; }
 
         //? не сгенерировалось
         public ICollection<FEAction> FEActions { get; set; }
