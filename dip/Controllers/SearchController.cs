@@ -39,12 +39,8 @@ namespace dip.Controllers
         //TODO search- переименовать+ в js тоже поменять на partial
         public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
-
             
             DescriptionSearchV res = new DescriptionSearchV();
-
-
-            
             
             if (forms!=null&& objForms!=null)
             {
@@ -79,9 +75,7 @@ namespace dip.Controllers
 
                 //res.Search = true;
                 TempData["list_fe_id"] = res.SearchList;
-
-
-
+                
                 //var dict = new RouteValueDictionary();
                 //dict.Add("listId", list_id);
 

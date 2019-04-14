@@ -65,7 +65,7 @@ namespace dip.Models.Domain
 
 
 
-
+    //аналог pro\spec\vrem но для объекта(чекбоксы)
     public class PhaseCharacteristicObject : ItemFormCheckbox<PhaseCharacteristicObject>
     {
        

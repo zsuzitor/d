@@ -31,7 +31,7 @@ namespace dip.Models
         public List<FEText> FavouritedPhysics { get; set; }
 
 
-        public List<FEText> Physics { get; set; }
+        public List<FEText> Physics { get; set; }//список выданных ФЭ
         public List<ListPhysics> ListPhysics { get; set; }
 
 
@@ -584,6 +584,7 @@ namespace dip.Models
               .MapRightKey("ListPhysicsId")//id 2
               .ToTable("ApplicationUserListPhysics"));//название таблицы
 
+            //список выданных ФЭ
             modelBuilder.Entity<ApplicationUser>().HasMany(c => c.Physics)//1 класс и свойство который связываем
               .WithMany(s => s.Users)//2 класс и свойство с которым связываем
               .Map(t => t.MapLeftKey("ApplicationUserId")//id 1 которое в таблице будет
@@ -594,8 +595,8 @@ namespace dip.Models
             modelBuilder.Entity<ListPhysics>().HasMany(c => c.Physics)//1 класс и свойство который связываем
               .WithMany(s => s.Lists)//2 класс и свойство с которым связываем
               .Map(t => t.MapLeftKey("ListPhysicsId")//id 1 которое в таблице будет
-              .MapRightKey("FETextIdId")//id 2
-              .ToTable("ApplicationUserFETextId"));//название таблицы
+              .MapRightKey("FETextId")//id 2
+              .ToTable("ListPhysicsFEText"));//название таблицы
 
             
 
