@@ -14,45 +14,7 @@ using System.Web;
 
 namespace dip.Models.DataBase
 {
-    //public class OldDbContext : DbContext
-    //{
-    //    public OldDbContext()
-    //    : base("OldDb")
-    //{
-
-
-
-    //}
-    //    public DbSet<Domain.ActionPro> ActionPros { get; set; }
-    //    public DbSet<Domain.Action> Actions { get; set; }
-    //    public DbSet<ActionSpec> ActionSpecs { get; set; }
-    //    public DbSet<ActionType> ActionTypes { get; set; }
-    //    public DbSet<ActionVrem> ActionVrems { get; set; }
-    //    public DbSet<AllAction> AllActions { get; set; }
-    //    public DbSet<Chain> Chains { get; set; }
-    //    public DbSet<FEAction> FEActions { get; set; }
-    //    public DbSet<FEIndex> FEIndexs { get; set; }
-    //    public DbSet<FEObject> FEObjects { get; set; }
-    //    public DbSet<FizVel> FizVels { get; set; }
-    //    public DbSet<NewFEIndex> NewFEIndexs { get; set; }
-    //    public DbSet<NeZakon> NeZakons { get; set; }
-    //    public DbSet<Pro> Pros { get; set; }
-    //    public DbSet<ReverseChain> ReverseChains { get; set; }
-    //    public DbSet<Spec> Specs { get; set; }
-    //    public DbSet<TasksToSynthesy> TasksToSynthesys { get; set; }
-    //    public DbSet<The> Thes { get; set; }
-    //    public DbSet<ThesChild> ThesChilds { get; set; }
-    //    public DbSet<Vrem> Vrems { get; set; }
-
-
-    //    // public DbSet<ActionPro> dat { get; set; }
-
-
-
-
-    //}
-
-
+   
 
     class OldData
     {
@@ -74,178 +36,6 @@ namespace dip.Models.DataBase
             bool returnvalue = false;
 
 
-            //выгрузка еще из 1 бд
-            {
-
-
-               // return true;
-                //MSSQLSERVER
-                //var connection1 = new SqlConnection();
-                ////(LocalDb)\MSSQLLocalDB    SQLEXPRESS01
-                //// connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True";
-                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\TechnicalFunctions.mdf;Integrated Security=True";
-                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=|DataDirectory|\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
-
-
-                ////connection1.ConnectionString = @"Data Source=.\SQLEXPRESS01;AttachDbFilename=C:\rub\d_bd\1\TechnicalFunctions.mdf;Integrated Security=True;User Instance=False";
-                //connection1.ConnectionString = Constants.sql_2;
-
-                //var command1 = new SqlCommand();
-                //command1.Connection = connection1;
-                //command1.CommandType = CommandType.Text;
-               
-                //connection1.Open();
-
-
-
-
-                //Limit
-
-                //try
-                //{
-                //    command1.CommandText = "select * from Limit";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new TechnicalFunctions.Limit();
-                //        obj.Id = i["Id"].ToString().Trim();
-                //        obj.Value = i["Value"].ToString().Trim();
-                //        obj.Parent = i["Parent"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Limits.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                       
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-                //OperandGroup
-
-                //try
-                //{
-
-                //    command1.CommandText = "select * from OperandGroup";
-                    
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new TechnicalFunctions.OperandGroup();
-                //        obj.Id = i["Id"].ToString().Trim();
-                //        obj.Value = i["Value"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.OperandGroups.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-                //Operation
-
-                //try
-                //{
-                //    command1.CommandText = "select * from Operation";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "Parent");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new TechnicalFunctions.Operation();
-                //        obj.Id = i["Id"].ToString().Trim();
-                //        obj.Value = i["Value"].ToString().Trim();
-                //        obj.Parent = i["Parent"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Operations.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-
-                //Operand
-
-                //try
-                //{
-                //    command1.CommandText = "select * from Operand";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "Value", "OperandGroupId");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new TechnicalFunctions.Operand();
-                //        obj.Id = i["Id"].ToString().Trim();
-                //        obj.Value = i["Value"].ToString().Trim();
-                //        obj.OperandGroupId = i["OperandGroupId"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Operands.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-                //Index
-                //try
-                //{
-                //    command1.CommandText = "select * from [Index]";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command1, "Id", "OperationId", "OperandId", "LimitId", "EffectIds");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new TechnicalFunctions.Index();
-                //        obj.Id = i["Id"].ToString().Trim();
-                //        obj.OperationId = i["OperationId"].ToString().Trim();
-                //        obj.OperandId = i["OperandId"].ToString().Trim();
-                //        obj.LimitId = i["LimitId"].ToString().Trim();
-                //        obj.EffectIds = i["EffectIds"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Indexs.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                   
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-                //connection1.Close();
-                //command1.Dispose();
-                
-
-            }
 
 
             
@@ -390,99 +180,6 @@ namespace dip.Models.DataBase
 
 
 
-                //Actions
-               // List<dynamic> ActionsList = new List<dynamic>();
-                //try
-                //{
-
-
-                //    //костль для восстановления id, для того что бы начиналось с 134, можно при создании таблицы указывать начальный id
-                //    for (var i = 0; i < 133; ++i)
-                //    {
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            var obj = new Domain.Action();
-                //            db.Actions.Add(obj);
-                //            db.SaveChanges();
-                //            db.Actions.Remove(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-
-
-
-                //    command.CommandText = "select * from Actions";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "actionId", "actionType", "fizVelId");
-                //    foreach (var i in ldr)
-                //    {
-                //        //ActionsList.Add(new {
-                //        //    Id = Convert.ToInt32(i["id"].ToString().Trim()),
-                //        //    AllActionId = i["actionId"].ToString().Trim(),
-                //        //    ActionType_Id = i["actionType"].ToString().Trim(),
-                //        //    FizVelId = i["fizVelId"].ToString().Trim(),
-
-                //        //});
-                //        var obj = new Domain.Action();
-                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                //        obj.AllActionId = i["actionId"].ToString().Trim();
-                //        obj.ActionType_Id = i["actionType"].ToString().Trim();
-                //        obj.FizVelId = i["fizVelId"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Actions.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-                //ActionPros
-
-                //try
-                //{
-                //    //костль для восстановления id, для того что бы начиналось с 207, по идеи это не нужно, 
-                //    //for (var i = 0; i < 207; ++i)
-                //    //{
-                //    //    using (var db = new ApplicationDbContext())
-                //    //    {
-                //    //        var obj = new Domain.ActionPro();
-                //    //        db.ActionPros.Add(obj);
-                //    //        db.SaveChanges();
-                //    //        db.ActionPros.Remove(obj);
-                //    //        db.SaveChanges();
-                //    //    }
-                //    //}
-
-
-
-                //    //после action, pro
-                //    command.CommandText = "select * from ActionPros";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "prosId");
-                //    foreach (var i in ldr)
-                //    {
-                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                //        var ProId = i["prosId"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                //            act.Pros.Add(db.Pros.First(x1 => x1.Id == ProId));
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
               
 
 
@@ -516,48 +213,7 @@ namespace dip.Models.DataBase
 
 
 
-                //ActionSpec
-
-
-                //try
-                //{
-                //    //костль для восстановления id, для того что бы начиналось с 212
-                //    //for (var i = 0; i < 211; ++i)
-                //    //{
-                //    //    using (var db = new ApplicationDbContext())
-                //    //    {
-                //    //        var obj = new Domain.ActionSpec();
-                //    //        db.ActionSpecs.Add(obj);
-                //    //        db.SaveChanges();
-                //    //        db.ActionSpecs.Remove(obj);
-                //    //        db.SaveChanges();
-                //    //    }
-                //    //}
-
-
-                //    command.CommandText = "select * from ActionSpec";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "specId");
-                //    foreach (var i in ldr)
-                //    {
-                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                //        var SpecId = i["specId"].ToString().Trim();
-
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                //            act.Specs.Add(db.Specs.First(x1 => x1.Id == SpecId));
-                //            db.SaveChanges();
-                //        }
-                //    }
-
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
+               
 
 
 
@@ -596,54 +252,7 @@ namespace dip.Models.DataBase
 
 
 
-                //ActionVrem
-
-
-
-                //try
-                //{
-                //    //костль для восстановления id, для того что бы начиналось с 212
-                //    //for(var i = 0; i < 211; ++i)
-                //    //{
-                //    //    using (var db = new ApplicationDbContext())
-                //    //    {
-                //    //        var obj = new Domain.ActionVrem();
-                //    //        db.ActionVrems.Add(obj);
-                //    //        db.SaveChanges();
-                //    //        db.ActionVrems.Remove(obj);
-                //    //        db.SaveChanges();
-                //    //    }
-                //    //}
-                //    command.CommandText = "select * from ActionVrem";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "actionId", "vremId");
-                //    foreach (var i in ldr)
-                //    {
-                //        var ActionId = Convert.ToInt32(i["actionId"].ToString().Trim());
-                //        var VremId = i["vremId"].ToString().Trim();
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            var act = db.Actions.First(x1 => x1.Id == ActionId);
-                //            act.Vrems.Add(db.Vrems.First(x1 => x1.Id == VremId));
-
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-
-                
-
-                //---- Chains
-
-
+               
 
 
 
@@ -673,66 +282,26 @@ namespace dip.Models.DataBase
                             obj.FizVelId = obj.FizVelSection;
                             obj.FizVelSection = tmp;
                         }
-                            //
-                        //    obj.FizVelChange = i["fizVelChange"].ToString().Trim();
-                        //obj.FizVelLeftBorder = Convert.ToDouble(i["fizVelLeftBorder"].ToString().Trim());
-                        //obj.FizVelRightBorder = Convert.ToDouble(i["fizVelRightBorder"].ToString().Trim());
-
-                        //
+                           
                         {
                             //TODO
                             obj.Pros = i["pros"].ToString().Trim();
                             obj.Pros = Pro.SortIds(obj.Pros);
-                            //string prs = "";
-                            //string prsRes = "";
-                            //if (!string.IsNullOrWhiteSpace(obj.Pros))
-                            //{
-                            //    foreach (var pr in obj.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                            //    {
-                            //        prs = pr + " " + Pro.GetParents(pr);
-                            //        prsRes += prs + " ";
-                            //    }
-
-                            //}
-
-
-                            //obj.Pros = Pro.SortIds(prsRes);
+                           
                         }
                         //
                         {
                             //TODO
                             obj.Spec = i["spec"].ToString().Trim();
                             obj.Spec = Spec.SortIds(obj.Spec);
-                            //string spc = "";
-                            //string spcRes = "";
-                            //if (!string.IsNullOrWhiteSpace(obj.Spec))
-                            //{
-                            //    foreach (var sp in obj.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                            //    {
-                            //        spc = sp + " " + Spec.GetParents(sp);
-                            //        spcRes += spc + " ";
-                            //    }
-
-                            //}
-                            //obj.Spec = Spec.SortIds(spcRes);
+                          
                         }
                         //
                        
                         {
                             obj.Vrem = i["vrem"].ToString().Trim();
                             obj.Vrem = Vrem.SortIds(obj.Vrem);
-                            //string vrm = "";
-                            //string vrmRes = "";
-                            //if (!string.IsNullOrWhiteSpace(obj.Vrem))
-                            //{
-                            //    foreach (var vr in obj.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
-                            //    {
-                            //        vrm = vr + " " + Vrem.GetParents(vr);
-                            //        vrmRes += vrm + " ";
-                            //    }
-
-                            //}
-                            //obj.Vrem = Vrem.SortIds(vrmRes);
+                           
                         }
 
                         //
@@ -769,16 +338,6 @@ namespace dip.Models.DataBase
                         });
 
 
-                        //var obj = new Domain.FEIndex();
-
-                        //obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                        //obj.Index = i["Index"].ToString().Trim();
-
-                        //using (var db = new ApplicationDbContext())
-                        //{
-                        //    db.FEIndexs.Add(obj);
-                        //    db.SaveChanges();
-                        //}
                     }
 
                 }
@@ -829,77 +388,7 @@ namespace dip.Models.DataBase
 
 
 
-                //выгрузка из существующей бд не все записи заносятся
-
-                //try
-                //{
-                //    command.CommandText = "select * from FeObject";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "begin", "phaseState", "composition", "magneticStructure",
-                //        "conductivity", "mechanicalState", "opticalState", "special");
-
-                //    int lastIdfe = -1;
-                //    int lastBegin = -1;
-                //    int NumPhase = 1;
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new Domain.FEObject();
-
-                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-
-                //        obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
-                //        obj.Begin = Convert.ToInt32(i["begin"].ToString().Trim());
-
-                //        //if (lastIdfe==-1)
-                //        //{
-                //        //    lastIdfe = obj.Idfe;
-                //        //    lastBegin = obj.Begin;
-                //        //}
-                //        //else
-                //        {
-                //            if (lastIdfe == obj.Idfe && lastBegin == obj.Begin)
-                //            {
-                //                NumPhase++;
-                //            }
-                //            else
-                //            {
-                //                NumPhase = 1;
-                //            }
-                //            lastIdfe = obj.Idfe;
-                //            lastBegin = obj.Begin;
-                //        }
-                //        obj.NumPhase = NumPhase;
-
-                //        obj.PhaseState = i["phaseState"].ToString().Trim();
-                //        obj.Composition = i["composition"].ToString().Trim();
-                //        obj.MagneticStructure = i["magneticStructure"].ToString().Trim();
-                //        obj.Conductivity = i["conductivity"].ToString().Trim();
-                //        obj.MechanicalState = i["mechanicalState"].ToString().Trim();
-                //        obj.OpticalState = i["opticalState"].ToString().Trim();
-                //        {
-                //            string[] tmpSpecial = i["special"].ToString().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                //            if (tmpSpecial != null)
-                //                foreach (var i2 in tmpSpecial)
-                //                {
-                //                    if (i2[0] == 'C')
-                //                        obj.Special += " ";
-                //                    obj.Special += i2;
-                //                }
-                //        }
-
-                //        //obj.Special = i["special"].ToString().Trim();
-
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.FEObjects.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
+              
 
 
 
@@ -949,30 +438,6 @@ namespace dip.Models.DataBase
                 }
 
 
-                //using (var db = new ApplicationDbContext())
-                //{
-                //    db.StateObjects.Add(new StateObject()
-                //    {
-                //        Id = "MONOFAZ",
-                //        Name = "Однофазное",
-                //        Parent = "STRUCTOBJECT",//ALLSTATE
-                //        CountPhase = 1
-                //    });
-                //    db.StateObjects.Add(new StateObject()
-                //    {
-                //        Id = "POLYFAZ",
-                //        Name = "Многофазное",
-                //        Parent = "STRUCTOBJECT"
-
-                //    });
-                //    db.SaveChanges();
-                //}
-                ////state phase
-                //LoadStateObject("MONOFAZ");
-                //LoadStateObject("POLYFAZ");
-
-                //LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
-
 
 
                 //NewFeIndex
@@ -992,25 +457,6 @@ namespace dip.Models.DataBase
                             Idfe= Convert.ToInt32(i["idfe"].ToString().Trim())
                         });
                         
-
-
-
-                        //var obj = new Domain.NewFEIndex();
-
-                        //obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                        //obj.Idfe = Convert.ToInt32(i["idfe"].ToString().Trim());
-                        //obj.Input = i["input"].ToString().Trim();
-                        //obj.Output = i["output"].ToString().Trim();
-                        //obj.BeginObjectState = i["beginObjectState"].ToString().Trim();
-                        //obj.EndObjectState = i["endObjectState"].ToString().Trim();
-                        //obj.BeginPhase = i["beginPhase"].ToString().Trim();
-                        //obj.EndPhase = i["endPhase"].ToString().Trim();
-
-                        //using (var db = new ApplicationDbContext())
-                        //{
-                        //    db.NewFEIndexs.Add(obj);
-                        //    db.SaveChanges();
-                        //}
                     }
 
 
@@ -1093,29 +539,7 @@ namespace dip.Models.DataBase
                                     break;
                             }
                            
-
-
-                            //if (obj.StateBeginId== "MONOFAZ")
-                            //{
-                            //    if (obj.StateEndId == "MONOFAZ")
-                            //    {
-                            //        if (tmpobj.Count != 2)
-                            //            throw;
-                            //    }
-                            //    else
-                            //    {
-                            //        if (tmpobj.Count != 1)
-                            //            throw;
-                            //    }
-                                
-                            //}
-                            //switch (tmpobj.Count)
-                            //{
-                            //    case 0:
-                            //        break;
-
-
-                            //}
+                            
 
                             }
                         
@@ -1131,12 +555,7 @@ namespace dip.Models.DataBase
                             //{
                             db.FEText.Add(i);
                             db.SaveChanges();
-                            //}
-                            //catch
-                            //{
-                            //    var asd = 10;
-                            //}
-
+                         
 
                             while (tmpId != i.IDFE)
                             {
@@ -1145,14 +564,7 @@ namespace dip.Models.DataBase
                                 db.FEText.Add(i);
                                 db.SaveChanges();
                             }
-                            //if (i.IDFE == 1)
-                            //{
-                            //    i.StateBeginId = "MONOFAZ";
-                            //}
-                            //else if(i.IDFE==1282){
-                            //    i.StateBeginId = "MONOFAZ";
-                            //    i.StateEndId = "MONOFAZ";
-                            //}
+                           
                             if (string.IsNullOrWhiteSpace(i.StateBeginId))
                             {
                                 i.StateBeginId = "MONOFAZ";
@@ -1324,203 +736,11 @@ namespace dip.Models.DataBase
                 //    throw e;
                 //}
 
-
-
-
                 
-
-
-
-               
-
-
-
-                //NeZakon
-
-
-
-                //try
-                //{
-                //    command.CommandText = "select * from NeZakon";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "FizVel1", "FizVel2");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new Domain.NeZakon();
-                        
-                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                //        obj.FizVel1 = i["FizVel1"].ToString().Trim();
-                //        obj.FizVel2 = i["FizVel2"].ToString().Trim();
-                        
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.NeZakons.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-                
-
-
-
-                //------ReverseChains
-
-
-
-
-                
-
-
-
-
-                //-----TasksToSynthesys
-
-
-
-
-
-                //Thes
-
-
-                //try
-                //{
-                //    command.CommandText = "select * from Thes";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent", "compatible", "path");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new Domain.The();
-                        
-                //        obj.Id = i["id"].ToString().Trim();
-                //        obj.Name = i["name"].ToString().Trim();
-                //        obj.Parent = i["parent"].ToString().Trim();
-                        
-                //        if (string.IsNullOrWhiteSpace(i["compatible"].ToString().Trim()))
-                //            obj.Compatible = null;
-                //        else
-                //            obj.Compatible = i["compatible"].ToString().Trim();
-                        
-                //        if (string.IsNullOrWhiteSpace(i["path"].ToString().Trim()))
-                //            obj.Path = null;
-                //        else
-                //            obj.Path = i["path"].ToString().Trim();
-                        
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.Thes.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
-
-
-
-                //ThesChild
-
-
-
-                //try
-                //{
-                //    command.CommandText = "select * from ThesChild";
-                //    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "nodeID", "childID", "order");
-                //    foreach (var i in ldr)
-                //    {
-                //        var obj = new Domain.ThesChild();
-                        
-                //        obj.Id = Convert.ToInt32(i["id"].ToString().Trim());
-                //        obj.NodeID = i["nodeID"].ToString().Trim();
-                //        obj.ChildID = i["childID"].ToString().Trim();
-                //        if (i["order"].ToString().Trim() == null || i["order"].ToString().Trim() == "")
-                //            obj.Order = null;
-                //        else
-                //            obj.Order = Convert.ToInt32(i["order"].ToString().Trim());
-                        
-                //        using (var db = new ApplicationDbContext())
-                //        {
-                //            db.ThesChilds.Add(obj);
-                //            db.SaveChanges();
-                //        }
-                //    }
-                    
-                //}
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-                //using (var db = new ApplicationDbContext())
-                //{
-                //    FixOldFeRecord(db);
-                //}
-
-
-
-
-                //thes theschild 2
-
-                //using (var db=new ApplicationDbContext())
-                //{
-                //    db.StateObjects.Add(new StateObject()
-                //    {
-                //        Id="MONOFAZ",
-                //        Name= "Однофазное",
-                //        Parent= "STRUCTOBJECT",//ALLSTATE
-                //        CountPhase=1
-                //    });
-                //    db.StateObjects.Add(new StateObject()
-                //    {
-                //        Id = "POLYFAZ",
-                //        Name = "Многофазное",
-                //        Parent = "STRUCTOBJECT"
-
-                //    });
-                //    db.SaveChanges();
-                //}
-                //LoadStateObject("MONOFAZ");
-                //LoadStateObject("POLYFAZ");
-
-                //LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
-
-
-
-
-
-
-
 
                 returnvalue = true;
 
-
-
-
                 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 connection.Close();
                 command.Dispose();
