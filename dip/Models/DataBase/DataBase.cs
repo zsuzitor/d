@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace dip.Models.DataBase
 {
@@ -73,5 +75,39 @@ namespace dip.Models.DataBase
 
             return res;
         }
+
+
+        //public class FullTextSearch_
+        //{
+
+
+            public static bool CreateAllForFullTextSearch()
+            {
+
+
+
+                //1-создать каталог
+                //2- добавить индекс
+                //3- апнуть индекс до семантического
+                List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
+
+                var connection = new SqlConnection();
+                connection.ConnectionString = Constants.sql_0;
+                connection.Open();
+                foreach (var i in files)
+                {
+                    string script = File.ReadAllText(HostingEnvironment.MapPath($"~/tsqlscripts/{i}.txt"));
+
+                    using (var command = new SqlCommand(script, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                connection.Close();
+                return true;
+            }
+        //}
+
+
     }
 }

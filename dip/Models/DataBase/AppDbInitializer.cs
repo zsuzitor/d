@@ -63,7 +63,7 @@ namespace dip.Models.DataBase
             //строим индексы lucene
             Lucene_.BuildIndex();
             //строим индексы sql server
-            FullTextSearch_.Create();
+            DataBase.CreateAllForFullTextSearch();
 
             base.Seed(context);
         }
