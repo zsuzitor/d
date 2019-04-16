@@ -212,11 +212,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ChangeLatex.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\CustomException\NotFoundException.cs" />
     <Compile Include="Models\DataBase\AppDbInitializer.cs" />
     <Compile Include="Models\DataBase\DataBase.cs" />
     <Compile Include="Models\DataBase\OldDbContext.cs" />
+    <Compile Include="Models\DescriptionFormWithData.cs" />
+    <Compile Include="Models\DescrObjectI.cs" />
+    <Compile Include="Models\DescrPhaseI.cs" />
+    <Compile Include="Models\DescrSearchI.cs" />
     <Compile Include="Models\Domain\ActionType.cs" />
     <Compile Include="Models\Domain\AllAction.cs" />
     <Compile Include="Models\Domain\CharacteristicObject.cs" />
@@ -229,6 +234,7 @@
     <Compile Include="Models\Domain\ListPhysics.cs" />
     <Compile Include="Models\Domain\Log.cs" />
     <Compile Include="Models\Domain\LogParam.cs" />
+    <Compile Include="Models\Domain\PhaseCharacteristicObject.cs" />
     <Compile Include="Models\Domain\Pro.cs" />
     <Compile Include="Models\Domain\Spec.cs" />
     <Compile Include="Models\Domain\StateObject.cs" />
@@ -237,10 +243,14 @@
     <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Interface.cs" />
-    <Compile Include="Models\LuceneMore\RussianLightStemmer.cs" />
-    <Compile Include="Models\LuceneMore\StemmerUtil.cs" />
+    <Compile Include="Models\LuceneModels\RussianLightStemmer.cs" />
+    <Compile Include="Models\LuceneModels\StemmerUtil.cs" />
     <Compile Include="Models\Lucene_.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SaveDescription.cs" />
+    <Compile Include="Models\SaveDescriptionEntry.cs" />
+    <Compile Include="Models\SaveDescriptionObject.cs" />
+    <Compile Include="Models\SaveDescriptionObjectEntry.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeActionV.cs" />
     <Compile Include="Models\ViewModel\ActionsV\ChangeStateObjectV.cs" />
@@ -353,7 +363,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Limits\Index.cshtml" />
     <Content Include="Views\Physic\Create.cshtml" />
     <Content Include="Views\Actions\GetFizVels.cshtml" />
     <Content Include="Views\Actions\GetPros.cshtml" />
@@ -361,7 +370,6 @@
     <Content Include="Views\Actions\GetVrem.cshtml" />
     <Content Include="Views\Actions\GetParametricFizVels.cshtml" />
     <Content Include="Views\Actions\GetProsChild.cshtml" />
-    <Content Include="Views\Actions\GetEmptyChild.cshtml" />
     <Content Include="Views\Actions\GetSpecChild.cshtml" />
     <Content Include="Views\Actions\GetVremChild.cshtml" />
     <Content Include="Views\Actions\ChangeAction.cshtml" />
@@ -455,7 +463,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\luceneModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

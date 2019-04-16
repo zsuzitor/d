@@ -202,17 +202,36 @@
                 type: 'POST',
                 data: data,
                 cache: false,
-                dataType: 'json',
+                dataType: 'html',
                 processData: false, // Не обрабатываем файлы (Don't process the files)
                 contentType: false, // Так jQuery скажет серверу что это строковой запрос
-                //success: function (respond, textStatus, jqXHR) {
-
-                //    alert("Запись создана успешно, ссылка- " + respond);
-                //},
+                
                 complete: function (respond, textStatus, jqXHR) {
-                    if (respond.status==200)
-                        alert("Запись изменена успешно, ссылка- " + window.location.origin + respond.responseText);
-                }
+                if (respond.status == 201)
+                    alert("Запись изменена успешно, ссылка- " + window.location.origin + respond.responseText);
+                    //if (respond.status==200)
+                    //    alert("Запись создана успешно, ссылка- " + window.location.origin + respond.responseText);
+                if (respond.status == 220)
+                    alert("Запись не изменена, поля записи или состояний заполнены не верно");
+                if (respond.status == 221)
+                    alert("Запись не изменена, возникла ошибка с входными\выходными дескрипторами");
+                if (respond.status == 222)
+                    alert("Запись не изменена, возникла ошибка с состоянием объекта или его характеристиками");
+                if (respond.status == 223)
+                    alert("Запись не изменена,не найден редактируемый объект");
+                if (respond.status == 224)
+                    alert("Запись не изменена, данная запись редактируется только на странице полнотекстового поиска, в разделе 'семантический поиск'");
+                if (respond.status == 225)
+                    alert("Запись не изменена, что то пошло не так");
+                PreloaderShowChange(false);
+            },
+            beforeSend: function () {
+                   
+                PreloaderShowChange(true);
+            },
+            error: function (xhr, status, error) {
+                alert("ошибка загрузки");
+            }
             });
         };
         Go_next_step();

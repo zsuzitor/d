@@ -146,31 +146,31 @@ namespace dip.Controllers
         {
             bool commited = false;
             if (obj.IDFE == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(224);
             if (!ModelState.IsValid)
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(220);
             if (!obj.Validation())
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(220);
             if((obj.CountInput != 1 && forms.Length != 3)||(obj.CountInput == 1 && forms.Length != 2))
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(221);
             if ((obj.ChangedObject&& objForms.Length!=2)||(!obj.ChangedObject && objForms.Length != 1))
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(222);
             FEText oldObj = FEText.Get(obj.IDFE);
             if (oldObj == null)
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(223);
 
             foreach (var i in forms)
             {
                 DescrSearchI.Validation(i);
                 if (i?.Valide == false)
-                    return new HttpStatusCodeResult(404);
+                    return new HttpStatusCodeResult(221);
                 i.DeleteNotChildCheckbox();
             }
             foreach (var i in objForms)
             {
                 DescrObjectI.Validation(i);
                 if (i?.Valide == false)
-                    return new HttpStatusCodeResult(404);
+                    return new HttpStatusCodeResult(222);
             }
             
 
@@ -188,11 +188,11 @@ namespace dip.Controllers
             if (commited)
             {
                 //return new HttpStatusCodeResult(404);
-              
+                Response.StatusCode = 201;
                 return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
             }
             else
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(225);
 
             
         }
@@ -230,7 +230,9 @@ namespace dip.Controllers
         public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null,string[]latexformulas=null)
         {
 
-            
+            //Response.StatusCode = 201;
+            //return Content("+", "text/html");
+           // return new HttpStatusCodeResult(221);
 #if debug
             if (!ModelState.IsValid)
             {
@@ -247,16 +249,16 @@ namespace dip.Controllers
 #endif
             
                 if (!ModelState.IsValid)
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(220);
 
             if (!obj.Validation())
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(220);
 
 
             if ((obj.CountInput != 1 && forms.Length != 3) || (obj.CountInput == 1 && forms.Length != 2))
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(221);
             if ((obj.ChangedObject && objForms.Length != 2) || (!obj.ChangedObject && objForms.Length != 1))
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(222);
 
 
 
@@ -264,7 +266,7 @@ namespace dip.Controllers
             {
                 DescrSearchI.Validation(i);
                 if (i?.Valide == false)
-                    return new HttpStatusCodeResult(404);
+                    return new HttpStatusCodeResult(221);
                 i.DeleteNotChildCheckbox();
             }
             
@@ -272,7 +274,7 @@ namespace dip.Controllers
             {
                 DescrObjectI.Validation(i);
                 if (i?.Valide == false)
-                    return new HttpStatusCodeResult(404);
+                    return new HttpStatusCodeResult(222);
             }
 
 
@@ -282,11 +284,15 @@ namespace dip.Controllers
 
             //новая
             bool success=obj.AddToDb(forms, objForms, list_img_byte, latexformulas);
+
             
-            if(success&&obj!=null&&obj.IDFE>0)
-            return Content(Url.Action("Details", "Physic",new {id=obj.IDFE }), "text/html");
+            if (success && obj != null && obj.IDFE > 0)
+            {
+                Response.StatusCode = 201;
+                return Content(Url.Action("Details", "Physic", new { id = obj.IDFE }), "text/html");
+            }
             else
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(225);
 
         }
 

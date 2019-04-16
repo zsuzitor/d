@@ -6,9 +6,6 @@
 <h2>ChangeRole</h2>
 
 
-@*@using (Html.BeginForm("AddRole", "Admin"))
-    {*@
-
 <div>
     <select class="cursor_pointer form-control" name="roleName" id="roleNameSelect_id">
         @foreach (var i in Model.Roles)
@@ -21,49 +18,14 @@
     <hr />
     <p>Введите id пользователя или выберите пользователя из списка</p>
     <input onchange="changeUserId()" placeholder="id пользователя" class="form-control" name="userId" id="userIdInput_id" type="text" />
-    @*<p>Получить id пользователя по username</p>или username
-    <input placeholder="username пользователя" class="form-control" name="username" id="usernameInput_id" type="text" />
-    <button class="btn btn-default" onclick="GetIdByUsername()">Получить id</button>*@
-
+   
 
     <p>Присвоенные роли можно просмотреть на странице пользователя</p>
     <button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
     <div id="idCurrentUser_id"></div>
 
-    @*<div class="padding_50_top"></div>
-    <button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>*@
 </div>
 
-    @*<div class="changeRoleAllUserList" id="ListAllUsers_id" style="display:none;">
-
-    </div>*@
-
-
-
-@*<div class="div_inline_block changeRoleHalfMain">
-    <input class="form-control" name="userId" id="userIdInput_id" type="text" />
-    <p>Присвоенные роли можно просмотреть на странице пользователя</p>
-    <button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
-    <div id="idCurrentUser_id"></div>
- 
-    <div class="padding_50_top"></div>
-    <button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>
-    <div id="ListAllUsers_id" style="display:none;">
-
-    </div>
-    
-    </div><div class="div_inline_block changeRoleHalfMain">
-               <select class="cursor_pointer form-control" name="roleName" id="roleNameSelect_id">
-                   @foreach (var i in Model.Roles)
-                   {
-                       <option value="@i">@i</option>
-                   }
-               </select>
-               <button class="btn btn-default" onclick="AddRole()">Выдать роль</button>
-               <button class="btn btn-default" onclick="RemoveRole()">Забрать роль</button>
-    </div>*@
-
-@*}*@
 
 
 

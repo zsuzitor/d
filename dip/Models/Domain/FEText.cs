@@ -500,10 +500,15 @@ order by data.score desc";
                 foreach (var i in states)
                     if (i.CountPhase == null)
                         return false;
+
+                if (this.ChangedObject && states.Count < 2)
+                    return false;
+                if (states.Count ==0)
+                    return false;
             }
+            
 
-
-                return true;
+            return true;
         }
 
         public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null, string[] latexformulas = null)

@@ -331,22 +331,33 @@ namespace dip.Models
                 }
                 dictGrammReg[1] = "газ.{0,5}";
                 Dictionary<int, int> dictWeight = new Dictionary<int, int>();
-                var listfe = db.FEText.Select(x1 => new { id = x1.IDFE, text = x1.Text }).ToList();
-                foreach (var i in listfe)
-                {
-                    for (int numgr = 1; numgr < dictGrammReg.Count + 1; ++numgr)
-                    {
-                        Regex regex = new Regex(dictGrammReg[numgr]);
-                        var resreg = regex.Matches(i.text);
-                        if (!dictWeight.ContainsKey(i.id))
-                            dictWeight[i.id] = resreg.Count * numgr;
-                        else
-                            dictWeight[i.id] += resreg.Count * numgr;
-                    }
 
+
+                int feCount = db.FEText.Count();
+                int countOneLoad = 1000;
+                for(int i2=0;i2<= feCount / countOneLoad; ++i2)
+                {
+                    var listfe = db.FEText.OrderBy(x1=>x1.IDFE).Skip(i2* countOneLoad).Take(countOneLoad).Select(x1 => new { id = x1.IDFE, text = x1.Text }).ToList();
+                    foreach (var i in listfe)
+                    {
+                        for (int numgr = 1; numgr < dictGrammReg.Count + 1; ++numgr)
+                        {
+                            Regex regex = new Regex(dictGrammReg[numgr]);
+                            var resreg = regex.Matches(i.text);
+                            if (!dictWeight.ContainsKey(i.id))
+                                dictWeight[i.id] = resreg.Count * numgr;
+                            else
+                                dictWeight[i.id] += resreg.Count * numgr;
+                        }
+
+                    }
                 }
-               
-                res = user.CheckAccessPhys(dictWeight.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
+
+                //var gasd = dictWeight.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).ToList();
+
+
+
+                res = user.CheckAccessPhys(dictWeight.Where(x1 => x1.Value > 0).OrderByDescending(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
                     SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
 
                 
