@@ -1,0 +1,54 @@
+﻿@model dip.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "EditPersonalRecord";
+}
+
+<h2>EditPersonalRecord</h2>
+@Html.ActionLink("Вернуться к просмотру", "PersonalRecord", "Person")
+
+
+<br />
+<label>Имя</label>
+<input class="form-control" type="text" value="@Model.Name" id="NameUser"/>
+@*,new {@class= "" }*@
+<br />
+<label>Фамилия</label>
+<input class="form-control" type="text" value="@Model.Surname" id="SurnameUser" />
+<br />
+<label>Дата рождения</label>
+<input class="form-control" type="date" value="@Model.Birthday" id="BirthdayUser" />
+<br />
+
+<label>Мужчина</label>
+<input class="checkBoxClass" type="checkbox" value="@Model.Male" id="MaleUser" />
+<br />
+
+
+<button  class="btn btn-default" onclick="editPersonalRecordSave()">Сохранить</button>
+
+
+@Html.Action("Index", "Manage", new { partial = true })
+
+<script>
+    function editPersonalRecordSave() {
+        var formData = { 
+            'user.Name': document.getElementById('NameUser').value,
+            'user.Surname': document.getElementById('SurnameUser').value,
+            'user.Birthday': document.getElementById('BirthdayUser').value,
+            'user.Male': document.getElementById('MaleUser').checked,
+           };
+        goAjaxRequest({
+            url: "/Person/EditPersonalRecord",
+            data: formData,
+            func_success: function (req, status, jqXHR) {
+                alert(req);
+
+
+            }, type: 'POST'
+        });
+
+
+    }
+
+</script>

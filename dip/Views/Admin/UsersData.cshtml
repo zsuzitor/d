@@ -8,12 +8,21 @@
 
 <p>Введите id  пользователя или выберите пользователя из списка</p>
 <input onchange="changeUserId()" placeholder="id пользователя" class="form-control" name="userId" id="userIdInput_id" type="text" />
-<p>Получить id пользователя по username</p>
-<input placeholder="username пользователя" class="form-control" name="username" id="usernameInput_id" type="text" />
-<button class="btn btn-default" onclick="GetIdByUsername()">Получить id</button>
-
 <button class="btn btn-default" onchange="clearLinkUser()" onclick="showLinkCurUser()">Показать ссылку на страницу пользователя</button>
 <div id="idCurrentUser_id"></div>
+
+<p>Получить id пользователя по username</p>
+<input placeholder="username пользователя" class="form-control" name="username" id="usernameInput_id" type="text" />
+<button class="btn btn-default" onclick="GetIdByUsername()">Получить id по username</button>
+<br />
+<p>Получить id пользователя по имени и фамилии</p>
+<input placeholder="Имя пользователя" class="form-control" name="nameOfUser" id="nameOfuserInput_id" type="text" />
+<input placeholder="Фамилия пользователя" class="form-control" name="surnameOfUser" id="surnameOfuserInput_id" type="text" />
+<button class="btn btn-default" onclick="GetIdByNameSurname()">Получить id  по имени и фамилии</button>
+<div class="changeRoleAllUserList" id="ListFIUsers_id" style="display:none;">
+
+</div>
+
 
 <div class="padding_50_top"></div>
 <button class="btn btn-default" id="butLoadAllUsers" onclick="LoadAllUsers()">Показать всех пользователей</button>
@@ -49,6 +58,27 @@
                 else {
                     alert('Не найдено');
                     document.getElementById('userIdInput_id').value = '';
+                }
+
+            }, type: 'GET'
+        });
+    }
+
+
+    function GetIdByNameSurname() {
+        goAjaxRequest({
+            url: "/Admin/GetUserIdByFI",
+            data: { name: document.getElementById('nameOfuserInput_id').value, surname: document.getElementById('surnameOfuserInput_id').value },
+            func_success: function (req, status, jqXHR) {
+                let div= document.getElementById('ListFIUsers_id');
+                if (req.trim()) {
+                    div.innerHTML = req;
+                    div.style.display = 'block';
+                }
+                else {
+                    alert('Не найдено');
+                   
+                    div.style.display = 'none';
                 }
 
             }, type: 'GET'

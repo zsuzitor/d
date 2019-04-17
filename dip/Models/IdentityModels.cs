@@ -19,6 +19,7 @@ namespace dip.Models
 
         public string Name { get; set; }
         public string Surname { get; set; }
+        public bool? Male { get; set; }
         public DateTime? Birthday { get; set; }
         public DateTime DateRegistration { get; set; }
         //TODO раскомментить
@@ -44,7 +45,7 @@ namespace dip.Models
             Birthday = null;
             DateRegistration = DateTime.Now;
             CloseProfile = false;
-
+            Male = null;
             FavouritedPhysics = new List<FEText>();
 
             Physics = new List<FEText>();
@@ -95,6 +96,21 @@ namespace dip.Models
                 db.Dispose();
             return res;
         }
+
+
+        public static void Edit(ApplicationUser user)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var old=ApplicationUser.GetUser(user.Id,db);
+                old.Name = user.Name;
+                old.Surname = user.Surname;
+                old.Birthday = user.Birthday;
+                old.Male = user.Male;
+                db.SaveChanges();
+            }
+        }
+
 
         public void LoadFavouritedList()
         {

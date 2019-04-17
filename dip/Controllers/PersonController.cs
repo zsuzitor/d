@@ -53,6 +53,33 @@ namespace dip.Controllers
         }
 
         /// <summary>
+        ///  Отрисовывает страницу пользователя для редактирования
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult EditPersonalRecord()
+        {
+            var res=ApplicationUser.GetUser(ApplicationUser.GetUserId());
+
+            return View(res);
+        }
+
+        /// <summary>
+        /// post- сохраняет изменения пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public ActionResult EditPersonalRecord(ApplicationUser user)
+        {
+            user.Id = ApplicationUser.GetUserId();
+            ApplicationUser.Edit(user);
+
+            return Content("Сохранено", "text/html");
+        }
+
+        /// <summary>
         /// Отрисовывает список ролей пользователя
         /// </summary>
         /// <param name="personId">id пользователя</param>

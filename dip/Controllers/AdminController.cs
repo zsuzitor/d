@@ -129,7 +129,11 @@ namespace dip.Controllers
             return PartialView(users);
         }
 
-
+        /// <summary>
+        /// Возвращает id пользователя
+        /// </summary>
+        /// <param name="username">username пользователя для которого нужно определить id</param>
+        /// <returns></returns>
         public ActionResult GetUserIdByUsername(string username)
         {
             using (var db = new ApplicationDbContext())//TODO
@@ -146,6 +150,43 @@ namespace dip.Controllers
 
             
     }
+
+        /// <summary>
+        ///  Возвращает список подходящих пользователей
+        /// </summary>
+        /// <param name="name">Имя</param>
+        /// <param name="surname">Фамилия</param>
+        /// <returns></returns>
+        public ActionResult GetUserIdByFI(string name, string surname)
+        {
+            name = string.IsNullOrWhiteSpace(name)?null:name;
+            surname = string.IsNullOrWhiteSpace(surname) ? null : surname;
+            List<ApplicationUser> users=null;
+            using (var db = new ApplicationDbContext())//TODO
+            {
+                //try
+                //{
+
+                
+                 users = db.Users.Where(x1 => name!=null? x1.Name == name:true&& surname != null ? x1.Surname == surname : true)
+                    .Select(x1=>new {x1.Id,x1.UserName }).ToList().Select(x1 => new ApplicationUser() { Id = x1.Id, UserName = x1.UserName }).ToList();
+                    //.Select(x1=>new ApplicationUser() {Id=x1.Id,UserName=x1.UserName })
+                //}
+                //catch(Exception e)
+                //{
+                //    int g = 10;
+                //}
+                    if (users.Count>0)
+                {
+                    return PartialView(users);
+                }
+                else
+                    return new EmptyResult();
+                //return Content("Не найдено", "text/html");
+            }
+
+
+        }
 
         public ActionResult UsersData()//, string technicalFunctionId
         {

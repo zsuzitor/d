@@ -6,30 +6,83 @@
 
 <h2>PersonalRecord</h2>
 
-
+@if (Model.CurrenUserId == Model.User.Id)
+{
+   @Html.ActionLink("Редактировать","EditPersonalRecord", "Person")
+   
+}
+<br />
 @Html.Label("id пользователя")
 @Html.DisplayFor(x1=>x1.User.Id)
 <br />
 @*@Html.DisplayFor(x1 => x1.User.Name)*@
 @Html.Label("UserName пользователя")
-
 @Html.DisplayFor(x1 => x1.User.UserName)
 
 <br />
 @Html.Label("Mail пользователя")
-
 @Html.DisplayFor(x1 => x1.User.Email)
+<br />
+@Html.Label("Имя пользователя")
+@if (Model.User.Name != null)
+{
+@Html.DisplayFor(x1 => x1.User.Name)
+}
+else
+{
+@Html.Label("Не указано")
+
+}
+
+<br />
+@Html.Label("Фамилия пользователя")
+@if (Model.User.Surname != null)
+{
+    @Html.DisplayFor(x1 => x1.User.Surname)
+}
+else
+{
+    @Html.Label("Не указана")
+
+}
 
 
+<br />
+@Html.Label("Дата рождения пользователя")
+@if (Model.User.Surname != null)
+{
+  @Html.DisplayFor(x1 => x1.User.Birthday)
+}
+else
+{
+    @Html.Label("Не указана")
+
+}
+
+<br />
+@Html.Label("Пол пользователя")
+@if (Model.User.Male==true)
+{
+    <label>Муж.</label>
+}
+else
+{
+    if (Model.User.Male == false)
+    {
+        <label>Жен.</label>
+
+    }
+    else
+    {
+        <label>Не указан</label>
+    }
+}
 <p></p>
 
 
 <hr />
 
-@if (Model.CurrenUserId == Model.User.Id)
-{
-    @Html.Action("Index", "Manage", new { partial = true })
-}
+
 
 
 
