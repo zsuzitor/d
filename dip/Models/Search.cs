@@ -112,7 +112,7 @@ namespace dip.Models
                 limit = db.FEText.Count();
             res = Lucene_.Search(str, limit, out count);//.Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
 
-            res = user.CheckAccessPhys(res, HttpContext).Skip(Constants.CountForLoad * (lucCount - 1)).ToList();
+            res = user.CheckAccessPhys(res, HttpContext).Skip(Constants.CountForLoad * (lucCount - 1)).Take(Constants.CountForLoad).ToList();
             return res;
         }
 

@@ -8,7 +8,8 @@
 }
 
 <script>
-    var num_delete_img = 0;
+   // var num_delete_img = 0;
+    var deleteImages=[];
     var deleteLatexImage=[];
     var countLatex = 0;
     var countLatexExist = @Model.Obj.LatexFormulas.Count;
@@ -27,12 +28,12 @@
 
     function delete_img(but) {
         var id=but.id.split("_")[1];
-        var div = document.getElementById("div_delete_img_id");
-        var str = "<input type='hidden' id='one_block_delete_img_id_" + num_delete_img + "' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
-        div.innerHTML += str;
+        //var div = document.getElementById("div_delete_img_id");
+        //var str = "<input type='hidden' id='one_block_delete_img_id_" + num_delete_img + "' name='deleteImg_[" + num_delete_img++ + "]' value='" + id + "' />";
+        //div.innerHTML += str;
 
-        //document.getElementById("div_img_show_block_" + id).innerHTML = "<p>Удалено</p>";
-
+        deleteImages.push(id);
+        
         document.getElementById("div_img_hide_block_" + id).style.display = 'none';
 
         document.getElementById("div_img_reset_block_" + id).style.display = 'block';
@@ -40,18 +41,27 @@
 
     function reset_img(but) {
         var id = but.id.split("_")[1];
-        var cur_num = 0;
-        var res = "";
-        for (var i = 0; i < num_delete_img; ++i) {
-            var del = document.getElementById('one_block_delete_img_id_' + i);
-            if (del.value != id) {
-                res += "<input type='hidden' id='one_block_delete_img_id_" + cur_num + "' name='deleteImg_[" + cur_num++ + "]' value='" + del.value + "' />";
-            }
+        //var cur_num = 0;
+        //var res = "";
+        //for (var i = 0; i < num_delete_img; ++i) {
+        //    var del = document.getElementById('one_block_delete_img_id_' + i);
+        //    if (del.value != id) {
+        //        res += "<input type='hidden' id='one_block_delete_img_id_" + cur_num + "' name='deleteImg_[" + cur_num++ + "]' value='" + del.value + "' />";
+        //    }
 
-        }
-        num_delete_img = cur_num;
-        var div = document.getElementById("div_delete_img_id");
-        div.innerHTML = res;
+        //}
+        //num_delete_img = cur_num;
+        //var div = document.getElementById("div_delete_img_id");
+        //div.innerHTML = res;
+        
+        for(let i=0;i<deleteImages.length;++i)
+            if(deleteImages[i]==id){
+                old=deleteImages[i];
+                deleteImages.splice(i, 1);
+                break;
+            }
+        //deleteImages.push(id);
+        
         document.getElementById("div_img_hide_block_" + id).style.display = 'block';
 
         document.getElementById("div_img_reset_block_" + id).style.display = 'none';
@@ -154,10 +164,16 @@
             data.append('obj.TextLit', document.getElementById('TextLit').value);
             data.append('obj.IDFE', document.getElementById('IDFE').value);
 
-            for(let i=0;i<num_delete_img;++i){
+            //for(let i=0;i<num_delete_img;++i){
                 
-                data.append('deleteImg_', parseInt(document.getElementById('one_block_delete_img_id_'+i).value));
+            //    data.append('deleteImg_', parseInt(document.getElementById('one_block_delete_img_id_'+i).value));
+            //}
+
+            for(let i=0;i<deleteImages.length;++i){
+                
+                data.append('deleteImg_', parseInt(deleteImages[i]));
             }
+
             
             //add latex
             let numForMass=0;

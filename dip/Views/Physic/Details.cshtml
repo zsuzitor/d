@@ -34,7 +34,8 @@
                 {
                     <li class="btn btn-default"  onclick="detailsLoadLists()" id="detailsUl_lists">Списки</li>
                     //onclick = "detailsLoadEdit()"
-                    <li class="btn btn-default"  id="detailsUl_edit">@Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })</li>
+                    <li class="btn btn-default" onclick="return location.href = '@Url.Action( "Edit", "Physic", new { id = Model.Effect.IDFE })'"  id="detailsUl_edit">Редактировать</li>
+                    @*@Html.ActionLink("Редактировать", "Edit", "Physic", new { id = Model.Effect.IDFE }, new { })*@
                 }
             </ul>
 
