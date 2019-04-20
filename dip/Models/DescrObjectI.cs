@@ -10,7 +10,13 @@ namespace dip.Models
         public DescrPhaseI ListSelectedPhase1 { get; set; }
         public DescrPhaseI ListSelectedPhase2 { get; set; }
         public DescrPhaseI ListSelectedPhase3 { get; set; }
-
+        public int Length
+        {
+            get
+            {
+                return this.GetCountPhase();
+            }
+        }
         public bool Begin { get; set; }//начальное или конечное состояние
                                        //public int NumPhase { get; set; }
 
@@ -27,7 +33,7 @@ namespace dip.Models
 
 
 
-
+       
 
         public DescrPhaseI this[int index]
         {
@@ -145,8 +151,8 @@ namespace dip.Models
             bool res = true;
             if (a != null)
             {
-                if (a.GetCountPhase() == 0)
-                    res = false;
+                //if (a.GetCountPhase() == 0)
+                //    res = false;
 
                 DescrPhaseI.Validation(a.ListSelectedPhase1);
                 DescrPhaseI.Validation(a.ListSelectedPhase2);

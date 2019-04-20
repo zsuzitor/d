@@ -17,6 +17,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity;
 using Lucene.Net.Documents;
+using System.Linq.Expressions;
 
 namespace dip.Models.Domain
 {
@@ -235,95 +236,266 @@ namespace dip.Models.Domain
                 //TODO временно
                 //Mono.Linq.Expressions.
                 var predicate = PredicateBuilder.False<FEAction>();
-               
 
 
+                //actionType NO_ACTIONS
+                //fizvel NO_FIZVEL
                 foreach (var inp in forms)
                 {
+                    var predicateIns = PredicateBuilder.True<FEAction>();
                     int beg = (inp.InputForm ? 1 : 0);
 
-                    predicate = predicate.Or(x1 => x1.Input == beg &&
-                 x1.Name == inp.ActionId &&
-                   x1.Type == inp.ActionType &&
-                   x1.FizVelId == inp.FizVelId &&
-                   x1.Pros == inp.ListSelectedPros &&
-                   x1.Spec == inp.ListSelectedSpec &&
-                   x1.Vrem == inp.ListSelectedVrem &&
-                   x1.FizVelSection == inp.ParametricFizVelId);
+                    predicateIns = predicateIns.And(x1 => x1.Input == beg);
+                    predicateIns = predicateIns.And(x1 => x1.Name == inp.ActionId);
+
+                    if (!string.IsNullOrWhiteSpace(inp.ActionType)&& inp.ActionType!= "NO_ACTIONS")
+                        predicateIns = predicateIns.And(x1 => x1.Type == inp.ActionType);
+                    
+                    if (!string.IsNullOrWhiteSpace(inp.FizVelId) && inp.FizVelId != "NO_FIZVEL")
+                        predicateIns = predicateIns.And(x1 => x1.FizVelId == inp.FizVelId);
+
+                    if (!string.IsNullOrWhiteSpace(inp.ParametricFizVelId) && inp.ParametricFizVelId != "NO_FIZVEL")
+                        predicateIns = predicateIns.And(x1 => x1.FizVelSection == inp.ParametricFizVelId);
+
+                    if (!string.IsNullOrWhiteSpace(inp.ListSelectedPros))
+                    {
+                        string[] tmp = inp.ListSelectedPros.Split(new string[] { " " },StringSplitOptions.RemoveEmptyEntries);
+                        var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
+                        foreach(var i in tmp)
+                        {
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros.Contains(i));
+                        }
+                        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    }
+                       
+                    if (!string.IsNullOrWhiteSpace(inp.ListSelectedSpec))
+                    {
+                        string[] tmp = inp.ListSelectedSpec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                        var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
+                        foreach (var i in tmp)
+                        {
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Spec.Contains(i));
+                        }
+                        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    }
+                   // predicateIns = predicateIns.And(x1 => x1.Spec == inp.ListSelectedSpec);
+                    if (!string.IsNullOrWhiteSpace(inp.ListSelectedVrem))
+                    {
+                        string[] tmp = inp.ListSelectedVrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                        var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
+                        foreach (var i in tmp)
+                        {
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Vrem.Contains(i));
+                        }
+                        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    }
+                    // predicateIns = predicateIns.And(x1 => x1.Vrem == inp.ListSelectedVrem);
+                    //checkInp = db.FEActions.Where(predicateIns).Select(x1 => x1.Idfe).ToList();
+                    predicate = predicate.Or(predicateIns);
+
+
+
+                    //x1.FizVelSection == inp.ParametricFizVelId);
+
+                    //   predicate = predicate.Or(x1 => x1.Input == beg &&
+                    //x1.Name == inp.ActionId &&
+                    //   string.IsNullOrWhiteSpace(inp.ActionType)?true: x1.Type == inp.ActionType &&//x1.Type == inp.ActionType
+                    //  x1.FizVelId == inp.FizVelId &&
+                    //  x1.Pros == inp.ListSelectedPros &&
+                    //  x1.Spec == inp.ListSelectedSpec &&
+                    //  x1.Vrem == inp.ListSelectedVrem &&
+                    //  x1.FizVelSection == inp.ParametricFizVelId);
 
 
                 }
                 //formsList = forms_query.ToList();
+                checkInp = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
                 int formsLen = forms.Length;
-                checkInp =db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() == formsLen).Select(x1=>x1.Key).ToList();
+                //if (formsLen == 1)
+                //    checkInp = db.FEActions.Where(predicate).Select(x1=>x1.Idfe).Distinct().ToList();
+                
+                //if (formsLen ==2 )
+                    checkInp = db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= formsLen).Select(x1 => x1.Key).ToList();
+
             }
             //.ToList() .ToArray()
-            
-            
+
+            //если уже на этом этапе ничего не найдено дальше не искать
             if (checkInp.Count < 1)
                 return null;
 
-            //если уже на этом этапе ничего не найдено дальше не искать
+            
             List<int> checkObj = new List<int>();
             using (var db = new ApplicationDbContext())
             {
-                var predicate = PredicateBuilder.False<FEObject>();
-                //IQueryable<dip.Models.Domain.FEObject> objects_query = db.FEObjects;
-                foreach (var obj in objects)
                 {
-                    int beg = (obj.Begin?1:0);
+                    //Func<string, Expression<Func<FEObject, bool>>, Expression<Func<FEObject, bool>>> deltest = (str, del) =>
+                    //{
+                    //    var predicateIns = PredicateBuilder.True<FEObject>();
+                    //    if (!string.IsNullOrWhiteSpace(str))
+                    //    {
+                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                    //        foreach (var i2 in tmp)
+                    //        {
+                    //            predicateInscheCkbox = predicateInscheCkbox.And(del);
+                    //        }
+                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    //    }
+                    //    return predicateIns;
+                    //};
 
-                    if (obj.ListSelectedPhase1 != null)//TODO вынести  все фазы в метод и в цикл по фазам??????
-                        predicate = predicate.Or(x1 => x1.Begin == beg &&
-                    x1.NumPhase == 1 &&
-                    x1.Composition == obj.ListSelectedPhase1.Composition &&
-                    x1.Conductivity == obj.ListSelectedPhase1.Conductivity &&
-                    x1.MagneticStructure == obj.ListSelectedPhase1.MagneticStructure &&
-                    x1.MechanicalState == obj.ListSelectedPhase1.MechanicalState &&
-                    x1.OpticalState == obj.ListSelectedPhase1.OpticalState &&
-                    x1.PhaseState == obj.ListSelectedPhase1.PhaseState &&
-                    x1.Special == obj.ListSelectedPhase1.Special);
+                    //Func<string, Func<FEObject, bool>, Func<FEObject, bool>> ttt = (str, del) =>
+                    //{
 
-
-
-                    if (obj.ListSelectedPhase2 != null)
-                        predicate = predicate.Or(x1 => x1.Begin == beg &&
-                         x1.NumPhase == 2 &&
-                        x1.Composition == obj.ListSelectedPhase2.Composition &&
-                   x1.Conductivity == obj.ListSelectedPhase2.Conductivity &&
-                   x1.MagneticStructure == obj.ListSelectedPhase2.MagneticStructure &&
-                   x1.MechanicalState == obj.ListSelectedPhase2.MechanicalState &&
-                   x1.OpticalState == obj.ListSelectedPhase2.OpticalState &&
-                   x1.PhaseState == obj.ListSelectedPhase2.PhaseState &&
-                   x1.Special == obj.ListSelectedPhase2.Special);
+                    //    return x1 => x1.Composition.Contains(str);
+                    //};
 
 
-                    if (obj.ListSelectedPhase3 != null)
-                        predicate = predicate.Or(x1 => x1.Begin == beg &&
-                         x1.NumPhase == 3 &&
-                        x1.Composition == obj.ListSelectedPhase3.Composition &&
-                       x1.Conductivity == obj.ListSelectedPhase3.Conductivity &&
-                       x1.MagneticStructure == obj.ListSelectedPhase3.MagneticStructure &&
-                       x1.MechanicalState == obj.ListSelectedPhase3.MechanicalState &&
-                       x1.OpticalState == obj.ListSelectedPhase3.OpticalState &&
-                       x1.PhaseState == obj.ListSelectedPhase3.PhaseState &&
-                       x1.Special == obj.ListSelectedPhase3.Special);
+                    //Func<string, Func<string, Func<FEObject, bool>, Func<FEObject, bool>>,Expression<Func<FEObject, bool>>, Expression<Func<FEObject, bool>>> deltest = (str, del,del2) =>
+                    //{
+                    //    var predicateIns = PredicateBuilder.True<FEObject>();
+                    //    if (!string.IsNullOrWhiteSpace(str))
+                    //    {
+                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                    //        foreach (var i2 in tmp)
+                    //        {
+                    //            predicateInscheCkbox = predicateInscheCkbox.And(del(i2, del2));
+                    //        }
+                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    //    }
+                    //    return predicateIns;
+                    //};
+
+                    //Func<string, Func<FEObject, bool>, Func<FEObject, bool>> ttt = (str, del) =>
+                    //{
+
+                    //    return del(str);
+                    //};
+
+
+                    Func<string,int,int, int, Expression<Func<FEObject, bool>>> deltest = (str,beg,numph, type) =>
+                    {
+                        var predicateIns = PredicateBuilder.True<FEObject>();
+                        predicateIns = predicateIns.And(x1 => x1.Begin==beg);
+                        predicateIns = predicateIns.And(x1 => x1.NumPhase==numph);
+                        if (!string.IsNullOrWhiteSpace(str))
+                        {
+                            string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                            var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                            foreach (var i2 in tmp)
+                            {
+                                switch (type)
+                                {
+                                    case 0:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
+                                        break;
+                                    case 1:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity.Contains(i2));
+                                        break;
+                                    case 2:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure.Contains(i2));
+                                        break;
+                                    case 3:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState.Contains(i2));
+                                        break;
+                                    case 4:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState.Contains(i2));
+                                        break;
+                                    case 5:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState.Contains(i2));
+                                        break;
+                                    case 6:
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special.Contains(i2));
+                                        break;
+                                }
+                               
+                            }
+                            predicateIns = predicateIns.And(predicateInscheCkbox);
+                        }
+                        return predicateIns;
+                    };
+
+
+
+                    var predicate = PredicateBuilder.False<FEObject>();
+                    //IQueryable<dip.Models.Domain.FEObject> objects_query = db.FEObjects;
+                    int AllCountPhase = 0;
+                    foreach (var obj in objects)
+                    {
+
+                        int beg = (obj.Begin ? 1 : 0);
+                        int numph = 1;
+
+                        foreach (var i in obj)
+                        {
+
+                            if (i != null)
+                            {
+                                AllCountPhase++;
+                                predicate = predicate.Or(deltest(i.Composition, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.Conductivity, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.MagneticStructure, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.MechanicalState, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.OpticalState, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.PhaseState, beg, numph, 0));
+                                predicate = predicate.Or(deltest(i.Special, beg, numph, 0));
+                                numph++;
+
+
+
+                                //var predicateIns = PredicateBuilder.True<FEObject>();
+                                //if (!string.IsNullOrWhiteSpace(i.Composition))
+                                //{
+                                //    string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                //    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                //    foreach (var i2 in tmp)
+                                //    {
+                                //        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
+                                //    }
+                                //    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                //}
+
+
+
+
+                            //    AllCountPhase++;
+                            //    predicate = predicate.Or(x1 => x1.Begin == beg &&
+                            //x1.NumPhase == numph &&
+                            //x1.Composition == i.Composition &&
+                            //x1.Conductivity == i.Conductivity &&
+                            //x1.MagneticStructure == i.MagneticStructure &&
+                            //x1.MechanicalState == i.MechanicalState &&
+                            //x1.OpticalState == i.OpticalState &&
+                            //x1.PhaseState == i.PhaseState &&
+                            //x1.Special == i.Special);
+                            //    numph++;
+
+
+
+
+
+
+
+                                
+                            }
+
+                        }
+
+
+                    }
+
+                    if (AllCountPhase == 0)
+                        checkObj = db.FEObjects.Select(x1 => x1.Idfe).ToList();
+
+                    else
+                        checkObj = db.FEObjects.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= AllCountPhase).Select(x1 => x1.Key).ToList();
+
 
 
 
                 }
-                int AllCountPhase = 0;
-                foreach (var i in objects)//TODO в метод #[]
-                {
-                    if (i.ListSelectedPhase1 != null)
-                        AllCountPhase++;
-                    if (i.ListSelectedPhase2 != null)
-                        AllCountPhase++;
-                    if (i.ListSelectedPhase3 != null)
-                        AllCountPhase++;
-                }
-
-                 checkObj = db.FEObjects.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() == AllCountPhase).Select(x1 => x1.Key).ToList();
             }
 
 
@@ -334,7 +506,7 @@ namespace dip.Models.Domain
 
             //сравниваем состояния и результаты всех запросов
             list_id = FEText.GetList(null,checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
-                .Where(x1 => x1.StateBeginId == stateBegin && x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
+                .Where(x1 =>string.IsNullOrWhiteSpace(stateBegin)?true:x1.StateBeginId == stateBegin && string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
 
 
 
