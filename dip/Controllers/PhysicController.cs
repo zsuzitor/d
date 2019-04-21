@@ -164,7 +164,7 @@ namespace dip.Controllers
                 DescrSearchI.Validation(i);
                 if (i?.Valide == false)
                     return new HttpStatusCodeResult(221);
-                i.DeleteNotChildCheckbox();
+                //i.DeleteNotChildCheckbox();
             }
             foreach (var i in objForms)
             {
@@ -267,7 +267,7 @@ namespace dip.Controllers
                 DescrSearchI.Validation(i);
                 if (i?.Valide == false)
                     return new HttpStatusCodeResult(221);
-                i.DeleteNotChildCheckbox();
+                //i.DeleteNotChildCheckbox();
             }
             
             foreach (var i in objForms)

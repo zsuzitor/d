@@ -48,16 +48,16 @@ namespace dip.Models.ViewModel.PhysicV
 
             this.FormsInput = inp.Select(x1 => {
                 var rs = new DescrSearchI(x1);
-                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
+                //rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
+                //rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
+                //rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
                 return rs;
             }).ToList();
             this.FormsOutput = outp.Select(x1 => {
                 var rs = new DescrSearchI(x1);
-                rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
+                //rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
+                //rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
+                //rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
                 return rs;
             }).ToList();// new DescrSearchI(outp);
 

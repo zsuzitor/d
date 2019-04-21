@@ -178,11 +178,11 @@ namespace dip.Controllers
             res.StatesBeginFirstLvlPhase(stateIdBegin, basePhase, res.StatesBegin, res.CharacteristicsBegin,ref tmpStateBeginSelected);
             res.StateBeginSelected = tmpStateBeginSelected;
 
-            List<string> CharacteristicsStartNeedSelect = new List<string>();
-            res.CharacteristicsBegin.LoadTreePhasesForChilds(CharacteristicStart, CharacteristicsStartNeedSelect);
-            res.CharacteristicsBegin.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0] : null;
-            res.CharacteristicsBegin.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-            res.CharacteristicsBegin.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
+            //List<string> CharacteristicsStartNeedSelect = new List<string>();
+            res.CharacteristicsBegin.LoadTreePhasesForChilds(CharacteristicStart);//, CharacteristicsStartNeedSelect
+                res.CharacteristicsBegin.ParamPhase1 = CharacteristicStart.Count > 0 ? CharacteristicStart[0] : null;
+            res.CharacteristicsBegin.ParamPhase2 = CharacteristicStart.Count > 1 ? CharacteristicStart[1] : null;
+            res.CharacteristicsBegin.ParamPhase3 = CharacteristicStart.Count > 2 ? CharacteristicStart[2] : null;
             }
            
             if (changedObject)
@@ -192,11 +192,11 @@ namespace dip.Controllers
                 res.StateEndSelected = tmpStateEndSelected;
 
 
-                List<string> CharacteristicsStartNeedSelect = new List<string>();
-                res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd, CharacteristicsStartNeedSelect);
-                res.CharacteristicsEnd.ParamPhase1 = CharacteristicsStartNeedSelect.Count > 0 ? CharacteristicsStartNeedSelect[0] : null;
-                res.CharacteristicsEnd.ParamPhase2 = CharacteristicsStartNeedSelect.Count > 1 ? CharacteristicsStartNeedSelect[1] : null;
-                res.CharacteristicsEnd.ParamPhase3 = CharacteristicsStartNeedSelect.Count > 2 ? CharacteristicsStartNeedSelect[2] : null;
+                //List<string> CharacteristicsStartNeedSelect = new List<string>();
+                res.CharacteristicsEnd.LoadTreePhasesForChilds(CharacteristicEnd);//, CharacteristicsStartNeedSelect
+                res.CharacteristicsEnd.ParamPhase1 = CharacteristicStart.Count > 0 ? CharacteristicStart[0] : null;
+                res.CharacteristicsEnd.ParamPhase2 = CharacteristicStart.Count > 1 ? CharacteristicStart[1] : null;
+                res.CharacteristicsEnd.ParamPhase3 = CharacteristicStart.Count > 2 ? CharacteristicStart[2] : null;
                
             }
 

@@ -229,11 +229,25 @@ namespace dip.Models
             if (string.IsNullOrWhiteSpace(ids))
                 return "";
             var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            Array.Sort(gg);
+            return SortIds(gg);
 
-            string res = string.Join(" ", gg);
+            //string res = string.Join(" ", gg);
 
             
+            //return res;
+        }
+
+
+        public static string SortIds(IEnumerable<string> ids)
+        {
+            if (ids == null)
+                return null;
+            var resArray = ids.ToArray();
+            Array.Sort(resArray);
+
+            string res = string.Join(" ", resArray);
+
+
             return res;
         }
 
@@ -245,7 +259,7 @@ namespace dip.Models
         //    res.Add(id + " %");
         //    res.Add("% " + id);
         //    res.Add("% " + id + " %");
-           
+
         //    return res;
         //    }
 

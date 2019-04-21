@@ -52,6 +52,21 @@ namespace dip.Models.Domain
         }
 
 
+
+        public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
+        {
+            var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var lst2Elem = db.Specs.Where(x1 => lstId.Contains(x1.Id)).ToList();
+            var lstRes = new List<string>();
+            foreach (var i in lst2Elem)
+            {
+                lstRes.Add(i.Id);
+                lstRes.AddRange(i.GetParentsList(db).Select(x1 => x1.Id));
+            }
+            return lstRes.Distinct().ToList();
+        }
+
+
         //проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Spec> list)//TODO вынести
         {

@@ -25,31 +25,98 @@ namespace dip.Models.Domain
 
         }
 
+
+
         /// <summary>
         /// выстраивает древо из списка переданных элементов
         /// </summary>
         /// <param name="Characteristics"></param>
         /// <param name="allidslist">список элементов которые нужно выделить</param>
-        public void LoadTreePhasesForChilds(List<string> Characteristics, List<string> allidslist)
+        //public void LoadTreePhasesForChilds(List<string> Characteristics, List<string> allidslist)//
+        //{
+        //    for (var charac = 0; charac < Characteristics.Count; ++charac)
+        //    {
+        //        //var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+        //        List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
+        //        List<List<PhaseCharacteristicObject>> treeProBase = null;
+        //        var allids = PhaseCharacteristicObject.GetAllIdsFor(Characteristics[charac]);
+        //        allidslist.Add(allids);
+        //        if (allids == null)
+        //            break;
+        //        var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+        //        if (prosIdList.Length > 0)
+        //        {
+        //            using (var db = new ApplicationDbContext())//TODO using in this controller
+        //            {
+        //                //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == Constants.FeObjectBaseCharacteristic).ToList();
+
+        //                var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+        //                treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+
+
+        //                switch (charac)
+        //                {
+        //                    case 0:
+        //                        prosList = this.Phase1;
+        //                        break;
+
+
+        //                    case 1:
+
+        //                        prosList = this.Phase2;
+        //                        break;
+
+        //                    case 2:
+
+        //                        prosList = this.Phase3;
+        //                        break;
+
+        //                }
+
+
+
+        //            }
+        //            foreach (var p in prosList)
+        //            {
+        //                foreach (var i in treeProBase)
+        //                {
+        //                    if (p.Id == i[0].Id)
+        //                        if (!p.LoadPartialTree(i))
+        //                            throw new Exception("TODO ошибка");
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+
+
+
+
+        /// <summary>
+        /// выстраивает древо из списка переданных элементов
+        /// </summary>
+        /// <param name="Characteristics"></param>
+        public void LoadTreePhasesForChilds(List<string> Characteristics)//
         {
             for (var charac = 0; charac < Characteristics.Count; ++charac)
             {
-                //var prosIdList = CharacteristicStart[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                var prosIdList = Characteristics[charac]?.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
                 List<PhaseCharacteristicObject> prosList = new List<PhaseCharacteristicObject>();
-                List<List<PhaseCharacteristicObject>> treeProBase = null;
-                var allids = PhaseCharacteristicObject.GetAllIdsFor(Characteristics[charac]);
-                allidslist.Add(allids);
-                if (allids == null)
+                //List<List<PhaseCharacteristicObject>> treeProBase = null;
+                
+                
+                if (Characteristics == null)
                     break;
-                var prosIdList = allids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                if (prosIdList.Length > 0)
+                var allPros = new List<PhaseCharacteristicObject>();
+                if (Characteristics.Count > 0)
                 {
                     using (var db = new ApplicationDbContext())//TODO using in this controller
                     {
                         //var prosList = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == Constants.FeObjectBaseCharacteristic).ToList();
 
-                        var allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                        treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
+                         allPros = db.PhaseCharacteristicObjects.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
+                        //treeProBase = PhaseCharacteristicObject.GetQueueParent(allPros);
 
 
                         switch (charac)
@@ -74,14 +141,18 @@ namespace dip.Models.Domain
 
 
                     }
+                    if(prosList!=null)
                     foreach (var p in prosList)
                     {
-                        foreach (var i in treeProBase)
-                        {
-                            if (p.Id == i[0].Id)
-                                if (!p.LoadPartialTree(i))
-                                    throw new Exception("TODO ошибка");
-                        }
+                            //if(allPros.FirstOrDefault(x1=>x1.Id.StartsWith(p.Id[0].ToString()))!=null)
+                            if (allPros.FirstOrDefault(x1 => x1.Id[0]==p.Id[0]) != null)
+                                p.LoadPartialTree(allPros);
+                        //foreach (var i in treeProBase)
+                        //{
+                        //    if (p.Id == i[0].Id)
+                        //        if (!p.LoadPartialTree(i))
+                        //            throw new Exception("TODO ошибка");
+                        //}
                     }
                 }
             }

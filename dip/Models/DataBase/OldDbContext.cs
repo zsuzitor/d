@@ -283,30 +283,35 @@ namespace dip.Models.DataBase
                             obj.FizVelSection = tmp;
                         }
                            
-                        {
+                        
                             //TODO
                             obj.Pros = i["pros"].ToString().Trim();
                             obj.Pros = Pro.SortIds(obj.Pros);
                            
-                        }
+                        
                         //
-                        {
+                        
                             //TODO
                             obj.Spec = i["spec"].ToString().Trim();
                             obj.Spec = Spec.SortIds(obj.Spec);
                           
-                        }
+                        
                         //
                        
-                        {
+                        
                             obj.Vrem = i["vrem"].ToString().Trim();
-                            obj.Vrem = Vrem.SortIds(obj.Vrem);
+                            
                            
-                        }
+                        
 
                         //
                         using (var db = new ApplicationDbContext())
                         {
+                            obj.Pros = Pro.SortIds(Pro.GetParentListForIds(obj.Pros, db));
+                            obj.Spec = Spec.SortIds(Spec.GetParentListForIds(obj.Spec, db));
+                            obj.Vrem = Vrem.SortIds(Vrem.GetParentListForIds(obj.Vrem, db));
+                            
+                            
                             db.FEActions.Add(obj);
                             db.SaveChanges();
                         }
@@ -872,14 +877,16 @@ namespace dip.Models.DataBase
                     FeObjectParseAddValueInObj(indexMass[i2], obj);
                
             }
+
+           
             
-            obj.Composition = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Composition.Trim()));
-            obj.Conductivity = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Conductivity.Trim()));
-            obj.MagneticStructure = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MagneticStructure.Trim())); 
-            obj.MechanicalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.MechanicalState.Trim())); 
-            obj.OpticalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.OpticalState.Trim())); 
-            obj.PhaseState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.PhaseState.Trim())); 
-            obj.Special = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.DeleteNotChildCheckbox(obj.Special.Trim()));
+            obj.Composition = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Composition.Trim(),db));
+            obj.Conductivity = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Conductivity.Trim(), db));
+            obj.MagneticStructure = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MagneticStructure.Trim(), db)); 
+            obj.MechanicalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MechanicalState.Trim(), db)); 
+            obj.OpticalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.OpticalState.Trim(), db)); 
+            obj.PhaseState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.PhaseState.Trim(), db)); 
+            obj.Special = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Special.Trim(), db));
 
             
 
@@ -887,6 +894,9 @@ namespace dip.Models.DataBase
             db.SaveChanges();
            
         }
+
+
+       
 
         static void FeObjectParseAddValueInObj(string g, FEObject obj)
         {

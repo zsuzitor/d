@@ -223,15 +223,16 @@ namespace dip.Models.ViewModel
                 if (prosIdList.Length > 0)
                 {
                     var allPros = db.Pros.Where(x1 => prosIdList.Contains(x1.Id)).ToList();
-                    var treeProBase = Pro.GetQueueParent(allPros);
+                   // var treeProBase = Pro.GetQueueParent(allPros);
                     foreach (var p in prosList)
                     {
-                        foreach (var i in treeProBase)
-                        {
-                            if (p.Id == i[0].Id)
-                                if (!p.LoadPartialTree(i))
-                                    throw new Exception("TODO ошибка");
-                        }
+                        p.LoadPartialTree(allPros);
+                        //foreach (var i in treeProBase)
+                        //{
+                        //    if (p.Id == i[0].Id)
+                        //        if (!p.LoadPartialTree(i))
+                        //            throw new Exception("TODO ошибка");
+                        //}
                     }
 
                     // prosList = allPros.Where(x1 => x1.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
@@ -245,14 +246,15 @@ namespace dip.Models.ViewModel
                 if (specIdList.Length > 0)
                 {
                     var allSpec = db.Specs.Where(x1 => specIdList.Contains(x1.Id)).ToList();
-                    var treeSpecBase = Spec.GetQueueParent(allSpec);
+                    //var treeSpecBase = Spec.GetQueueParent(allSpec);
                     foreach (var s in specList)
                     {
-                        foreach (var i in treeSpecBase)
-                        {
-                            if (!i[0].LoadPartialTree(i))
-                                throw new Exception("TODO ошибка");
-                        }
+                        s.LoadPartialTree(allSpec);
+                        //foreach (var i in treeSpecBase)
+                        //{
+                        //    if (!i[0].LoadPartialTree(i))
+                        //        throw new Exception("TODO ошибка");
+                        //}
                     }
                     //specList = allSpec.Where(x1=>x1.Parent.Split(new string[] {"SPEC" },StringSplitOptions.RemoveEmptyEntries).Length==1).ToList();
                 }
@@ -266,15 +268,15 @@ namespace dip.Models.ViewModel
                 if (vremIdList.Length > 0)
                 {
                     var allVrem = db.Vrems.Where(x1 => vremIdList.Contains(x1.Id)).ToList();
-                    var treeVremBase = Vrem.GetQueueParent(allVrem);
+                    //var treeVremBase = Vrem.GetQueueParent(allVrem);
                     foreach (var v in vremList)
                     {
-
-                        foreach (var i in treeVremBase)
-                        {
-                            if (!i[0].LoadPartialTree(i))
-                                throw new Exception("TODO ошибка");
-                        }
+                        v.LoadPartialTree(allVrem);
+                        //foreach (var i in treeVremBase)
+                        //{
+                        //    if (!i[0].LoadPartialTree(i))
+                        //        throw new Exception("TODO ошибка");
+                        //}
                     }
                     //vremList = allVrem.Where(x1 => x1.Parent.Split(new string[] { "VREM" }, StringSplitOptions.RemoveEmptyEntries).Length == 1).ToList();
                 }

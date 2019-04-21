@@ -443,7 +443,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition==i2|| x1.Composition.StartsWith(i2+" ")|| x1.Composition.EndsWith(" "+i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition == i2 || x1.Composition.StartsWith(i2 + " ") 
+                                        || x1.Composition.EndsWith(" " + i2)|| x1.Composition.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.Conductivity))
@@ -451,7 +452,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.Conductivity.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity == i2 || x1.Conductivity.StartsWith(i2 + " ") || x1.Conductivity.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity == i2 || x1.Conductivity.StartsWith(i2 + " ") ||
+                                         x1.Conductivity.EndsWith(" " + i2) || x1.Conductivity.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.MagneticStructure))
@@ -459,7 +461,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.MagneticStructure.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure == i2 || x1.MagneticStructure.StartsWith(i2 + " ") || x1.MagneticStructure.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure == i2 || x1.MagneticStructure.StartsWith(i2 + " ") ||
+                                         x1.MagneticStructure.EndsWith(" " + i2) || x1.MagneticStructure.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.MechanicalState))
@@ -467,7 +470,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.MechanicalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState == i2 || x1.MechanicalState.StartsWith(i2 + " ") || x1.MechanicalState.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState == i2 || x1.MechanicalState.StartsWith(i2 + " ") ||
+                                        x1.MechanicalState.EndsWith(" " + i2) || x1.MechanicalState.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.OpticalState))
@@ -475,7 +479,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.OpticalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState == i2 || x1.OpticalState.StartsWith(i2 + " ") || x1.OpticalState.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState == i2 || x1.OpticalState.StartsWith(i2 + " ") || 
+                                        x1.OpticalState.EndsWith(" " + i2) || x1.OpticalState.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.PhaseState))
@@ -483,7 +488,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState == i2 || x1.PhaseState.StartsWith(i2 + " ") || x1.PhaseState.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState == i2 || x1.PhaseState.StartsWith(i2 + " ") || 
+                                        x1.PhaseState.EndsWith(" " + i2) || x1.PhaseState.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.Special))
@@ -491,7 +497,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.Special.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special == i2 || x1.Special.StartsWith(i2 + " ") || x1.Special.EndsWith(" " + i2));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special == i2 || x1.Special.StartsWith(i2 + " ") ||
+                                        x1.Special.EndsWith(" " + i2) || x1.Special.Contains(" " + i2 + " ") );
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
 

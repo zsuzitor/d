@@ -39,16 +39,24 @@ namespace dip.Models
         public string GetListStr_()//TODO
         {
             string res = "";
-            res += PhaseState + " " +
-                Composition + " " +
-                MagneticStructure + " " +
-                Conductivity + " " +
-                MechanicalState + " " +
-                OpticalState + " " +
-                Special + " ";
+            if (!string.IsNullOrWhiteSpace(PhaseState))
+                res += PhaseState + " ";
+            if (!string.IsNullOrWhiteSpace(Composition))
+                res += Composition + " ";
+            if (!string.IsNullOrWhiteSpace(MagneticStructure))
+                res += MagneticStructure + " ";
+            if (!string.IsNullOrWhiteSpace(Conductivity))
+                res += Conductivity + " ";
+            if (!string.IsNullOrWhiteSpace(MechanicalState))
+                res += MechanicalState + " ";
+            if (!string.IsNullOrWhiteSpace(OpticalState))
+                res += OpticalState + " ";
+            if (!string.IsNullOrWhiteSpace(Special))
+                res += Special + " ";
 
 
-            return res;
+
+            return res.Trim();
         }
 
         //удаляет прямых родителей если и родитель и ребенок есть в строке

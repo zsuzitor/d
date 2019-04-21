@@ -51,6 +51,20 @@ namespace dip.Models.Domain
         }
 
 
+        public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
+        {
+            var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var lst2Elem = db.Vrems.Where(x1 => lstId.Contains(x1.Id)).ToList();
+            var lstRes = new List<string>();
+            foreach (var i in lst2Elem)
+            {
+                lstRes.Add(i.Id);
+                lstRes.AddRange(i.GetParentsList(db).Select(x1 => x1.Id));
+            }
+            return lstRes.Distinct().ToList();
+        }
+
+
         public static string GetAllIdsFor(string str)
         {
             //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить

@@ -40,15 +40,15 @@ namespace dip.Models.Domain
             this.Idfe = idfe;
             this.Begin = begin;
             this.NumPhase = a.NumPhase;
-            
-            
-            PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.PhaseState);
-            Composition = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Composition);
-            MagneticStructure = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MagneticStructure);
-            Conductivity = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Conductivity);
-            MechanicalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MechanicalState);
-            OpticalState = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.OpticalState);
-            Special = PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Special);
+
+
+            PhaseState = a.PhaseState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.PhaseState);
+            Composition = a.Composition;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Composition);
+            MagneticStructure = a.MagneticStructure;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MagneticStructure);
+            Conductivity = a.Conductivity;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Conductivity);
+            MechanicalState = a.MechanicalState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MechanicalState);
+            OpticalState = a.OpticalState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.OpticalState);
+            Special = a.Special;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Special);
 
         }
 
