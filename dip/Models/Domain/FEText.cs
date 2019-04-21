@@ -568,9 +568,17 @@ namespace dip.Models.Domain
 
             //x1.Key x2.Key
 
+
+            //var sdf = FEText.GetList(null, checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray()).ToList();
+
+            //var sdf1 = sdf.Where(x1 => (string.IsNullOrWhiteSpace(stateBegin) ? true : x1.StateBeginId == stateBegin) &&( string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd)).ToList();
+
+            // list_id= list_id.Where(x1 => string.IsNullOrWhiteSpace(stateBegin) ? true : x1.StateBeginId == stateBegin && string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd).Select(x1 => x1.IDFE).ToArray();
+
+
             //сравниваем состояния и результаты всех запросов
             list_id = FEText.GetList(null,checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
-                .Where(x1 =>string.IsNullOrWhiteSpace(stateBegin)?true:x1.StateBeginId == stateBegin && string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd).Select(x1=>x1.IDFE).ToArray();
+                .Where(x1 =>(string.IsNullOrWhiteSpace(stateBegin)?true:x1.StateBeginId == stateBegin) &&( string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd)).Select(x1=>x1.IDFE).ToArray();
 
 
 
