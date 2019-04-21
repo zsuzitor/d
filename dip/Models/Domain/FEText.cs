@@ -375,47 +375,45 @@ namespace dip.Models.Domain
                     //};
 
 
-                    Func<string,int,int, int, Expression<Func<FEObject, bool>>> deltest = (str,beg,numph, type) =>
-                    {
-                        var predicateIns = PredicateBuilder.True<FEObject>();
-                        predicateIns = predicateIns.And(x1 => x1.Begin==beg);
-                        predicateIns = predicateIns.And(x1 => x1.NumPhase==numph);
-                        if (!string.IsNullOrWhiteSpace(str))
-                        {
-                            string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                            var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
-                            foreach (var i2 in tmp)
-                            {
-                                switch (type)
-                                {
-                                    case 0:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
-                                        break;
-                                    case 1:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity.Contains(i2));
-                                        break;
-                                    case 2:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure.Contains(i2));
-                                        break;
-                                    case 3:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState.Contains(i2));
-                                        break;
-                                    case 4:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState.Contains(i2));
-                                        break;
-                                    case 5:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState.Contains(i2));
-                                        break;
-                                    case 6:
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special.Contains(i2));
-                                        break;
-                                }
+                    //Func<string, int, Expression<Func<FEObject, bool>>> deltest = (str, type) =>
+                    //{
+                       
+                    //    if (!string.IsNullOrWhiteSpace(str))
+                    //    {
+                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                    //        foreach (var i2 in tmp)
+                    //        {
+                    //            switch (type)
+                    //            {
+                    //                case 0:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
+                    //                    break;
+                    //                case 1:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity.Contains(i2));
+                    //                    break;
+                    //                case 2:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure.Contains(i2));
+                    //                    break;
+                    //                case 3:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState.Contains(i2));
+                    //                    break;
+                    //                case 4:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState.Contains(i2));
+                    //                    break;
+                    //                case 5:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState.Contains(i2));
+                    //                    break;
+                    //                case 6:
+                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special.Contains(i2));
+                    //                    break;
+                    //            }
                                
-                            }
-                            predicateIns = predicateIns.And(predicateInscheCkbox);
-                        }
-                        return predicateIns;
-                    };
+                    //        }
+                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
+                    //    }
+                    //    return predicateIns;
+                    //};
 
 
 
@@ -433,14 +431,80 @@ namespace dip.Models.Domain
 
                             if (i != null)
                             {
+                                //копируем значения в локальные переменные тк предикат(делегат который передаем) захватит их по ссылке
+                                int numph_ = numph;
+                                int beg_ = beg;
                                 AllCountPhase++;
-                                predicate = predicate.Or(deltest(i.Composition, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.Conductivity, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.MagneticStructure, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.MechanicalState, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.OpticalState, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.PhaseState, beg, numph, 0));
-                                predicate = predicate.Or(deltest(i.Special, beg, numph, 0));
+                                var predicateIns = PredicateBuilder.True<FEObject>();
+                                predicateIns = predicateIns.And(x1 => x1.Begin == beg_);
+                                predicateIns = predicateIns.And(x1 => x1.NumPhase == numph_);
+                                if (!string.IsNullOrWhiteSpace(i.Composition))
+                                {
+                                    string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition==i2|| x1.Composition.StartsWith(i2+" ")|| x1.Composition.EndsWith(" "+i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.Conductivity))
+                                {
+                                    string[] tmp = i.Conductivity.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity == i2 || x1.Conductivity.StartsWith(i2 + " ") || x1.Conductivity.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.MagneticStructure))
+                                {
+                                    string[] tmp = i.MagneticStructure.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure == i2 || x1.MagneticStructure.StartsWith(i2 + " ") || x1.MagneticStructure.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.MechanicalState))
+                                {
+                                    string[] tmp = i.MechanicalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState == i2 || x1.MechanicalState.StartsWith(i2 + " ") || x1.MechanicalState.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.OpticalState))
+                                {
+                                    string[] tmp = i.OpticalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState == i2 || x1.OpticalState.StartsWith(i2 + " ") || x1.OpticalState.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.PhaseState))
+                                {
+                                    string[] tmp = i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState == i2 || x1.PhaseState.StartsWith(i2 + " ") || x1.PhaseState.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+                                if (!string.IsNullOrWhiteSpace(i.Special))
+                                {
+                                    string[] tmp = i.Special.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
+                                    foreach (var i2 in tmp)
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special == i2 || x1.Special.StartsWith(i2 + " ") || x1.Special.EndsWith(" " + i2));
+                                    predicateIns = predicateIns.And(predicateInscheCkbox);
+                                }
+
+                                //predicate = predicate.Or(deltest(i.Composition, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.Conductivity, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.MagneticStructure, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.MechanicalState, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.OpticalState, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.PhaseState, beg, numph, 0));
+                                //predicate = predicate.Or(deltest(i.Special, beg, numph, 0));
+
+                                //checkObj = db.FEObjects.Where(predicateIns).Select(x1 => x1.Idfe).ToList();
+                                predicate = predicate.Or(predicateIns);
                                 numph++;
 
 
@@ -485,7 +549,7 @@ namespace dip.Models.Domain
 
 
                     }
-
+                    //checkObj = db.FEObjects.Where(predicate).Select(x1=>x1.Idfe).ToList();
                     if (AllCountPhase == 0)
                         checkObj = db.FEObjects.Select(x1 => x1.Idfe).ToList();
 
