@@ -50,9 +50,9 @@ namespace dip.Models.ViewModel
             foreach(var i2 in inp)
             {
                 ++iter;
-                string[] inp_pros = i2.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                string[] inp_spec = i2.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                string[] inp_vrem = i2.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] inpPros = i2.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] inpSpec = i2.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] inpVrem = i2.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
                 List<List<Pro>> prosI = new List<List<Pro>>();
                 List<List<Spec>> specI = new List<List<Spec>>();
@@ -64,32 +64,42 @@ namespace dip.Models.ViewModel
                     res["TypeI" + iter] = db.ActionTypes.First(x1 => x1.Id == i2.Type).Name;
                     res["FizVelIdI" + iter] = db.FizVels.First(x1 => x1.Id == i2.FizVelId).Name;
                     res["FizVelparamI" + iter] = db.FizVels.FirstOrDefault(x1 => x1.Id == i2.FizVelSection)?.Name;
-                    //TODO сейчас очень не оптимизированно (на каждой итерации циклов загружаются по сути 1 и теже данные тк родитель у многих общий)
-                    foreach (var i in inp_pros)
-                    {
-                        Pro pr = db.Pros.First(x1 => x1.Id == i);
-                        var list = pr.GetParentsList(db);
-                        list.Add(pr);
-                        prosI.Add(list);
-                        //prosI.Add(string.Join("->",(( Pro.GetParents(i, db) + " " + i).Split(new string[]{" " },StringSplitOptions.RemoveEmptyEntries))));
 
-                    }
-                    foreach (var i in inp_spec)
-                    {
-                        Spec sp = db.Specs.First(x1 => x1.Id == i);
-                        var list = sp.GetParentsList(db);
-                        list.Add(sp);
-                        specI.Add(list);
-                        //specI.Add(string.Join("->", (( Spec.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
-                    }
-                    foreach (var i in inp_vrem)
-                    {
-                        Vrem pr = db.Vrems.First(x1 => x1.Id == i);
-                        var list = pr.GetParentsList(db);
-                        list.Add(pr);
-                        vremI.Add(list);
-                        //vremI.Add(string.Join("->", (( Vrem.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
-                    }
+
+                    //TODO тут везде цикл в цикле
+                    //TODO сейчас очень не оптимизированно (на каждой итерации циклов загружаются по сути 1 и теже данные тк родитель у многих общий)
+                    var prs = db.Pros.Where(x1=> inpPros.Contains(x1.Id)).ToList();
+                    prosI=Pro.GetQueueParent(prs);
+                    //foreach (var i in inpPros)
+                    //{
+                    //    Pro pr = db.Pros.First(x1 => x1.Id == i);
+                    //    var list = pr.GetParentsList(db);
+                    //    list.Add(pr);
+                    //    prosI.Add(list);
+                    //    //prosI.Add(string.Join("->",(( Pro.GetParents(i, db) + " " + i).Split(new string[]{" " },StringSplitOptions.RemoveEmptyEntries))));
+
+                    //}
+                    var specs = db.Specs.Where(x1 => inpSpec.Contains(x1.Id)).ToList();
+                    specI = Spec.GetQueueParent(specs);
+                    //foreach (var i in inpSpec)
+                    //{
+                    //    Spec sp = db.Specs.First(x1 => x1.Id == i);
+                    //    var list = sp.GetParentsList(db);
+                    //    list.Add(sp);
+                    //    specI.Add(list);
+                    //    //specI.Add(string.Join("->", (( Spec.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
+                    //}
+
+                    var vrems = db.Vrems.Where(x1 => inpVrem.Contains(x1.Id)).ToList();
+                    vremI = Vrem.GetQueueParent(vrems);
+                    //foreach (var i in inpVrem)
+                    //{
+                    //    Vrem pr = db.Vrems.First(x1 => x1.Id == i);
+                    //    var list = pr.GetParentsList(db);
+                    //    list.Add(pr);
+                    //    vremI.Add(list);
+                    //    //vremI.Add(string.Join("->", (( Vrem.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
+                    //}
                 }
                 res["ProsI" + iter] = string.Join(" ", Pro.GetQueueParentString(prosI));// string.Join(" ", prosI);// ;
                 res["SpecsI" + iter] = string.Join(" ", Spec.GetQueueParentString(specI)); //string.Join(" ", specI); string.Join(" ", Spec.GetQueueParentString(Spec.GetQueueParent(specI)));
@@ -99,9 +109,9 @@ namespace dip.Models.ViewModel
             foreach (var i2 in outp)
             {
                 ++iter;
-                string[] outp_pros = i2.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                string[] outp_spec = i2.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                string[] outp_vrem = i2.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] outpPros = i2.Pros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] outpSpec = i2.Spec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] outpVrem = i2.Vrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
 
 
@@ -112,42 +122,56 @@ namespace dip.Models.ViewModel
 
                 using (var db = new ApplicationDbContext())
                 {
+                    res["NameO" + iter] = db.AllActions.First(x1 => x1.Id == i2.Name).Name;
+                    res["TypeO" + iter] = db.ActionTypes.First(x1 => x1.Id == i2.Type).Name;
+                    res["FizVelIdO" + iter] = db.FizVels.First(x1 => x1.Id == i2.FizVelId).Name;
+                    res["FizVelparamO" + iter] = db.FizVels.FirstOrDefault(x1 => x1.Id == i2.FizVelSection)?.Name;
 
 
-                    foreach (var i in outp_pros)
-                    {
-                        Pro pr = db.Pros.First(x1 => x1.Id == i);
-                        var list = pr.GetParentsList(db);
-                        list.Add(pr);
-                        prosO.Add(list);
-                        //prosO.Add(string.Join("->", ((Pro.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
-                    }
-                    foreach (var i in outp_spec)
-                    {
-                        Spec sp = db.Specs.First(x1 => x1.Id == i);
-                        var list = sp.GetParentsList(db);
-                        list.Add(sp);
-                        specO.Add(list);
-                        //specO.Add(string.Join("->", ((Spec.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
-                    }
-                    foreach (var i in outp_vrem)
-                    {
-                        Vrem pr = db.Vrems.First(x1 => x1.Id == i);
-                        var list = pr.GetParentsList(db);
-                        list.Add(pr);
-                        vremO.Add(list);
-                        //vremO.Add(string.Join("->", ((Vrem.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
-                    }
+
+                    var prs = db.Pros.Where(x1 => outpPros.Contains(x1.Id)).ToList();
+                    prosO = Pro.GetQueueParent(prs);
+
+                    var specs = db.Specs.Where(x1 => outpSpec.Contains(x1.Id)).ToList();
+                    specO = Spec.GetQueueParent(specs);
+
+                    var vrems = db.Vrems.Where(x1 => outpVrem.Contains(x1.Id)).ToList();
+                    vremO = Vrem.GetQueueParent(vrems);
+
+
+
+                    //TODO тут везде цикл в цикле
+                    //foreach (var i in outp_pros)
+                    //{
+                    //    Pro pr = db.Pros.First(x1 => x1.Id == i);
+                    //    var list = pr.GetParentsList(db);
+                    //    list.Add(pr);
+                    //    prosO.Add(list);
+                    //    //prosO.Add(string.Join("->", ((Pro.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
+                    //}
+                    //foreach (var i in outp_spec)
+                    //{
+                    //    Spec sp = db.Specs.First(x1 => x1.Id == i);
+                    //    var list = sp.GetParentsList(db);
+                    //    list.Add(sp);
+                    //    specO.Add(list);
+                    //    //specO.Add(string.Join("->", ((Spec.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
+                    //}
+                    //foreach (var i in outp_vrem)
+                    //{
+                    //    Vrem pr = db.Vrems.First(x1 => x1.Id == i);
+                    //    var list = pr.GetParentsList(db);
+                    //    list.Add(pr);
+                    //    vremO.Add(list);
+                    //    //vremO.Add(string.Join("->", ((Vrem.GetParents(i, db) + " " + i).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))));
+                    //}
 
                     //
 
 
 
 
-                    res["NameO" + iter] = db.AllActions.First(x1 => x1.Id == i2.Name).Name;
-                    res["TypeO" + iter] = db.ActionTypes.First(x1 => x1.Id == i2.Type).Name;
-                    res["FizVelIdO" + iter] = db.FizVels.First(x1 => x1.Id == i2.FizVelId).Name;
-                    res["FizVelparamO" + iter] = db.FizVels.FirstOrDefault(x1 => x1.Id == i2.FizVelSection)?.Name;
+                    
 
                 }
 
@@ -226,7 +250,8 @@ namespace dip.Models.ViewModel
                    // var treeProBase = Pro.GetQueueParent(allPros);
                     foreach (var p in prosList)
                     {
-                        p.LoadPartialTree(allPros);
+                        if (allPros.FirstOrDefault(x1 => x1.Parent == p.Id) != null)
+                            p.LoadPartialTree(allPros);
                         //foreach (var i in treeProBase)
                         //{
                         //    if (p.Id == i[0].Id)
@@ -249,7 +274,8 @@ namespace dip.Models.ViewModel
                     //var treeSpecBase = Spec.GetQueueParent(allSpec);
                     foreach (var s in specList)
                     {
-                        s.LoadPartialTree(allSpec);
+                        if (allSpec.FirstOrDefault(x1 => x1.Parent == s.Id) != null)
+                            s.LoadPartialTree(allSpec);
                         //foreach (var i in treeSpecBase)
                         //{
                         //    if (!i[0].LoadPartialTree(i))
@@ -271,6 +297,7 @@ namespace dip.Models.ViewModel
                     //var treeVremBase = Vrem.GetQueueParent(allVrem);
                     foreach (var v in vremList)
                     {
+                        if(allVrem.FirstOrDefault(x1=>x1.Parent==v.Id)!=null)
                         v.LoadPartialTree(allVrem);
                         //foreach (var i in treeVremBase)
                         //{

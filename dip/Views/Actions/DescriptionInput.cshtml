@@ -15,7 +15,7 @@
 @*@model string*@
 
 <div>
-    <hr />
+    @*<hr />*@
     @*@Html.DropDownList("nn", @Model.actionId)*@
     <hr />
     @Html.Label("2 входа?")
@@ -38,13 +38,16 @@
     <input type="hidden" id="parametric_action_or_not" value="@Model.ActionParametricIds" />
     @for (var i = 0; i < Model.InputForms.Count; ++i)
     {
+        
         <div id=@("block_one_descr_input_"+i)>
+            <h2>Вход №@(i + 1)</h2>
             @Html.Action("PartFormDescrSearch", "Helpers", new { a = Model.InputForms[i].Form, type = "I" + i, param = Model.InputForms[i].FormData })
+            <hr />
         </div>
-        <hr />
+        
     }
     
-    <hr />
+    
     <h1>Выход</h1>
     @for (var i = 0; i < Model.OutpForms.Count; ++i)
     {

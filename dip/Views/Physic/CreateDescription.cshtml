@@ -8,12 +8,14 @@
 
 
 <h2>CreateDescription</h2>
+<button class="btn btn-default" id="butInfoBlockId" onclick="showInfo()">Показать информацию</button>
+<div style="display:none;" id="divInfoBlockId">
+    <h2>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h2>
+    <h2>при удалении родителя, будут удалены(не будут добавлены новые) все дети</h2>
+    <h2>actionId добавится только если он выбран</h2>
+    <h2>удаление просходит блоками, так если одновременно запросить удаление spec и pros, удалиться может только 1 группа(например только pros) из них</h2>
 
-
-<h1>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h1>
-<h1>при удалении родителя, будут удалены(не будут добавлены новые) все дети</h1>
-<h1>actionId добавится только если он выбран</h1>
-<h1>удаление просходит блоками, так если одновременно запросить удаление spec и pros, удалиться может только 1 группа(например только pros) из них</h1>
+</div>
 
 
 
@@ -61,7 +63,7 @@
         
     @*</div>*@
 
-    <hr />
+    <hr id="ScrollChangeActionId"/>
 
 
 
@@ -74,17 +76,17 @@
     @*#line2*@
 
 
-    <div style="display:none;">
-        <p>@*по идеи не нужно,*@ нужно вынести как то отдельно, тк не имеет отношения к форме в целом</p>
+    @*<div style="display:none;">
+        <p>*по идеи не нужно,* нужно вынести как то отдельно, тк не имеет отношения к форме в целом</p>
         <select name=@("actionType") class="form-control" id=@("actionType")>
-            @*@foreach (var i in Model.Form.ActionType)
+            * @foreach (var i in Model.Form.ActionType)
             {
 
                 <option selected value="@i.Id">@i.Name</option>
-            }*@
+            }*
         </select>
     </div>
-    <hr />
+    <hr />*@
 
 
 
@@ -117,7 +119,7 @@
     
  
     
-    <hr />
+    <hr id="ScrollChangeParamFizvelId"/>
 
 
 
@@ -140,12 +142,13 @@
                     @*@Html.Action("DescrFormParamFizVelsEdit", "Helpers", new { parametricFizVelId = Model.Form.ParametricFizVelId })*@
                 </div>
                     <button class="btn btn-default" id="addNewParametricFizVelId_but_id" onclick="addNewParametricFizVelId()">Добавить</button>
+                <hr />
                 </div>
         
-
+       
     </div>
 
-    <hr />
+    
 
 
 
@@ -164,12 +167,12 @@
             <div id="prosGroup">
 
             </div>
- 
+            <hr />
         </div>
 
         </div>
 
-    <hr />
+    
 
 
 
@@ -187,11 +190,11 @@
                 <div id="specGroup">
                    
                 </div>
-               
+                <hr />
                 </div>
             </div>
 
-    <hr />
+   
 
 
 
@@ -332,6 +335,9 @@
                             document.getElementById('div_all_checkboxes').style.display = 'block';
                             //$('#parametricFizVel').replaceWith(data[5]);
                             //определить тип и спрятать лишнее  //из результата не вытаскивать
+
+                            $("html, body").animate({ scrollTop: $("#ScrollChangeActionId").offset().top }, "slow");
+                            //fizVelGroup_np_label
                             if (checkParametricAction(value)) {
                                 SetParametricalType(true);
                             }
@@ -382,7 +388,8 @@
                             // Заменяем часть представления, отвечающего за выбор физической величины
                             //$('#parametricFizVel').replaceWith(data);
                             document.getElementById('parametricFizVel').innerHTML = data;
-
+                            $("html, body").animate({ scrollTop: $("#ScrollChangeParamFizvelId").offset().top }, "slow");
+                            
                         }
                     });
                 if (mainObjEdit.parametricAction) {
@@ -1327,7 +1334,20 @@
     }
 
 
-
+    function showInfo() {
+        var div=document.getElementById('divInfoBlockId');
+        var but=document.getElementById('butInfoBlockId');
+        if(div.style.display == 'block'){
+            div.style.display='none';
+            but.innerHTML = 'Показать информацию';
+        }
+        else{
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть информацию';
+        }
+        
+        
+    }
 
 
 

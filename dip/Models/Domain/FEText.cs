@@ -213,7 +213,7 @@ namespace dip.Models.Domain
         public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects, HttpContextBase HttpContext)
         {
             int[] list_id = null;
-
+            bool changedObject = objects.Length==2?true:false;
 
             //поиск
             //List<int> list_id = new List<int>();
@@ -309,7 +309,7 @@ namespace dip.Models.Domain
 
                 }
                 //formsList = forms_query.ToList();
-                checkInp = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
+               // checkInp = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
                 int formsLen = forms.Length;
                 //if (formsLen == 1)
                 //    checkInp = db.FEActions.Where(predicate).Select(x1=>x1.Idfe).Distinct().ToList();
@@ -558,7 +558,7 @@ namespace dip.Models.Domain
                     }
                     //checkObj = db.FEObjects.Where(predicate).Select(x1=>x1.Idfe).ToList();
                     if (AllCountPhase == 0)
-                        checkObj = db.FEObjects.Select(x1 => x1.Idfe).ToList();
+                        checkObj = db.FEObjects.Select(x1 => x1.Idfe).Distinct().ToList();
 
                     else
                         checkObj = db.FEObjects.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= AllCountPhase).Select(x1 => x1.Key).ToList();
@@ -583,11 +583,17 @@ namespace dip.Models.Domain
             // list_id= list_id.Where(x1 => string.IsNullOrWhiteSpace(stateBegin) ? true : x1.StateBeginId == stateBegin && string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd).Select(x1 => x1.IDFE).ToArray();
 
 
+
+
+            //var asd = checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray();
+
+
             //сравниваем состояния и результаты всех запросов
-            list_id = FEText.GetList(null,checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
-                .Where(x1 =>(string.IsNullOrWhiteSpace(stateBegin)?true:x1.StateBeginId == stateBegin) &&( string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd)).Select(x1=>x1.IDFE).ToArray();
+            list_id = FEText.GetList(null, checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
+                .Where(x1 => (string.IsNullOrWhiteSpace(stateBegin) ? (changedObject ? !string.IsNullOrWhiteSpace(x1.StateBeginId) : true) : x1.StateBeginId == stateBegin) &&
+                (string.IsNullOrWhiteSpace(stateEnd) ? (changedObject ? !string.IsNullOrWhiteSpace(x1.StateEndId) : true) : x1.StateEndId == stateEnd)).Select(x1 => x1.IDFE).ToArray();
 
-
+            
 
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)

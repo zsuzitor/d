@@ -4,7 +4,7 @@
 
 
 <div>
-    <hr />
+    @*<hr />*@
     @*@Html.DropDownList("nn", @Model.actionId)*@
     @*@Html.CheckBox("changeObjectCheckbox")*@
     @if (Model.changedObject)
@@ -19,7 +19,7 @@
     }
 
     @Html.Label("Объект изменяется")
-    <hr />
+    @*<hr />*@
     <div id="formPartStartId">
         <h1>Начальное состояние объекта</h1>
         @*@helpers_.PartFormDescrSearch(Html)*@

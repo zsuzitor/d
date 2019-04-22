@@ -118,16 +118,19 @@ namespace dip.Models.ViewModel
         {
             List<List<PhaseCharacteristicObject>> d = new List<List<PhaseCharacteristicObject>>();
             List<PhaseCharacteristicObject> listForMass = db.PhaseCharacteristicObjects.Where(x1=>mass.Contains(x1.Id)).ToList();
-            
-            foreach (var i2 in listForMass)
-            {
-                //PhaseCharacteristicObject pr = db.PhaseCharacteristicObjects.First(x1 => x1.Id == i2);
-                var list = i2.GetParentsList(db);
-                list.Add(i2);
-                d.Add(list);
-                
-            }
-            var strRes=PhaseCharacteristicObject.GetQueueParentString(d);
+
+            d = PhaseCharacteristicObject.GetQueueParent(listForMass);
+
+            //TODO тут везде цикл в цикле
+            //foreach (var i2 in listForMass)
+            //{
+            //    //PhaseCharacteristicObject pr = db.PhaseCharacteristicObjects.First(x1 => x1.Id == i2);
+            //    var list = i2.GetParentsList(db);
+            //    list.Add(i2);
+            //    d.Add(list);
+
+            //}
+            var strRes =PhaseCharacteristicObject.GetQueueParentString(d);
             if (feobj.Begin == 1)
             {
                 switch (feobj.NumPhase)

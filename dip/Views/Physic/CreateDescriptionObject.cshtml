@@ -2,9 +2,13 @@
 
 
 
+<button class="btn btn-default" id="butInfoBlockId" onclick="showInfo()">Показать информацию</button>
+<div style="display:none;" id="divInfoBlockId">
+    <h2>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h2>
+    <h2>при удалении родителя, будут удалены(не будут добавлены новые ) все дети</h2>
 
-<h1>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h1>
-<h1>при удалении родителя, будут удалены(не будут добавлены новые ) все дети</h1>
+
+</div>
 
 
 
@@ -365,6 +369,24 @@
 
 
     }
+
+
+
+    function showInfo() {
+        var div = document.getElementById('divInfoBlockId');
+        var but = document.getElementById('butInfoBlockId');
+        if (div.style.display == 'block') {
+            div.style.display = 'none';
+            but.innerHTML = 'Показать информацию';
+        }
+        else {
+            div.style.display = 'block';
+            but.innerHTML = 'Скрыть информацию';
+        }
+
+
+    }
+
 
 
 </script>

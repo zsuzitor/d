@@ -27,10 +27,10 @@ List.Add(Tuple.Create("Информация о пользователях сис
 @foreach (var i in List)
 {
     <div class="padding_10_top create_something_one_block div_inline_block">
-        <div class="create_something_one_block_inside">
+        <div class="padding_10_top create_something_one_block_inside">
             <a class="link_standart_for_div" href="@Url.Action(i.Item3,i.Item4, new { })">
                 @i.Item1
-                <div class="create_something_one_block_move">
+                <div class="padding_10_top create_something_one_block_move">
                 @i.Item2
                 </div>
 

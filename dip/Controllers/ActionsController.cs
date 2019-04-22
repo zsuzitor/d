@@ -349,9 +349,8 @@ namespace dip.Controllers
             using (var db = new ApplicationDbContext())
                 if (!act.Parametric)
                     // непараметрическое воздействие
-
-                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL") ||
-                                                                              (fizVel.Id == "NO_FIZVEL"))
+                    //||(fizVel.Id == "NO_FIZVEL")
+                    listOfFizVels = db.FizVels.Where(fizVel => (fizVel.Parent == act.Id + "_FIZVEL"))
                                                            .OrderBy(fizVel => fizVel.Id).ToList();
                 else
 
@@ -662,9 +661,13 @@ namespace dip.Controllers
             if (actionId.Length > 0)
                 allA = AllAction.Get(actionId[0]);
             if ( allA?.Parametric == true)
+            {
                 res.List = FizVel.GetParametricFizVels(id);
+                var elem = res.List.FirstOrDefault(x1=>x1.Id== "NO_FIZVEL");
+                res.List.Remove(elem);
+            }
 
-            
+
             res.ParentId = id;
             return PartialView(res);
         }

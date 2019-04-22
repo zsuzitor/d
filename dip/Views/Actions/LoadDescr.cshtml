@@ -6,43 +6,43 @@
         <p>Входные</p>
         @for (int i = 1; Model.DictDescrData.ContainsKey("NameI" + i); ++i)
         {
-
+            <label>Вход №@i</label>
             <p>
                 <label>Название воздействия:</label>
-                <label>@(Model.DictDescrData["NameI"+i])</label>
+                <span class="breakWord">@(Model.DictDescrData["NameI"+i])</span>
             </p>
             <p>
                 <label>Тип входа:</label>
-                <label>@(Model.DictDescrData["TypeI" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["TypeI" + i])</span>
             </p>
             if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI" + i]))
             {
                 <p>
                     <label>Название физической величины:</label>
-                    <label>@(Model.DictDescrData["FizVelIdI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["FizVelIdI" + i])</span>
                 </p>
                 <p>
                     <label>Пространственные характеристики:</label>
-                    <label>@(Model.DictDescrData["ProsI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["ProsI" + i])</span>
                 </p>
                 <p>
                     <label>Специальные характеристики:</label>
-                    <label>@(Model.DictDescrData["SpecsI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["SpecsI" + i])</span>
                 </p>
                 <p>
                     <label>Временные характеристики:</label>
-                    <label>@(Model.DictDescrData["VremsI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["VremsI" + i])</span>
                 </p>
             }
             if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI" + i]))
             {
                 <p>
                     <label>Раздел физики:</label>
-                    <label>@(Model.DictDescrData["FizVelIdI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["FizVelIdI" + i])</span>
                 </p>
                 <p>
                     <label>Название физической величины:</label>
-                    <label>@(Model.DictDescrData["FizVelparamI" + i])</label>
+                    <span class="breakWord">@(Model.DictDescrData["FizVelparamI" + i])</span>
                 </p>
             }
         }
@@ -56,40 +56,40 @@
 {
     <p>
         <label>Название воздействия:</label>
-        <label>@(Model.DictDescrData["NameO" + i])</label>
+        <span class="breakWord">@(Model.DictDescrData["NameO" + i])</span>
     </p>
         <p>
             <label>Тип входа:</label>
-            <label>@(Model.DictDescrData["TypeO" + i])</label>
+            <span class="breakWord">@(Model.DictDescrData["TypeO" + i])</span>
         </p>
         if (string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO" + i]))
         {
             <p>
                 <label>Название физической величины:</label>
-                <label>@(Model.DictDescrData["FizVelIdO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["FizVelIdO" + i])</span>
             </p>
             <p>
                 <label>Пространственные характеристики:</label>
-                <label>@(Model.DictDescrData["ProsO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["ProsO" + i])</span>
             </p>
             <p>
                 <label>Специальные характеристики:</label>
-                <label>@(Model.DictDescrData["SpecsO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["SpecsO" + i])</span>
             </p>
             <p>
                 <label>Временные характеристики:</label>
-                <label>@(Model.DictDescrData["VremsO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["VremsO" + i])</span>
             </p>
         }
         if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamO" + i]))
         {
             <p>
                 <label>Раздел физики:</label>
-                <label>@(Model.DictDescrData["FizVelIdO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["FizVelIdO" + i])</span>
             </p>
             <p>
                 <label>Название физической величины:</label>
-                <label>@(Model.DictDescrData["FizVelparamO" + i])</label>
+                <span class="breakWord">@(Model.DictDescrData["FizVelparamO" + i])</span>
             </p>
         }
 
