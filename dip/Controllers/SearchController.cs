@@ -35,9 +35,10 @@ namespace dip.Controllers
         /// <param name="stateEnd">Конечное состояние объекта</param>
         /// <param name="forms">Входные\Выходные параметры дескрипторной формы</param>
         /// <param name="objForms">Характеристики объекта дескрипторной формы</param>
+        /// <param name="lastId">id последней загруженной записи</param>
         /// <returns></returns>
         //TODO search- переименовать+ в js тоже поменять на partial
-        public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
+        public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null, int lastId = 0,bool emptyResult=false)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
             
             DescriptionSearchV res = new DescriptionSearchV();
@@ -58,7 +59,7 @@ namespace dip.Controllers
                 }
 
 
-                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms,HttpContext);
+                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms, lastId,HttpContext);
 
                 res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
                 res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); 
@@ -85,7 +86,7 @@ namespace dip.Controllers
                 log.AddLogDb();
 
 
-                return RedirectToAction("ListFeText", "Physic");
+                return RedirectToAction("ListFeText", "Physic",new { emptyResult= emptyResult });
             }
             
             return View(res);

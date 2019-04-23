@@ -31,7 +31,7 @@
         
         <div class="div_inline_block descrForm_div_search_but">
             <p class="text-center">
-                <button class="width_100per btn btn-default" onclick="Go_next_step()">Поиск</button>
+                <button class="width_100per btn btn-default" onclick="GoFirstDescrSearch()">Поиск</button>
                 </p>
 </div>
         <div class="div_inline_block descrForm_div_clear_but">
@@ -51,7 +51,17 @@
             }
 
         </div>
+    @*<div id="div_search_ft_result_id">
+        
 
+    </div>*@
+    
+    <p class="text-center">
+        <div class="inline" style="display:none;" id="div_search_ft_but_id">
+            <button class="width_100per btn btn-default" onclick="loadMoreFTBut()">загрузить еще</button>
+        </div>
+    </p>
+    
       
         <div>
 
@@ -66,19 +76,26 @@
 @section Scripts {
     <script>
 
+        $(document).ready(function () {
+            // ggg(goSave);
+            data_descr_search.function_trigger = goSave;
+
+        });
+        var block_load = false;
 
 
-        function goSave() {//formData
-            //if (!data_descr_search.stateBegin) {
-            //    alert('Выберите начальное состояние');
-            //    return;
-            //}
+
+        function GoFirstDescrSearch() {
+            document.getElementById('div_search_ft_but_id').style.display = 'none';
+            data_descr_search.function_trigger = goSave;
+            Go_next_step();
+        }
+
+
+
+
+        function goSave() {
             var twoObject = document.getElementById('changeObjectCheckbox').checked;
-
-            //if (twoObject && !data_descr_search.stateEnd) {
-            //    alert('Выберите конечное состояние');
-            //    return;
-            //}
 
             data_descr_search.function_trigger = null;
 
@@ -95,7 +112,7 @@
                     else {
                         document.getElementById('search_content_div_id').innerHTML = data.responseText;//responseText убрать если будет success
                         //data_descr_search.function_trigger = goSave;
-                        
+                        document.getElementById('div_search_ft_but_id').style.display='block';
                        
                     }
                     data_descr_search = {
@@ -231,11 +248,88 @@
 
 
 
-        $(document).ready(function () {
-            // ggg(goSave);
-            data_descr_search.function_trigger = goSave;
+        
 
-        });
+
+
+        function loadMoreFTBut() {
+            data_descr_search.function_trigger = loadMoreFT;
+            Go_next_step();
+        }
+
+
+
+
+        function loadMoreFT() {
+
+            //если вернулся пустой список то возвращать статус серва с ошибкой, блокировать множественное нажатие кнопки
+
+            if (!block_load) {
+                block_load = true;
+
+               
+
+
+                var div_last_load_c = document.getElementById('search_content_div_id').children;
+                if (div_last_load_c.length > 0) {
+                    var div_last_load = div_last_load_c[div_last_load_c.length - 1];
+                    //formData.countLoad = +div_last_load.id.split('_')[6] + 1;
+                    var div_last_fe_c = div_last_load.children;
+                    var div_last_fe = div_last_fe_c[div_last_fe_c.length - 1];
+                    //formData.lastId = div_last_fe.id.split('_')[5];
+                    if (!div_last_fe) {
+                        document.getElementById('div_search_ft_but_id').style.display = 'none';
+                        return;
+                    }
+                    data_descr_search['lastId'] = div_last_fe.id.split('_')[5];
+                    data_descr_search['emptyResult'] = true;
+                    
+                }
+
+
+
+
+                var twoObject = document.getElementById('changeObjectCheckbox').checked;
+
+                data_descr_search.function_trigger = null;
+
+
+
+                goAjaxRequest({
+                    url: "/Search/DescriptionSearch",
+                    data: data_descr_search,
+                    func_complete: function (data, status, jqXHR) {//func_success
+                        block_load = false;
+                        //alert(data);
+                        if (status == 'error')
+                            console.log('error partial search');
+                        else {
+                            if (data.responseText.trim())
+                            document.getElementById('search_content_div_id').innerHTML += data.responseText;//responseText убрать если будет success
+                            else
+                                document.getElementById('div_search_ft_but_id').style.display = 'none';
+                        }
+                        data_descr_search = {
+                            search: data_descr_search.search,
+                            function_trigger: goSave
+                        };
+                        showHideDescrForm(false);
+                    },
+                    func_error: function (req, status, jqXHR) {
+                        document.getElementById('div_search_ft_but_id').style.display = 'none';
+                    },
+                    type: 'POST'
+                });
+
+
+
+               
+            }
+
+
+        }
+
+
 
     </script>
 }

@@ -249,7 +249,7 @@ div.layout_active_panel{
 div.Main_header_big {
     position: relative;
     background-color: white;
-    height: 500px;
+    height: 300px;
     width: 96%;
     left: 2%;
     background-image: url(/Content/images/main_header_back_big.jpg);

@@ -7,14 +7,14 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.Name)
+        @Html.TextAreaFor(x1 => x1.Name,new { @class = "form-control" })
     </dd>
     <dt>
         @Html.DisplayName("Описание")
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.Text)
+        @Html.TextAreaFor(x1 => x1.Text, new { @class = "form-control" })
     </dd>
 
     <dt>
@@ -22,7 +22,7 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.TextInp)
+        @Html.TextAreaFor(x1 => x1.TextInp, new { @class = "form-control" })
     </dd>
 
     <dt>
@@ -30,7 +30,7 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.TextOut)
+        @Html.TextAreaFor(x1 => x1.TextOut, new { @class = "form-control" })
     </dd>
 
     <dt>
@@ -38,7 +38,7 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.TextObj)
+        @Html.TextAreaFor(x1 => x1.TextObj, new { @class = "form-control" })
     </dd>
 
     <dt>
@@ -46,7 +46,7 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.TextApp)
+        @Html.TextAreaFor(x1 => x1.TextApp, new { @class = "form-control" })
     </dd>
 
     <dt>
@@ -54,7 +54,7 @@
     </dt>
 
     <dd>
-        @Html.EditorFor(x1 => x1.TextLit)
+        @Html.TextAreaFor(x1 => x1.TextLit, new { @class = "form-control" })
     </dd>
 
 </dl>

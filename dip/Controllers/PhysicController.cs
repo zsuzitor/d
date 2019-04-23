@@ -90,8 +90,9 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="listId">Список id ФЭ</param>
         /// <param name="numLoad">Номер загрузки</param>
+        /// <param name="emptyResult">При true и пустом списке вернет emptyresult</param>
         /// <returns></returns>
-        public ActionResult ListFeText(int[] listId = null, int numLoad = 1)
+        public ActionResult ListFeText(int[] listId = null, int numLoad = 1,bool emptyResult=false)
         {
             ListFeTextV res = new ListFeTextV();
 
@@ -100,6 +101,8 @@ namespace dip.Controllers
                 listId = (int[])TempData["list_fe_id"];
             }
             listId = listId ?? new int[0];
+            if (emptyResult&&listId.Length == 0)
+                return new EmptyResult();
             res.FeTexts = FEText.GetListIfAccess(HttpContext,listId);
             res.NumLoad = numLoad;
 

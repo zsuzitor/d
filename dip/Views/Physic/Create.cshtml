@@ -33,12 +33,12 @@
             <input class="btn btn-default" id="upLoadImagesId" type="file" multiple name="uploadImage" />
         </div>
 
-    <p>Laetex</p>
+    <p>Latex</p>
     <div id="physCreateFormLatexImagesAll">
         <div id="physCreateFormLatexImagesImg">
 
         </div>
-        <button onclick="addLatex()">Добавить</button>
+        <button class="btn btn-default" onclick="addLatex()">Добавить</button>
     </div>
 
 
@@ -54,8 +54,8 @@
     var countLatex = 0;
 
     function addLatex() {
-        var strappend = '<div id="latexImgIdDiv_' + countLatex + '"><input id="latexImgId_' + countLatex 
-            + '" type="text"/><button onclick="deleteLatex('+countLatex+')">Удалить</button></div>';
+        var strappend = '<div id="latexImgIdDiv_' + countLatex + '"><input class="form-control" id="latexImgId_' + countLatex
+            + '" type="text"/><button class="btn btn-default" onclick="deleteLatex(' + countLatex + ')">Удалить</button></div>';
         countLatex++;
         $('#physCreateFormLatexImagesImg').append(strappend);
 

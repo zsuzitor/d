@@ -210,7 +210,7 @@ namespace dip.Models.Domain
 
         //при более чем 2х входах и 1 выходах-(||forms>3) эту функцию необходимо будет изменить
         //[Authorize]
-        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects, HttpContextBase HttpContext)
+        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects,int lastId, HttpContextBase HttpContext)
         {
             int[] list_id = null;
             bool changedObject = objects.Length==2?true:false;
@@ -598,7 +598,8 @@ namespace dip.Models.Domain
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return null;
-            list_id=user.CheckAccessPhys(list_id.ToList(), HttpContext).ToArray();
+            list_id=user.CheckAccessPhys(list_id.ToList(), HttpContext).
+                    SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToArray();
 
             return list_id;
         }
