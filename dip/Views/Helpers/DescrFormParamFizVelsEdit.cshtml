@@ -9,17 +9,17 @@
     {
        
         
-        <div class="col-md-10">
+        @*<div class="col-md-10">*@
             
 
             
                 @*<option value="NO_FIZVEL">Не выбрано</option>*@
-                @foreach (var i in Model.List)
+                foreach (var i in Model.List)
                 {
                     <div class="padding_10_top">
                         <button class="btn btn-default" onclick="changeParamFizVels('@i.Id')">Изменить</button>
                         <button id="restoreInput_but_@i.Id" class="btn btn-default" onclick="restoreValue(3,'@i.Id')" style="display:none;">Восстановить значение</button>
-                        <button class="btn btn-default" onclick="">Удалить</button>
+                        <button id=@(i.Id+"_delbut") class="btn btn-default" onclick="deleteItemFizVels('@i.Id')">Удалить</button>
                         <input class="form-control" type="text" value="@i.Name" name="@Model.ParentId" id="@(i.Id+"_inp")" readonly />
                         
                     </div>
@@ -27,7 +27,7 @@
 
                         @*</select>*@
 
-                    </div>
+                    @*</div>*@
                 }
 
 

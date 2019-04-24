@@ -138,7 +138,7 @@
                     <label class="">Название физической величины</label>
 
                 </div>
-                <div class="form-group" id="parametricFizVel">
+                <div @*class="form-group"*@ id="parametricFizVel">
                     @*@Html.Action("DescrFormParamFizVelsEdit", "Helpers", new { parametricFizVelId = Model.Form.ParametricFizVelId })*@
                 </div>
                     <button class="btn btn-default" id="addNewParametricFizVelId_but_id" onclick="addNewParametricFizVelId()">Добавить</button>
@@ -381,7 +381,7 @@
 
             case 'fizVelId':
                 mainObjEdit.curentFizVelId = this.value;
-                if (this.value.indexOf("FizVelNameNew")===-1)
+                if (this.value.indexOf("FizVelNameNEW")===-1)
                     goAjaxRequest({
                         url: '/Actions/GetParametricFizVelsEdit/' + this.value,
                         func_success: function (data, status, jqXHR) {
@@ -640,7 +640,7 @@
     function addNewFizVelId() {
         var div = document.getElementById('fizVel');
         var newMaxId= mainObjEdit.maxNewFizVelId++;
-        var newMaxIdStr="FizVelNameNew"+newMaxId;
+        var newMaxIdStr="FizVelNameNEW"+newMaxId;
 
         //div.innerHTML += '<input class="form-control" id="' +newMaxIdStr+
         //    '_inp" name="FizVelName" type="text" value="">';
@@ -659,8 +659,8 @@
         else {
             res += 'display: none;">';
         }
-            res += '<button class="btn btn-default" onclick="(' + newMaxIdStr +
-            ')">Удалить</button>'+
+        res += '<button id="' + newMaxIdStr + '_delbut" class="btn btn-default" onclick="deleteItemFizVels(\'' + newMaxIdStr +
+            '\')">Удалить</button>'+
                     '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentActionId +
             '" id="' + newMaxIdStr + '_inp" >' +
                ' </div>';
@@ -672,13 +672,13 @@
 
     function addNewParametricFizVelId() {
         var div = document.getElementById('parametricFizVel');
-        //div.innerHTML += '<input class="form-control" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
+        //div.innerHTML += '<input class="form-control" id="ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId++ +
         //    '_inp" name="ParamFizVelName" type="text" value="">';
 
 
         $(div).append(' <div class="padding_10_top">' +
-                        '<button class="btn btn-default" onclick="()">Удалить</button>' +
-                        '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentFizVelId + '" id="ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId++ +
+                        '<button id="ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId + '_delbut" class="btn btn-default" onclick="deleteItemFizVels(\'ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId + '\')">Удалить</button>' +
+                        '<input class="form-control" type="text" value="" name="' + mainObjEdit.curentFizVelId + '" id="ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId++ +
             '_inp" > </div>');
 
 
@@ -1138,7 +1138,7 @@
         });
         //struct.Parametric = mainObjEdit.parametricAction;
 
-
+        var iteration = 0;
         //отредактированные actionId
         for (var i = 0; i < mainObjEdit.massEditActionId.length; ++i) {
             //var checkObj=$('#'+mainObjEdit.massEditActionId[i]+'_inp');
@@ -1149,102 +1149,103 @@
                 //formData['obj.massEditActionId[' + i + '].ParentId'] = null;
                 //formData['obj.massEditActionId[' + i + '].Text'] = $(checkObj).val();
                 //formData['obj.massEditActionId[' + i + '].Parametric'] = false;
-                construct_(i, 'MassEditActionId', mainObjEdit.massEditActionId[i], null, $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditActionId', mainObjEdit.massEditActionId[i], null, $(checkObj).val(), false);
             }
                 
                 //resMass.push(construct_(mainObjEdit.massEditActionId[i], null,  $(checkObj).val(), false));
         }
+        iteration = 0;
         //отредактированные FizVels
         for (var i = 0; i < mainObjEdit.massEditFizVels.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massEditFizVels[i] + '_inp');
             var strId = '#' + mainObjEdit.massEditFizVels[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassEditFizVels', mainObjEdit.massEditFizVels[i], mainObjEdit.curentActionId, $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditFizVels', mainObjEdit.massEditFizVels[i], mainObjEdit.curentActionId, $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //отредактированные ParamFizVels
         for (var i = 0; i < mainObjEdit.massEditParamFizVels.length; ++i) {
            // var checkObj = $('#' + mainObjEdit.massEditParamFizVels[i] + '_inp');
             var strId = '#' + mainObjEdit.massEditParamFizVels[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassEditParamFizVels', mainObjEdit.massEditParamFizVels[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditParamFizVels', mainObjEdit.massEditParamFizVels[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //отредактированные pro
         for (var i = 0; i < mainObjEdit.massEditPros.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massEditPros[i] + '_inp');
             var strId = '#' + mainObjEdit.massEditPros[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassEditPros', mainObjEdit.massEditPros[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditPros', mainObjEdit.massEditPros[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //отредактированные spec
         for (var i = 0; i < mainObjEdit.massEditSpecs.length; ++i) {
            // var checkObj = $('#' + mainObjEdit.massEditSpecs[i] + '_inp');
             var strId = '#' + mainObjEdit.massEditSpecs[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassEditSpecs', mainObjEdit.massEditSpecs[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditSpecs', mainObjEdit.massEditSpecs[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //отредактированные vrem
         for (var i = 0; i < mainObjEdit.massEditVrems.length; ++i) {
            // var checkObj = $('#' + mainObjEdit.massEditVrems[i] + '_inp');
             var strId = '#' + mainObjEdit.massEditVrems[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassEditVrems', mainObjEdit.massEditVrems[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassEditVrems', mainObjEdit.massEditVrems[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //удаленные pro
         for (var i = 0; i < mainObjEdit.massDeletedPros.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massDeletedPros[i] + '_inp');
             var strId = '#' + mainObjEdit.massDeletedPros[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassDeletedPros', mainObjEdit.massDeletedPros[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassDeletedPros', mainObjEdit.massDeletedPros[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-        
+        iteration = 0;
         //удаленные spec
         for (var i = 0; i < mainObjEdit.massDeletedSpecs.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massDeletedSpecs[i] + '_inp');
             var strId = '#' + mainObjEdit.massDeletedSpecs[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassDeletedSpecs', mainObjEdit.massDeletedSpecs[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassDeletedSpecs', mainObjEdit.massDeletedSpecs[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //удаленные vrem
         for (var i = 0; i < mainObjEdit.massDeletedVrems.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
             var strId = '#' + mainObjEdit.massDeletedVrems[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassDeletedVrems', mainObjEdit.massDeletedVrems[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassDeletedVrems', mainObjEdit.massDeletedVrems[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //удаленные fizvels
         for (var i = 0; i < mainObjEdit.massDeletedFizVels.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
             var strId = '#' + mainObjEdit.massDeletedFizVels[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassDeletedFizVels', mainObjEdit.massDeletedFizVels[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassDeletedFizVels', mainObjEdit.massDeletedFizVels[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //удаленные actionid
         for (var i = 0; i < mainObjEdit.massDeletedActionId.length; ++i) {
             //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
             var strId = '#' + mainObjEdit.massDeletedActionId[i] + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId))
-                construct_(i, 'MassDeletedActionId', mainObjEdit.massDeletedActionId[i], checkObj.prop('name'), $(checkObj).val(), false);
+                construct_(iteration++, 'MassDeletedActionId', mainObjEdit.massDeletedActionId[i], checkObj.prop('name'), $(checkObj).val(), false);
         }
        
-
+       
         //добавление actionId
         if (mainObjEdit.curentActionId == 'VOZ0') {
 
@@ -1254,50 +1255,52 @@
             if ($("input").is(strId))
                 construct_(0, 'MassAddActionId', 'VOZ0', null, $(checkObj).val(), document.getElementById('changeTypeParamActionId').checked);
         }
-
+        iteration = 0;
         //добавление FizVel
         for (var i = 1; i < mainObjEdit.maxNewFizVelId; ++i) {
-           // var checkObj = $('#FizVelNameNew' + mainObjEdit.maxNewFizVelId[i] + '_inp');
-            var strId = '#FizVelNameNew' + i + '_inp';
+           // var checkObj = $('#FizVelNameNEW' + mainObjEdit.maxNewFizVelId[i] + '_inp');
+            var strId = '#FizVelNameNEW' + i + '_inp';
             var checkObj = $(strId);
-            if ($("input").is(strId))
-                construct_(i-1, 'MassAddFizVels', 'FizVelNameNew' + i, checkObj.prop('name'), $(checkObj).val(), false);
+           // var asd = $(checkObj).css('background-color');
+            if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
+                construct_(iteration++, 'MassAddFizVels', 'FizVelNameNEW' + i, checkObj.prop('name'), $(checkObj).val(), false);
         }
-        
+        iteration = 0;
+        if (curentFizVel && $('#' + curentFizVel + '_inp').css('background-color') != 'rgb(128, 128, 128)')
         //добавление ParamFizVel
         for (var i = 1; i < mainObjEdit.maxNewParamFizVelId; ++i) {
-            //var checkObj = $('#ParamFizVelNameNew' + mainObjEdit.maxNewParamFizVelId[i] + '_inp');
-            var strId = '#ParamFizVelNameNew' + i + '_inp';
+            //var checkObj = $('#ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId[i] + '_inp');
+            var strId = '#ParamFizVelNameNEW' + i + '_inp';
             var checkObj = $(strId);
-            if ($("input").is(strId))
-                construct_(i - 1, 'MassAddParamFizVels', 'ParamFizVelNameNew' + i, curentFizVel, $(checkObj).val(), false);
+            if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
+                construct_(iteration++, 'MassAddParamFizVels', 'ParamFizVelNameNEW' + i, curentFizVel, $(checkObj).val(), false);
         }
 
-
+        iteration = 0;
         //добавление pro
         for (var i = 1; i < mainObjEdit.maxNewProId; ++i) {
             //var checkObj = $('#' + mainObjEdit.curentActionId + "_PROS_NEW" + mainObjEdit.maxNewProId[i] + '_inp');//VOZ8_PROS_NEW2_inp
             var strId = '#' + mainObjEdit.curentActionId + "_PROS_NEW" + i + '_inp';
             var checkObj = $(strId);
-            if ($("input").is(strId))
-                construct_(i - 1, 'MassAddPros', mainObjEdit.curentActionId + "_PROS_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
+            if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
+                construct_(iteration++, 'MassAddPros', mainObjEdit.curentActionId + "_PROS_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //добавление spec
         for (var i = 1; i < mainObjEdit.maxNewSpecId; ++i) {
             var strId = '#' + mainObjEdit.curentActionId + "_SPEC_NEW" + i + '_inp';
             var checkObj = $(strId);
-            if ($("input").is(strId))
-                construct_(i - 1, 'MassAddSpecs', mainObjEdit.curentActionId + "_SPEC_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
+            if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
+                construct_(iteration++, 'MassAddSpecs', mainObjEdit.curentActionId + "_SPEC_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
         }
-
+        iteration = 0;
         //добавление vrem
         for (var i = 1; i < mainObjEdit.maxNewVremId; ++i) {
             
             var strId = '#' + mainObjEdit.curentActionId + "_VREM_NEW" + i + '_inp';
             var checkObj = $(strId);
-            if ($("input").is(strId))
-                construct_(i - 1, 'MassAddVrems', mainObjEdit.curentActionId + "_VREM_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
+            if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
+                construct_(iteration++, 'MassAddVrems', mainObjEdit.curentActionId + "_VREM_NEW" + i, checkObj.prop('name'), $(checkObj).val(), false);
         }
 
         

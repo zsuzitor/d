@@ -62,6 +62,8 @@ namespace dip.Models
 
         public void AddFizVels(string currentActionId, bool? currentActionParametric, ApplicationDbContext db)
         {
+            if (string.IsNullOrWhiteSpace(currentActionId) || currentActionId.Contains("VOZ0"))
+                throw new Exception("old actionid-voz0");
             //var db = db_ ?? new ApplicationDbContext();
             List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
 
@@ -143,7 +145,11 @@ namespace dip.Models
 
                 foreach (var i in MassAddParamFizVels)
                 {
-                    db.FizVels.Add(new Models.Domain.FizVel()
+                    //if (i.ParentId.IndexOf("NEW") >= 0)
+                    //    throw new Exception("bad parent id for paramfizvels");
+                    if (i.ParentId.Contains("NEW"))
+                        continue;
+                        db.FizVels.Add(new Models.Domain.FizVel()
                     {
                         Name = i.Text,
                         Parent = currentFizVels,
@@ -196,7 +202,7 @@ namespace dip.Models
                 for (int i = 0; i < massAddProsList.Count; ++i)
                 {
                     //проверить можно ли добавить, и добавить и вынести в массив
-                    if (!massAddProsList[i].ParentId.Contains("_NEW"))
+                    if (!massAddProsList[i].ParentId.Contains("_NEW")&& !massAddProsList[i].ParentId.Contains("VOZ0"))
                     {
                         var pro = new Models.Domain.Pro()
                         {
@@ -262,7 +268,7 @@ namespace dip.Models
                 for (int i = 0; i < massAddSpecsList.Count; ++i)
                 {
                     //проверить можно ли добавить, и добавить и вынести в массив
-                    if (!massAddSpecsList[i].ParentId.Contains("_NEW"))
+                    if (!massAddSpecsList[i].ParentId.Contains("_NEW") && !massAddSpecsList[i].ParentId.Contains("VOZ0"))
                     {
                         var spec = new Models.Domain.Spec()
                         {
@@ -332,7 +338,7 @@ namespace dip.Models
                 for (int i = 0; i < massAddVremsList.Count; ++i)
                 {
                     //проверить можно ли добавить, и добавить и вынести в массив
-                    if (!massAddVremsList[i].ParentId.Contains("_NEW"))
+                    if (!massAddVremsList[i].ParentId.Contains("_NEW")&&!massAddVremsList[i].ParentId.Contains("VOZ0"))
                     {
                         var vrem = new Models.Domain.Vrem()
                         {
