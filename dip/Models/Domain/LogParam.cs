@@ -5,6 +5,9 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
+    /// <summary>
+    /// класс для хранения параметра лога
+    /// </summary>
     public class LogParam
     {
         public int Id { get; set; }

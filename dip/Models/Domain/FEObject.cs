@@ -5,7 +5,10 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    //1 фаза объекта, данные
+    
+    /// <summary>
+    /// 1 фаза объекта, данные
+    /// </summary>
     public class FEObject
     {
 
@@ -35,41 +38,44 @@ namespace dip.Models.Domain
             Special = "";
 
         }
-        public FEObject(DescrPhaseI a,  int idfe, int begin)//string str, int idfe, int begin)
+        public FEObject(DescrPhaseI a, int idfe, int begin)
         {
             this.Idfe = idfe;
             this.Begin = begin;
             this.NumPhase = a.NumPhase;
 
-
-            PhaseState = a.PhaseState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.PhaseState);
-            Composition = a.Composition;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Composition);
-            MagneticStructure = a.MagneticStructure;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MagneticStructure);
-            Conductivity = a.Conductivity;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Conductivity);
-            MechanicalState = a.MechanicalState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.MechanicalState);
-            OpticalState = a.OpticalState;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.OpticalState);
-            Special = a.Special;// PhaseCharacteristicObject.DeleteNotChildCheckbox(a.Special);
+            PhaseState = a.PhaseState;
+            Composition = a.Composition;
+            MagneticStructure = a.MagneticStructure;
+            Conductivity = a.Conductivity;
+            MechanicalState = a.MechanicalState;
+            OpticalState = a.OpticalState;
+            Special = a.Special;
 
         }
 
-        public FEObject(DescrPhaseI a):this(a,a.Idfe,a.Begin)
+        public FEObject(DescrPhaseI a) : this(a, a.Idfe, a.Begin)
         {
-            
+
         }
 
+        /// <summary>
+        /// Метод для получения начальных и конечных характеристик фэ
+        /// </summary>
+        /// <param name="id">id фэ</param>
+        /// <param name="inp">начальные характеристики</param>
+        /// <param name="outp">конечные характеристики</param>
+        /// <returns></returns>
         public static bool Get(int id, ref List<FEObject> inp, ref List<FEObject> outp)
         {
-            using (var db=new ApplicationDbContext())
+            using (var db = new ApplicationDbContext())
             {
-                var lst=db.FEObjects.Where(x1=>x1.Idfe==id).ToList();
-                inp = lst.Where(x1=>x1.Begin==1).ToList();
+                var lst = db.FEObjects.Where(x1 => x1.Idfe == id).ToList();
+                inp = lst.Where(x1 => x1.Begin == 1).ToList();
                 outp = lst.Where(x1 => x1.Begin == 0).ToList();
             }
-
-
-
-                return true;
+            return true;
         }
 
-    } 
+    }
 }

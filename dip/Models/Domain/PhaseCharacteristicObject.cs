@@ -5,17 +5,22 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
+
+    /// <summary>
+    /// класс для хранения 1 записи(checbox) для характеристик объекта
+    /// </summary>
     public class PhaseCharacteristicObject : ItemFormCheckbox<PhaseCharacteristicObject>
     {
-
 
         public PhaseCharacteristicObject()
         {
 
         }
 
-
-
+        /// <summary>
+        /// метод для получения базовых харектеристик(1 уровень)
+        /// </summary>
+        /// <returns></returns>
         public static List<PhaseCharacteristicObject> GetBase()
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
@@ -24,10 +29,13 @@ namespace dip.Models.Domain
             return res;
         }
 
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+        /// <summary>
+        /// метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
+        /// <param name="strIds">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
-
             string res = "";
             var listId = strIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var i in listId)
@@ -47,15 +55,17 @@ namespace dip.Models.Domain
                     if (needAdd)
                         res += i + " ";
                 }
-
-
             }
-
             return res.Trim();
-
         }
 
 
+        /// <summary>
+        /// метод возвращает список ВСЕХ родителей(и их родителей) для id содержащихся в str
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <param name="db">контекст</param>
+        /// <returns></returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -70,31 +80,38 @@ namespace dip.Models.Domain
         }
 
 
-        //ближайшие дети
+        /// <summary>
+        /// метод возвращает ближайших детей
+        /// </summary>
+        /// <param name="id">id записи для которой нужно вернуть детей</param>
+        /// <returns></returns>
         public static List<PhaseCharacteristicObject> GetChild(string id)
         {
-            // Получаем список значений, соответствующий данной характеристике
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
             using (var db = new ApplicationDbContext())
                 res = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == id).ToList();
             return res;
-
         }
 
-
+        /// <summary>
+        /// клонирование объекта без ссылок
+        /// </summary>
+        /// <returns></returns>
         public PhaseCharacteristicObject CloneWithOutRef()
         {
             return new PhaseCharacteristicObject()
             {
-
                 Id = this.Id,
                 Name = this.Name,
                 Parent = this.Parent
             };
-
-
         }
 
+        /// <summary>
+        /// получение записи по id
+        /// </summary>
+        /// <param name="id">id записи</param>
+        /// <returns></returns>
         public static PhaseCharacteristicObject Get(string id)
         {
             PhaseCharacteristicObject res = null;
@@ -106,10 +123,11 @@ namespace dip.Models.Domain
 
 
 
-
+        /// <summary>
+        /// перезагружает детей для записи
+        /// </summary>
         public override void ReLoadChild()
         {
-
             using (var db = new ApplicationDbContext())
                 this.Childs = db.PhaseCharacteristicObjects.Where(x1 => x1.Parent == this.Id).ToList();
         }
@@ -126,19 +144,14 @@ namespace dip.Models.Domain
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
             var db = db_ ?? new ApplicationDbContext();
-
             var par = db.PhaseCharacteristicObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
 
             if (par != null)
             {
                 if (par.Parent != Constants.FeObjectBaseCharacteristic)
                     res.AddRange(par.GetParentsList(db));
-
                 res.Add(par);
             }
-
-
-
             if (db_ == null)
                 db.Dispose();
 
@@ -146,9 +159,13 @@ namespace dip.Models.Domain
         }
 
 
+        /// <summary>
+        /// метод который из строки только детей формирует строку со всеми(дети+родители) 
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string GetAllIdsFor(string str)
         {
-            //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить
             if (string.IsNullOrWhiteSpace(str))
                 return "";
 
@@ -168,17 +185,6 @@ namespace dip.Models.Domain
                 }
             }
             return string.Join(" ", mainLst.Select(x1 => x1.Id).Distinct());
-
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

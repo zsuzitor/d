@@ -14,20 +14,13 @@ namespace dip.Models
             return str ?? "";
         }
 
-
+        /// <summary>
+        /// метод для преобразования HttpPostedFileBase в байты
+        /// </summary>
+        /// <param name="uploadImage"></param>
+        /// <returns></returns>
         public static List<byte[]> Get_photo_post( HttpPostedFileBase[] uploadImage)//this Image a,
         {
-
-            /* сохранение картинок как файл ...
-              HttpPostedFileBase image = Request.Files["fileInput"];
-
-            if (image != null && image.ContentLength > 0 && !string.IsNullOrEmpty(image.FileName))
-            {
-                string fileName = image.FileName;
-                image.SaveAs(Path.Combine(Server.MapPath("Images"), fileName));
-            }
-
-             * */
             List<byte[]> res = new List<byte[]>();
             if (uploadImage != null)
             {
@@ -36,26 +29,17 @@ namespace dip.Models
                     try
                     {
                         byte[] imageData = null;
-                        // считываем переданный файл в массив байтов
                         using (var binaryReader = new BinaryReader(i.InputStream))
                         {
                             imageData = binaryReader.ReadBytes(i.ContentLength);
                         }
-                        // установка массива байтов
                         res.Add(imageData);
                     }
                     catch
                     { }
                 }
-
             }
-
             return res;
         }
-
-        
-
-
-
     }
 }

@@ -5,6 +5,10 @@ using System.Web;
 
 namespace dip.Models
 {
+
+    /// <summary>
+    /// класс констант
+    /// </summary>
     public class Constants
     {
         //бд проекта

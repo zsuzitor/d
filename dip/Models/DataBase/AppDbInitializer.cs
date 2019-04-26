@@ -9,8 +9,15 @@ using System.Web;
 
 namespace dip.Models.DataBase
 {
+    /// <summary>
+    /// Класс для инициализации бд
+    /// </summary>
     public class AppDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
+        /// <summary>
+        /// Метод для инициализации
+        /// </summary>
+        /// <param name="context"></param>
         protected override void Seed(ApplicationDbContext context)
         {
             var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));

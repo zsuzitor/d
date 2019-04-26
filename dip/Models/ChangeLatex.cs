@@ -5,6 +5,9 @@ using System.Web;
 
 namespace dip.Models
 {
+    /// <summary>
+    /// класс для хранения измененных формул latex
+    /// </summary>
     public class ChangeLatex
     {
         public int Id { get; set; }

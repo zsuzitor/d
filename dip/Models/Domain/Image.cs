@@ -7,46 +7,47 @@ using WpfMath;
 
 namespace dip.Models.Domain
 {
-    public class Image: ShowsFEImage
+
+    /// <summary>
+    /// класс для хранения изображений ФЭ
+    /// </summary>
+    public class Image : ShowsFEImage
     {
         public int Id { get; set; }
-
         public byte[] Data { get; set; }
-
         public int FeTextIDFE { get; set; }
         public FEText FeText { get; set; }
 
         [NotMapped]
-        public string IdForShow { get {
+        public string IdForShow
+        {
+            get
+            {
                 return Id + "img";
-            }  }
+            }
+        }
         public Image()
         {
             Data = null;
             FeTextIDFE = 0;
             FeText = null;
-            //IdForShow = "";
         }
 
-
+        /// <summary>
+        /// метод для получения изображения из latex формулы
+        /// </summary>
+        /// <param name="formula">объект FELatexFormula</param>
+        /// <returns></returns>
         public static Image GetFromLatex(FELatexFormula formula)
         {
-            try
-            {
-                var parser = new TexFormulaParser();
-                var formulabyte = parser.Parse(formula.Formula);
-                return new Image() { Data = formulabyte.RenderToPng(20.0, 0.0, 0.0, "Arial") };
-
-            }
-            catch
-            {
-               
-            }
-            return null;
-            
-           
+            return GetFromLatex(formula.Formula);
         }
 
+        /// <summary>
+        /// метод для получения изображения из latex формулы
+        /// </summary>
+        /// <param name="formula">текст формулы</param>
+        /// <returns></returns>
         public static Image GetFromLatex(string formula)
         {
             try
@@ -54,15 +55,9 @@ namespace dip.Models.Domain
                 var parser = new TexFormulaParser();
                 var formulabyte = parser.Parse(formula);
                 return new Image() { Data = formulabyte.RenderToPng(20.0, 0.0, 0.0, "Arial") };
-
             }
-            catch
-            {
-                
-            }
+            catch { }
             return null;
         }
-
-
     }
 }

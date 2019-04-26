@@ -6,69 +6,82 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class StateObject: ItemFormCheckbox<StateObject>//, ICloneable
-    {
-       
-        public int? CountPhase { get; set; }
 
-      
+    /// <summary>
+    /// класс для хранения состояния объекта
+    /// </summary>
+    public class StateObject : ItemFormCheckbox<StateObject>
+    {
+
+        public int? CountPhase { get; set; }
 
         public List<FEText> FeTextBegin { get; set; }
         public List<FEText> FeTextEnd { get; set; }
-
 
         public StateObject()
         {
             CountPhase = null;
         }
 
-       
 
-
-
-
+        /// <summary>
+        ///  метод для получения базовых состояний(1 уровень)
+        /// </summary>
+        /// <returns></returns>
         public static List<StateObject> GetBase()
         {
             List<StateObject> res = new List<StateObject>();
             using (var db = new ApplicationDbContext())
-                            res= db.StateObjects.Where(x1 => x1.Parent == "STRUCTOBJECT").ToList();
-            return res; 
+                res = db.StateObjects.Where(x1 => x1.Parent == "STRUCTOBJECT").ToList();
+            return res;
         }
 
-
+        /// <summary>
+        /// клонирование объекта без ссылок
+        /// </summary>
+        /// <returns></returns>
         public StateObject CloneWithOutRef()
         {
             return new StateObject()
             {
-                CountPhase=this.CountPhase,
-                Id=this.Id,
-                Name= this.Name,
-                Parent= this.Parent
+                CountPhase = this.CountPhase,
+                Id = this.Id,
+                Name = this.Name,
+                Parent = this.Parent
             };
-
-
         }
+
+        /// <summary>
+        /// метод возвращает ближайших детей
+        /// </summary>
+        /// <param name="id">id записи для которой нужно вернуть детей</param>
+        /// <returns></returns>
         public static List<StateObject> GetChild(string id)
         {
-            // Получаем список значений, соответствующий данной характеристике
             List<StateObject> res = new List<StateObject>();
             using (var db = new ApplicationDbContext())
                 res = db.StateObjects.Where(x1 => x1.Parent == id).ToList();
             return res;
-
         }
 
+        /// <summary>
+        /// получение записи по id
+        /// </summary>
+        /// <param name="id">id записи</param>
+        /// <returns></returns>
         public static StateObject Get(string id)
         {
             StateObject res = null;
-            if(!string.IsNullOrWhiteSpace(id))
-            using (var db = new ApplicationDbContext())
-                res=db.StateObjects.FirstOrDefault(x1=>x1.Id==id);
+            if (!string.IsNullOrWhiteSpace(id))
+                using (var db = new ApplicationDbContext())
+                    res = db.StateObjects.FirstOrDefault(x1 => x1.Id == id);
             return res;
         }
 
 
-
+        /// <summary>
+        ///  перезагружает детей для записи
+        /// </summary>
         public override void ReLoadChild()
         {
 
@@ -86,25 +99,17 @@ namespace dip.Models.Domain
         {
             List<StateObject> res = new List<StateObject>();
             var db = db_ ?? new ApplicationDbContext();
-
             var par = db.StateObjects.FirstOrDefault(x1 => x1.Id == this.Parent);
-
             if (par != null)
             {
-                if (par.Parent!= "STRUCTOBJECT")
+                if (par.Parent != "STRUCTOBJECT")
                     res.AddRange(par.GetParentsList(db));
-
                 res.Add(par);
             }
-
-
-
             if (db_ == null)
                 db.Dispose();
 
             return res;
         }
-
-      
     }
 }

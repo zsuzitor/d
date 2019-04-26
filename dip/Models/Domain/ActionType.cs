@@ -6,8 +6,10 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    
-    public class ActionType//: Item
+    /// <summary>
+    /// Тип входа-(внутреннее\внешнее)
+    /// </summary>
+    public class ActionType
     {
         [Key]
         public string Id { get; set; }

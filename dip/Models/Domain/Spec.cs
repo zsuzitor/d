@@ -9,18 +9,19 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Spec: ItemDescrFormCheckbox<Spec>
+
+    /// <summary>
+    /// класс для хранения 1 записи(checbox) для специальных характеристик
+    /// </summary>
+    public class Spec : ItemDescrFormCheckbox<Spec>
     {
-   
+
         public Spec()
         {
-            //Actions = new List<Action>();
             Childs = new List<Spec>();
 
         }
 
-
-   
 
 
         /// <summary>
@@ -32,9 +33,7 @@ namespace dip.Models.Domain
         {
             List<Spec> res = new List<Spec>();
             var db = db_ ?? new ApplicationDbContext();
-
             var par = db.Specs.FirstOrDefault(x1 => x1.Id == this.Parent);
-
             if (par != null)
             {
                 if (par.Parent.Split(new string[] { "SPEC" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
@@ -43,8 +42,6 @@ namespace dip.Models.Domain
                 res.Add(par);
             }
 
-
-
             if (db_ == null)
                 db.Dispose();
 
@@ -52,7 +49,12 @@ namespace dip.Models.Domain
         }
 
 
-
+        /// <summary>
+        /// метод возвращает список ВСЕХ родителей(и их родителей) для id содержащихся в str
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -67,7 +69,13 @@ namespace dip.Models.Domain
         }
 
 
-        //проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+
+        /// <summary>
+        /// метод проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="list">список для удаления</param>
+        /// <returns></returns>
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Spec> list)//TODO вынести
         {
             if (list.Count == 0)
@@ -80,29 +88,27 @@ namespace dip.Models.Domain
                 fordel.AddRange(i.GetChildsList(db));
 
             }
-
             return Spec.TryDelete(db, fordel);
         }
 
 
-        //ищет фэ которые ссылаются, если есть хотя бы 1 то ничего не удаляет
-        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+
+        /// <summary>
+        ///  метод проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="list">>записи для удаления</param>
+        /// <returns></returns>
         public static List<int> TryDelete(ApplicationDbContext db, List<Spec> list)//TODO вынести
         {
-
-            //формировать регулярку по списку удаляемых объектов
-            //List<int> blockFe = new List<int>();
             var predicate = PredicateBuilder.False<FEAction>();
             foreach (var i in list)
             {
-
                 predicate = predicate.Or(x1 => x1.Spec == i.Id || x1.Spec.StartsWith(i.Id + " ") ||
                    x1.Spec.EndsWith(" " + i.Id) || x1.Spec.Contains(" " + i.Id + " "));
             }
 
             var blocked = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
-
-
             if (blocked.Count > 0)
                 return blocked;
             Spec.DeleteFromDbFromListOnly(db, db.Specs, list.Select(x1 => x1.Id));
@@ -110,10 +116,13 @@ namespace dip.Models.Domain
         }
 
 
-
+        /// <summary>
+        /// метод который из строки только детей формирует строку со всеми(дети+родители) 
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string GetAllIdsFor(string str)
         {
-            //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить
             List<Spec> mainLst = new List<Spec>();
 
             foreach (var i in str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
@@ -121,36 +130,34 @@ namespace dip.Models.Domain
                 using (var db = new ApplicationDbContext())
                 {
                     var pr = db.Specs.First(x1 => x1.Id == i);
-
                     var lstPr = pr.GetParentsList();
                     lstPr.Add(pr);
                     mainLst.AddRange(lstPr);
                 }
             }
             return string.Join(" ", mainLst.Select(x1 => x1.Id).Distinct());
-
         }
 
+
+        /// <summary>
+        /// метод для получения детей записи
+        /// </summary>
+        /// <param name="id">id записи</param>
+        /// <returns></returns>
         public static List<Spec> GetChild(string id)
         {
-            // Получаем список значений, соответствующий данной характеристике
             List<Spec> res = new List<Spec>();
             using (var db = new ApplicationDbContext())
-                 res = db.Specs.Where(spec => spec.Parent == id).ToList();
+                res = db.Specs.Where(spec => spec.Parent == id).ToList();
             return res;
-
         }
 
 
-        public override void LoadChild()
-        {
-            if (this.Childs.Count < 1)
-                this.ReLoadChild();
-        }
-
+        /// <summary>
+        /// метод для загрузки детей записи
+        /// </summary>
         public override void ReLoadChild()
         {
-
             using (var db = new ApplicationDbContext())
                 this.Childs = db.Specs.Where(x1 => x1.Parent == this.Id).ToList();
         }
@@ -158,7 +165,12 @@ namespace dip.Models.Domain
 
 
         //TODO вынести в обстрактный класс?? сейчас придумал только костыльный способ через объект из за метода Pro.GetChild
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+
+        /// <summary>
+        /// метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
+        /// <param name="strIds">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
 
@@ -180,15 +192,8 @@ namespace dip.Models.Domain
                     if (needAdd)
                         res += i + " ";
                 }
-
-
             }
-
             return res.Trim();
-
         }
-
-
-
     }
 }

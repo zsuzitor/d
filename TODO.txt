@@ -296,6 +296,13 @@ GetListSomethingV getpros и тд вынести в класс -- action controller
 --------------------------
 #ssl #https    бесплатная генерация сертификатов https://letsencrypt.org/
 
+
+
+
+
+
+
+
 --- включение iis manager  https://www.youtube.com/watch?v=kLhhvCE2IZg
 https mvc
 несколько ссылок https://toster.ru/q/380584
@@ -303,6 +310,15 @@ https mvc
 ! попробовать последние 2 шага http://www.ssl.ua/news/create-a-self-signed-certificate-in-iis-7/
 Details  открыть не залогиневшись и посмотреть что вернется в ролях
 form-control btn btn-default
+
+
+
+
+
+
+
+
+
 
 
 

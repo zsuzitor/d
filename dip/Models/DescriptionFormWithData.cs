@@ -6,6 +6,9 @@ using System.Web;
 
 namespace dip.Models
 {
+    /// <summary>
+    /// класс для хранения дескрипторной формы(вход+выход)
+    /// </summary>
     public class DescriptionFormWithData
     {
 

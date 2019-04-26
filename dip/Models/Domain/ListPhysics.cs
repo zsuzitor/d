@@ -6,11 +6,15 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
+
+    /// <summary>
+    /// класс для хранения списков ФЭ
+    /// </summary>
     public class ListPhysics
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Название должно быть установлено")]
-        [MinLength(5,ErrorMessage ="Длина должна быть больше 5")]
+        [MinLength(5, ErrorMessage = "Длина должна быть больше 5")]
         public string Name { get; set; }
 
         public List<ApplicationUser> Users { get; set; }
@@ -21,73 +25,106 @@ namespace dip.Models.Domain
             Users = new List<ApplicationUser>();
             Physics = new List<Domain.FEText>();
         }
-        public ListPhysics(string name):this()
+        public ListPhysics(string name) : this()
         {
             this.Name = name;
         }
 
 
-
+        /// <summary>
+        /// метод для получения всех списков
+        /// </summary>
+        /// <returns></returns>
         public static List<ListPhysics> GetAll()
         {
-            using (var db=new ApplicationDbContext())
-            {
+            using (var db = new ApplicationDbContext())
                 return db.ListPhysics.ToList();
-            }
         }
-        public static ListPhysics Get(int? id, ApplicationDbContext db_=null)
+
+        /// <summary>
+        /// мето для получения списка по id
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <param name="db_">контекст</param>
+        /// <returns></returns>
+        public static ListPhysics Get(int? id, ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
-           
-                var res= db.ListPhysics.FirstOrDefault(x1 => x1.Id == id);
+
+            var res = db.ListPhysics.FirstOrDefault(x1 => x1.Id == id);
             if (db_ == null)
                 db.Dispose();
             return res;
         }
 
+
+        /// <summary>
+        /// метод для создания нового списка
+        /// </summary>
+        /// <param name="name"> название списка</param>
+        /// <returns></returns>
         public static ListPhysics Create(string name)
         {
             ListPhysics res = new ListPhysics(name);
             if (res != null)
                 using (var db = new ApplicationDbContext())
-            {
-                
-                 db.ListPhysics.Add(res);
-                db.SaveChanges();
-            }
+                {
+                    db.ListPhysics.Add(res);
+                    db.SaveChanges();
+                }
             return res;
         }
 
-        public static ListPhysics Edit(int? id,string name)
+
+        /// <summary>
+        /// метод для редактирования списка
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <param name="name">новое название списка</param>
+        /// <returns></returns>
+        public static ListPhysics Edit(int? id, string name)
         {
-            ListPhysics res = ListPhysics.Get(id) ;
+            ListPhysics res = ListPhysics.Get(id);
             if (res != null)
                 using (var db = new ApplicationDbContext())
-            {
-                db.Set<ListPhysics>().Attach(res);
-                res.Name = name;
-                db.SaveChanges();
-            }
+                {
+                    db.Set<ListPhysics>().Attach(res);
+                    res.Name = name;
+                    db.SaveChanges();
+                }
             return res;
         }
 
+
+        /// <summary>
+        /// метод для удаления списка
+        /// </summary>
+        /// <param name="id">id списка</param>
+        /// <returns></returns>
         public static ListPhysics Delete(int? id)
         {
             ListPhysics res = ListPhysics.Get(id);
-            if(res!=null)
-            using (var db = new ApplicationDbContext())
-            {
-                db.Set<ListPhysics>().Attach(res);
-                db.ListPhysics.Remove(res);
-                db.SaveChanges();
-            }
+            if (res != null)
+                using (var db = new ApplicationDbContext())
+                {
+                    db.Set<ListPhysics>().Attach(res);
+                    db.ListPhysics.Remove(res);
+                    db.SaveChanges();
+                }
             return res;
         }
 
-        public static ListPhysics AddPhys(int idphys,int idlist)
+
+        /// <summary>
+        /// метод для добавления ФЭ в список
+        /// </summary>
+        /// <param name="idphys">id фэ</param>
+        /// <param name="idlist">id списка</param>
+        /// <returns></returns>
+        public static ListPhysics AddPhys(int idphys, int idlist)
         {
             ListPhysics res = ListPhysics.Get(idlist);
-            
+
             res.LoadPhysics();
             FEText phys = res.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
             if (phys != null)
@@ -97,36 +134,38 @@ namespace dip.Models.Domain
                 return null;
 
             phys = FEText.Get(idphys);
-                if (phys == null)
-                    return null;
-            
-            //FEText phys = FEText.Get(idphys);
+            if (phys == null)
+                return null;
+
             using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
                 db.Set<FEText>().Attach(phys);
                 res.Physics.Add(phys);
                 db.SaveChanges();
-
                 res.LoadUsers(db);
             }
             foreach (var i in res.Users)
             {
                 bool? f;
                 i.AddPhysics(phys.IDFE, out f);
-
             }
 
             return res;
         }
+
+
+        /// <summary>
+        /// метод для удаления фэ из списка
+        /// </summary>
+        /// <param name="idphys">id фэ</param>
+        /// <param name="idlist">id списка</param>
+        /// <returns></returns>
         public static ListPhysics DeletePhys(int idphys, int idlist)
         {
             ListPhysics res = ListPhysics.Get(idlist);
             if (res == null)
                 return null;
-            //FEText phys = FEText.Get(idphys);
-            //if (phys == null)
-            //    return null;
             res.LoadPhysics();
             FEText phys = res.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
             if (phys == null)
@@ -134,50 +173,64 @@ namespace dip.Models.Domain
             using (var db = new ApplicationDbContext())
             {
                 db.Set<ListPhysics>().Attach(res);
-                //db.Set<FEText>().Attach(phys);
                 res.Physics.Remove(phys);
                 db.SaveChanges();
-
                 res.LoadUsers(db);
             }
-
             foreach (var i in res.Users)
                 i.RemovePhysics(phys.IDFE);
             return res;
         }
 
+
+        /// <summary>
+        /// метод для загрузки всех фэ находящихся в списке
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static ListPhysics LoadPhysics(int id)
         {
-            var obj=ListPhysics.Get(id);
+            var obj = ListPhysics.Get(id);
             obj?.LoadPhysics();
             return obj;
         }
 
-        public  void LoadPhysics(ApplicationDbContext db_=null)
+        /// <summary>
+        /// метод для загрузки всех фэ находящихся в списке
+        /// </summary>
+        /// <param name="db_">контекст</param>
+        public void LoadPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
-            
-                db.Set<ListPhysics>().Attach(this);
-                if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
-                    db.Entry(this).Collection(x1 => x1.Physics).Load();
+
+            db.Set<ListPhysics>().Attach(this);
+            if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
+                db.Entry(this).Collection(x1 => x1.Physics).Load();
 
             if (db_ == null)
                 db.Dispose();
         }
 
-
-        public static ListPhysics LoadUsers(int id,ApplicationDbContext db_ = null)
+        /// <summary>
+        /// метод для загрузки всех пользователей которым выдан список
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="db_"></param>
+        /// <returns></returns>
+        public static ListPhysics LoadUsers(int id, ApplicationDbContext db_ = null)
         {
             var obj = ListPhysics.Get(id);
             obj?.LoadUsers();
             return obj;
-
         }
 
+        /// <summary>
+        /// метод для загрузки всех пользователей которым выдан список
+        /// </summary>
+        /// <param name="db_">контекст</param>
         public void LoadUsers(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
-
             db.Set<ListPhysics>().Attach(this);
             if (!db.Entry(this).Collection(x1 => x1.Users).IsLoaded)
                 db.Entry(this).Collection(x1 => x1.Users).Load();
@@ -185,6 +238,5 @@ namespace dip.Models.Domain
             if (db_ == null)
                 db.Dispose();
         }
-
     }
 }

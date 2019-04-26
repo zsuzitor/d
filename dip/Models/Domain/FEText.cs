@@ -21,12 +21,13 @@ using System.Linq.Expressions;
 
 namespace dip.Models.Domain
 {
+
+    /// <summary>
+    /// запись ФЭ
+    /// </summary>
     [Table("FETexts")]// используется в oldDbContext.cs
     public class FEText
     {
-        // [Index("PK_FeTexts_cons", IsClustered = true,IsUnique =true)]//,IsClustered =true
-        //index должен быть PK_dbo.FeTexts, если менять то менять и в oldDbContext.cs
-
         [Key]
         [HiddenInput(DisplayValue = false)]
         public int IDFE { get; set; }
@@ -67,7 +68,7 @@ namespace dip.Models.Domain
         public string TextLit { get; set; }
 
 
-        
+
         [ScaffoldColumn(false)]
         public bool NotApprove { get; set; }
 
@@ -84,7 +85,7 @@ namespace dip.Models.Domain
 
 
         [NotMapped]
-       // [ScaffoldColumn(false)]//TODO hz
+        // [ScaffoldColumn(false)]
         public bool? FavouritedCurrentUser { get; set; }//зафоловил ли текущий пользователь эту запись
 
         public string StateBeginId { get; set; }
@@ -95,16 +96,8 @@ namespace dip.Models.Domain
 
 
         public List<Image> Images { get; set; }
-
-        //[NotMapped]
-        //public List<ShowsFEImage> AllImages { get; set; }
-        
-
         public List<FELatexFormula> LatexFormulas { get; set; }
-
         public List<ApplicationUser> FavouritedUser { get; set; }
-
-
         public List<ListPhysics> Lists { get; set; }
         public List<ApplicationUser> Users { get; set; }
 
@@ -112,7 +105,6 @@ namespace dip.Models.Domain
         {
             this.Images = new List<Image>();
             LatexFormulas = new List<FELatexFormula>();
-            //AllImages = new List<ShowsFEImage>();
             FavouritedUser = new List<ApplicationUser>();
             NotApprove = true;
             FavouritedCurrentUser = null;
@@ -123,7 +115,11 @@ namespace dip.Models.Domain
             Lists = new List<ListPhysics>();
             Users = new List<ApplicationUser>();
         }
-
+        /// <summary>
+        /// Метод эквивалент "=" для datatype, но не включает id
+        /// </summary>
+        /// <param name="a">объект с новыми свойствами</param>
+        /// <returns></returns>
         public bool Equal(FEText a)
         {
             this.Name = a.Name;
@@ -134,18 +130,21 @@ namespace dip.Models.Domain
             this.TextApp = a.TextApp;
             this.TextLit = a.TextLit;
             this.FavouritedCurrentUser = a.FavouritedCurrentUser;
-
             this.Deleted = a.Deleted;
             this.CountInput = a.CountInput;
             this.ChangedObject = a.ChangedObject;
-            this.NotApprove=a.NotApprove;
-            this.StateBeginId=a.StateBeginId;
-            this.StateEndId=a.StateEndId;
-            
+            this.NotApprove = a.NotApprove;
+            this.StateBeginId = a.StateBeginId;
+            this.StateEndId = a.StateEndId;
 
             return true;
         }
 
+        /// <summary>
+        /// Метод эквивалент "=" для datatype,  включает id
+        /// </summary>
+        /// <param name="a">объект с новыми свойствами</param>
+        /// <returns></returns>
         public bool EqualWithId(FEText a)
         {
             this.Equal(a);
@@ -154,16 +153,20 @@ namespace dip.Models.Domain
             return true;
         }
 
+
+        /// <summary>
+        /// Метод для подготовки объекта к использованию с lucene 
+        /// </summary>
         public void ChangeForMap()
         {
-            //TODO pattern?
             Text = Lucene_.ChangeForMap(Text);
-
-
-
         }
 
 
+        /// <summary>
+        /// Метод возвращает список свойст по которым нужно искать при полнотекстовом поиске lucene
+        /// </summary>
+        /// <returns>список свойств</returns>
         public static List<string> GetPropTextSearch()//TODO
         {
             var res = new List<string>();
@@ -172,26 +175,39 @@ namespace dip.Models.Domain
             return res;
         }
 
+        /// <summary>
+        /// получение Document для lucene - для добавления в индекс
+        /// </summary>
+        /// <returns></returns>
         public Document GetDocumentForLucene()
         {
             var document = new Document();
-            // document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
             document.Add(new Field("IDFE", this.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("Text", this.Text, Field.Store.YES, Field.Index.ANALYZED));
             return document;
         }
 
-
+        /// <summary>
+        /// получение записи по id
+        /// </summary>
+        /// <param name="id">id записи</param>
+        /// <returns></returns>
         public static FEText Get(int? id)
         {
             FEText res = null;
-            if (id != null)//&&id>0
+            if (id != null)
                 using (var db = new ApplicationDbContext())
                     res = db.FEText.FirstOrDefault(x1 => x1.IDFE == id);
             return res;
 
         }
 
+        /// <summary>
+        /// Метод для получения записи фэ если у текущего пользователю есть к нему доступ
+        /// </summary>
+        /// <param name="id">id фэ</param>
+        /// <param name="HttpContext"></param>
+        /// <returns>запись ФЭ</returns>
         public static FEText GetIfAccess(int? id, HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -208,33 +224,34 @@ namespace dip.Models.Domain
         }
 
 
-        //при более чем 2х входах и 1 выходах-(||forms>3) эту функцию необходимо будет изменить
-        //[Authorize]
-        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[]objects,int lastId, HttpContextBase HttpContext)
+
+        /// <summary>
+        /// Метод для получения записей ФЭ по дескрипторному описанию
+        /// //при более чем 2х входах и 1 выходах-(||forms>3) эту функцию необходимо будет изменить
+        /// </summary>
+        /// <param name="stateBegin">начальное состояние</param>
+        /// <param name="stateEnd">конечное состояние</param>
+        /// <param name="forms">входные\выходные дескрипторы</param>
+        /// <param name="objects">характеристики объекта</param>
+        /// <param name="lastId">id последней записи которое нужно пропустить</param>
+        /// <param name="HttpContext"></param>
+        /// <returns>массив id фэ</returns>
+        public static int[] GetByDescr(string stateBegin, string stateEnd, DescrSearchI[] forms, DescrObjectI[] objects, int lastId, HttpContextBase HttpContext)
         {
             int[] list_id = null;
-            bool changedObject = objects.Length==2?true:false;
-
-            //поиск
-            //List<int> list_id = new List<int>();
+            bool changedObject = objects.Length == 2 ? true : false;
             foreach (var i in forms)
                 i.DeleteNotChildCheckbox();
             foreach (var i in objects)
                 i.DeleteNotChildCheckbox();
-          
+
 
             List<FEAction> formsList = new List<FEAction>();
             List<FEObject> objectsList = new List<FEObject>();
-            //System.Collections.Generic.List<System.Linq.IGrouping<int, dip.Models.Domain.FEAction>> checkInp = null;
             List<int> checkInp = new List<int>();
 
             using (var db = new ApplicationDbContext())
             {
-                //IQueryable<dip.Models.Domain.FEAction> forms_query = db.FEActions;
-
-                //
-                //TODO временно
-                //Mono.Linq.Expressions.
                 var predicate = PredicateBuilder.False<FEAction>();
 
 
@@ -248,9 +265,9 @@ namespace dip.Models.Domain
                     predicateIns = predicateIns.And(x1 => x1.Input == beg);
                     predicateIns = predicateIns.And(x1 => x1.Name == inp.ActionId);
 
-                    if (!string.IsNullOrWhiteSpace(inp.ActionType)&& inp.ActionType!= "NO_ACTIONS")
+                    if (!string.IsNullOrWhiteSpace(inp.ActionType) && inp.ActionType != "NO_ACTIONS")
                         predicateIns = predicateIns.And(x1 => x1.Type == inp.ActionType);
-                    
+
                     if (!string.IsNullOrWhiteSpace(inp.FizVelId) && inp.FizVelId != "NO_FIZVEL")
                         predicateIns = predicateIns.And(x1 => x1.FizVelId == inp.FizVelId);
 
@@ -259,15 +276,15 @@ namespace dip.Models.Domain
 
                     if (!string.IsNullOrWhiteSpace(inp.ListSelectedPros))
                     {
-                        string[] tmp = inp.ListSelectedPros.Split(new string[] { " " },StringSplitOptions.RemoveEmptyEntries);
+                        string[] tmp = inp.ListSelectedPros.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                         var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
-                        foreach(var i in tmp)
+                        foreach (var i in tmp)
                         {
                             predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros.Contains(i));
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
-                       
+
                     if (!string.IsNullOrWhiteSpace(inp.ListSelectedSpec))
                     {
                         string[] tmp = inp.ListSelectedSpec.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -278,7 +295,6 @@ namespace dip.Models.Domain
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
-                   // predicateIns = predicateIns.And(x1 => x1.Spec == inp.ListSelectedSpec);
                     if (!string.IsNullOrWhiteSpace(inp.ListSelectedVrem))
                     {
                         string[] tmp = inp.ListSelectedVrem.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -289,146 +305,30 @@ namespace dip.Models.Domain
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
-                    // predicateIns = predicateIns.And(x1 => x1.Vrem == inp.ListSelectedVrem);
-                    //checkInp = db.FEActions.Where(predicateIns).Select(x1 => x1.Idfe).ToList();
                     predicate = predicate.Or(predicateIns);
-
-
-
-                    //x1.FizVelSection == inp.ParametricFizVelId);
-
-                    //   predicate = predicate.Or(x1 => x1.Input == beg &&
-                    //x1.Name == inp.ActionId &&
-                    //   string.IsNullOrWhiteSpace(inp.ActionType)?true: x1.Type == inp.ActionType &&//x1.Type == inp.ActionType
-                    //  x1.FizVelId == inp.FizVelId &&
-                    //  x1.Pros == inp.ListSelectedPros &&
-                    //  x1.Spec == inp.ListSelectedSpec &&
-                    //  x1.Vrem == inp.ListSelectedVrem &&
-                    //  x1.FizVelSection == inp.ParametricFizVelId);
-
-
                 }
-                //formsList = forms_query.ToList();
-               // checkInp = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
                 int formsLen = forms.Length;
-                //if (formsLen == 1)
-                //    checkInp = db.FEActions.Where(predicate).Select(x1=>x1.Idfe).Distinct().ToList();
-                
-                //if (formsLen ==2 )
-                    checkInp = db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= formsLen).Select(x1 => x1.Key).ToList();
-
+                checkInp = db.FEActions.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= formsLen).Select(x1 => x1.Key).ToList();
             }
-            //.ToList() .ToArray()
 
             //если уже на этом этапе ничего не найдено дальше не искать
             if (checkInp.Count < 1)
                 return null;
 
-            
+
             List<int> checkObj = new List<int>();
             using (var db = new ApplicationDbContext())
             {
                 {
-                    //Func<string, Expression<Func<FEObject, bool>>, Expression<Func<FEObject, bool>>> deltest = (str, del) =>
-                    //{
-                    //    var predicateIns = PredicateBuilder.True<FEObject>();
-                    //    if (!string.IsNullOrWhiteSpace(str))
-                    //    {
-                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
-                    //        foreach (var i2 in tmp)
-                    //        {
-                    //            predicateInscheCkbox = predicateInscheCkbox.And(del);
-                    //        }
-                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
-                    //    }
-                    //    return predicateIns;
-                    //};
-
-                    //Func<string, Func<FEObject, bool>, Func<FEObject, bool>> ttt = (str, del) =>
-                    //{
-
-                    //    return x1 => x1.Composition.Contains(str);
-                    //};
-
-
-                    //Func<string, Func<string, Func<FEObject, bool>, Func<FEObject, bool>>,Expression<Func<FEObject, bool>>, Expression<Func<FEObject, bool>>> deltest = (str, del,del2) =>
-                    //{
-                    //    var predicateIns = PredicateBuilder.True<FEObject>();
-                    //    if (!string.IsNullOrWhiteSpace(str))
-                    //    {
-                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
-                    //        foreach (var i2 in tmp)
-                    //        {
-                    //            predicateInscheCkbox = predicateInscheCkbox.And(del(i2, del2));
-                    //        }
-                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
-                    //    }
-                    //    return predicateIns;
-                    //};
-
-                    //Func<string, Func<FEObject, bool>, Func<FEObject, bool>> ttt = (str, del) =>
-                    //{
-
-                    //    return del(str);
-                    //};
-
-
-                    //Func<string, int, Expression<Func<FEObject, bool>>> deltest = (str, type) =>
-                    //{
-                       
-                    //    if (!string.IsNullOrWhiteSpace(str))
-                    //    {
-                    //        string[] tmp = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    //        var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
-                    //        foreach (var i2 in tmp)
-                    //        {
-                    //            switch (type)
-                    //            {
-                    //                case 0:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
-                    //                    break;
-                    //                case 1:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Conductivity.Contains(i2));
-                    //                    break;
-                    //                case 2:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MagneticStructure.Contains(i2));
-                    //                    break;
-                    //                case 3:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.MechanicalState.Contains(i2));
-                    //                    break;
-                    //                case 4:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState.Contains(i2));
-                    //                    break;
-                    //                case 5:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState.Contains(i2));
-                    //                    break;
-                    //                case 6:
-                    //                    predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special.Contains(i2));
-                    //                    break;
-                    //            }
-                               
-                    //        }
-                    //        predicateIns = predicateIns.And(predicateInscheCkbox);
-                    //    }
-                    //    return predicateIns;
-                    //};
-
-
-
                     var predicate = PredicateBuilder.False<FEObject>();
-                    //IQueryable<dip.Models.Domain.FEObject> objects_query = db.FEObjects;
                     int AllCountPhase = 0;
                     foreach (var obj in objects)
                     {
-
                         int beg = (obj.Begin ? 1 : 0);
                         int numph = 1;
 
                         foreach (var i in obj)
                         {
-
                             if (i != null)
                             {
                                 //копируем значения в локальные переменные тк предикат(делегат который передаем) захватит их по ссылке
@@ -443,8 +343,8 @@ namespace dip.Models.Domain
                                     string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition == i2 || x1.Composition.StartsWith(i2 + " ") 
-                                        || x1.Composition.EndsWith(" " + i2)|| x1.Composition.Contains(" " + i2 + " "));
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition == i2 || x1.Composition.StartsWith(i2 + " ")
+                                        || x1.Composition.EndsWith(" " + i2) || x1.Composition.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
                                 if (!string.IsNullOrWhiteSpace(i.Conductivity))
@@ -479,7 +379,7 @@ namespace dip.Models.Domain
                                     string[] tmp = i.OpticalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState == i2 || x1.OpticalState.StartsWith(i2 + " ") || 
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.OpticalState == i2 || x1.OpticalState.StartsWith(i2 + " ") ||
                                         x1.OpticalState.EndsWith(" " + i2) || x1.OpticalState.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
@@ -488,7 +388,7 @@ namespace dip.Models.Domain
                                     string[] tmp = i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
-                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState == i2 || x1.PhaseState.StartsWith(i2 + " ") || 
+                                        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.PhaseState == i2 || x1.PhaseState.StartsWith(i2 + " ") ||
                                         x1.PhaseState.EndsWith(" " + i2) || x1.PhaseState.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
@@ -498,74 +398,19 @@ namespace dip.Models.Domain
                                     var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
                                     foreach (var i2 in tmp)
                                         predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Special == i2 || x1.Special.StartsWith(i2 + " ") ||
-                                        x1.Special.EndsWith(" " + i2) || x1.Special.Contains(" " + i2 + " ") );
+                                        x1.Special.EndsWith(" " + i2) || x1.Special.Contains(" " + i2 + " "));
                                     predicateIns = predicateIns.And(predicateInscheCkbox);
                                 }
-
-                                //predicate = predicate.Or(deltest(i.Composition, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.Conductivity, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.MagneticStructure, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.MechanicalState, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.OpticalState, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.PhaseState, beg, numph, 0));
-                                //predicate = predicate.Or(deltest(i.Special, beg, numph, 0));
-
-                                //checkObj = db.FEObjects.Where(predicateIns).Select(x1 => x1.Idfe).ToList();
                                 predicate = predicate.Or(predicateIns);
                                 numph++;
-
-
-
-                                //var predicateIns = PredicateBuilder.True<FEObject>();
-                                //if (!string.IsNullOrWhiteSpace(i.Composition))
-                                //{
-                                //    string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                                //    var predicateInscheCkbox = PredicateBuilder.True<FEObject>();
-                                //    foreach (var i2 in tmp)
-                                //    {
-                                //        predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Composition.Contains(i2));
-                                //    }
-                                //    predicateIns = predicateIns.And(predicateInscheCkbox);
-                                //}
-
-
-
-
-                            //    AllCountPhase++;
-                            //    predicate = predicate.Or(x1 => x1.Begin == beg &&
-                            //x1.NumPhase == numph &&
-                            //x1.Composition == i.Composition &&
-                            //x1.Conductivity == i.Conductivity &&
-                            //x1.MagneticStructure == i.MagneticStructure &&
-                            //x1.MechanicalState == i.MechanicalState &&
-                            //x1.OpticalState == i.OpticalState &&
-                            //x1.PhaseState == i.PhaseState &&
-                            //x1.Special == i.Special);
-                            //    numph++;
-
-
-
-
-
-
-
-                                
                             }
-
                         }
-
-
                     }
-                    //checkObj = db.FEObjects.Where(predicate).Select(x1=>x1.Idfe).ToList();
                     if (AllCountPhase == 0)
                         checkObj = db.FEObjects.Select(x1 => x1.Idfe).Distinct().ToList();
 
                     else
                         checkObj = db.FEObjects.Where(predicate).GroupBy(x1 => x1.Idfe).Where(x1 => x1.Count() >= AllCountPhase).Select(x1 => x1.Key).ToList();
-
-
-
-
                 }
             }
 
@@ -573,39 +418,25 @@ namespace dip.Models.Domain
             if (checkObj.Count == 0)
                 return null;
 
-            //x1.Key x2.Key
-
-
-            //var sdf = FEText.GetList(null, checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray()).ToList();
-
-            //var sdf1 = sdf.Where(x1 => (string.IsNullOrWhiteSpace(stateBegin) ? true : x1.StateBeginId == stateBegin) &&( string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd)).ToList();
-
-            // list_id= list_id.Where(x1 => string.IsNullOrWhiteSpace(stateBegin) ? true : x1.StateBeginId == stateBegin && string.IsNullOrWhiteSpace(stateEnd) ? true : x1.StateEndId == stateEnd).Select(x1 => x1.IDFE).ToArray();
-
-
-
-
-            //var asd = checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray();
-
-
             //сравниваем состояния и результаты всех запросов
             list_id = FEText.GetList(null, checkObj.Join(checkInp, x1 => x1, x2 => x2, (x1, x2) => x1).ToArray())
                 .Where(x1 => (string.IsNullOrWhiteSpace(stateBegin) ? (changedObject ? !string.IsNullOrWhiteSpace(x1.StateBeginId) : true) : x1.StateBeginId == stateBegin) &&
                 (string.IsNullOrWhiteSpace(stateEnd) ? (changedObject ? !string.IsNullOrWhiteSpace(x1.StateEndId) : true) : x1.StateEndId == stateEnd)).Select(x1 => x1.IDFE).ToArray();
 
-            
 
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return null;
-            list_id=user.CheckAccessPhys(list_id.ToList(), HttpContext).
+            list_id = user.CheckAccessPhys(list_id.ToList(), HttpContext).
                     SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToArray();
 
             return list_id;
         }
 
 
-
+        /// <summary>
+        /// Метод для загрузки изображений
+        /// </summary>
         public void LoadImage()
         {
             using (var db = new ApplicationDbContext())
@@ -617,6 +448,9 @@ namespace dip.Models.Domain
 
         }
 
+        /// <summary>
+        /// Метод для загрузки latex
+        /// </summary>
         public void LoadLatex()
         {
             using (var db = new ApplicationDbContext())
@@ -628,18 +462,20 @@ namespace dip.Models.Domain
 
         }
 
+        /// <summary>
+        /// Метод для загрузки latex и преобразования их к байтам
+        /// </summary>
         public void AddByteToLatexImages()
         {
             this.LoadLatex();
-            //this.LatexFormulas.AddRange(this.LatexFormulas.Select(x1=>Image.GetFromLatex(x1.Data)));
             foreach (var i in this.LatexFormulas)
                 i.SetBytes();
         }
 
 
-        
-
-
+        /// <summary>
+        /// Метод для загрузки списков к которым принадлежит ФЭ
+        /// </summary>
         public void LoadLists()
         {
             using (var db = new ApplicationDbContext())
@@ -652,6 +488,13 @@ namespace dip.Models.Domain
         }
 
 
+        /// <summary>
+        /// Метод для получения семантически схожих записей
+        /// </summary>
+        /// <param name="id">id записи фэ для которой ищем похожие</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="count">количество схожих</param>
+        /// <returns></returns>
         public static List<int> GetListSimilar(int id, HttpContextBase HttpContext, int count = -1)
         {
             List<int> res = new List<int>();
@@ -664,14 +507,14 @@ namespace dip.Models.Domain
             //            txt on data.matched_document_key = txt.IDFE
             //order by data.score desc";
 
-//            var quer = $@"
-//select   [txt].IDFE
-//from
-//       semanticsimilaritytable (FETexts, *, {id}  ) as data
-//            inner join dbo.FETexts as
-//            txt on data.matched_document_key = [txt].IDFE
-//order by [data].score desc
-//";
+            //            var quer = $@"
+            //select   [txt].IDFE
+            //from
+            //       semanticsimilaritytable (FETexts, *, {id}  ) as data
+            //            inner join dbo.FETexts as
+            //            txt on data.matched_document_key = [txt].IDFE
+            //order by [data].score desc
+            //";
 
 
 
@@ -688,58 +531,66 @@ order by data.score desc";
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return null;
-            
-
 
             var dict = DataBase.DataBase.ExecuteQuery(quer, null, "IDFE");
             var accessList = user.CheckAccessPhys(dict.Select(x1 => Convert.ToInt32(x1["IDFE"])).Distinct().ToList(), HttpContext);
-            if(count>=0)
-            res.AddRange(accessList.Take(count));
+            if (count >= 0)
+                res.AddRange(accessList.Take(count));
             else
                 res.AddRange(accessList);
-
-
 
             return res;
         }
 
 
-
-        public static List<FEText> GetList(string userId,params int[] id)
+        /// <summary>
+        /// Метод для получения списка ФЭ(с проставленным флагом FavouritedCurrentUser) из массива id фэ,
+        /// нет проверок на то может ли текущий пользователь получить все фэ из списка
+        /// </summary>
+        /// <param name="userId">id пользователя</param>
+        /// <param name="id">массив id фэ которые нужно получить</param>
+        /// <returns></returns>
+        public static List<FEText> GetList(string userId, params int[] id)
         {
             var res = new List<FEText>();
-            if (id != null&& id.Length>0)
+            if (id != null && id.Length > 0)
                 using (var db = new ApplicationDbContext())
                 {
                     res = db.FEText.Join(id, x1 => x1.IDFE, x2 => x2, (x1, x2) => x1).ToList();
-                    userId= userId?? ApplicationUser.GetUserId();
-                    foreach(var i in res)
+                    userId = userId ?? ApplicationUser.GetUserId();
+                    foreach (var i in res)
                     {
                         i.FavouritedCurrentUser = i.Favourited(userId);
                     }
                 }
-            
-                    
             return res;
         }
 
-        public static List<FEText> GetListIfAccess(HttpContextBase HttpContext,params int[] id)
+        /// <summary>
+        /// Метод для получения списка ФЭ(с проставленным флагом FavouritedCurrentUser) из массива id фэ,
+        /// проверока на то может ли текущий пользователь получить все фэ из списка
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <param name="id">массив id фэ которые нужно получить</param>
+        /// <returns></returns>
+        public static List<FEText> GetListIfAccess(HttpContextBase HttpContext, params int[] id)
         {
             var res = new List<FEText>();
 
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user == null)
                 return res;
-            List<int>accessList = user.CheckAccessPhys(id?.ToList(), HttpContext);
-
+            List<int> accessList = user.CheckAccessPhys(id?.ToList(), HttpContext);
             res = FEText.GetList(user.Id, accessList.ToArray());
-          
             return res;
         }
 
 
 
-
+        /// <summary>
+        /// Метод валидации
+        /// </summary>
+        /// <returns></returns>
         public bool Validation()
         {
             if (string.IsNullOrWhiteSpace(Name) ||
@@ -752,7 +603,7 @@ order by data.score desc";
                 return false;
 
 
-            using (var db=new ApplicationDbContext())
+            using (var db = new ApplicationDbContext())
             {
                 var states = db.StateObjects.Where(x1 => x1.Id == this.StateBeginId || x1.Id == this.StateEndId).ToList();
                 foreach (var i in states)
@@ -761,20 +612,25 @@ order by data.score desc";
 
                 if (this.ChangedObject && states.Count < 2)
                     return false;
-                if (states.Count ==0)
+                if (states.Count == 0)
                     return false;
             }
-            
-
             return true;
         }
 
+
+        /// <summary>
+        /// добавление новой записи ФЭ
+        /// </summary>
+        /// <param name="forms">входные\выходные дескрипторы</param>
+        /// <param name="objForms">начальные\конечные характеристики объекта</param>
+        /// <param name="addImgs">байты для изображений</param>
+        /// <param name="latexformulas">latex формулы</param>
+        /// <returns></returns>
         public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null, string[] latexformulas = null)
         {
-            
+
             bool commited = false;
-
-
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 using (var transaction = db.Database.BeginTransaction())
@@ -806,13 +662,10 @@ order by data.score desc";
 
 
                         this.AddImages(addImgs, db);
-
                         db.SaveChanges();
 
                         if (latexformulas != null && latexformulas.Length > 0)
                         {
-
-
                             db.FELatexFormulas.AddRange(latexformulas.Select(x1 => new FELatexFormula() { Formula = x1, FeTextIDFE = this.IDFE }));
                             db.SaveChanges();
                         }
@@ -820,7 +673,6 @@ order by data.score desc";
 
                         transaction.Commit();
                         commited = true;
-                        //DescrObjectI[] objForms = ; //TODO-objForms
                     }
                     catch
                     {
@@ -833,8 +685,18 @@ order by data.score desc";
             return commited;
         }
 
-        public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null, 
-            List<DescrObjectI> objForms = null,ChangeLatex[] latexformulas=null)
+        /// <summary>
+        /// метод для изменения существующей записи фэ
+        /// </summary>
+        /// <param name="newObj">новые данные для записи фэ</param>
+        /// <param name="deleteImg">изображения которые необходимо удалить</param>
+        /// <param name="addImgs">изображения которые необходимо добавить</param>
+        /// <param name="forms">входные\выходные дескрипторы</param>
+        /// <param name="objForms">начальные\конечные характеристики объекта</param>
+        /// <param name="latexformulas">latex формулы</param>
+        /// <returns></returns>
+        public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null,
+            List<DescrObjectI> objForms = null, ChangeLatex[] latexformulas = null)
         {
             bool commited = false;
             bool chengedText = false;
@@ -844,7 +706,6 @@ order by data.score desc";
                 {
                     try
                     {
-                      
                         db.Set<FEText>().Attach(this);
                         if (this.Text != newObj.Text)
                             chengedText = true;
@@ -852,33 +713,29 @@ order by data.score desc";
                         if (deleteImg != null && deleteImg.Count > 0)
                         {
                             var imgs = db.Images.Where(x1 => x1.FeTextIDFE == this.IDFE).
-                                                    Join(deleteImg, x1 => x1.Id, x2 => x2, (x1, x2) => x1).ToList();//Where(x1 => x1.FeTextId == obj.IDFE);
+                                                    Join(deleteImg, x1 => x1.Id, x2 => x2, (x1, x2) => x1).ToList();
                             db.Images.RemoveRange(imgs);
                             db.SaveChanges();
                         }
                         this.AddImages(addImgs, db);
 
 
-                        var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
+                        var descrdb = db.FEActions.Where(x1 => x1.Idfe == this.IDFE);
                         db.FEActions.RemoveRange(descrdb);//без сохранения
-
 
                         foreach (var i in forms)
                         {
-                            var act = new FEAction() { Idfe = this.IDFE };//,Input=(i.InputForm?1:0)
+                            var act = new FEAction() { Idfe = this.IDFE };
                             act.SetFromInput(i);
                             db.FEActions.Add(act);
                         }
 
-
                         db.SaveChanges();
 
-
-                        var objdb = db.FEObjects.Where(x1 => x1.Idfe == this.IDFE);//TODO обработка ошибок(восстановление при неудаче)
+                        var objdb = db.FEObjects.Where(x1 => x1.Idfe == this.IDFE);
                         db.FEObjects.RemoveRange(objdb);//без сохранения
                         foreach (var i in objForms)
                         {
-                           
                             List<FEObject> objects = new List<FEObject>();
                             var phmass = i.GetActualPhases();//
                             foreach (var phit in phmass)
@@ -890,43 +747,39 @@ order by data.score desc";
                         }
                         db.SaveChanges();
 
-
                         //latex
-                        if (latexformulas != null&& latexformulas.Length>0)
+                        if (latexformulas != null && latexformulas.Length > 0)
                         {
                             //add
-                            var ladd = latexformulas.Where(x1=>x1.Action==0);
-                            
-                            db.FELatexFormulas.AddRange(ladd.Select(x1 => new FELatexFormula() { Formula = x1.Text??"", FeTextIDFE = this.IDFE }));
+                            var ladd = latexformulas.Where(x1 => x1.Action == 0);
+                            db.FELatexFormulas.AddRange(ladd.Select(x1 => new FELatexFormula() { Formula = x1.Text ?? "", FeTextIDFE = this.IDFE }));
                             db.SaveChanges();
 
                             //change
                             var lchange = latexformulas.Where(x1 => x1.Action == 1);
-                            var lchangeid = lchange.Select(x1=>x1.Id);
-                             var oldchange=db.FELatexFormulas.Where(x1 => lchangeid.FirstOrDefault(x2 => x2 == x1.Id) != 0 && x1.FeTextIDFE == this.IDFE).ToList();
-                            foreach(var i in oldchange)
+                            var lchangeid = lchange.Select(x1 => x1.Id);
+                            var oldchange = db.FELatexFormulas.Where(x1 => lchangeid.FirstOrDefault(x2 => x2 == x1.Id) != 0 && x1.FeTextIDFE == this.IDFE).ToList();
+                            foreach (var i in oldchange)
                             {
-                                var tmp=lchange.FirstOrDefault(x1=>x1.Id==i.Id);
-                                if (tmp != null&& i.Formula != tmp.Text)
-                                    i.Formula = tmp.Text??"";
+                                var tmp = lchange.FirstOrDefault(x1 => x1.Id == i.Id);
+                                if (tmp != null && i.Formula != tmp.Text)
+                                    i.Formula = tmp.Text ?? "";
                             }
                             db.SaveChanges();
 
                             //delete
-                            var ldel = latexformulas.Where(x1 => x1.Action == 2).Select(x1=>x1.Id).ToList();
-                            var delst = db.FELatexFormulas.Where(x1 => x1.FeTextIDFE == this.IDFE&&ldel.Contains(x1.Id) );
+                            var ldel = latexformulas.Where(x1 => x1.Action == 2).Select(x1 => x1.Id).ToList();
+                            var delst = db.FELatexFormulas.Where(x1 => x1.FeTextIDFE == this.IDFE && ldel.Contains(x1.Id));
                             db.FELatexFormulas.RemoveRange(delst);
                             db.SaveChanges();
 
                         }
-                        
 
-                        if(chengedText)
+                        if (chengedText)
                             Lucene_.UpdateDocument(this.IDFE.ToString(), this);
 
                         transaction.Commit();
                         commited = true;
-                        // DescrObjectI[] objForms = ; //TODO-objForms
                     }
                     catch
                     {
@@ -940,7 +793,10 @@ order by data.score desc";
 
 
 
-        //не загружает картинки, только добавляет в бд
+        /// <summary>
+        /// Добавляет новые изображения в бд,не загружает картинки, только добавляет в бд
+        /// </summary>
+        /// <param name="imgs">изображения</param>
         public void AddImages(List<byte[]> imgs)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -950,6 +806,12 @@ order by data.score desc";
                 this.AddImages(imgs, db);
             }
         }
+
+        /// <summary>
+        ///  Добавляет новые изображения в бд,не загружает картинки, только добавляет в бд
+        /// </summary>
+        /// <param name="imgs">изображения</param>
+        /// <param name="db">контекст</param>
         public void AddImages(List<byte[]> imgs, ApplicationDbContext db)
         {
             foreach (var i in imgs)
@@ -964,7 +826,7 @@ order by data.score desc";
         /// <summary>
         /// меняет(добавляет\удаляет) запись в избранном, если к ней есть доступ
         /// </summary>
-        /// <param name="personId"></param>
+        /// <param name="personId">id пользователя</param>
         /// <param name="HttpContext"></param>
         /// <returns></returns>
         public bool? ChangeFavourite(string personId, HttpContextBase HttpContext)
@@ -985,13 +847,11 @@ order by data.score desc";
                     if (userFav != null)
                     {
                         db.Entry(this).Collection(x1 => x1.FavouritedUser).Load();
-
                         this.FavouritedUser.Remove(userFav);
                         res = false;
                     }
                     else
                     {
-
                         db.Set<ApplicationUser>().Attach(user);
                         this.FavouritedUser.Add(user);
                         res = true;
@@ -999,26 +859,28 @@ order by data.score desc";
                     db.SaveChanges();
                 }
 
-
-
             return res;
         }
+
+        /// <summary>
+        /// проверка на то добавил ли пользователь в избранное этот ФЭ
+        /// </summary>
+        /// <param name="personId">id пользователя</param>
+        /// <returns></returns>
         public bool Favourited(string personId)
         {
             bool res = false;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                res=this.Favourited(personId,db);
-
-
+                res = this.Favourited(personId, db);
             }
-            
             return res;
         }
+
         /// <summary>
         /// проверка на то добавил ли пользователь в избранное этот ФЭ
         /// </summary>
-        /// <param name="personId"></param>
+        /// <param name="personId">id пользователя</param>
         /// <param name="db"></param>
         /// <returns></returns>
         public bool Favourited(string personId, ApplicationDbContext db)
@@ -1032,103 +894,66 @@ order by data.score desc";
             {
                 res = true;
             }
-            
+
             return res;
         }
 
 
-        //public static FEText Get(int id)
-        //{
-        //    FEText res = null;
-        //    using (ApplicationDbContext db = new ApplicationDbContext())
-        //    {
-        //        res=db.FEText.FirstOrDefault(x1=>x1.IDFE==id);
-        //    }
-
-        //    return res;
-        //}
-
+        /// <summary>
+        /// метод для получения следующей разрешенной записи ФЭ
+        /// </summary>
+        /// <param name="id">id текущей записи</param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public static FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
         {
-            //FEText res = null;
-            ApplicationUser user = ApplicationUser.GetUser( ApplicationUser.GetUserId());
+            ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             return user.GetNextAccessPhysic(id, HttpContext);
-            //IList<string> roles = HttpContext.GetOwinContext()
-            //                             .GetUserManager<ApplicationUserManager>()?.GetRoles(user.Id);
-            //using (ApplicationDbContext db = new ApplicationDbContext())
-            //{
-            //    //DbSet<FEText> collect = null;
-            //if (roles.Contains(RolesProject.admin.ToString())|| roles.Contains(RolesProject.subscriber.ToString()))
-            //    {
-            //        //collect = db.FEText;
-            //        res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
-            //    }
 
-            //else if (roles.Contains(RolesProject.user.ToString())){
-            //        db.Set<ApplicationUser>().Attach(user);
-            //        user.LoadPhysics();
-            //        collect = user.Physics;
-            //    }
-
-
-            //    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id);
-            //    if(res==null)
-            //        res = db.FEText.FirstOrDefault();
-            //}
-
-            //return res;
         }
 
+        /// <summary>
+        /// метод для получения предыдущей разрешенной записи ФЭ
+        /// </summary>
+        /// <param name="id">id текущей записи</param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public static FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             return user.GetPrevAccessPhysic(id, HttpContext);
-            //FEText res = null;
-            //using (ApplicationDbContext db = new ApplicationDbContext())
-            //{
-            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-            //    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
-            //    if (res == null)
-            //        res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
-
-            //}
-
-            //return res;
         }
-        public static FEText GetFirstAccessPhysic( HttpContextBase HttpContext)
+
+        /// <summary>
+        /// метод для получения первой разрешенной записи ФЭ
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
+        public static FEText GetFirstAccessPhysic(HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
-            return user.GetFirstAccessPhysic( HttpContext);
-            //FEText res = null;
-            //using (ApplicationDbContext db = new ApplicationDbContext())
-            //{
-            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-            //    res = db.FEText.FirstOrDefault();
-
-            //}
-
-            //return res;
+            return user.GetFirstAccessPhysic(HttpContext);
         }
-        public static FEText GetLastAccessPhysic( HttpContextBase HttpContext)
+
+        /// <summary>
+        /// метод для получения последней разрешенной записи ФЭ
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
+        public static FEText GetLastAccessPhysic(HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             return user.GetLastAccessPhysic(HttpContext);
-            //FEText res = null;
-            //using (ApplicationDbContext db = new ApplicationDbContext())
-            //{
-            //    //res = db.FEText.LastOrDefault(x1 => x1.IDFE < id);
-            //    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
-
-            //}
-
-            //return res;
         }
 
+        /// <summary>
+        /// Метод для обнуления семантической записи
+        /// </summary>
         public static void ReloadSemanticRecord()
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var fe=db.FEText.FirstOrDefault(x1=>x1.IDFE==Constants.FEIDFORSEMANTICSEARCH);
+                var fe = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
                 fe.Text = Constants.FeSemanticNullText;
                 db.SaveChanges();
 

@@ -14,8 +14,10 @@ using System.Web;
 
 namespace dip.Models.DataBase
 {
-   
 
+    /// <summary>
+    /// Класс для выгрузки данных из старых бд и  перенос их  в текущую бд
+    /// </summary>
     class OldData
     {
         static SqlConnection connection;
@@ -30,28 +32,22 @@ namespace dip.Models.DataBase
             command.CommandType = CommandType.Text;
         } // constructor
 
+
+        /// <summary>
+        /// Общий Метод для выгрузки данных из старых бд и  перенос их  в текущую бд
+        /// </summary>
+        /// <returns></returns>
         public static bool ReloadDataBase()
         {
 
             bool returnvalue = false;
 
 
-
-
-            
-
-
-            //try
             {
                 connection.Open();
 
 
-
-
-
                 //Pros
-
-
                 try
                 {
                     command.CommandText = "select * from Pros";
@@ -77,12 +73,7 @@ namespace dip.Models.DataBase
                 }
 
 
-
-
                 //ActionTypes
-
-
-
                 try
                 {
                     command.CommandText = "select * from ActionTypes";
@@ -102,7 +93,7 @@ namespace dip.Models.DataBase
                             db.SaveChanges();
                         }
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -110,12 +101,7 @@ namespace dip.Models.DataBase
                 }
 
 
-
-
                 //FizVels
-
-
-                //try
                 {
                     command.CommandText = "select * from FizVels";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "name", "parent");
@@ -128,26 +114,21 @@ namespace dip.Models.DataBase
                             obj.Parent = null;
                         else
                             obj.Parent = i["parent"].ToString().Trim();
-                        if (obj.Parent?.Contains("_FIZVEL_R")==true)
-                            obj.Parametric = true; 
+                        if (obj.Parent?.Contains("_FIZVEL_R") == true)
+                            obj.Parametric = true;
                         using (var db = new ApplicationDbContext())
                         {
                             db.FizVels.Add(obj);
                             db.SaveChanges();
                         }
                     }
-                    
+
                 }
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
 
 
 
 
                 //AllActions
-
                 try
                 {
                     command.CommandText = "select * from AllActions";
@@ -169,7 +150,7 @@ namespace dip.Models.DataBase
                             db.SaveChanges();
                         }
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -180,14 +161,7 @@ namespace dip.Models.DataBase
 
 
 
-              
-
-
-
                 //Spec
-
-
-
                 try
                 {
                     command.CommandText = "select * from Spec";
@@ -213,14 +187,9 @@ namespace dip.Models.DataBase
 
 
 
-               
-
 
 
                 //Vrem
-
-
-
                 try
                 {
                     command.CommandText = "select * from Vrem";
@@ -228,18 +197,18 @@ namespace dip.Models.DataBase
                     foreach (var i in ldr)
                     {
                         var obj = new Domain.Vrem();
-                        
+
                         obj.Id = i["id"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
                         obj.Parent = i["parent"].ToString().Trim();
-                        
+
                         using (var db = new ApplicationDbContext())
                         {
                             db.Vrems.Add(obj);
                             db.SaveChanges();
                         }
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -250,18 +219,10 @@ namespace dip.Models.DataBase
 
 
 
-
-
-               
-
-
-
                 //FeAction
-
-                //try
                 {
                     command.CommandText = "select * from FeAction";
-                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "input", "type", "name", "fizVelId", 
+                    var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "id", "idfe", "input", "type", "name", "fizVelId",
                         "fizVelSection", "fizVelChange", "fizVelLeftBorder", "fizVelRightBorder", "pros", "spec", "vrem");
                     foreach (var i in ldr)
                     {
@@ -272,8 +233,6 @@ namespace dip.Models.DataBase
                         obj.Input = Convert.ToInt32(i["input"].ToString().Trim());
                         obj.Type = i["type"].ToString().Trim();
                         obj.Name = i["name"].ToString().Trim();
-
-                        //TODO возможно так правильно, надо потестить
                         obj.FizVelId = i["fizVelId"].ToString().Trim();
                         obj.FizVelSection = i["fizVelSection"].ToString().Trim();
                         if (!string.IsNullOrWhiteSpace(obj.FizVelSection))
@@ -282,27 +241,15 @@ namespace dip.Models.DataBase
                             obj.FizVelId = obj.FizVelSection;
                             obj.FizVelSection = tmp;
                         }
-                           
-                        
-                            //TODO
-                            obj.Pros = i["pros"].ToString().Trim();
-                            obj.Pros = Pro.SortIds(obj.Pros);
-                           
-                        
-                        //
-                        
-                            //TODO
-                            obj.Spec = i["spec"].ToString().Trim();
-                            obj.Spec = Spec.SortIds(obj.Spec);
-                          
-                        
-                        //
-                       
-                        
-                            obj.Vrem = i["vrem"].ToString().Trim();
-                            
-                           
-                        
+                        obj.Pros = i["pros"].ToString().Trim();
+                        //obj.Pros = Pro.SortIds(obj.Pros);
+
+                        obj.Spec = i["spec"].ToString().Trim();
+                        //obj.Spec = Spec.SortIds(obj.Spec);
+
+                        obj.Vrem = i["vrem"].ToString().Trim();
+                        //obj.Vrem = Vrem.SortIds(obj.Vrem);
+
 
                         //
                         using (var db = new ApplicationDbContext())
@@ -310,26 +257,15 @@ namespace dip.Models.DataBase
                             obj.Pros = Pro.SortIds(Pro.GetParentListForIds(obj.Pros, db));
                             obj.Spec = Spec.SortIds(Spec.GetParentListForIds(obj.Spec, db));
                             obj.Vrem = Vrem.SortIds(Vrem.GetParentListForIds(obj.Vrem, db));
-                            
-                            
+
                             db.FEActions.Add(obj);
                             db.SaveChanges();
                         }
                     }
-                    
-                    
                 }
 
 
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-
                 //FeIndex
-
-
                 List<dynamic> FeIndexList = new List<dynamic>();
                 try
                 {
@@ -337,9 +273,10 @@ namespace dip.Models.DataBase
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "Index");
                     foreach (var i in ldr)
                     {
-                        FeIndexList.Add(new {
-                            IDFE= Convert.ToInt32(i["IDFE"].ToString().Trim()),
-                            Index= i["Index"].ToString().Trim().Replace("\u0002\u0003\u0004", "\n")
+                        FeIndexList.Add(new
+                        {
+                            IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim()),
+                            Index = i["Index"].ToString().Trim().Replace("\u0002\u0003\u0004", "\n")
                         });
 
 
@@ -353,9 +290,7 @@ namespace dip.Models.DataBase
 
 
 
-
-
-
+                //States
                 using (var db = new ApplicationDbContext())
                 {
                     db.StateObjects.Add(new StateObject()
@@ -385,34 +320,15 @@ namespace dip.Models.DataBase
 
 
 
-
-
-
-
                 //FeObject
-
-
-
-              
-
-
-
-
-                //new
-
                 using (var db = new ApplicationDbContext())
                 {
-                    
-                    //var test = db.FEIndexs.ToList();
                     foreach (var i in FeIndexList)
                     {
-                       
-                        //i.Index = i.Index.Replace("\u0002\u0003\u0004", "\n");
                         var indexMass = ((string[])i.Index.Split(new string[] { "\u0000", "\u0001", "\u0002", "\u0003", "\u0004" }, StringSplitOptions.RemoveEmptyEntries)).ToList();
-                        //var indexMass = indexMass1.ToList();
                         for (int i2 = 0; i2 < indexMass.Count; ++i2)
                         {
-                            if (indexMass[i2] == "2" || indexMass[i2] == "3" || indexMass[i2].IndexOf("2\n") == 0 || indexMass[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
+                            if (indexMass[i2] == "2" || indexMass[i2] == "3" || indexMass[i2].IndexOf("2\n") == 0 || indexMass[i2].IndexOf("3\n") == 0)
                             {
                                 //характеристики начального состояния объекта
 
@@ -430,16 +346,11 @@ namespace dip.Models.DataBase
                                     Idfe = i.IDFE
 
                                 };
-                           
                                 i2++;
-
-                                FeObjectParseStep(ref i2, indexMass, obj, 1, i,db);
+                                FeObjectParseStep(ref i2, indexMass, obj, 1, i, db);
                             }
-                           
                         }
-                       
                     }
-                    
                 }
 
 
@@ -456,15 +367,13 @@ namespace dip.Models.DataBase
                        "beginPhase", "endPhase");
                     foreach (var i in ldr)
                     {
-                        NewFeIndexList.Add(new {
-                            BeginPhase= i["beginPhase"].ToString().Trim(),
-                            EndPhase= i["endPhase"].ToString().Trim(),
-                            Idfe= Convert.ToInt32(i["idfe"].ToString().Trim())
+                        NewFeIndexList.Add(new
+                        {
+                            BeginPhase = i["beginPhase"].ToString().Trim(),
+                            EndPhase = i["endPhase"].ToString().Trim(),
+                            Idfe = Convert.ToInt32(i["idfe"].ToString().Trim())
                         });
-                        
                     }
-
-
                 }
                 catch (Exception e)
                 {
@@ -475,51 +384,43 @@ namespace dip.Models.DataBase
 
 
 
-
                 //FeText
-
-
-
-               // try
                 {
                     command.CommandText = "select * from FeText";
                     var ldr = Models.DataBase.DataBase.ExecuteQuery(null, command, "IDFE", "name", "text", "textInp", "textOut", "textObj",
                         "textApp", "textLit");
-                    var listFetext=new List<FEText>();
+                    var listFetext = new List<FEText>();
                     using (var db = new ApplicationDbContext())
                     {
                         foreach (var i in ldr)
-                    {
-                        var obj = new Domain.FEText();
+                        {
+                            var obj = new Domain.FEText();
 
-                        obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
-                       
-                        obj.Name = i["name"].ToString().Trim();
-                        obj.Text = i["text"].ToString().Trim();
-                        obj.TextInp = i["textInp"].ToString().Trim();
-                        obj.TextOut = i["textOut"].ToString().Trim();
-                        obj.TextObj = i["textObj"].ToString().Trim();
-                        obj.TextApp = i["textApp"].ToString().Trim();
-                        obj.TextLit = i["textLit"].ToString().Trim();
-                        obj.NotApprove = false;
-                        
-                        
+                            obj.IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim());
 
-                            //db.FEText.Add(obj);
-                            //db.SaveChanges();
+                            obj.Name = i["name"].ToString().Trim();
+                            obj.Text = i["text"].ToString().Trim();
+                            obj.TextInp = i["textInp"].ToString().Trim();
+                            obj.TextOut = i["textOut"].ToString().Trim();
+                            obj.TextObj = i["textObj"].ToString().Trim();
+                            obj.TextApp = i["textApp"].ToString().Trim();
+                            obj.TextLit = i["textLit"].ToString().Trim();
+                            obj.NotApprove = false;
+
+
                             listFetext.Add(obj);
-                            var tmpinp=db.FEActions.Where(x1 => x1.Idfe == obj.IDFE).ToList();
+                            var tmpinp = db.FEActions.Where(x1 => x1.Idfe == obj.IDFE).ToList();
                             switch (tmpinp.Count)
                             {
                                 case 0://вообще нет добавить 1 вход 1 выход
-                                    { 
-                                    obj.CountInput = 1;
-                                    FEAction feactinp = new FEAction() { Idfe = obj.IDFE, Input = 1, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
-                                    db.FEActions.Add(feactinp);
-                                    FEAction feactoutp = new FEAction() { Idfe = obj.IDFE, Input = 0, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
-                                    db.FEActions.Add(feactoutp);
-                                    db.SaveChanges();
-                                    break;
+                                    {
+                                        obj.CountInput = 1;
+                                        FEAction feactinp = new FEAction() { Idfe = obj.IDFE, Input = 1, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                        db.FEActions.Add(feactinp);
+                                        FEAction feactoutp = new FEAction() { Idfe = obj.IDFE, Input = 0, Name = "VOZ1", Type = "NO_ACTIONS", FizVelId = "NO_FIZVEL" };
+                                        db.FEActions.Add(feactoutp);
+                                        db.SaveChanges();
+                                        break;
                                     }
                                 case 1://что то есть добавить то чего нет
                                     obj.CountInput = 1;
@@ -543,24 +444,16 @@ namespace dip.Models.DataBase
                                     obj.CountInput = 2;
                                     break;
                             }
-                           
-                            
+                        }
 
-                            }
-                        
-                    //}
-                    //восстанавливаем бывшие id
-                    listFetext= listFetext.OrderBy(x1 => x1.IDFE).ToList();
-                    //using (var db = new ApplicationDbContext())
-                    //{
+                        //восстанавливаем бывшие id
+                        listFetext = listFetext.OrderBy(x1 => x1.IDFE).ToList();
                         foreach (var i in listFetext)
                         {
                             int tmpId = i.IDFE;
-                            //try
-                            //{
                             db.FEText.Add(i);
                             db.SaveChanges();
-                         
+
 
                             while (tmpId != i.IDFE)
                             {
@@ -569,16 +462,16 @@ namespace dip.Models.DataBase
                                 db.FEText.Add(i);
                                 db.SaveChanges();
                             }
-                           
+
                             if (string.IsNullOrWhiteSpace(i.StateBeginId))
                             {
                                 i.StateBeginId = "MONOFAZ";
                             }
                             if (i.IDFE == 1282)
                             {
-                                    i.StateEndId = "MONOFAZ";
-                                }
-                                if (i.IDFE == Constants.FEIDFORSEMANTICSEARCH)
+                                i.StateEndId = "MONOFAZ";
+                            }
+                            if (i.IDFE == Constants.FEIDFORSEMANTICSEARCH)
                             {
                                 db.SaveChanges();
                                 continue;
@@ -591,9 +484,9 @@ namespace dip.Models.DataBase
                             var tmpNewIndex = NewFeIndexList.FirstOrDefault(x1 => x1.Idfe == i.IDFE);
                             if (tmpNewIndex != null)
                             {
-                                i.StateBeginId = tmpNewIndex.BeginPhase;// db.StateObjects.First(x1=>x1.Id== tmpNewIndex.BeginPhase) ;
+                                i.StateBeginId = tmpNewIndex.BeginPhase;
                                 if (!string.IsNullOrEmpty(tmpNewIndex.EndPhase))
-                                    i.StateEndId = tmpNewIndex.EndPhase;// db.StateObjects.First(x1 => x1.Id == tmpNewIndex.EndPhase);
+                                    i.StateEndId = tmpNewIndex.EndPhase;
                             }
 
 
@@ -602,63 +495,62 @@ namespace dip.Models.DataBase
                             int allcount = 0;
                             {
 #if debug
-                                if (i.IDFE == 801|| i.IDFE == 809)
+                                if (i.IDFE == 801 || i.IDFE == 809)
                                 {
                                     var g = 10;
                                 }
 #endif                   
                                 switch (i.StateBeginId)
-                            {
-                                case "MONOFAZ":
-                                    allcount++;
-                                    break;
-                                case "2CONFAZ1":
-                                    allcount += 2;
-                                    break;
-                                case "2MIXFAZ":
-                                    allcount += 2;
-                                    break;
-                                case "2CONFAZ2":
-                                    allcount += 2;
-                                    break;
-                                case "3CONFAZ1":
-                                    allcount += 3;
-                                    break;
-                                case "3MIXFAZ":
-                                    allcount += 3;
-                                    break;
-                            }
-                            var beginobj = tmpobj.Where(x1 => x1.Begin == 1).ToList();
-                            int difbeginobj = allcount - beginobj.Count;
-                            if (difbeginobj > 0)
-                            {
-                                List<int> free = new List<int>();
-                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 1) == null)
-                                    free.Add(1);
-                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 2) == null)
-                                    free.Add(2);
-                                if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 3) == null)
-                                    free.Add(3);
-
-                                for (var it = 0; it < difbeginobj; ++it)
                                 {
-                                    FEObject obj = new FEObject() { Idfe = i.IDFE, Begin = 1, NumPhase = free[it] };
-                                    db.FEObjects.Add(obj);
-                                    db.SaveChanges();
+                                    case "MONOFAZ":
+                                        allcount++;
+                                        break;
+                                    case "2CONFAZ1":
+                                        allcount += 2;
+                                        break;
+                                    case "2MIXFAZ":
+                                        allcount += 2;
+                                        break;
+                                    case "2CONFAZ2":
+                                        allcount += 2;
+                                        break;
+                                    case "3CONFAZ1":
+                                        allcount += 3;
+                                        break;
+                                    case "3MIXFAZ":
+                                        allcount += 3;
+                                        break;
                                 }
+                                var beginobj = tmpobj.Where(x1 => x1.Begin == 1).ToList();
+                                int difbeginobj = allcount - beginobj.Count;
+                                if (difbeginobj > 0)
+                                {
+                                    List<int> free = new List<int>();
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 1) == null)
+                                        free.Add(1);
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 2) == null)
+                                        free.Add(2);
+                                    if (beginobj.FirstOrDefault(x1 => x1.NumPhase == 3) == null)
+                                        free.Add(3);
 
-                            }
+                                    for (var it = 0; it < difbeginobj; ++it)
+                                    {
+                                        FEObject obj = new FEObject() { Idfe = i.IDFE, Begin = 1, NumPhase = free[it] };
+                                        db.FEObjects.Add(obj);
+                                        db.SaveChanges();
+                                    }
+
+                                }
 #if debug
                                 if (difbeginobj < 0)
-                            {
-                                var error = 10;
-                            }
+                                {
+                                    var error = 10;
+                                }
 #endif
                             }
                             allcount = 0;
+
                             {
-
-
                                 switch (i.StateEndId)
                                 {
                                     case "MONOFAZ":
@@ -708,14 +600,6 @@ namespace dip.Models.DataBase
 #endif
                             }
 
-
-                            //if (allcount != tmpobj.Count)
-                            //{
-                            //    var error = 10;
-                            //}
-
-
-
                             db.SaveChanges();
                         }
 
@@ -732,20 +616,12 @@ namespace dip.Models.DataBase
                             TextLit = "",
                             CountInput = 0
                         };
-                    db.FEText.Add(objsemantic);
-                    db.SaveChanges();
+                        db.FEText.Add(objsemantic);
+                        db.SaveChanges();
                     }
                 }
-                //catch (Exception e)
-                //{
-                //    throw e;
-                //}
-
-                
 
                 returnvalue = true;
-
-                
 
                 connection.Close();
                 command.Dispose();
@@ -753,15 +629,18 @@ namespace dip.Models.DataBase
 
 
             }
- 
+
             return returnvalue;
 
         }
-    
-        
-        
-        
-        
+
+
+
+
+        /// <summary>
+        /// Метод для загрузки состояний объекта
+        /// </summary>
+        /// <param name="id"></param>
         public static void LoadStateObject(string id)
         {
             try
@@ -775,9 +654,9 @@ namespace dip.Models.DataBase
                     obj.Id = i["id"].ToString().Trim();
                     obj.Name = i["name"].ToString().Trim();
                     obj.Parent = i["parent"].ToString().Trim();
-                    if (obj.Id == "3CONFAZ1"|| obj.Id == "3MIXFAZ")
+                    if (obj.Id == "3CONFAZ1" || obj.Id == "3MIXFAZ")
                         obj.CountPhase = 3;
-                    if(obj.Id == "2CONFAZ1" || obj.Id == "2CONFAZ2"|| obj.Id == "2MIXFAZ")
+                    if (obj.Id == "2CONFAZ1" || obj.Id == "2CONFAZ2" || obj.Id == "2MIXFAZ")
                         obj.CountPhase = 2;
 
                     using (var db = new ApplicationDbContext())
@@ -785,19 +664,20 @@ namespace dip.Models.DataBase
                         db.StateObjects.Add(obj);
                         db.SaveChanges();
                     }
-                    //if (!string.IsNullOrWhiteSpace(obj.Parent))
-                        LoadStateObject(obj.Id);
+                    LoadStateObject(obj.Id);
                 }
 
             }
             catch (Exception e)
             {
-                //connection.Open();
-                //LoadState(id);
                 throw e;
             }
         }
 
+        /// <summary>
+        /// Метод для загрузки характеристик объекта
+        /// </summary>
+        /// <param name="id"></param>
         public static void LoadCharacteristicObject(string id)
         {
             try
@@ -812,31 +692,34 @@ namespace dip.Models.DataBase
                     obj.Name = i["name"].ToString().Trim();
                     obj.Parent = i["parent"].ToString().Trim();
 
-
                     using (var db = new ApplicationDbContext())
                     {
                         db.PhaseCharacteristicObjects.Add(obj);
                         db.SaveChanges();
                     }
-                    //if (!string.IsNullOrWhiteSpace(obj.Parent))
-                        LoadCharacteristicObject(obj.Id);
+                    LoadCharacteristicObject(obj.Id);
                 }
 
             }
             catch (Exception e)
             {
-                //connection.Open();
-                //LoadState(id);
                 throw e;
             }
         }
 
+        /// <summary>
+        /// Метод для парсинга записи feobject
+        /// </summary>
+        /// <param name="i2">Индекс</param>
+        /// <param name="indexMass">Массив строк для парсинга</param>
+        /// <param name="obj"> Запись для парсинга</param>
+        /// <param name="numPhase">Номер фазы</param>
+        /// <param name="index"></param>
+        /// <param name="db">Контекст</param>
         static void FeObjectParseStep(ref int i2, List<string> indexMass, FEObject obj, int numPhase, dynamic index, ApplicationDbContext db)
         {
-            
             for (; i2 < indexMass.Count && (indexMass[i2].Length == 0 || (indexMass[i2][0] != '4' && indexMass[i2][0] != '5')); ++i2)//g[i2][0] != '3' && 
             {
-                
                 bool slN = false;
                 if (indexMass[i2].Contains("\n"))
                 {
@@ -852,55 +735,57 @@ namespace dip.Models.DataBase
 
                 }
                 if (indexMass[i2].Length != 0)
-                    if (indexMass[i2] == "3" || indexMass[i2].IndexOf("3\n") == 0) //if (g[i2] == "2" || g[i2] == "3" || g[i2].IndexOf("2\n") == 0 || g[i2].IndexOf("3\n") == 0)//g[i2][0] == '2'|| g[i2][0] == '3'
+                    if (indexMass[i2] == "3" || indexMass[i2].IndexOf("3\n") == 0)
                     {
                         //переход на выходные характеристики
                         FEObject objNext = new FEObject() { NumPhase = 1, Idfe = index.IDFE, Begin = 0 };
                         i2++;
                         FeObjectParseStep(ref i2, indexMass, objNext, objNext.NumPhase, index, db);
                     }
-                    else if (slN)//if (g[i2].Contains("\n"))
+                    else if (slN)
                     {
                         //переход на след фазу
-
-                       
                         if (i2 < indexMass.Count)
                             FeObjectParseAddValueInObj(indexMass[i2], obj);
-                        
+
                         FEObject objNext = new FEObject() { NumPhase = ++numPhase, Idfe = index.IDFE, Begin = obj.Begin };
                         i2++;
                         FeObjectParseStep(ref i2, indexMass, objNext, numPhase, index, db);
                     }
-               
+
                 if (i2 < indexMass.Count)
 
                     FeObjectParseAddValueInObj(indexMass[i2], obj);
-               
+
             }
 
-           
-            
-            obj.Composition = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Composition.Trim(),db));
+
+
+            obj.Composition = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Composition.Trim(), db));
             obj.Conductivity = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Conductivity.Trim(), db));
-            obj.MagneticStructure = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MagneticStructure.Trim(), db)); 
-            obj.MechanicalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MechanicalState.Trim(), db)); 
-            obj.OpticalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.OpticalState.Trim(), db)); 
-            obj.PhaseState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.PhaseState.Trim(), db)); 
+            obj.MagneticStructure = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MagneticStructure.Trim(), db));
+            obj.MechanicalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.MechanicalState.Trim(), db));
+            obj.OpticalState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.OpticalState.Trim(), db));
+            obj.PhaseState = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.PhaseState.Trim(), db));
             obj.Special = PhaseCharacteristicObject.SortIds(PhaseCharacteristicObject.GetParentListForIds(obj.Special.Trim(), db));
 
-            
+
 
             db.FEObjects.Add(obj);
             db.SaveChanges();
-           
+
         }
 
 
-       
 
+        /// <summary>
+        /// Добавление данных в нужный массив
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="obj"></param>
         static void FeObjectParseAddValueInObj(string g, FEObject obj)
         {
-           
+
             if (g.Length > 0)
                 switch (g[0])
                 {
@@ -931,32 +816,14 @@ namespace dip.Models.DataBase
         }
 
 
-        public static void Fix2OldFeRecord(ApplicationDbContext db)
-        {
-            // проверить состояние и количество фаз
-            //проверить дескрипторы
-            //проверить объект
-
-            command.CommandText = @"";
-            //#TODO
 
 
-
-        }
-
-
-
-
-
+        /// <summary>
+        /// Метод для добавления базовых дескрипторов для записей у которых их нет
+        /// </summary>
+        /// <param name="db"></param>
         public static void FixOldFeRecord(ApplicationDbContext db)
         {
-
-            //            command.CommandText = @"select FEObjects_.IDFE as idfe1,FEActions_.IDFE as idfe2 from (select FETexts.IDFE from dbo.FETexts
-            //left join dbo.FEObjects
-            //on FETexts.IDFE = FEObjects.Idfe
-            //where FEObjects.Id is null) as FEObjects_
-            //full join (select FETexts.IDFE from dbo.FETexts where FETexts.IDFE not in (select Idfe  from dbo.FEActions)) as FEActions_
-            //on FEObjects_.IDFE = FEActions_.IDFE";
             command.CommandText = @"select FEObject_.IDFE as idfe1,FEAction_.IDFE as idfe2 from (select FEText.IDFE from dbo.FEText
                 left join dbo.FEObject
                 on FEText.IDFE = FEObject.Idfe
@@ -971,7 +838,7 @@ namespace dip.Models.DataBase
                 string idfe2 = i["idfe2"].ToString().Trim();
                 //TODO поменять на базовые значние, 1282 не должен заходить в 1 условие
 #if debug
-                if (idfe1=="1282"|| idfe2 == "1282")
+                if (idfe1 == "1282" || idfe2 == "1282")
                 {
                     var g = 10;
                 }
@@ -982,15 +849,15 @@ namespace dip.Models.DataBase
                     if (intid == Constants.FEIDFORSEMANTICSEARCH)
                         continue;
                     //установить начальное состояние, добавить дескрипторы и объект
-                    FEText fe = db.FEText.First(x1=>x1.IDFE== intid);
+                    FEText fe = db.FEText.First(x1 => x1.IDFE == intid);
                     fe.StateBeginId = "MONOFAZ";
                     db.SaveChanges();
-                    FEAction feactinp = new FEAction() { Idfe= fe.IDFE, Input=1 };
+                    FEAction feactinp = new FEAction() { Idfe = fe.IDFE, Input = 1 };
                     db.FEActions.Add(feactinp);
                     FEAction feactoutp = new FEAction() { Idfe = fe.IDFE, Input = 0 };
                     db.FEActions.Add(feactoutp);
                     db.SaveChanges();
-                    FEObject obj = new FEObject() { Idfe = fe.IDFE, Begin=1, NumPhase=1 };
+                    FEObject obj = new FEObject() { Idfe = fe.IDFE, Begin = 1, NumPhase = 1 };
                     db.FEObjects.Add(obj);
                     db.SaveChanges();
                 }
@@ -1007,12 +874,6 @@ namespace dip.Models.DataBase
                     db.SaveChanges();
                 }
             }
-
-
-            }
-
-
+        }
     }
-    
-    
 }

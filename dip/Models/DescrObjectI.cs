@@ -5,6 +5,10 @@ using System.Web;
 
 namespace dip.Models
 {
+
+    /// <summary>
+    /// класс для хранения 3х фаз объекта(характеристики)
+    /// </summary>
     public class DescrObjectI
     {
         public DescrPhaseI ListSelectedPhase1 { get; set; }
@@ -20,7 +24,7 @@ namespace dip.Models
         public bool Begin { get; set; }//начальное или конечное состояние
                                        //public int NumPhase { get; set; }
 
-        public bool Valide { get; private set; }//мб private
+        public bool Valide { get; private set; }
         public DescrObjectI()
         {
             Begin = true;
@@ -28,12 +32,8 @@ namespace dip.Models
             ListSelectedPhase2 = null;
             ListSelectedPhase3 = null;
             Valide = false;
-            //NumPhase = 1;
         }
 
-
-
-       
 
         public DescrPhaseI this[int index]
         {
@@ -67,7 +67,6 @@ namespace dip.Models
                     case 2:
                         ListSelectedPhase3 = value;
                         break;
-
                 }
             }
         }
@@ -90,15 +89,16 @@ namespace dip.Models
                 {
                     ++res;
                     if (this.ListSelectedPhase3 != null)
-                    {
                         ++res;
-                    }
                 }
-
             }
             return res;
         }
 
+        /// <summary>
+        /// метод для получения всех фаз списком без null
+        /// </summary>
+        /// <returns></returns>
         public List<DescrPhaseI> GetActualPhases()
         {
             List<DescrPhaseI> res = new List<DescrPhaseI>();
@@ -113,13 +113,15 @@ namespace dip.Models
                         res.Add(this.ListSelectedPhase3);
                     }
                 }
-
             }
             return res;
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetList_()//TODO
         {
             List<string> res = new List<string>()
@@ -128,13 +130,13 @@ namespace dip.Models
                 ListSelectedPhase2?.GetListStr_(),
                 ListSelectedPhase3?.GetListStr_()
             };
-
-
             return res;
         }
 
 
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+        /// <summary>
+        ///  метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
         public void DeleteNotChildCheckbox()
         {
 
@@ -145,29 +147,22 @@ namespace dip.Models
 
         }
 
-
+        /// <summary>
+        /// метод для валидации
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool Validation(DescrObjectI a)
         {
             bool res = true;
             if (a != null)
             {
-                //if (a.GetCountPhase() == 0)
-                //    res = false;
-
                 DescrPhaseI.Validation(a.ListSelectedPhase1);
                 DescrPhaseI.Validation(a.ListSelectedPhase2);
                 DescrPhaseI.Validation(a.ListSelectedPhase3);
-
-
-
             }
-            //a.Valide = false;
-            //if(!res)
             a.Valide = res;
-            //a.Valide = true;
             return res;
         }
-
-
     }
 }

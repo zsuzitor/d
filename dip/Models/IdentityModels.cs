@@ -14,6 +14,9 @@ using Microsoft.AspNet.Identity.Owin;
 namespace dip.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    /// <summary>
+    /// класс для хранения пользователей
+    /// </summary>
     public class ApplicationUser : IdentityUser
     {
 
@@ -22,16 +25,10 @@ namespace dip.Models
         public bool? Male { get; set; }
         public DateTime? Birthday { get; set; }
         public DateTime DateRegistration { get; set; }
-        //TODO раскомментить
         public bool CloseProfile { get; set; }
 
-        //1--many
         public List<Log> UserLogs { get; set; }
-
-
         public List<FEText> FavouritedPhysics { get; set; }
-
-
         public List<FEText> Physics { get; set; }//список выданных ФЭ
         public List<ListPhysics> ListPhysics { get; set; }
 
@@ -47,7 +44,6 @@ namespace dip.Models
             CloseProfile = false;
             Male = null;
             FavouritedPhysics = new List<FEText>();
-
             Physics = new List<FEText>();
             ListPhysics = new List<ListPhysics>();
 
@@ -55,54 +51,67 @@ namespace dip.Models
 
 
 
-
-
+        /// <summary>
+        /// метод для получения id текущего пользователя
+        /// </summary>
+        /// <returns></returns>
         public static string GetUserId()
         {
             return System.Web.HttpContext.Current.User.Identity.GetUserId();
         }
 
+        /// <summary>
+        /// метод для получения записи пользователя по id
+        /// </summary>
+        /// <param name="id">id пользователя</param>
+        /// <returns></returns>
         public static ApplicationUser GetUser(string id)
         {
-            //string check_id = ApplicationUser.GetUserId();
             ApplicationUser res = null;
-            //if (string.IsNullOrWhiteSpace(id))
-            //    return res;
             using (ApplicationDbContext db = new ApplicationDbContext())
-            {
                 res = ApplicationUser.GetUser(id, db);
-            }
-
             return res;
         }
+
+        /// <summary>
+        /// метод для получения записи пользователя по id
+        /// </summary>
+        /// <param name="id">id пользователя</param>
+        /// <param name="db">контекст</param>
+        /// <returns></returns>
         public static ApplicationUser GetUser(string id, ApplicationDbContext db)
         {
-            //string check_id = ApplicationUser.GetUserId();
             ApplicationUser res = null;
             if (string.IsNullOrWhiteSpace(id))
                 return res;
             res = db.Users.FirstOrDefault(x1 => x1.Id == id);
-
             return res;
         }
 
+        /// <summary>
+        /// метод для получения всех пользователей системы
+        /// </summary>
+        /// <param name="db_">контекст</param>
+        /// <returns></returns>
         public static List<ApplicationUser> GetAllUsers(ApplicationDbContext db_ = null)
         {
-            //string check_id = ApplicationUser.GetUserId();
             var db = db_ ?? new ApplicationDbContext();
             List<ApplicationUser> res = db.Users.ToList();
-
             if (db_ == null)
                 db.Dispose();
             return res;
         }
 
 
+        /// <summary>
+        /// метод для изменение записи пользователя
+        /// </summary>
+        /// <param name="user"></param>
         public static void Edit(ApplicationUser user)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var old=ApplicationUser.GetUser(user.Id,db);
+                var old = ApplicationUser.GetUser(user.Id, db);
                 old.Name = user.Name;
                 old.Surname = user.Surname;
                 old.Birthday = user.Birthday;
@@ -112,9 +121,11 @@ namespace dip.Models
         }
 
 
+        /// <summary>
+        /// метод для загрузки ФЭ которые пользователь добавил в избранное
+        /// </summary>
         public void LoadFavouritedList()
         {
-
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
@@ -124,6 +135,10 @@ namespace dip.Models
         }
 
 
+        /// <summary>
+        /// метод для загрузки списков пользователя
+        /// </summary>
+        /// <param name="db_"></param>
         public void LoadListPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -136,13 +151,12 @@ namespace dip.Models
         }
 
         /// <summary>
-        /// загрузить разрешенные ФЭ
+        ///метод для загрузки разрешенных ФЭ пользователя 
         /// </summary>
         /// <param name="db_"></param>
         public void LoadPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
-
             db.Set<ApplicationUser>().Attach(this);
             if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
                 db.Entry(this).Collection(x1 => x1.Physics).Load();
@@ -150,23 +164,31 @@ namespace dip.Models
                 db.Dispose();
         }
 
+
+        /// <summary>
+        /// метод для добавление списка пользователю
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idlist">id списка</param>
+        /// <param name="hadList">был ли список у пользователя до вызова этого метода</param>
+        /// <returns></returns>
         //genered exception: NotFoundException
         public static ListPhysics AddList(string iduser, int idlist, out bool? hadList)
         {
             var user = ApplicationUser.GetUser(iduser);
             hadList = null;
-            //try
-            //{
             if (user != null)
                 return user.AddList(idlist, out hadList);
             else
                 return null;
-            //}
-            //catch (NotFoundException e)
-            //{
-
-            //}
         }
+
+        /// <summary>
+        /// метод для добавление списка пользователю
+        /// </summary>
+        /// <param name="idlist">id списка</param>
+        /// <param name="hadList">был ли список у пользователя до вызова этого метода</param>
+        /// <returns></returns>
         //genered exception: NotFoundException
         public ListPhysics AddList(int idlist, out bool? hadList)
         {
@@ -185,7 +207,6 @@ namespace dip.Models
 
                 if (this.ListPhysics.FirstOrDefault(x1 => x1.Id == list.Id) == null)
                 {
-                    //return;
                     this.ListPhysics.Add(list);
                     db.SaveChanges();
                     hadList = false;
@@ -193,7 +214,6 @@ namespace dip.Models
                 else
                     hadList = true;
 
-                //
                 list.LoadPhysics(db);
 
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
@@ -204,17 +224,26 @@ namespace dip.Models
                         this.Physics.Add(i);
                 db.SaveChanges();
 
-
             }
-            //hadList = hadList ?? true;
             return list;
         }
 
+
+        /// <summary>
+        /// метод для удаления списка у пользователя
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idlist">id списка</param>
         public static void RemoveList(string iduser, int idlist)
         {
             var user = ApplicationUser.GetUser(iduser);
             user.RemoveList(idlist);
         }
+
+        /// <summary>
+        /// метод для удаления списка у пользователя
+        /// </summary>
+        /// <param name="idlist">id списка</param>
         public void RemoveList(int idlist)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -228,7 +257,6 @@ namespace dip.Models
 
                 this.ListPhysics.Remove(list);
                 db.SaveChanges();
-                //
                 list.LoadPhysics(db);
 
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
@@ -241,30 +269,39 @@ namespace dip.Models
                 }
 
                 db.SaveChanges();
-
-
             }
         }
 
 
-
+        /// <summary>
+        /// метод для добавления ФЭ пользователю
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idphys">id ФЭ</param>
+        /// <param name="hadPhys">имел ли пользователь этот ФЭ до вызова этого метода</param>
+        /// <returns></returns>
         public static FEText AddPhysics(string iduser, int idphys, out bool? hadPhys)
         {
             hadPhys = null;
             var user = ApplicationUser.GetUser(iduser);
-            if(user!=null)
-            return user.AddPhysics(idphys, out hadPhys);
+            if (user != null)
+                return user.AddPhysics(idphys, out hadPhys);
             return null;
         }
 
+        /// <summary>
+        /// метод для добавления ФЭ пользователю
+        /// </summary>
+        /// <param name="idphys">id ФЭ</param>
+        /// <param name="hadPhys">имел ли пользователь этот ФЭ до вызова этого метода</param>
+        /// <returns></returns>
         public FEText AddPhysics(int idphys, out bool? hadPhys)
         {
             FEText phys = null;
             hadPhys = null;
             if (idphys == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
                 return phys;
-           
-           
+
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
@@ -275,8 +312,6 @@ namespace dip.Models
                 phys = this.Physics.FirstOrDefault(x1 => x1.IDFE == idphys);
                 if (phys == null)
                 {
-                    //phys = FEText.Get(idphys);
-                    //db.Set<FEText>().Attach(phys);
                     phys = db.FEText.FirstOrDefault(x1 => x1.IDFE == idphys);
                     this.Physics.Add(phys);
                     hadPhys = false;
@@ -285,24 +320,30 @@ namespace dip.Models
                     hadPhys = true;
 
                 db.SaveChanges();
-
-
             }
             return phys;
         }
 
+        /// <summary>
+        /// метод для удаления ФЭ у пользователя
+        /// </summary>
+        /// <param name="iduser">id пользователя</param>
+        /// <param name="idphys">id ФЭ</param>
         public static void RemovePhysics(string iduser, int idphys)
         {
             var user = ApplicationUser.GetUser(iduser);
             user.RemovePhysics(idphys);
         }
 
+        /// <summary>
+        /// метод для удаления ФЭ у пользователя
+        /// </summary>
+        /// <param name="idphys">id ФЭ</param>
         public void RemovePhysics(int idphys)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 db.Set<ApplicationUser>().Attach(this);
-
                 if (!db.Entry(this).Collection(x1 => x1.Physics).IsLoaded)
                     db.Entry(this).Collection(x1 => x1.Physics).Load();
 
@@ -311,11 +352,15 @@ namespace dip.Models
                     return;
                 this.Physics.Remove(phys);
                 db.SaveChanges();
-
             }
         }
 
-
+        /// <summary>
+        /// метод для проверки записей которые разрешены для отображения для текущего пользователя
+        /// </summary>
+        /// <param name="idphys">список id фэ которые нужно проверить</param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public List<int> CheckAccessPhys(List<int> idphys, HttpContextBase HttpContext)
         {
             List<int> res = new List<int>();
@@ -325,7 +370,7 @@ namespace dip.Models
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
 
-            int? semanticFe = idphys.FirstOrDefault(x1=>x1== Models.Constants.FEIDFORSEMANTICSEARCH);
+            int? semanticFe = idphys.FirstOrDefault(x1 => x1 == Models.Constants.FEIDFORSEMANTICSEARCH);
             if (semanticFe != null)
                 idphys.Remove((int)semanticFe);
 
@@ -338,26 +383,27 @@ namespace dip.Models
                 if (idphys != null && idphys.Count > 0)
                 {
                     List<int> tmpRes;
-                        using (ApplicationDbContext db = new ApplicationDbContext())
+                    using (ApplicationDbContext db = new ApplicationDbContext())
                     {
                         db.Set<ApplicationUser>().Attach(this);
-                         tmpRes = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
-
+                        tmpRes = db.Entry(this).Collection(x1 => x1.Physics).Query().Where(x1 => idphys.Contains(x1.IDFE)).Select(x1 => x1.IDFE).ToList();
                     }
-                        foreach(var i in idphys)
+                    foreach (var i in idphys)
                     {
                         if (tmpRes.Contains(i))
                             res.Add(i);
                     }
                 }
-                    
-            //if (roles.Contains(RolesProject.NotApproveUser.ToString()))
-            //    return res;
             return res;
         }
 
 
-
+        /// <summary>
+        /// метод для получения следующего разрешенного ФЭ
+        /// </summary>
+        /// <param name="id">id текущего ФЭ</param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -365,31 +411,29 @@ namespace dip.Models
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                //DbSet<FEText> collect = null;
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
-                    //collect = db.FEText;
-                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id&&x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
+                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE > id && x1.IDFE != Models.Constants.FEIDFORSEMANTICSEARCH);
                     if (res == null)
                         res = db.FEText.FirstOrDefault();
                 }
-
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
                     res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault(x1 => x1.IDFE > id);
                     if (res == null)
                         res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
-                    //collect = user.Physics;
                 }
-
             }
-
             return res;
-
         }
 
-
+        /// <summary>
+        ///  метод для получения предыдущего разрешенного ФЭ
+        /// </summary>
+        /// <param name="id">id текущего ФЭ</param>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -397,31 +441,28 @@ namespace dip.Models
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                //DbSet<FEText> collect = null;
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
-                    
-                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id&&x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id && x1.IDFE != Models.Constants.FEIDFORSEMANTICSEARCH);
                     if (res == null)
                         res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
                 }
-
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
                     res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE < id);
                     if (res == null)
                         res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
-                    //collect = user.Physics;
                 }
-
             }
-
             return res;
-
         }
 
-
+        /// <summary>
+        /// метод для получения первого разрешенного ФЭ
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public FEText GetFirstAccessPhysic(HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -429,28 +470,24 @@ namespace dip.Models
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                //DbSet<FEText> collect = null;
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
-
-                    res = db.FEText.FirstOrDefault(x1=>x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
-                    
+                    res = db.FEText.FirstOrDefault(x1 => x1.IDFE != Models.Constants.FEIDFORSEMANTICSEARCH);
                 }
-
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
                     res = db.Entry(this).Collection(x1 => x1.Physics).Query().FirstOrDefault();
-                    
                 }
-
             }
-
             return res;
-
         }
 
-
+        /// <summary>
+        /// метод для получения последнего разрешенного ФЭ
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
         public FEText GetLastAccessPhysic(HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -458,25 +495,17 @@ namespace dip.Models
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(this.Id);
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                //DbSet<FEText> collect = null;
                 if (roles.Contains(RolesProject.admin.ToString()) || roles.Contains(RolesProject.subscriber.ToString()))
                 {
-
-                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1=>x1.IDFE!= Models.Constants.FEIDFORSEMANTICSEARCH);
-
+                    res = db.FEText.OrderByDescending(x1 => x1.IDFE).FirstOrDefault(x1 => x1.IDFE != Models.Constants.FEIDFORSEMANTICSEARCH);
                 }
-
                 else if (roles.Contains(RolesProject.user.ToString()))
                 {
                     db.Set<ApplicationUser>().Attach(this);
                     res = db.Entry(this).Collection(x1 => x1.Physics).Query().OrderByDescending(x1 => x1.IDFE).FirstOrDefault();
-
                 }
-
             }
-
             return res;
-
         }
 
 
@@ -505,49 +534,24 @@ namespace dip.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        //---------------------------old part-----------------------------------------------------
-       // public DbSet<Domain.Action> Actions { get; set; }
+
         public DbSet<ActionType> ActionTypes { get; set; }
         public DbSet<AllAction> AllActions { get; set; }
         public DbSet<FEAction> FEActions { get; set; }
-       // public DbSet<FEIndex> FEIndexs { get; set; }
         public DbSet<FEObject> FEObjects { get; set; }
         public DbSet<FEText> FEText { get; set; }
         public DbSet<FizVel> FizVels { get; set; }
-        //public DbSet<NewFEIndex> NewFEIndexs { get; set; }
         public DbSet<Pro> Pros { get; set; }
         public DbSet<Spec> Specs { get; set; }
-        //public DbSet<The> Thes { get; set; }
-        //public DbSet<ThesChild> ThesChilds { get; set; }
         public DbSet<Vrem> Vrems { get; set; }
-
-        //--------------------------------------------------------------
-
-        //public DbSet<TechnicalFunctions.Index> Indexs { get; set; }
-        //public DbSet<TechnicalFunctions.Limit> Limits { get; set; }
-        //public DbSet<TechnicalFunctions.Operand> Operands { get; set; }
-        //public DbSet<TechnicalFunctions.OperandGroup> OperandGroups { get; set; }
-        //public DbSet<TechnicalFunctions.Operation> Operations { get; set; }
-
-        //--------------------------------------------------------------
-        public DbSet<Log> Logs{ get; set; }
+        public DbSet<Log> Logs { get; set; }
         public DbSet<LogParam> LogParams { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<FELatexFormula> FELatexFormulas { get; set; }
 
-        //
         public DbSet<StateObject> StateObjects { get; set; }
-       // public DbSet<CharacteristicObject> CharacteristicObjects { get; set; }
         public DbSet<PhaseCharacteristicObject> PhaseCharacteristicObjects { get; set; }
         public DbSet<ListPhysics> ListPhysics { get; set; }
-        
-        //----------------------------TEST--
-        //public DbSet<test> tests { get; set; }
-
-
-
-        //--------------------------------------------------------------
-        //public DbSet<Team> Teams { get; set; }
 
 
 
@@ -566,27 +570,6 @@ namespace dip.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Domain.Action>().HasMany(c => c.Pros)//1 класс и свойство который связываем
-            //    .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
-            //    .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
-            //    .MapRightKey("ProId")//id 2
-            //    .ToTable("ActionPros"));//название таблицы
-
-
-
-            //modelBuilder.Entity<Domain.Action>().HasMany(c => c.Specs)//1 класс и свойство который связываем
-            //   .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
-            //   .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
-            //   .MapRightKey("SpecId")//id 2
-            //   .ToTable("ActionSpec"));//название таблицы
-
-
-            //modelBuilder.Entity<Domain.Action>().HasMany(c => c.Vrems)//1 класс и свойство который связываем
-            //   .WithMany(s => s.Actions)//2 класс и свойство с которым связываем
-            //   .Map(t => t.MapLeftKey("ActionId")//id 1 которое в таблице будет
-            //   .MapRightKey("VremId")//id 2
-            //   .ToTable("ActionVrem"));//название таблицы
-
 
             modelBuilder.Entity<ApplicationUser>().HasMany(c => c.FavouritedPhysics)//1 класс и свойство который связываем
               .WithMany(s => s.FavouritedUser)//2 класс и свойство с которым связываем
@@ -614,7 +597,6 @@ namespace dip.Models
               .MapRightKey("FETextId")//id 2
               .ToTable("ListPhysicsFEText"));//название таблицы
 
-            
 
 
             modelBuilder.Entity<StateObject>().HasMany(c => c.FeTextBegin)//

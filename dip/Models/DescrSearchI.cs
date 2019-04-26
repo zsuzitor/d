@@ -9,9 +9,12 @@ using static dip.Models.Functions;
 
 namespace dip.Models
 {
+
+    /// <summary>
+    /// класс для хранения входных\выходных дескрипторов, которые выбраны в форме
+    /// </summary>
     public class DescrSearchI
     {
-
         public string ActionId { get; set; }
         public bool? Parametric { get; set; }
         public string ActionType { get; set; }
@@ -34,9 +37,10 @@ namespace dip.Models
         }
 
 
-
-
-
+        /// <summary>
+        /// метод для проверки является ли ActionId - параметрическим
+        /// </summary>
+        /// <returns></returns>
         public bool? CheckParametric()
         {
             this.Parametric = AllAction.CheckParametric(this.ActionId);
@@ -45,7 +49,6 @@ namespace dip.Models
 
         public DescrSearchI(FEAction a)
         {
-
             this.ActionId = a.Name;
             this.ActionType = a.Type;
             this.FizVelId = a.FizVelId;
@@ -53,11 +56,14 @@ namespace dip.Models
             this.ListSelectedSpec = a.Spec;
             this.ListSelectedVrem = a.Vrem;
             this.ParametricFizVelId = a.FizVelSection;
-
         }
 
 
-
+        /// <summary>
+        /// метод для проверки на null
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool IsNull(DescrSearchI a)
         {
             if (a == null)
@@ -71,31 +77,32 @@ namespace dip.Models
             return false;
         }
 
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+
+        /// <summary>
+        ///  метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
         public void DeleteNotChildCheckbox()
         {
-
-            //pro
             this.ListSelectedPros = Pro.DeleteNotChildCheckbox(this.ListSelectedPros);
-
-            //spec
             this.ListSelectedSpec = Spec.DeleteNotChildCheckbox(this.ListSelectedSpec);
-
-            //vrem
             this.ListSelectedVrem = Vrem.DeleteNotChildCheckbox(this.ListSelectedVrem);
-
-
         }
 
-
+        /// <summary>
+        /// валидация если флаг валидации==false
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool ValidationIfNeed(DescrSearchI a)
         {
-            var res = a?.Valide ?? DescrSearchI.Validation(a);
-            //if (res == null)
-            //    res = DescrSearchIInput.Validation(a);
-            return res;
+            return a?.Valide ?? DescrSearchI.Validation(a);
         }
 
+        /// <summary>
+        /// валидация
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool Validation(DescrSearchI a)
         {
             bool res = true;
@@ -103,7 +110,6 @@ namespace dip.Models
             {
                 a.ActionId = NullToEmpryStr(a?.ActionId);
                 if (string.IsNullOrWhiteSpace(a.ActionId))
-
                     res = false;
 
                 a.ActionType = NullToEmpryStr(a?.ActionType);
@@ -118,24 +124,13 @@ namespace dip.Models
                 a.ListSelectedPros = NullToEmpryStr(a?.ListSelectedPros);
                 a.ListSelectedSpec = NullToEmpryStr(a?.ListSelectedSpec);
                 a.ListSelectedVrem = NullToEmpryStr(a?.ListSelectedVrem);
-
-
+                
                 a.ListSelectedPros = Pro.SortIds(a?.ListSelectedPros);
-
-
                 a.ListSelectedSpec = Spec.SortIds(a?.ListSelectedSpec);
-
                 a.ListSelectedVrem = Vrem.SortIds(a?.ListSelectedVrem);
-
-                //if(res)
-                //a.Valide = true;
-                //else
-                //    a.Valide = false;
                 a.Valide = res;
             }
-            //a.Valide = false;
             return res;
         }
-        
     }
 }

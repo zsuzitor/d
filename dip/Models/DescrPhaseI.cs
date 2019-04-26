@@ -7,7 +7,9 @@ using static dip.Models.Functions;
 
 namespace dip.Models
 {
-
+    /// <summary>
+    /// 1 фаза объекта, данные(класс для view)
+    /// </summary>
     public class DescrPhaseI : FEObject
     {
 
@@ -31,11 +33,13 @@ namespace dip.Models
                 MechanicalState = a.MechanicalState;
                 OpticalState = a.OpticalState;
                 Special = a.Special;
-                //NumPhase = 1;
             }
-
         }
 
+        /// <summary>
+        /// метод для получения строки, содержащей id всех чекбоксов в фазе
+        /// </summary>
+        /// <returns></returns>
         public string GetListStr_()//TODO
         {
             string res = "";
@@ -53,13 +57,13 @@ namespace dip.Models
                 res += OpticalState + " ";
             if (!string.IsNullOrWhiteSpace(Special))
                 res += Special + " ";
-
-
-
             return res.Trim();
         }
 
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+
+        /// <summary>
+        ///  метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
         public void DeleteNotChildCheckbox()
         {
             this.PhaseState = PhaseCharacteristicObject.DeleteNotChildCheckbox(this.PhaseState);
@@ -72,12 +76,15 @@ namespace dip.Models
 
         }
 
+        /// <summary>
+        /// метод для валидации
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool Validation(DescrPhaseI a)
         {
             if (a != null)
             {
-                // a.DeleteNotChildCheckbox();
-                //TODO валидация
                 a.PhaseState = NullToEmpryStr(a?.PhaseState);
                 a.Composition = NullToEmpryStr(a?.Composition);
                 a.MagneticStructure = NullToEmpryStr(a?.MagneticStructure);
@@ -85,26 +92,19 @@ namespace dip.Models
                 a.MechanicalState = NullToEmpryStr(a?.MechanicalState);
                 a.OpticalState = NullToEmpryStr(a?.OpticalState);
                 a.Special = NullToEmpryStr(a?.Special);
-
-
-
                 a.SortIds();
             }
-
             return true;
         }
 
 
+        /// <summary>
+        /// сортирует все id в фазе
+        /// </summary>
+        /// <returns></returns>
         public bool SortIds()//TODO
         {
             bool res = true;
-            //if (string.IsNullOrWhiteSpace(PhaseState))
-            //    return false;
-            //// var gg = ids.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            //string resStr = string.Join(" ", PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-            //         OrderBy(x1 => x1).Distinct().ToList());
-
-
             this.PhaseState = PhaseCharacteristicObject.SortIds(this.PhaseState);
             this.Composition = PhaseCharacteristicObject.SortIds(this.Composition);
             this.MagneticStructure = PhaseCharacteristicObject.SortIds(this.MagneticStructure);
@@ -112,12 +112,7 @@ namespace dip.Models
             this.MechanicalState = PhaseCharacteristicObject.SortIds(this.MechanicalState);
             this.OpticalState = PhaseCharacteristicObject.SortIds(this.OpticalState);
             this.Special = PhaseCharacteristicObject.SortIds(this.Special);
-
-
-
             return res;
         }
-
     }
-
 }

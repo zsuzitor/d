@@ -16,8 +16,8 @@ namespace dip.Models.DataBase
         /// <summary>
         /// выполнение tsql запроса который ничего не возвращает
         /// </summary>
-        /// <param name="query - будет использоваться только если command_==null"></param>
-        /// <param name="command_ - если не null то не закрывается"></param>
+        /// <param name="query"> - будет использоваться только если command_==null</param>
+        /// <param name="command_">- если не null то не закрывается</param>
         public static void ExecuteNonQuery(string query, SqlCommand command_ = null)
         {
             var command = command_;
@@ -41,9 +41,9 @@ namespace dip.Models.DataBase
         /// <summary>
         /// выполнение tsql запроса(например выборка данных) который возвращает данные. при command_-null - откроет новое подключение
         /// </summary>
-        /// <param name="query - будет использоваться только если command_==null"></param>
-        /// <param name="command_ - если не null то не закрывается"></param>
-        /// <param name="props - список свойств"></param>
+        /// <param name="query">- будет использоваться только если command_==null</param>
+        /// <param name="command_"> - если не null то не закрывается</param>
+        /// <param name="props"> - список свойств</param>
         /// <returns></returns>
         public static List<Dictionary<string, object>> ExecuteQuery(string query, SqlCommand command_, params string[] props)
         {

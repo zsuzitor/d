@@ -10,12 +10,15 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    public class Pro: ItemDescrFormCheckbox<Pro>
+
+    /// <summary>
+    /// класс для хранения 1 записи(checbox) для пространственных характеристик
+    /// </summary>
+    public class Pro : ItemDescrFormCheckbox<Pro>
     {
- 
+
         public Pro()
         {
-            //Actions = new List<Action>();
             Childs = new List<Pro>();
         }
 
@@ -26,13 +29,11 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="db_"></param>
         /// <returns></returns>
-        public override List<Pro> GetParentsList( ApplicationDbContext db_ = null)
+        public override List<Pro> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<Pro> res = new List<Pro>();
             var db = db_ ?? new ApplicationDbContext();
-
             var par = db.Pros.FirstOrDefault(x1 => x1.Id == this.Parent);
-            
             if (par != null)
             {
                 if (par.Parent.Split(new string[] { "PROS" }, StringSplitOptions.RemoveEmptyEntries).Length > 1)
@@ -40,15 +41,18 @@ namespace dip.Models.Domain
 
                 res.Add(par);
             }
-                
-
-
             if (db_ == null)
                 db.Dispose();
-            
+
             return res;
         }
 
+        /// <summary>
+        /// метод возвращает список ВСЕХ родителей(и их родителей) для id содержащихся в str
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -65,33 +69,37 @@ namespace dip.Models.Domain
 
 
 
-
+        /// <summary>
+        /// метод который из строки только детей формирует строку со всеми(дети+родители) 
+        /// </summary>
+        /// <param name="str">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string GetAllIdsFor(string str)
         {
-            //из строки только детей формирует строку со всеми(дети+родители) id которые нужно выделить
             List<Pro> mainLst = new List<Pro>();
-
-            foreach (var i in str.Split(new string[] {" " },StringSplitOptions.RemoveEmptyEntries))
+            foreach (var i in str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
             {
                 using (var db = new ApplicationDbContext())
                 {
                     var pr = db.Pros.First(x1 => x1.Id == i);
-
                     var lstPr = pr.GetParentsList();
                     lstPr.Add(pr);
                     mainLst.AddRange(lstPr);
                 }
             }
             return string.Join(" ", mainLst.Select(x1 => x1.Id).Distinct());
-
         }
 
 
         //TODO вынести в обстрактный класс?? сейчас придумал только костыльный способ через объект из за метода Pro.GetChild
-        //удаляет прямых родителей если и родитель и ребенок есть в строке
+
+        /// <summary>
+        /// метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
+        /// </summary>
+        /// <param name="strIds">строка с id, где id разделенны ' '</param>
+        /// <returns></returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
-
             string res = "";
             var listId = strIds.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var i in listId)
@@ -107,18 +115,20 @@ namespace dip.Models.Domain
                         if (listId.Contains(i2.Id))
                             needAdd = false;
                     }
-                    if(needAdd)
+                    if (needAdd)
                         res += i + " ";
                 }
-                    
-
             }
-
             return res.Trim();
-
         }
 
-        //проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+
+        /// <summary>
+        /// метод проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db">контекст</param>
+        /// <param name="list"> список для удаления</param>
+        /// <returns></returns>
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Pro> list)//TODO вынести
         {
             if (list.Count == 0)
@@ -129,31 +139,28 @@ namespace dip.Models.Domain
             {
                 fordel.Add(i);
                 fordel.AddRange(i.GetChildsList(db));
-
             }
-
             return Pro.TryDelete(db, fordel);
         }
 
 
-        //ищет фэ которые ссылаются, если есть хотя бы 1 то ничего не удаляет
-        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+
+        /// <summary>
+        /// метод проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db">контекст</param>
+        /// <param name="list">записи для удаления</param>
+        /// <returns></returns>
         public static List<int> TryDelete(ApplicationDbContext db, List<Pro> list)//TODO вынести
         {
-            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            //List<int> blockFe = new List<int>();
 
-            //формировать регулярку по списку удаляемых объектов
             var predicate = PredicateBuilder.False<FEAction>();
             foreach (var i in list)
             {
-              
                 predicate = predicate.Or(x1 => x1.Pros == i.Id || x1.Pros.StartsWith(i.Id + " ") ||
-                 x1.Pros.EndsWith(" "+i.Id ) || x1.Pros.Contains(" " + i.Id + " "));
+                 x1.Pros.EndsWith(" " + i.Id) || x1.Pros.Contains(" " + i.Id + " "));
             }
-           // var people = db.FEActions.Where("it.Pros LIKE @searchTerm", new ObjectParameter("searchTerm", ""));
             var blocked = db.FEActions.Where(predicate).Select(x1 => x1.Idfe).ToList();
-
 
             if (blocked.Count > 0)
                 return blocked;
@@ -162,28 +169,35 @@ namespace dip.Models.Domain
         }
 
 
+        /// <summary>
+        /// метод для получения детей записи
+        /// </summary>
+        /// <param name="id">id записи</param>
+        /// <returns></returns>
         public static List<Pro> GetChild(string id)
         {
-            // Получаем список значений, соответствующий данной характеристике
             List<Pro> res = new List<Pro>();
             using (var db = new ApplicationDbContext())
                 res = db.Pros.Where(pros => pros.Parent == id).ToList();
             return res;
-
         }
 
-        public override void LoadChild()
-        {
-            if (this.Childs.Count < 1)
-                this.ReLoadChild();
-        }
+        /// <summary>
+        /// метод для загрузки детей записи, если список пуст
+        /// </summary>
+        //public override void LoadChild()
+        //{
+        //    if (this.Childs.Count < 1)
+        //        this.ReLoadChild();
+        //}
 
+        /// <summary>
+        /// метод для загрузки детей записи
+        /// </summary>
         public override void ReLoadChild()
         {
-           
-                using (var db = new ApplicationDbContext())
-                    this.Childs = db.Pros.Where(x1 => x1.Parent == this.Id).ToList();
+            using (var db = new ApplicationDbContext())
+                this.Childs = db.Pros.Where(x1 => x1.Parent == this.Id).ToList();
         }
-
     }
 }
