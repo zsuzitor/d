@@ -7,9 +7,6 @@
 {
     
         <input class="form-control" onchange="clearListFeLinkExist()" placeholder="id списка для удаления" type="number" id="AssignListForDel" />
-    
-    @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
-    
     <div class="div_inline_block">
         <button class="btn btn-default" onclick="ShowLinkListFeExist()">Показать Ссылку на список</button>
     </div>
@@ -24,8 +21,6 @@
                     <div class="div_inline_block listAction_inpbut_inp">
                         <a title="@i.Name" href="@Url.Action("ListAct","ListPhysics",new {currentListId=i.Id })">@i.Name</a>
                     </div>
-                    @*<button class="btn btn-default" onclick="">просмотр</button>*@
-                    @*<button class="btn btn-default" onclick="">забрать у пользователя все ФЭ включенные в этот список</button>*@
                     <div class="button_circle_img_30 button_circle_sub_ div_inline_block" onclick="removeListFromUser(@i.Id)" title="забрать у пользователя все ФЭ включенные в этот список"></div>
                 </div>
             }

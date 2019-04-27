@@ -11,7 +11,7 @@
 <br />
 <label>Имя</label>
 <input class="form-control" type="text" value="@Model.Name" id="NameUser"/>
-@*,new {@class= "" }*@
+
 <br />
 <label>Фамилия</label>
 <input class="form-control" type="text" value="@Model.Surname" id="SurnameUser" />
@@ -30,25 +30,7 @@
 
 @Html.Action("Index", "Manage", new { partial = true })
 
-<script>
-    function editPersonalRecordSave() {
-        var formData = { 
-            'user.Name': document.getElementById('NameUser').value,
-            'user.Surname': document.getElementById('SurnameUser').value,
-            'user.Birthday': document.getElementById('BirthdayUser').value,
-            'user.Male': document.getElementById('MaleUser').checked,
-           };
-        goAjaxRequest({
-            url: "/Person/EditPersonalRecord",
-            data: formData,
-            func_success: function (req, status, jqXHR) {
-                alert(req);
+@section scripts{
+    <script src="~/Scripts/editPersonalRecord.js" type="text/javascript"></script>
 
-
-            }, type: 'POST'
-        });
-
-
-    }
-
-</script>
+}

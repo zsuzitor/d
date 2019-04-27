@@ -1,0 +1,28 @@
+﻿div.ListAct_OneColumn{
+    width:50%;
+    box-sizing:border-box;
+    overflow:hidden;
+    min-height:300px;
+}
+
+
+div.ListAct_MainDiv{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color:antiquewhite;
+}
+
+div.PhysInCurrentList_cl{
+    max-height:1000px;
+    overflow-y:auto;
+    min-height:300px;
+}
+div.ListAct_ExistList{
+     min-height:300px;
+     max-height:1000px;
+    overflow-y:auto;
+}
+
+div.listAction_inpbut_inp{
+    width:90%;
+    overflow:hidden;
+}

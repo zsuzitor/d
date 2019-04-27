@@ -11,9 +11,5 @@
 {
     <h1>по данному запросу ничего не найдено</h1>
 }
-@*@if (count > 0)
-{
-    <h1>Всего найдено записей @count</h1>
-}*@
  
 @Html.Action("ListFeText","Helpers",new {model=Model })

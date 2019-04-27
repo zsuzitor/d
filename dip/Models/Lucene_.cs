@@ -28,12 +28,16 @@ using System.Web.Hosting;
 
 namespace dip.Models
 {
-    
 
+    /// <summary>
+    /// класс для полнотекстового поиска lucene
+    /// </summary>
     public class Lucene_
     {
 
-
+        /// <summary>
+        /// метод для построение индекса
+        /// </summary>
         static public void BuildIndex()
         {
             var feList = new List<FEText>();
@@ -44,7 +48,7 @@ namespace dip.Models
             using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 writer.DeleteAll();
-               
+
                 foreach (var i in feList)
                 {
                     Lucene_.BuildIndexSolo(writer, i);
@@ -52,47 +56,60 @@ namespace dip.Models
             }
         }
 
-        static public void UpdateDocument(string idfe,FEText obj)
+
+        /// <summary>
+        /// метод для обновления записи фэ
+        /// </summary>
+        /// <param name="idfe"></param>
+        /// <param name="obj"></param>
+        static public void UpdateDocument(string idfe, FEText obj)
         {
             using (var directory = GetDirectory())
             using (var analyzer = GetAnalyzer())
             using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
-               
                 obj.ChangeForMap();
                 writer.UpdateDocument(new Term("IDFE", idfe), MapProduct(obj), analyzer);
-               
             }
         }
 
+
+        /// <summary>
+        /// метод для построения индекса одной записи фэ
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="obj"></param>
         static public void BuildIndexSolo(IndexWriter writer, FEText obj)
         {
-
             obj.ChangeForMap();
             var document = MapProduct(obj);
             writer.AddDocument(document);
         }
 
 
+        /// <summary>
+        /// метод для построения индекса одной записи фэ
+        /// </summary>
+        /// <param name="a"></param>
         static public void BuildIndexSolo(FEText a)
         {
-
             using (var directory = GetDirectory())
             using (var analyzer = GetAnalyzer())
             using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
-
                 Lucene_.BuildIndexSolo(writer, a);
-
             }
         }
 
 
 
-
-        public static  string ChangeForMap(string s)
+        /// <summary>
+        /// метод для строки(убрать стопслова и привести к нормальной форме)
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string ChangeForMap(string s)
         {
-           
             string pattern = @"\s+а\s+|\s+без\s+|\s+более\s+|\s+бы\s+|\s+был\s+|" +
                 @"\s+была\s+|\s+были\s+|\s+было\s+|\s+быть\s+|\s+в\s+|\s+вам\s+|\s+вас\s+|" +
                 @"\s+весь\s+|\s+во\s+|\s+вот\s+|\s+все\s+|\s+всего\s+|\s+всех\s+|\s+вы\s+|" +
@@ -110,108 +127,81 @@ namespace dip.Models
             pattern += @"|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
 
             RegexOptions options = RegexOptions.IgnoreCase;
-            //pattern = "";
-
-            // pattern += @"|\W";
-
             string target = " ";
             Regex regex = new Regex(pattern, options);
             string result = regex.Replace(s, target);
             pattern = @"\s+";
             regex = new Regex(pattern);
             result = regex.Replace(result, target);
-
-
             var st = new RussianLightStemmer();
-            //foreach (var i in obj.Text.Split(' '))
-            //{
-            //    Lucene_.ChangeForMap(i);
-            //    //var num = st.Stem(i.ToArray(), i.Length);
-            //    // var word = i.Substring(0, num);
-            //}
             string res = "";
-            foreach (var i in result.Split(new char[] { ' ' },StringSplitOptions.RemoveEmptyEntries))
+            foreach (var i in result.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
-
-
                 var num = st.Stem(i.ToArray(), i.Length);
-                res += i.Substring(0, num)+" ";
-                //res += i+" ";
+                res += i.Substring(0, num) + " ";
             }
             res.Trim();
-
-
             return res;
-
-
         }
 
 
 
 
 
-        //TODO мб нормализация
+        /// <summary>
+        /// метод для получения Document
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         static Document MapProduct(FEText obj)
         {
-            //var document = new Document();
-            //// document.Add(new NumericField("IDFE", Field.Store.YES, true).SetIntValue(obj.IDFE));
-            //document.Add(new Field("IDFE", obj.IDFE.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            //document.Add(new Field("Name", obj.Name, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("Text", obj.Text, Field.Store.YES, Field.Index.ANALYZED));
-
-            //document.Add(new Field("TextInp", obj.TextInp, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("TextOut", obj.TextOut, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("TextObj", obj.TextObj, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("TextApp", obj.TextApp, Field.Store.YES, Field.Index.ANALYZED));
-            //document.Add(new Field("TextLit", obj.TextLit, Field.Store.YES, Field.Index.ANALYZED));
-            ////document.Add(new Field("Brand", obj.Brand, Field.Store.YES, Field.Index.NOT_ANALYZED));
             return obj.GetDocumentForLucene();
         }
 
 
+        /// <summary>
+        /// метод для получения Directory для lucene
+        /// </summary>
+        /// <returns></returns>
         static Lucene.Net.Store.Directory GetDirectory()
         {
-            //
             return new SimpleFSDirectory(new DirectoryInfo(HostingEnvironment.MapPath($"~/lucene")));
-            //return new SimpleFSDirectory(new DirectoryInfo(@"E:\csharp\dip1\dip\dip\lucene"));//(@"~/lucene"));
         }
 
-
+        /// <summary>
+        /// метод для получения анализатора
+        /// </summary>
+        /// <returns></returns>
         static Analyzer GetAnalyzer()
         {
-            
             return new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
         }
 
 
 
-
+        /// <summary>
+        /// метод для получения Query
+        /// </summary>
+        /// <param name="keyword">строка с словами для поиска</param>
+        /// <returns></returns>
         static Query GetQuery(string keyword)
         {
             using (var analyzer = GetAnalyzer())
             {
                 var query = new BooleanQuery();
                 var keywords = keyword.Trim().Split(' ');
-
                 foreach (var i in FEText.GetPropTextSearch())
                 {
                     var phraseQuery = new PhraseQuery();
                     foreach (var i2 in keywords)
                     {
                         phraseQuery.Add(new Term(i, i2));
-                        
                     }
                     query.Add(phraseQuery, Occur.SHOULD);
-
-
                     var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, i, analyzer);
                     var keywordsQuery = parser.Parse(keyword);
                     query.Add(keywordsQuery, Occur.SHOULD);
-
                 }
-               
-
-
 
 
 
@@ -227,108 +217,45 @@ namespace dip.Models
             }
         }
 
+
+        /// <summary>
+        /// метод для получения объекта сортировки(Sort)
+        /// </summary>
+        /// <returns></returns>
         static Sort GetSort()
         {
-            var fields = new[] {  SortField.FIELD_SCORE };//new SortField("Brand", SortField.STRING),
-            return new Sort(fields); // sort by brand, then by score 
+            var fields = new[] { SortField.FIELD_SCORE };
+            return new Sort(fields);
         }
 
 
-        //#steamm
-
-        //public static string Steam()
-        //{
-        //    var s = new PorterStemmer();
-
-
-
-        //}
-
-
-
-
-
-
-//        public static String removeStopWordsAndGetNorm(String text, String[] stopWords, Normalizer normalizer) 
-//        {
-//    //        TokenStream tokenStream = new ClassicTokenizer(Version.LUCENE_44, new StringReader(text));
-//    //        tokenStream = new StopFilter(Version.LUCENE_44, tokenStream, StopFilter.makeStopSet(Version.LUCENE_44, stopWords, true));
-//    //        tokenStream = new LowerCaseFilter(Version.LUCENE_44, tokenStream);
-//    //        tokenStream = new StandardFilter(Version.LUCENE_44, tokenStream);
-//    //        tokenStream.reset();
-//    //        String result = "";
-//    //        while (tokenStream.incrementToken())
-//    //        {
-//    //            CharTermAttribute token = tokenStream.getAttribute(CharTermAttribute.class); 
-//    // try 
-//    // { 
-//    //  //normalizer.getNormalForm(...) - stemmer or lemmatizer 
-//    //  result += normalizer.getNormalForm(token.toString()) + " "; 
-//    // } 
-//    // catch(Exception e) 
-//    // { 
-//    //  //if something went wrong 
-//    // } 
-//    //} 
-//}
-
-
-
-
-
-
-
-
-
-        //static Filter GetFilter()
-        //{
-        //    return NumericRangeFilter.NewIntRange("Id", 2, 5, true, false); // [2; 5) range 
-        //} 
-
-
-
-
-        //public static void GoSearch(string str)
-        //{
-        //    BuildIndex();
-        //    int count;
-        //    var products = Search(str, 100, out count);
-        //    foreach (var product in products)
-        //        Console.WriteLine("ID={0}; Name={1}; Brand={2}; Color={3}", product.Id, product.Name, product.Brand, product.Color);
-        //    Console.WriteLine("Total: {0}", count);
-        //    Console.ReadKey();
-        //}
 
 
         //TODO если в MapProduct будет нормализация то доставать только id и по ним искать
-        static public List<int> Search(string keywords, int limit, out int count)//Dictionary<int,double>
+        /// <summary>
+        /// метод для поиска lucene
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="limit"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        static public List<int> Search(string keywords, int limit, out int count)
         {
             using (var directory = GetDirectory())
             using (var searcher = new IndexSearcher(directory))
             {
                 var query = GetQuery(keywords);
                 var sort = GetSort();
-                //var filter = GetFilter();
                 var docs = searcher.Search(query, null, limit, sort);
                 count = docs.TotalHits;
-                var products = new List<int>();//new Dictionary<int, double>();
+                var products = new List<int>();
                 foreach (var scoreDoc in docs.ScoreDocs)
                 {
-                  // var g= scoreDoc.Score;
                     var doc = searcher.Doc(scoreDoc.Doc);
-                    
-                    products.Add(int.Parse(doc.Get("IDFE")));//,g
+                    products.Add(int.Parse(doc.Get("IDFE")));
                 }
                 return products;
             }
         }
-
-
-        //static public void rus()
-        //{
-        //    //Lucene.Net.Analysis.Ru.RussianAnalyzer r = new Lucene.Net.Analysis.Ru.RussianAnalyzer();
-
-        //}
-
-        }
+    }
 }

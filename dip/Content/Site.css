@@ -459,99 +459,7 @@ div.listfe_favourite_star{
 
    
    /*-------------------------------DETAILS   and edit---------------*/
-   .MovementPhys_inputId{
-       width:150px !important;
-       display:inline;
-}
-
-   div.MovementPhysIns{
-      
-   }
-   div.MovementPhysMain{
-       text-align: center;
-   }
-
-   div.details_one_image{
-       border-radius:5%;
-       overflow:hidden;
-       width:200px;
-       box-shadow: 0 0 10px rgba(0,0,0,0.5);
-   }
-   div.details_favourite_star{
-    
-    width:30px;
-    height:30px;
-   
-}
-   div.block_images{
-           text-align: center;
-           padding-top:50px;
-   }
-
-   div.edit_button_image_action{
-       width: 200px;
-   }
-
-
-   /*.col{
-  color:black;
-}*/
-
-   .Favourite_true{
-        color:yellow;
-   }
-
-   .Favourite_false{
-
- color:grey;
-   }
-
-  .favourite_star{
-      /*font-size:40pt;*/
-      /*display:inline;*/
-font-size:25pt;
-      cursor:pointer;
-      width:30px;
-      height:30px;
-      padding:0;
-   }
-   .wingdings {
-    font-family: Wingdings;
-    
-}
-
-
-   ul.detailsMenu{
-       position:relative;
-       text-align: center;
-   }
-   ul.detailsMenu li {
-    
-    /*margin-right: 5px;*/ 
-    /*border: 1px solid #cccccc;*/
-    /*padding: 3px;*/ 
-    /*background-color:rgba(0,0,0,0.2);*/
-    /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
-    height:40px;
-    /*min-width:100px;*/
-    cursor:pointer;
-    color:black;
-    display:inline-block;
-    transition:.3s;
-    
-   }
-    ul.detailsMenu li a{
-        color:black;
-    }
-    ul.detailsMenu li:hover{
-        margin-top:-5px;
-        box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
-        /*background-color:black;*/
-    }
-
-    div.detailsBodyBody{
-        min-height:600px;
-    }
+  
 
    /*----------------------------------------------*/
 
@@ -683,43 +591,6 @@ div.one_check_line_edit{
 /*create something*/
 
 
-div.create_something_one_block{
-    width:200px;
-}
-
-
-
-div.create_something_one_block_inside{
-    height:200px;
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    border-radius:20px;
-    text-align:center;
-cursor:pointer;
-overflow:hidden;
-position:relative;
-}
-div.home_index_one_block{
-    width:200px;
-    
-}
-div.create_something_one_block_inside:hover div.create_something_one_block_move{
-    top:0;
-}
-div.create_something_one_block_move{
-    /*border:solid 2px black;*/
-position:absolute;
-background-color:rgb(128, 128, 128);
-opacity:1;
-width:200px;
-height:200px;
-top:200px;
--webkit-transition:1s;
--o-transition:1s;
-transition:1s;
-color:white;
-
-}
 
 /*ListAct     и  -----ListUserAct-----------------*/
 .button_circle_img_30{
@@ -748,52 +619,10 @@ color:white;
 
 
 /*ListAct*/ 
-div.ListAct_OneColumn{
-    width:50%;
-    box-sizing:border-box;
-    overflow:hidden;
-    min-height:300px;
-}
 
-
-div.ListAct_MainDiv{
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    background-color:antiquewhite;
-}
-
-div.PhysInCurrentList_cl{
-    max-height:1000px;
-    overflow-y:auto;
-    min-height:300px;
-}
-div.ListAct_ExistList{
-     min-height:300px;
-     max-height:1000px;
-    overflow-y:auto;
-}
-
-div.listAction_inpbut_inp{
-    width:90%;
-    overflow:hidden;
-}
 
 
 /*-----ListUserAct-----------------*/
-div.ListUserAct_MainDiv{
-     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    background-color:antiquewhite;
-}
-
-div.ListUserAct_OneColumn{
-    width:50%;
-    box-sizing:border-box;
-   
-     max-height:1000px;
-    overflow-y:auto;
-    
-    min-height:300px;
-}
-
 
 
 
@@ -808,6 +637,34 @@ div.changeRoleAllUserList{
     overflow-y:auto;
     max-height:1000px;
 }
+
+
+
+
+   .Favourite_true{
+        color:yellow;
+   }
+
+   .Favourite_false{
+
+ color:grey;
+   }
+
+  .favourite_star{
+      /*font-size:40pt;*/
+      /*display:inline;*/
+font-size:25pt;
+      cursor:pointer;
+      width:30px;
+      height:30px;
+      padding:0;
+   }
+   .wingdings {
+    font-family: Wingdings;
+    
+}
+
+
 
 
 

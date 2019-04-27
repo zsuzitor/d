@@ -13,6 +13,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
+   
 
     <script>
         function UndefinedToStr(str) {
@@ -92,10 +93,6 @@
 
         function ShowImageRecordAJAX(a) {
 
-            
-
-
-
             var div = document.getElementById("div_for_replace_ajax_id_2");
             var div2 = document.getElementById("div_for_replace_ajax_id");
             div2.style.width = '100%';//document.documentElement.clientWidth + 'px';
@@ -117,46 +114,7 @@
 
 
 
-
-
-            //var id = a.id.split('_')[1];
-            //var dt = {
-            //    'id': a
-            //};
-            //$.ajax({
-            //    url: "/SocialNetwork/LoadShowImageRecord",
-            //    data: dt,
-            //    success: OnComplete_LoadShowImageRecord,
-            //    error: function () {
-            //        alert("ошибка загрузки");
-            //        PreloaderAction(false);
-
-            //    },
-            //    beforeSend: function () { PreloaderAction(true); },
-            //    complete: function () {
-            //        PreloaderAction(false);
-
-            //    },
-            //    type: 'POST', dataType: 'html'//html
-            //});
-
-
         }
-
-        //function OnComplete_LoadShowImageRecord(data) {
-
-        //    var div = document.getElementById("div_for_replace_ajax_id_2");
-        //    var div2 = document.getElementById("div_for_replace_ajax_id");
-        //    div2.style.width = '100%';//document.documentElement.clientWidth + 'px';
-        //    div2.style.height = '100%';//document.documentElement.clientHeight + 'px';
-        //    div.innerHTML = data;
-        //    div.style.left = '0px';
-        //    div.style.top = '100px';
-        //    div2.style.left = '0px';
-        //    div2.style.top = '0px';
-        //    div2.style.display = 'block';
-        //}
-
 
 
         function ShowImageRecordClose() {
@@ -192,9 +150,6 @@
         }
 
 
-
-
-
         ;;;
     </script>
 
@@ -202,7 +157,6 @@
 </head>
 <body>
     @Html.Action("MainHeader", "Home", new { })
-    @*<div id="layout_active_panel_id" class="layout_active_panel"></div>*@
 
     <div class="div_for_replace_ajax" id="div_for_replace_ajax_id" onclick="ShowImageRecordClose()">
         <div id="div_for_replace_ajax_id_2" class="div_for_replace_ajax_2" onclick="event.stopPropagation()"></div>
@@ -213,7 +167,7 @@
 
     <div onclick="up()" class="Main_header_back_to_top" id="Main_header_back_to_top_id"></div>
 
-    <div class="container body-content">@*container body-content*@
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>

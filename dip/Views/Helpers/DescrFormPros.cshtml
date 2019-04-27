@@ -7,8 +7,6 @@
 <div class="form-group descrCheckBoxChild" @*id=@("pros" + type)*@>
     @if (Model.List != null && Model.List.Count != 0)
     {
-        @*@Html.LabelFor(model => model.Pros, "Пространственные характеристики", htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @*<label class="control-label col-md-2">Пространственные характеристики</label>*@
         <div class="col-md-10">
 
             @{
@@ -16,7 +14,6 @@
                 foreach (var pro in Model.List)
                 {
                     <div>
-                        @*<input id=@("listSelectedPros"+type+cnt) type="checkbox" name=@("listSelectedPros"+type) value="@pro.Id" /> @pro.Name*@
                         @{
                             bool? needSelected = needSelectedList?.Contains(pro.Id);
                         }
@@ -24,17 +21,15 @@
                             @if (needSelected == true)
                             {
 
-                                <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
+                                <input  class="checkBoxClass" type="checkbox" checked name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
                             }
                             else
                             {
-                                @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
-                               <input @*id=@("listSelectedPros"+type+cnt)*@ class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
+                               <input class="checkBoxClass" type="checkbox" name=@("listSelectedPros" + Model.Type) value="@pro.Id" />
 
                             }
                             @pro.Name
                         </label>
-                        @*<label class="">@pro.Name</label>*@
 
                         <div id="@(pro.Id + Model.Type)" name="0">
                             @if (pro.Childs.Count > 0)

@@ -20,16 +20,12 @@
                     <button id="restoreInput_but_@vrem.Id" class="btn btn-default" onclick="restoreValue(6,'@vrem.Id')" style="display:none;">Восстановить значение</button>
                     <input class="form-control" name="@(@Model.ParentId @*@vrem.Parent*@)" id="@(vrem.Id+"_inp")" value="@vrem.Name" type="text" readonly/>
 
-
-
-
                     <div id="@(vrem.Id + "_childs")">
 
                     </div>
                 </div>
             }
-
-
+            
         }
     </div>
     <div class="">

@@ -10,67 +10,63 @@ using System.Web;
 
 namespace dip.Models
 {
+
+    /// <summary>
+    /// класс для полнотекстового поиска
+    /// </summary>
     public class Search
     {
         /// <summary>
-        /// 
+        /// метод для полнотекстового поиска
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="str"></param>
+        /// <param name="type">тип поиска</param>
+        /// <param name="str"> строка для поиска</param>
         /// <param name="HttpContext"></param>
-        /// <param name="lastId"></param>
-        /// <param name="lucCount"></param>
+        /// <param name="lastId">последний загруженный id</param>
+        /// <param name="lucCount">количество загруженных записей для lucene</param>
         /// <returns>null если нужно попробовать позже</returns>
         public static List<int> GetListPhys(string type, string str, HttpContextBase HttpContext, int lastId = 0, int lucCount = 1)
         {
-            //var res = new int[0];
             var res = new List<int>();
-            //type = "fullTextSearch";
             var user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             switch (type)
             {
                 case "lucene":
-                    res=luceneSearch(user, str, HttpContext, lucCount);
+                    res = luceneSearch(user, str, HttpContext, lucCount);
 
                     break;
                 case "fullTextSearchF"://freetexttable
                     res = fullTextSearchF(user, str, HttpContext, lastId);
-                    
+
                     break;
                 case "fullTextSearchCf"://формы слова
                     res = fullTextSearchCf(user, str, HttpContext, lastId);
-                    
+
                     break;
                 case "fullTextSearchCl"://вхождения
                     res = fullTextSearchCl(user, str, HttpContext, lastId);
-                    
                     break;
-                    
+
                 case "fullTextSearchNear"://слова ищутся рядом
                     res = fullTextSearchNear(user, str, HttpContext, lastId);
-                    
                     break;
 
 
                 case "fullTextSearchSemantic"://семантический поиск
                     res = fullTextSearchSemantic(user, str, HttpContext, lastId);
-                    
                     break;
 
                 case "NGrammSearch"://n граммы
-                    
                     res = NGrammSearch(user, str, HttpContext, lastId);
-                    
                     break;
 
                 case "fullTextSearchMainSemanticWord":
                     res = fullTextSearchMainSemanticWord(user, str, HttpContext, lastId);
-                    
                     break;
-
             }
             return res;
         }
+
 
 
         /// <summary>
@@ -78,29 +74,35 @@ namespace dip.Models
         /// </summary>
         /// <param name="logParamId"></param>
         /// <returns></returns>
-//        public static string StringSemanticParse(int logParamId)
-//        {
-        
-
-//            var res = "";
-//            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
-//FROM SEMANTICKEYPHRASETABLE  
-//    (  
-//    LogParams,  
-//    Param,  
-//    {logParamId}  
-//    ) AS KEYP_TBL  
-//ORDER BY KEYP_TBL.score DESC;";
-//            var ldr = DataBase.DataBase.ExecuteQuery(q, null, "keyphrase");
-//            foreach (var i in ldr)
-//                res += i["keyphrase"].ToString() + " ";
-
-//            return res.Trim();
-//        }
+        //        public static string StringSemanticParse(int logParamId)
+        //        {
 
 
-        
+        //            var res = "";
+        //            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
+        //FROM SEMANTICKEYPHRASETABLE  
+        //    (  
+        //    LogParams,  
+        //    Param,  
+        //    {logParamId}  
+        //    ) AS KEYP_TBL  
+        //ORDER BY KEYP_TBL.score DESC;";
+        //            var ldr = DataBase.DataBase.ExecuteQuery(q, null, "keyphrase");
+        //            foreach (var i in ldr)
+        //                res += i["keyphrase"].ToString() + " ";
 
+        //            return res.Trim();
+        //        }
+
+
+        /// <summary>
+        /// метод для поиска lucene
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lucCount">количество загрузок</param>
+        /// <returns></returns>
         public static List<int> luceneSearch(ApplicationUser user, string str, HttpContextBase HttpContext, int lucCount = 1)
         {
             List<int> res = new List<int>();
@@ -110,12 +112,20 @@ namespace dip.Models
             int limit = 0;
             using (ApplicationDbContext db = new ApplicationDbContext())
                 limit = db.FEText.Count();
-            res = Lucene_.Search(str, limit, out count);//.Skip(Constants.CountForLoad * (lucCount - 1)).ToList();//.ToArray()
-
+            res = Lucene_.Search(str, limit, out count);
             res = user.CheckAccessPhys(res, HttpContext).Skip(Constants.CountForLoad * (lucCount - 1)).Take(Constants.CountForLoad).ToList();
             return res;
         }
 
+
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchF(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
@@ -123,12 +133,17 @@ namespace dip.Models
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
                     }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").ToList(), HttpContext).
                     SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-                
-            
             return res;
         }
 
-
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchCf(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
@@ -142,21 +157,26 @@ namespace dip.Models
                     newstr = i.Substring(++index);
                     strquery += $"FORMSOF(INFLECTIONAL,\"{newstr}\") WEIGHT(1),";
                 }
-
                 else
                     strquery += $"FORMSOF(INFLECTIONAL,\"{newstr}\") WEIGHT(0.3),";
             }
             strquery = strquery.Substring(0, strquery.Length - 1);
             strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                        SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-
-
             return res;
         }
 
+
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchCl(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
@@ -167,24 +187,27 @@ namespace dip.Models
                 int index = i.IndexOf('#');
                 string newstr = i;
                 if (index >= 0)
-                {
                     strquery += $"\"{newstr}*\" WEIGHT(1),";
-                }
                 else
                     strquery += $"\"{newstr}*\" WEIGHT(0.3),";
-
             }
             strquery = strquery.Substring(0, strquery.Length - 1);
             strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
-
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                            SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-            
-
             return res;
         }
 
+
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchNear(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
@@ -192,63 +215,47 @@ namespace dip.Models
             var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (massWords.Length < 2)
                 return res;
-            //select [KEY] from CONTAINSTABLE(dbo.FeTexts,*,'NEAR("газ*","жидкость*")')order by RANK desc
-            //string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'NEAR (";
             string strquery = "select [KEY] from CONTAINSTABLE(dbo.FeTexts,*,'NEAR(";
-            //string tmpstr = string.Join("*,", massWords);
-            for(int i = 0; i < massWords.Length; ++i)
+            for (int i = 0; i < massWords.Length; ++i)
             {
-                strquery += "\""+ massWords[i]+ "*\"";
+                strquery += "\"" + massWords[i] + "*\"";
                 if (i < massWords.Length - 1)
                     strquery += ",";
             }
-            //if (tmpstr.Length > 0)
-            //    tmpstr += "*";
-            //strquery += tmpstr;
             strquery += ")')order by RANK desc;";
-            //strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                            SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-            
-
             return res;
         }
 
-
+        /// <summary>
+        ///  метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchSemantic(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(user.Id);
             if (!roles.Contains(RolesProject.admin.ToString()))
-            {
                 return res;
-            }
             FEText fesemantic = null;
             using (var db = new ApplicationDbContext())
             {
-                 fesemantic = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
+                fesemantic = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
                 if (fesemantic == null)
                     return null;
                 if (fesemantic.Text != Constants.FeSemanticNullText)
                     return null;
                 fesemantic.Text = str;
                 db.SaveChanges();
-            //}
-            //using (var db = new ApplicationDbContext())
-            //{
-
-
-                //TODO транзакция
-
-                //using (var transaction = db.Database.BeginTransaction())
-                //{
-                //var g = db.FEText.First(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
                 try
-                    {
-
-                    //Constants.FeSemanticNullText  829
+                {
                     var strquery = $@"
                     select   txt.IDFE
                     from
@@ -259,7 +266,7 @@ namespace dip.Models
 
                     Thread.Sleep(1000);
                     res = db.Database.SqlQuery<int>(strquery).ToList();
-                    for (int i = 0; i < 5 && res.Count == 0;++i)
+                    for (int i = 0; i < 5 && res.Count == 0; ++i)
                     {
                         Thread.Sleep(500);
                         res = db.Database.SqlQuery<int>(strquery).ToList();
@@ -269,46 +276,31 @@ namespace dip.Models
                         res = user.CheckAccessPhys(res, HttpContext).ToList().
                               SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
                     }
-                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).ToList();
-
-                    //
-
-                    //res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).ToList();
-
-
-
-                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).ToList();
-
-
-
-                    //res = FEText.GetListSimilar(Constants.FEIDFORSEMANTICSEARCH, HttpContext).
-                    //          SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-
-
-
-                    //db.Set<FEText>().Attach(fesemantic);
-                    fesemantic.Text = Constants.FeSemanticNullText;
-                        db.SaveChanges();
-                        //transaction.Commit();//transaction.Rollback();
-                }
-                catch (Exception ex)
-                {
-                    //transaction.Rollback();
                     fesemantic.Text = Constants.FeSemanticNullText;
                     db.SaveChanges();
                 }
-            //}
-        }
+                catch (Exception ex)
+                {
+                    fesemantic.Text = Constants.FeSemanticNullText;
+                    db.SaveChanges();
+                }
+            }
             return res;
         }
 
-
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> NGrammSearch(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
             using (var db = new ApplicationDbContext())
             {
-                
                 Dictionary<int, string> dictGrammReg = new Dictionary<int, string>();
                 str = Lucene_.ChangeForMap(str);
                 var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -321,7 +313,6 @@ namespace dip.Models
                         for (int i2 = i3; i2 < i3 + i; ++i2)//сама выборка
                         {
                             gr += massWords[i2] + ".{0,5}";
-                            //.{5}
                         }
                         gr += ")|";
                     }
@@ -332,12 +323,11 @@ namespace dip.Models
                 dictGrammReg[1] = "газ.{0,5}";
                 Dictionary<int, int> dictWeight = new Dictionary<int, int>();
 
-
                 int feCount = db.FEText.Count();
                 int countOneLoad = 1000;
-                for(int i2=0;i2<= feCount / countOneLoad; ++i2)
+                for (int i2 = 0; i2 <= feCount / countOneLoad; ++i2)
                 {
-                    var listfe = db.FEText.OrderBy(x1=>x1.IDFE).Skip(i2* countOneLoad).Take(countOneLoad).Select(x1 => new { id = x1.IDFE, text = x1.Text }).ToList();
+                    var listfe = db.FEText.OrderBy(x1 => x1.IDFE).Skip(i2 * countOneLoad).Take(countOneLoad).Select(x1 => new { id = x1.IDFE, text = x1.Text }).ToList();
                     foreach (var i in listfe)
                     {
                         for (int numgr = 1; numgr < dictGrammReg.Count + 1; ++numgr)
@@ -349,71 +339,62 @@ namespace dip.Models
                             else
                                 dictWeight[i.id] += resreg.Count * numgr;
                         }
-
                     }
                 }
 
-                //var gasd = dictWeight.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).ToList();
-
-
-
                 res = user.CheckAccessPhys(dictWeight.Where(x1 => x1.Value > 0).OrderByDescending(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
                     SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-
-                
             }
-
             return res;
         }
 
 
+        /// <summary>
+        /// метод для поиска
+        /// </summary>
+        /// <param name="user">пользователь</param>
+        /// <param name="str">строка для поиска</param>
+        /// <param name="HttpContext"></param>
+        /// <param name="lastId">id последнейзагруженной записи</param>
+        /// <returns></returns>
         public static List<int> fullTextSearchMainSemanticWord(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
-           
-
-                str = Lucene_.ChangeForMap(str);
-                var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                Dictionary<int, string> dict = new Dictionary<int, string>();
-                string strquery = @"SELECT  document_key,keyphrase
+            str = Lucene_.ChangeForMap(str);
+            var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            string strquery = @"SELECT  document_key,keyphrase
 FROM SEMANTICKEYPHRASETABLE
     (
     FETexts,
     Text
     ) AS KEYP_TBL  ";
 
-                var ldr = DataBase.DataBase.ExecuteQuery(strquery, null, "document_key", "keyphrase");
-                foreach (var i in ldr)
-                {
-                    int feid = int.Parse(i["document_key"].ToString());
-                    string keyp = i["keyphrase"].ToString();
-                    if (dict.ContainsKey(feid))
-                        dict[feid] += " " + keyp;
-                    else
-                        dict[feid] = keyp;
-                }
-
-                string regStr = "";
-                foreach (var i in massWords)
-                {
-                    regStr += "(" + i + ")|";
-                }
-                regStr = regStr.Substring(0, regStr.Length - 1);
-                Regex regex = new Regex(regStr);
-                Dictionary<int, int> dictSearch = new Dictionary<int, int>();
-                foreach (var i in dict)
-                {
-
-                    var coll = regex.Matches(i.Value);
-                    dictSearch[i.Key] = coll.Count;
-                
-                }
-
-
-                res = user.CheckAccessPhys(dictSearch.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
-                           SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
-            
-
+            var ldr = DataBase.DataBase.ExecuteQuery(strquery, null, "document_key", "keyphrase");
+            foreach (var i in ldr)
+            {
+                int feid = int.Parse(i["document_key"].ToString());
+                string keyp = i["keyphrase"].ToString();
+                if (dict.ContainsKey(feid))
+                    dict[feid] += " " + keyp;
+                else
+                    dict[feid] = keyp;
+            }
+            string regStr = "";
+            foreach (var i in massWords)
+            {
+                regStr += "(" + i + ")|";
+            }
+            regStr = regStr.Substring(0, regStr.Length - 1);
+            Regex regex = new Regex(regStr);
+            Dictionary<int, int> dictSearch = new Dictionary<int, int>();
+            foreach (var i in dict)
+            {
+                var coll = regex.Matches(i.Value);
+                dictSearch[i.Key] = coll.Count;
+            }
+            res = user.CheckAccessPhys(dictSearch.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
+                       SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
             return res;
         }
     }

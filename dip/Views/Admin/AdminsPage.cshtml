@@ -6,14 +6,12 @@
 <h2></h2>
 
 
+<link type="text/css" rel="stylesheet" href="~/Content/AdminsPage.css" />
+
+
+
 @{
-    //Dictionary<string, string> mainDict = new Dictionary<string, string>();
-    //mainDict.Add("", "");
-    //mainDict.Add(" ", " ");
-    //mainDict.Add(" ", " ");
-    //mainDict.Add("", "");
-    //mainDict.Add(" ", " ");
-    //mainDict.Add(" ", " ");
+ 
     List<Tuple<string, string, string, string>> List = new List<Tuple<string, string, string, string>>();
 
     List.Add(Tuple.Create("Добавить физ. эффект", "Страница для создания физических эффектов", "Create", "Physic"));@*<br>*@
@@ -39,104 +37,6 @@ List.Add(Tuple.Create("Информация о пользователях сис
     </div>
 
 }
-
-@*<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("Create","Physic", new { })">
-
-
-            Добавить  физический  <br>эффект
-
-            <div class="create_something_one_block_move">
-                Страница для создания физических эффектов
-
-            </div>
-
-        </a>
-    </div>
-</div>
-<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("CreateDescription","Physic", new { })">
-
-
-            Добавить дескрипторы
-
-            <div class="create_something_one_block_move">
-                Страница для создания, редактирования и удаления дескрипторов
-
-            </div>
-
-        </a>
-    </div>
-</div>
-
-
-<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("CreateDescriptionObject","Physic", new { })">
-
-
-            Добавить дескрипторы объекта
-
-            <div class="create_something_one_block_move">
-                Страница для создания, редактирования и удаления дескрипторов объекта
-
-            </div>
-
-        </a>
-    </div>
-</div>
-
-<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("ListAct","ListPhysics", new { })">
-
-
-            Работа с списками
-
-            <div class="create_something_one_block_move">
-                Страница для создания, редактирования, удаления самих списков и работы с отношениями список-физ эффект
-
-            </div>
-
-        </a>
-    </div>
-</div>
-
-<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("ListUserAct","ListPhysics", new { })">
-
-
-            Работа с списками и пользователями
-
-            <div class="create_something_one_block_move">
-                Страница для добавления\удаления отношения список-пользователь, физ эффект-пользователь
-
-            </div>
-
-        </a>
-    </div>
-</div>
-
-
-
-<div class="padding_10_top create_something_one_block div_inline_block">
-    <div class="create_something_one_block_inside">
-        <a class="link_standart_for_div" href="@Url.Action("ChangeRole","Admin", new { })">
-
-
-            Работа с ролями системы
-
-            <div class="create_something_one_block_move">
-                добавление, удаление ролей пользователям
-
-            </div>
-
-        </a>
-    </div>
-</div>*@
 
 
 

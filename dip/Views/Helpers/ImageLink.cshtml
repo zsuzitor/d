@@ -6,10 +6,7 @@
 @if (Model.Image?.Id != null)
 {
 <div id="LinkImageForLoad_id_@Model.Image.IdForShow" class="div_image_standart div_load_open_img" onclick="ShowImageRecordAJAX('@Model.Image.IdForShow')">
-    @*@a.Id*@
-@*<a class="link_standart_for_div" href="/SocialNetwork/Image/@(a.Id)">*@
 @Html.Action("Image", "Helpers",new {a= Model.Image, show_empty_img=true })
-@*</a>*@
 </div>
 }
 @if (Model.Image?.Id == null)

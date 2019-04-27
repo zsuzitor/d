@@ -1,18 +1,7 @@
 ﻿
 @model dip.Models.ViewModel.ActionsV.DescriptionInputV
 
-@*@model dip.Models.ViewModel.DescriptionForm*@
 
-@*@{
-        ViewBag.Title = "CreateInput";
-    }*@
-
-@*@{
-        Layout = null;
-    }*@
-
-
-@*@model string*@
 
 <div>
     @*<hr />*@
@@ -69,12 +58,7 @@
 
 @Scripts.Render("~/Scripts/_changeAction.js")
 @Scripts.Render("~/Scripts/_changeParametricFizVel.js")
-@{
-/*
-@Scripts.Render("~/Scripts/_changePros.js")
-@Scripts.Render("~/Scripts/_changeSpec.js")
-@Scripts.Render("~/Scripts/_changeVrem.js")*/
-}
+
 <script type="text/javascript">
         $(document).ready(function ()
         {
@@ -87,51 +71,13 @@
                 }
 
             }
-            //changeParams('I');
-            //changeParams('O');
-
-
-            //$(":checkbox").change(function () {
-            //    var t = this;
-            //    //if (this.checked) {
-            //    //    arr[i] = $(this).val();
-            //    //    i++;
-            //    //} else {
-            //    //    var val = $(this).val();
-            //    //    var index = arr.indexOf(val);
-            //    //    arr.splice(index, 1);
-            //    //    i--;
-            //    //}
-            //    //console.log(arr);
-            //});
-
-
-            @*var curActionIdI=@(!string.IsNullOrWhiteSpace(Model?.InputFormData?.ActionId)? Model?.InputFormData?.ActionId:"0");
-            var curActionIdO=@(!string.IsNullOrWhiteSpace(Model?.OutputFormData?.ActionId) ? Model?.OutputFormData?.ActionId : "0");*@
-
-            @*var curActionIdI="@(Model?.InputFormData?.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
-            var curActionIdO="@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";*@
-
-
-            @*var curActionIdI="@(Model?.InputForms[0]?.FormData.Parametric!=null? Model?.InputFormData?.Parametric.ToString() : "0")";
-            var curActionIdO = "@(Model?.OutputFormData?.Parametric!=null? Model?.OutputFormData?.Parametric.ToString() : "0")";*@
+           
 
 
             //отображаем необходимые label (те которые различаются у параметрических и неп )
             var sdd_i = "@(string.Join(" ",Model?.InputForms.Select(x1=>x1.Form.CurrentAction).ToList()))";//FormData.ActionId
             var sdd_o = "@(string.Join(" ",Model?.OutpForms.Select(x1=>x1.Form.CurrentAction).ToList()))";//FormData.ActionId
-            @*if(!curActionIdI){
-
-                if(@(Model?.InputForm.ActionId.Count) > 0){
-                    curActionIdI=@(Model?.InputForm.ActionId[0].Id);
-                }
-
-            }
-            if(!curActionIdO){
-                if(@(Model?.OutpForm.ActionId.Count) > 0){
-                    curActionIdI=@(Model?.OutpForm.ActionId[0].Id);
-                }
-            }*@
+       
             var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
             var mssdd_i=sdd_i.split(' ');
             var mssdd_o=sdd_o.split(' ');
@@ -158,232 +104,16 @@
                 }
             }
 
-            //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
-
-            //скрываем ненужные поля
-            //if (curActionIdI==="True") {//massParamAction.includes(curActionIdI)) {
-            //    //парам
-            //    changeTypeActionId('I', true);
-
-            //}
-            //else if (curActionIdI === "False") {
-            //    //не парам
-            //    changeTypeActionId('I', false);
-            //}
-            //if (curActionIdO === "True") {//massParamAction.includes(curActionIdO)) {
-            //    //парам
-            //    changeTypeActionId('O', true);
-            //}
-            //else if (curActionIdO === "False") {
-            //    //не парам
-            //    changeTypeActionId('O', false);
-            //}
-            
-
-            //скрываем ненужные поля
-            
-
-
         });
-        var data_descr_search = {
-            //have_input:null,
-            //actionIdI: '',
-            //actionTypeI: '',
-            //FizVelIdI: '',
-            //parametricFizVelIdI: '',
-            //listSelectedProsI: '',
-            //listSelectedSpecI: '',
-            //listSelectedVremI: '',
-            //actionIdO: '',
-            //actionTypeO: '',
-            //FizVelIdO: '',
-            //parametricFizVelIdO: '',
-            //listSelectedProsO: '',
-            //listSelectedSpecO: '',
-            //listSelectedVremO: '',
-            function_trigger: null,
-            search: 'yes'
-        };
-        //var dict = {};
-        $(document).on('change', ':checkbox', function () {
-
-            //var name = this.name;
-            //if (data_descr_search[name])
-            //    data_descr_search[name] ='';
-            //var iter=1;
-            //var stop=true;
-            //do{
-            //    var bl = document.getElementById( name + iter);
-            //    if (bl) {
-            //        if (bl.checked)//.prop('checked')
-            //            data_descr_search[name]+=bl.value+' ';//val()
-            //    }
-            //    else
-            //        stop = false;
-            //    ++iter;
-            //} while (stop);
-
-            //if (this.checked) {
-            //    // checkbox is checked
-            //    data_descr_search[name]
-            //}
-            //else {
-
-            //}
-            // var tt = data_descr_search;
-
-
-
-
-            if (this.name.indexOf('listSelectedPros') >= 0) {
-                //pros
-                loadCheckBoxChildDescr(this, 'GetProsChild', 'Pros');
-            }
-            else if (this.name.indexOf('listSelectedSpec') >= 0) {
-                //spec
-                loadCheckBoxChildDescr(this, 'GetSpecChild', 'Spec');
-            }
-            else if (this.name.indexOf('listSelectedVrem') >= 0) {
-                //vrem
-                loadCheckBoxChildDescr(this, 'GetVremChild', 'Vrem');
-            }
-            else if (this.name == 'changeTwoInputFormDescr') {
-                //отобразить 2 форму
-                var bl = document.getElementById('changeTwoInputFormDescr_id');
-                var div = document.getElementById('block_one_descr_input_1');
-
-                if (bl.checked) {
-                  
-                    
-                        div.style.display = 'block';
-                }
-                else {
-                    div.style.display = 'none';
-                }
-            }
-           
-
-
-        });
-
-
-
-    //-------------------------------------------------------------------------------------------
-
-        //function loadProsChild(ch) {
-        //    var type = ch.id.split('Pros')[1][0];
-        //    var div = document.getElementById((ch.value + type));
-
-        //    if (div && !div.innerHTML.trim()) {
-        //        goAjaxRequest({
-        //            url: '/Actions/GetProsChild?id=' + ch.value + '&type=' + type,
-        //            func_success: function (data, status, jqXHR) {
-
-        //                if (data.trim()) {
-        //                    div.innerHTML = data;
-        //                }
-        //                else {
-        //                    div.remove();
-        //                }
-
-        //            }
-        //        });
-        //    }
-
-        //}
-
-
-
-
-        function loadCheckBoxChildDescr(ch,meth,key) {
-            var type = ch.name.split(key)[1];//[0]
-            var div = document.getElementById((ch.value + type));
-
-            if (div && !div.innerHTML.trim() && $(ch).prop("checked")) {
-                goAjaxRequest({
-                    url: '/Actions/' + meth + '?id=' + ch.value + '&type=' + type,
-                    func_success: function (data, status, jqXHR) {
-
-                        if (data.trim()) {
-                                div.innerHTML = data;
-                                loadCheckBoxChildDescr(ch, meth, key);
-                        }
-                        else {
-                            div.remove();
-                        }
-
-                    }
-                });
-            }
-            else {
-                //уже загружен либо не существует, надо снять чекбоксы при снятии на родителе
-                if (div) {
-                    if (!$(ch).prop("checked")) {
-                        //галка снята, снимаем у детей и прячем
-
-                        $('#' + ch.value + type + ' input:checkbox:checked').each(function () {//[type=checkbox]
-                            $(this).removeAttr("checked")
-                        });
-                        document.getElementById(ch.value + type).style.display = 'none';
-                    }
-                    else {
-                        document.getElementById(ch.value + type).style.display = 'block';
-                    }
-
-                }
-
-
-
-            }
-
-        }
-
-
-    //-------------------------------------------------------------------------------------------
-
-
-        //function ggg(callF) {
-        //    data_descr_search.function_trigger = callF;
-        //}
-      
-
-        
-
-
-
-    //flag- true->param, false->not param
-        function changeTypeActionId(type,flag){
-
-            var fizNp=document.getElementById("fizVelGroup"+ type+"_np_label");
-            var fizP=document.getElementById("fizVelGroup"+ type+"_p_label");
-            var Pfiz=document.getElementById("parametricFizVel"+type+"_label");
-
-            var pros=document.getElementById("prosGroup"+type+"_label");
-            var spec=document.getElementById("specGroup"+type+"_label");
-            var vrem=document.getElementById("vremGroup"+type+"_label");
-
-            if(flag){
-                fizNp.style.display='none';
-                fizP.style.display='block';
-                Pfiz.style.display='block';
-                pros.style.display='none';
-                spec.style.display='none';
-                vrem.style.display='none';
-            }
-            else{
-                fizNp.style.display='block';
-                fizP.style.display='none';
-                Pfiz.style.display='none';
-                pros.style.display='block';
-                spec.style.display='block';
-                vrem.style.display='block';
-            }
-
-        }
-
+       
 
 </script>
 
+
+@section scripts{
+    <script src="~/Scripts/descriptionInput.js" type="text/javascript"></script>
+
+}
 
 
 

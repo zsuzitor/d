@@ -29,8 +29,6 @@
             </label>
 
             <div>
-                @*@foreach (var i in i2.Childs)
-                    {*@
                 <div id=@("phaseChilds_"+Model.Type+"_"+i2.Id)>
                     @Html.Action("ListPhaseObject", "Helpers", new { a = i2.Childs, type = Model.Type, param = Model.Param })
                 </div>

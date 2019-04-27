@@ -788,32 +788,5 @@ namespace dip.Controllers
 
 
 
-
-
-        //TODO хз что это и зачем, скорее всего не используется
-        /// <summary>
-        /// GET-метод удаления из представления дополнительных значений характеристики
-        /// </summary>
-        /// <param name="id"> дескриптор выбранной характеристики </param>
-        /// <returns> результат действия ActionResult </returns>
-        //[ChildActionOnly]
-        //public ActionResult GetEmptyChild(string id, string type)
-        //{
-        //    //TODO для отладки
-        //    throw new Exception("Используется? TODO");
-        //    // Передаем в представление дескриптор характеристики
-        //    ViewBag.parent = id;
-        //    ViewBag.type = type;
-        //    return PartialView();
-        //}
-
-
-
-
-        //----------------------------------------------------------------PRIVATE
-
-        
-
-
     }
 }

@@ -4,9 +4,6 @@
 
 @model dip.Models.ViewModel.ActionsV.GetListSomethingV<dip.Models.Domain.Pro>
 
-@*@MyHelpers.selectList(ViewBag.pros, "Пространственные характеристики", "pros", "Pros")*@
-
-
 @Html.Action("DescrFormPros", "Helpers", new { pros = Model.List, type = Model.Type })
 
 

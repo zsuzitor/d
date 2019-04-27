@@ -5,7 +5,7 @@
 
 
 
-<div class="form-group descrCheckBoxChild" @*id=@("vrem"+type)*@>
+<div class="form-group descrCheckBoxChild" >
     @if (Model.List!= null && Model.List.Count != 0)
     {
 
@@ -25,12 +25,12 @@
                         <label>
                             @if (needSelected == true)
                                 {
-                                <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ checked name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" />
+                                <input class="checkBoxClass" type="checkbox"  checked name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" />
 
                             }
                             else
                             {
-                               <input class="checkBoxClass" type="checkbox" @*id=@("listSelectedVrem"+type+cnt)*@ name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" /> 
+                               <input class="checkBoxClass" type="checkbox"  name=@("listSelectedVrem"+Model.Type) value="@vrem.Id" /> 
 
                             }
                             @vrem.Name

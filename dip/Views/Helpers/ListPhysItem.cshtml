@@ -1,4 +1,4 @@
-﻿@*@model dip.Models.Domain.ListPhysics*@
+﻿
 @model dip.Models.ViewModel.HelpersV.ListPhysItemV
 
 
@@ -16,7 +16,6 @@ else
        
         <label for=@("ListPhysExistItem_"+Model.ListPhysic.Id) id=@("ListPhysExistItemNameLabel_"+Model.ListPhysic.Id) >@Model.ListPhysic.Name</label>
         <input id=@("ListHiddenName_id_"+Model.ListPhysic.Id) type="hidden" value="@Model.ListPhysic.Name"/>
-        @*<button>@Model.Name</button>*@
 
     </div>
 }

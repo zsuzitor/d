@@ -296,8 +296,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AdminsPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fefull.css" />
+    <Content Include="Content\ListAct.css" />
+    <Content Include="Content\ListUserAct.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -309,6 +313,16 @@
     <Content Include="App_Code\helpers_.cshtml" />
     <Content Include="Models\ClassDiagram1.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\changeRole.js" />
+    <Content Include="Scripts\createDescription.js" />
+    <Content Include="Scripts\CreateDescriptionObject.js" />
+    <Content Include="Scripts\createFeRecord.js" />
+    <Content Include="Scripts\descriptionFormAll.js" />
+    <Content Include="Scripts\descriptionInput.js" />
+    <Content Include="Scripts\DescriptionSearch.js" />
+    <Content Include="Scripts\details.js" />
+    <Content Include="Scripts\editFeRecord.js" />
+    <Content Include="Scripts\editPersonalRecord.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -318,9 +332,16 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\listAct.js" />
+    <Content Include="Scripts\listUserAct.js" />
+    <Content Include="Scripts\mainHeader.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\objectInput.js" />
+    <Content Include="Scripts\personalRecord.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\textSearch.js" />
+    <Content Include="Scripts\usersData.js" />
     <Content Include="Scripts\_changeAction.js" />
     <Content Include="Scripts\_changeParametricFizVel.js" />
     <Content Include="Scripts\_changePros.js" />

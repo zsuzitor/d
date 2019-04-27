@@ -8,12 +8,7 @@
     <div class="objectInputChilds">
         @foreach (var i2 in Model.States)
         {
-
-            @*<input type="radio" class="radioClass" name="change_state_radio" value=@("change_state_radio_"+Model.Type+"_"+i2.Id) />
-            <label>@i2.Name</label>*@
-
-
-           
+            
                 bool? needSelected = needSelectedList?.Contains(i2.Id);
             
                 <label>
@@ -24,17 +19,12 @@
                     }
                     else
                     {
-                        @*<input  class= "checkBoxClass" type = "checkbox" name =@("listSelectedPros" + type) value = "@pro.Id" /> *@
                         <input type="radio" class="radioClass" name=@("change_state_radio_"+Model.Type+"_"+i2.Parent) value=@("change_state_radio_"+Model.Type+"_"+i2.Id) id=@("change_state_radio_id_"+Model.Type+"_"+i2.Id) />
 
                     }
                     @i2.Name
                 </label>
-
-
-
-
-
+                
                 if (i2.CountPhase != null && i2.CountPhase > 0)
                 {
                 <input type="hidden" id=@("CountPhase_state_"+i2.Id) value=@(""+i2.CountPhase) />

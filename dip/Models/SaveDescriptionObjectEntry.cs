@@ -5,6 +5,9 @@ using System.Web;
 
 namespace dip.Models
 {
+    /// <summary>
+    /// класс для сохранения дескрипторов объекта
+    /// </summary>
     public class SaveDescriptionObjectEntry
     {
         public string Id { get; set; }

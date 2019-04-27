@@ -6,9 +6,13 @@ using System.Web;
 
 namespace dip.Models
 {
+
+
+    /// <summary>
+    /// класс для сохранения дескрипторов
+    /// </summary>
     public class SaveDescription
     {
-        //public DescrSearchI test { get; set; }
         public SaveDescriptionEntry[] MassAddActionId { get; set; }
         public SaveDescriptionEntry[] MassAddFizVels { get; set; }
         public SaveDescriptionEntry[] MassAddParamFizVels { get; set; }
@@ -25,7 +29,6 @@ namespace dip.Models
 
         public SaveDescriptionEntry[] MassDeletedActionId { get; set; }
         public SaveDescriptionEntry[] MassDeletedFizVels { get; set; }
-        //public SaveDescriptionEntry[] MassDeletedParamFizVels { get; set; }
         public SaveDescriptionEntry[] MassDeletedPros { get; set; }
         public SaveDescriptionEntry[] MassDeletedVrems { get; set; }
         public SaveDescriptionEntry[] MassDeletedSpecs { get; set; }
@@ -53,18 +56,22 @@ namespace dip.Models
 
             MassDeletedActionId = MassDeletedActionId ?? new SaveDescriptionEntry[0];
             MassDeletedFizVels = MassDeletedFizVels ?? new SaveDescriptionEntry[0];
-            // MassDeletedParamFizVels = MassDeletedParamFizVels ?? new SaveDescriptionEntry[0];
             MassDeletedPros = MassDeletedPros ?? new SaveDescriptionEntry[0];
             MassDeletedVrems = MassDeletedVrems ?? new SaveDescriptionEntry[0];
             MassDeletedSpecs = MassDeletedSpecs ?? new SaveDescriptionEntry[0];
         }
 
 
+        /// <summary>
+        /// метод для добавления FizVels
+        /// </summary>
+        /// <param name="currentActionId"> текущее ActionId</param>
+        /// <param name="currentActionParametric"> выбрано ли параметрическое Action</param>
+        /// <param name="db"></param>
         public void AddFizVels(string currentActionId, bool? currentActionParametric, ApplicationDbContext db)
         {
             if (string.IsNullOrWhiteSpace(currentActionId) || currentActionId.Contains("VOZ0"))
                 throw new Exception("old actionid-voz0");
-            //var db = db_ ?? new ApplicationDbContext();
             List<FizVel> fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentActionId + "_FIZVEL")).ToList();
 
             int lastFizVel = 0;
@@ -90,8 +97,6 @@ namespace dip.Models
                     fizVelId = (currentActionId + "_FIZVEL_" + ++lastFizVel);
                 else
                     fizVelId = (currentActionId + "_FIZVEL_R" + ++lastFizVel);
-
-
                 db.FizVels.Add(new Models.Domain.FizVel()
                 {
                     Name = i.Text,
@@ -109,6 +114,12 @@ namespace dip.Models
             //db.Dispose();
         }
 
+
+
+        /// <summary>
+        /// метод для редактирования FizVels
+        /// </summary>
+        /// <param name="db"></param>
         public void EditFizVels(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -126,14 +137,17 @@ namespace dip.Models
             //db.Dispose();
         }
 
+
+        /// <summary>
+        /// метод для добавления параметрических FizVels
+        /// </summary>
+        /// <param name="db"></param>
         public void AddParamFizVels(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
 
             if (MassAddParamFizVels.Length > 0)
             {
-
-
                 string currentFizVels = MassAddParamFizVels[0].ParentId;
 
                 var fizvels = db.FizVels.Where(x1 => x1.Id.Contains(currentFizVels + "_")).ToList();//("VOZ" + currentActionId + "_FIZVEL_R"+ currentFizVels)
@@ -141,15 +155,11 @@ namespace dip.Models
                 if (fizvels.Count > 0)
                     lastFizVel = fizvels.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentFizVels + "_") }, StringSplitOptions.RemoveEmptyEntries)[0]));
 
-
-
                 foreach (var i in MassAddParamFizVels)
                 {
-                    //if (i.ParentId.IndexOf("NEW") >= 0)
-                    //    throw new Exception("bad parent id for paramfizvels");
                     if (i.ParentId.Contains("NEW"))
                         continue;
-                        db.FizVels.Add(new Models.Domain.FizVel()
+                    db.FizVels.Add(new Models.Domain.FizVel()
                     {
                         Name = i.Text,
                         Parent = currentFizVels,
@@ -159,9 +169,13 @@ namespace dip.Models
                     db.SaveChanges();
                 }
             }
-
         }
 
+
+        /// <summary>
+        /// метод для редактирования параметрических FizVels
+        /// </summary>
+        /// <param name="db"></param>
         public void EditParamFizVels(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -173,7 +187,6 @@ namespace dip.Models
                     fizVel.Name = i.Text;
                 else
                     i.Id = null;
-
                 db.SaveChanges();
             }
 
@@ -181,6 +194,12 @@ namespace dip.Models
             //db.Dispose();
         }
 
+
+        /// <summary>
+        /// метод для добавления Pro
+        /// </summary>
+        /// <param name="currentActionId">текущее ActionId </param>
+        /// <param name="db"></param>
         public void AddPro(string currentActionId, ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -189,20 +208,17 @@ namespace dip.Models
             var pros = db.Pros.Where(x1 => x1.Id.Contains(currentActionId + "_PROS")).ToList();
             if (pros.Count > 0)
                 last = pros.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_PROS") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
-
             int countLastIter = 0;
             List<SaveDescriptionEntry> massAddProsList = MassAddPros.ToList();
             while (massAddProsList.Count > 0)
             {
-
                 if (countLastIter == massAddProsList.Count)
                     throw new Exception("непонятные PRO");
                 countLastIter = massAddProsList.Count;
                 for (int i = 0; i < massAddProsList.Count; ++i)
                 {
                     //проверить можно ли добавить, и добавить и вынести в массив
-                    if (!massAddProsList[i].ParentId.Contains("_NEW")&& !massAddProsList[i].ParentId.Contains("VOZ0"))
+                    if (!massAddProsList[i].ParentId.Contains("_NEW") && !massAddProsList[i].ParentId.Contains("VOZ0"))
                     {
                         var pro = new Models.Domain.Pro()
                         {
@@ -223,13 +239,15 @@ namespace dip.Models
                         massAddProsList.Remove(massAddProsList[i--]);
 
                     }
-
-
                 }
             }
-
         }
 
+
+        /// <summary>
+        /// метод для редактирования Pro
+        /// </summary>
+        /// <param name="db"></param>
         public void EditPro(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -240,13 +258,18 @@ namespace dip.Models
                     act.Name = i.Text;
                 else
                     i.Id = null;
-
                 db.SaveChanges();
             }
             //if (db_ == null)
             //db.Dispose();
         }
 
+
+        /// <summary>
+        /// метод для добавления Spec
+        /// </summary>
+        /// <param name="currentActionId">текущее ActionId</param>
+        /// <param name="db"></param>
         public void AddSpec(string currentActionId, ApplicationDbContext db)
         {
             // var db = db_ ?? new ApplicationDbContext();
@@ -255,13 +278,11 @@ namespace dip.Models
             var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
             if (specs.Count > 0)
                 last = specs.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_SPEC") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
 
             int countLastIter = 0;
             List<SaveDescriptionEntry> massAddSpecsList = MassAddSpecs.ToList();
             while (massAddSpecsList.Count > 0)
             {
-
                 if (countLastIter == massAddSpecsList.Count)
                     throw new Exception("непонятные Spec");
                 countLastIter = massAddSpecsList.Count;
@@ -274,7 +295,6 @@ namespace dip.Models
                         {
                             Name = massAddSpecsList[i].Text,
                             Parent = (massAddSpecsList[i].ParentId.Contains("_SPEC") ? massAddSpecsList[i].ParentId : massAddSpecsList[i].ParentId + "_SPEC"),
-
                             Id = (currentActionId + "_SPEC" + ++last)
                         };
 
@@ -288,16 +308,16 @@ namespace dip.Models
                             }
                         }
                         massAddSpecsList.Remove(massAddSpecsList[i--]);
-
                     }
-
-
                 }
             }
-
         }
 
 
+        /// <summary>
+        /// метод для редактирования Spec
+        /// </summary>
+        /// <param name="db"></param>
         public void EditSpec(ApplicationDbContext db)//db_ = null
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -308,7 +328,6 @@ namespace dip.Models
                     act.Name = i.Text;
                 else
                     i.Id = null;
-
                 db.SaveChanges();
             }
             //if (db_ == null)
@@ -316,6 +335,11 @@ namespace dip.Models
         }
 
 
+        /// <summary>
+        /// метод для добавления Vrem
+        /// </summary>
+        /// <param name="currentActionId">текущее ActionId</param>
+        /// <param name="db"></param>
         public void AddVrem(string currentActionId, ApplicationDbContext db)//db_ = null
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -324,27 +348,23 @@ namespace dip.Models
             var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
             if (vrems.Count > 0)
                 last = vrems.Max(x1 => int.Parse(x1.Id.Split(new string[] { (currentActionId + "_VREM") }, StringSplitOptions.RemoveEmptyEntries)[0]));
-            //List<JsonSaveDescription> done = new List<JsonSaveDescription>();
 
             int countLastIter = 0;
-
             List<SaveDescriptionEntry> massAddVremsList = MassAddVrems.ToList();
             while (massAddVremsList.Count > 0)
             {
-
                 if (countLastIter == massAddVremsList.Count)
                     throw new Exception("непонятные Vrem");
                 countLastIter = massAddVremsList.Count;
                 for (int i = 0; i < massAddVremsList.Count; ++i)
                 {
                     //проверить можно ли добавить, и добавить и вынести в массив
-                    if (!massAddVremsList[i].ParentId.Contains("_NEW")&&!massAddVremsList[i].ParentId.Contains("VOZ0"))
+                    if (!massAddVremsList[i].ParentId.Contains("_NEW") && !massAddVremsList[i].ParentId.Contains("VOZ0"))
                     {
                         var vrem = new Models.Domain.Vrem()
                         {
                             Name = massAddVremsList[i].Text,
                             Parent = (massAddVremsList[i].ParentId.Contains("_VREM") ? massAddVremsList[i].ParentId : massAddVremsList[i].ParentId + "_VREM"),
-
                             Id = (currentActionId + "_VREM" + ++last)
                         };
 
@@ -358,19 +378,17 @@ namespace dip.Models
                             }
                         }
                         massAddVremsList.Remove(massAddVremsList[i--]);
-
                     }
-
-
                 }
             }
-
-
             //if (db_ == null)
             // db.Dispose();
         }
 
-
+        /// <summary>
+        /// метод для редактирования Vrem
+        /// </summary>
+        /// <param name="db"></param>
         public void EditVrem(ApplicationDbContext db)//db_ = null
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -381,7 +399,6 @@ namespace dip.Models
                     act.Name = i.Text;
                 else
                     i.Id = null;
-
                 db.SaveChanges();
             }
             //if (db_ == null)
@@ -389,7 +406,10 @@ namespace dip.Models
         }
 
 
-
+        /// <summary>
+        /// метод для редактирования ActionId
+        /// </summary>
+        /// <param name="db"></param>
         public void EditActionId(ApplicationDbContext db)//db_ = null
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -400,14 +420,20 @@ namespace dip.Models
                     act.Name = i.Text;
                 else
                     i.Id = null;
-
-
                 db.SaveChanges();
             }
             //if (db_ == null)
             //db.Dispose();
         }
 
+
+        /// <summary>
+        /// метод для добавления  ActionId
+        /// </summary>
+        /// <param name="lastAllActionId">последнее добавленное</param>
+        /// <param name="currentActionId">текущее ActionId</param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public bool? AddActionId(int lastAllActionId, ref string currentActionId, ApplicationDbContext db)//db_ = null
         {
             bool? currentActionParametric = null;
@@ -417,12 +443,8 @@ namespace dip.Models
                 var allAction = new Models.Domain.AllAction() { Name = i.Text, Parent = "ALLACTIONS", Parametric = i.Parametric, Id = ("VOZ" + ++lastAllActionId) };
                 db.AllActions.Add(allAction);
                 db.SaveChanges();
-                //i.NewId = allAction.Id;
                 currentActionId = allAction.Id;
                 currentActionParametric = i.Parametric;
-                //break;//TODO
-
-
                 //надо обновить в pros... parentid там где =="VOZ0"? 
                 foreach (var i2 in MassAddPros)
                 {
@@ -441,8 +463,6 @@ namespace dip.Models
                     i2.ParentId = i2.ParentId.Replace("VOZ0", currentActionId);
                     i2.Id = i2.Id.Replace("VOZ0", currentActionId);
                 }
-
-
             }
             //if (db_ == null)
             // db.Dispose();
@@ -450,7 +470,12 @@ namespace dip.Models
         }
 
 
-        //проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+
+        /// <summary>
+        /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public List<int> DeleteFizVels(ApplicationDbContext db)//db_ = null
         {
             if (this.MassDeletedFizVels.Length == 0)
@@ -461,58 +486,60 @@ namespace dip.Models
 
 
         }
+
+        /// <summary>
+        /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public List<int> DeleteActionId(ApplicationDbContext db)//db_ = null
         {
-            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
             List<int> blockFe = new List<int>();
             List<string> actionstr = this.MassDeletedActionId.Select(x1 => x1.Id).ToList();
             var actionIdList = db.AllActions.Where(x1 => actionstr.Contains(x1.Id)).ToList();
             return AllAction.TryDeleteWithChilds(db, actionIdList);
-
         }
 
 
 
-
-
+        /// <summary>
+        /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public List<int> DeleteVrem(ApplicationDbContext db)//db_ = null
         {
-            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            //List<int> blockFe = new List<int>();
             List<string> MassDeletedVremsS = MassDeletedVrems.Select(x1 => x1.Id).ToList();
             var childcol = db.Vrems.Where(x1 => MassDeletedVremsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
-
-
             return Vrem.TryDeleteWithChilds(db, childcol);
         }
 
 
-
-
-
+        /// <summary>
+        /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
 
         public List<int> DeleteSpec(ApplicationDbContext db)//db_ = null
         {
-            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            //List<int> blockFe = new List<int>();
             List<string> MassDeletedSpecsS = MassDeletedSpecs.Select(x1 => x1.Id).ToList();
             var childcol = db.Specs.Where(x1 => MassDeletedSpecsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
             return Spec.TryDeleteWithChilds(db, childcol);
-
         }
 
 
 
-
+        /// <summary>
+        /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public List<int> DeletePros(ApplicationDbContext db)//db_ = null
         {
-            //TODO проверям можно ли удалить проверять actionid и все что удалится связанное
-            //List<int> blockFe = new List<int>();
             List<string> MassDeletedProsS = MassDeletedPros.Select(x1 => x1.Id).ToList();
             var childcol = db.Pros.Where(x1 => MassDeletedProsS.FirstOrDefault(x2 => x2 == x1.Id) != null).ToList();
             return Pro.TryDeleteWithChilds(db, childcol);
-
         }
-
     }
 }
