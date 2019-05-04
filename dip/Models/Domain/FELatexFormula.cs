@@ -11,7 +11,7 @@ namespace dip.Models.Domain
     /// <summary>
     /// Класс для хранения формул latex
     /// </summary>
-    public class FELatexFormula : ShowsFEImage
+    public class FELatexFormula : IShowsFEImage
     {
         public int Id { get; set; }
         public string Formula { get; set; }
@@ -20,7 +20,7 @@ namespace dip.Models.Domain
 
         [NotMapped]
         public byte[] Data { get; set; }
-
+        
         [NotMapped]
         public string IdForShow
         {

@@ -292,7 +292,7 @@ namespace dip.Models
     /// <summary>
     /// интерфейс для хранения данных изображения
     /// </summary>
-    public interface ShowsImage
+    public interface IShowsImage
     {
         int Id { get; set; }
         string IdForShow { get; }
@@ -303,7 +303,7 @@ namespace dip.Models
     /// <summary>
     /// интерфейс для хранения данных изображения который относится к записи фэ
     /// </summary>
-    public interface ShowsFEImage : ShowsImage
+    public interface IShowsFEImage : IShowsImage
     {
         int FeTextIDFE { get; set; }
         FEText FeText { get; set; }

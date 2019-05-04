@@ -11,7 +11,7 @@ namespace dip.Models.Domain
     /// <summary>
     /// класс для хранения изображений ФЭ
     /// </summary>
-    public class Image : ShowsFEImage
+    public class Image : IShowsFEImage
     {
         public int Id { get; set; }
         public byte[] Data { get; set; }
