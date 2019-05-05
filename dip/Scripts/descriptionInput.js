@@ -37,8 +37,6 @@ $(document).on('change', ':checkbox', function () {
         }
     }
 
-
-
 });
 
 
@@ -79,13 +77,8 @@ function loadCheckBoxChildDescr(ch, meth, key) {
             else {
                 document.getElementById(ch.value + type).style.display = 'block';
             }
-
         }
-
-
-
     }
-
 }
 
 
@@ -120,7 +113,6 @@ function changeTypeActionId(type, flag) {
         spec.style.display = 'block';
         vrem.style.display = 'block';
     }
-
 }
 
 

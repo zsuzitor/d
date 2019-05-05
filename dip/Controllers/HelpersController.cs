@@ -301,7 +301,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="a">Изображение</param>
         /// <returns></returns>
-        public ActionResult ImageLink(ShowsImage a )
+        public ActionResult ImageLink(IShowsImage a )
         {
             ImageV res = new ImageV();
             res.Image = a;
@@ -315,7 +315,7 @@ namespace dip.Controllers
         /// <param name="a">Изображение</param>
         /// <param name="show_empty_img">нужно ли отобразить замену изображения если a==null </param>
         /// <returns></returns>
-        public ActionResult Image(ShowsImage a, bool show_empty_img)
+        public ActionResult Image(IShowsImage a, bool show_empty_img)
         {
             ImageV res = new ImageV();
             res.Image = a;

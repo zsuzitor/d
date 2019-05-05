@@ -280,7 +280,10 @@ namespace dip.Models.Domain
                         var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
                         foreach (var i in tmp)
                         {
-                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros.Contains(i));
+                            //predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros.Contains(i));
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros == i || x1.Pros.StartsWith(i + " ")
+                                        || x1.Pros.EndsWith(" " + i) || x1.Pros.Contains(" " + i + " "));
+                            
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
@@ -291,7 +294,9 @@ namespace dip.Models.Domain
                         var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
                         foreach (var i in tmp)
                         {
-                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Spec.Contains(i));
+                            //predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Spec.Contains(i));
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Spec == i || x1.Spec.StartsWith(i + " ")
+                                        || x1.Spec.EndsWith(" " + i) || x1.Spec.Contains(" " + i + " "));
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
@@ -301,7 +306,9 @@ namespace dip.Models.Domain
                         var predicateInscheCkbox = PredicateBuilder.True<FEAction>();
                         foreach (var i in tmp)
                         {
-                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Vrem.Contains(i));
+                            // predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Vrem.Contains(i));
+                            predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Vrem == i || x1.Vrem.StartsWith(i + " ")
+                                         || x1.Vrem.EndsWith(" " + i) || x1.Vrem.Contains(" " + i + " "));
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
@@ -338,6 +345,9 @@ namespace dip.Models.Domain
                                 var predicateIns = PredicateBuilder.True<FEObject>();
                                 predicateIns = predicateIns.And(x1 => x1.Begin == beg_);
                                 predicateIns = predicateIns.And(x1 => x1.NumPhase == numph_);
+
+                                //поиск не через contains для того что бы не находился фэ у которого QWER12 при поиске QWER1
+
                                 if (!string.IsNullOrWhiteSpace(i.Composition))
                                 {
                                     string[] tmp = i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);

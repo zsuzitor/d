@@ -6,16 +6,12 @@ var ListActMainObject = {
 };
 
 $(document).ready(function () {
-    //let curListId;
-    $('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-        //curListId = this.id.split('ListPhysExistItem_')[1];
+    $('#ListAct_ExistList_id input:radio:checked').each(function () {
         ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
     });
-    if (ListActMainObject.ListId) {
-
-
+    if (ListActMainObject.ListId) 
         LoadOneListData(ListActMainObject.ListId);
-    }
+    
 });
 
 
@@ -29,7 +25,6 @@ function AddNewList() {
         url: "/ListPhysics/CreateList",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //document.getElementById('ListAct_ExistList_id').innerHTML+=req;
             $('#ListAct_ExistList_id').append(req);
         }, type: 'POST'
     });
@@ -44,7 +39,6 @@ $(document).on('change', ':radio', function () {
 
     if (this.name == 'ListPhysExistItem') {
         ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
-        //let id = this.id.split('ListPhysExistItem_')[1];
         LoadOneListData(ListActMainObject.ListId);
 
         //список пользователей чистим
@@ -53,9 +47,7 @@ $(document).on('change', ':radio', function () {
         divlistuser.innerHTML = '';
         divlistuser.style.display = 'none';
         butlistuser.innerHTML = 'Показать пользователей';
-
     }
-
 });
 
 
@@ -71,7 +63,6 @@ function LoadOneListData(id) {
             document.getElementById('inputNameEditCurrentList_id').value = document.getElementById('ListHiddenName_id_' + id).value;
             document.getElementById('idCurrentList_id').innerHTML = id;
 
-
         }, type: 'GET'
     });
 }
@@ -80,9 +71,6 @@ function LoadOneListData(id) {
 
 function AddNewPhysInCurList() {
     var formData = { idphys: document.getElementById('AddNewPhysInCurListInput').value };
-    //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-    //    formData.idlist = this.id.split('ListPhysExistItem_')[1];
-    //});
     formData.idlist = ListActMainObject.ListId;
 
     if (!formData.idlist) {
@@ -105,19 +93,13 @@ function AddNewPhysInCurList() {
 
         }, type: 'POST'
     });
-
 }
 
 
 
 function SaveChangesCurrentList() {
-    //document.getElementById('inputNameEditCurrentList_id').value
     var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
     var blockList;
-    //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-    //    blockList = this;
-    //    formData.id = this.id.split('ListPhysExistItem_')[1];
-    //});
     formData.id = ListActMainObject.ListId;
     goAjaxRequest({
         url: "/ListPhysics/EditList",
@@ -130,30 +112,21 @@ function SaveChangesCurrentList() {
             else {
                 alert("Что то пошло не так");
             }
-
-            //todo обновить слева в списке
         }, type: 'POST'
     });
-
-
 }
 
 
+
 function DeleteCurrentList() {
-    //document.getElementById('inputNameEditCurrentList_id').value
     var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
 
-    //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-
-    //    formData.id = this.id.split('ListPhysExistItem_')[1];
-    //});
     formData.id = ListActMainObject.ListId;
     goAjaxRequest({
         url: "/ListPhysics/DeleteList",
         data: formData,
         func_success: function (req, status, jqXHR) {
             if (req.trim()) {
-                //alert("Успешно удалено");
                 document.getElementById('ListPhysExistItemMainDiv_' + formData.id).remove();
                 document.getElementById('divEditCurrentList_id').style.display = 'none';
                 document.getElementById('PhysInCurrentList').innerHTML = '';
@@ -168,42 +141,30 @@ function DeleteCurrentList() {
             else {
                 alert("Что то пошло не так");
             }
-
-            //todo обновить слева в списке
         }, type: 'POST'
     });
-
-
 }
+
 
 
 function DeleteFromCurrentList(id) {
 
     var formData = { idphys: id };
-
-    //$('#ListAct_ExistList_id input:radio:checked').each(function () {//[type=checkbox] 
-
-    //    formData.idlist = this.id.split('ListPhysExistItem_')[1];
-    //});
     formData.idlist = ListActMainObject.ListId;
     goAjaxRequest({
         url: "/ListPhysics/DeleteFromList",
         data: formData,
         func_success: function (req, status, jqXHR) {
             if (req.trim()) {
-                //alert("Успешно удалено");
                 document.getElementById('oneP_onePhysInListItem_id_' + id).remove();
             }
             else {
                 alert("Что то пошло не так");
             }
-
-            //todo обновить слева в списке
         }, type: 'POST'
     });
-
-
 }
+
 
 
 function ShowLinkFetext() {
@@ -258,7 +219,6 @@ function LoadUsersForCurrentList() {
     }
 
 }
-
 
 
 ;;;

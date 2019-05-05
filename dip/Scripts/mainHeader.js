@@ -21,8 +21,6 @@ function isVisible(tag) {
     var bot_window = top_window + document.documentElement.clientHeight;
     var top_tag = t.offset().top;
     var bot_tag = top_tag + t.height();
-    //alert(bot_tag);
-    //alert(top_window);
     return ((bot_tag >= top_window && bot_tag <= bot_window) || (top_tag >= top_window && top_tag <= bot_window) || (bot_tag >= bot_window && top_tag <= top_window));
 }
 
@@ -30,7 +28,6 @@ function isVisible(tag) {
 $(function () {
     $(window).scroll(function () {
         Change_main_header();
-        //Check_drop_footer();
     });
 });
 

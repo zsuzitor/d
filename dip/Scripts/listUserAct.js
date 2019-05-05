@@ -46,12 +46,10 @@ function ShowAssignPhys() {
 
 function changeTypeButton(idna, ida) {
     var butlist = document.getElementById(idna);
-    //butlist.style.display = 'block';
     butlist.classList.remove('btn-default');
     butlist.classList.add('btn-primary');
 
     var butphys = document.getElementById(ida);
-    //butphys.style.display = 'none';
     butphys.classList.add('btn-default');
     butphys.classList.remove('btn-primary');
 }
@@ -80,7 +78,6 @@ function ShowNotAssignPhys() {
 function AssignListToUser() {
 
     var formData = { iduser: document.getElementById('currentUserId_id').value, idlist: document.getElementById('newAssignList').value };
-    //string iduser, int idlist)
     if (!formData.idlist) {
         alert('Введите id');
         return;
@@ -89,7 +86,6 @@ function AssignListToUser() {
         url: "/ListPhysics/AssignListToUser",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //alert('result AssignListToUser');
             var blockLists = document.getElementById('listListsFeExist');
             if (blockLists) {
                 if (req.trim())
@@ -97,15 +93,12 @@ function AssignListToUser() {
                 else
                     alert('Что то пошло не так, возможно список уже присвоен');
             }
-
         }, type: 'POST'
     });
-
 }
 
 function AssignPhysicToUser() {
     var formData = { iduser: document.getElementById('currentUserId_id').value, idphys: document.getElementById('newAssignPhys').value };
-    //string iduser, int idlist)
     if (!formData.idphys) {
         alert('Введите id');
         return;
@@ -114,7 +107,6 @@ function AssignPhysicToUser() {
         url: "/ListPhysics/AssignPhysicToUser",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //alert('result AssignListToUser');
             var blockfes = document.getElementById('divAllFetextExist_id');
             if (blockfes) {
                 if (req.trim())
@@ -122,8 +114,6 @@ function AssignPhysicToUser() {
                 else
                     alert('Что то пошло не так, возможно ФЭ уже присвоен');
             }
-
-
         }, type: 'POST'
     });
 }
@@ -196,12 +186,9 @@ function removeListFromUser(id) {
         url: "/ListPhysics/RemoveListFromUser",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //alert('result removeListFromUser');
             if (req.trim()) {
                 document.getElementById('divOneListFeExist_' + id).remove();
-
             }
-
         }, type: 'POST'
     });
 
@@ -222,20 +209,19 @@ function removePhysFromUser(id) {
         url: "/ListPhysics/RemovePhysicFromUser",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //alert('result removePhysFromUser');
             if (req.trim()) {
                 document.getElementById('divOnePhysExist_' + id).remove();
-
             }
-
         }, type: 'POST'
     });
 }
 
 
+
 function ListUsersShortDataButton(id) {
     document.getElementById('currentUserId_id').value = id;
 }
+
 
 function LoadAllUsers() {
     var formData = {};
@@ -267,9 +253,6 @@ function LoadAllUsers() {
             but.innerHTML = 'Скрыть пользователей';
         }
     }
-
-
-
 }
 
 

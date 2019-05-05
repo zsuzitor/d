@@ -59,7 +59,6 @@ function showLinkCurUser() {
     }
     else
         alert('Введите id пользователя');
-
 }
 
 
@@ -95,12 +94,7 @@ function LoadAllUsers() {
             but.innerHTML = 'Скрыть пользователей';
         }
     }
-
-
-
 }
-
-
 
 
 

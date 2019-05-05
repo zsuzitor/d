@@ -3,11 +3,8 @@
 
 $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedStatus]')
 
-    //switch (this.name) {
-    //    case 'change_state_radio':
     if (this.name.indexOf('change_state_radio') >= 0) {
         var valSplit = this.value.split('_');
-
 
         var groupRadio = document.getElementsByName(this.name);
         for (let i = 0; i < groupRadio.length; ++i) {
@@ -15,9 +12,6 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
             document.getElementById('stateChilds_' + parts[1]).innerHTML = '';
 
         }
-
-
-
         var formData = {
             id: valSplit[4],
             type: valSplit[3]
@@ -26,10 +20,7 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
             url: "/Actions/ChangeStateObject",
             data: formData,
             func_success: function (req, status, jqXHR) {
-                var data = req.split('<hr />');//.responseText
-                //var type = data[0].trim();
-
-                //$('#fizVel').replaceWith(data[1]);
+                var data = req.split('<hr />');
                 document.getElementById('stateChilds_' + valSplit[3] + "_" + valSplit[4]).innerHTML = data[0];
                 document.getElementById('PhaseObject_data_' + valSplit[3] + "_0").innerHTML = data[1];
                 document.getElementById('PhaseObject_data_' + valSplit[3] + "_1").innerHTML = data[2];
@@ -42,7 +33,6 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
 
         //скрыть\показать нужные\не нужные фазы именно чекбоксы
         let countPhase = document.getElementById('CountPhase_state_' + valSplit[4]);
-        //if (countPhase) {
 
         for (let i = 0; i < 3; ++i) {
             if (countPhase && i < countPhase.value)
@@ -51,16 +41,11 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
                 document.getElementById('PhaseObject_all_' + valSplit[3] + '_' + i).style.display = 'none';
 
         }
-
-
-
-
     }
 });
 
 $(document).on('change', ':checkbox', function () {
     if (this.name == 'change_phase_checbox') {
-        //valArr = this.value.split('_');
         loadCheckBoxChildObject(this);
 
     }
@@ -98,12 +83,10 @@ function loadCheckBoxChildObject(ch) {
             data: dataform,
             func_success: function (data, status, jqXHR) {
 
-                //alert(data);
                 if (data.trim())
                     div.innerHTML = data;
                 else
                     div.remove();
-
             }
         });
     }
@@ -121,13 +104,8 @@ function loadCheckBoxChildObject(ch) {
             else {
                 div.style.display = 'block';
             }
-
         }
-
-
-
     }
-
 }
 
 

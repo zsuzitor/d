@@ -14,7 +14,6 @@ function loadFavouritePhysic(id) {
             document.getElementById('FavouritePhysic_div_id').innerHTML = data;
         }
     });
-
 }
 
 function loadRolesUser(id) {
@@ -48,7 +47,6 @@ function loadRolesUser(id) {
             but.innerHTML = 'Скрыть роли';
         }
     }
-
 }
 
 

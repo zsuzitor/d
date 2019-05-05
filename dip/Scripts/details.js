@@ -5,13 +5,11 @@
 var detailsCurrentLiMenuId = 'detailsUl_text';
 
 $(document).ready(function () {
-    // ggg(goSave);
     let newhref = '/Physic/Details/' + document.getElementById('inputIdCurrentPhysEffect').value;
     if (document.location.pathname != newhref)
         history.pushState(null, null, newhref);
 
 });
-
 
 
 
@@ -52,16 +50,13 @@ function detailsLoadDescr() {
             type: 'GET',
             data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
             func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
                 div.innerHTML = data;
             }
         });
-
     }
-
-
-
 }
+
+
 function detailsLoadObj() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_obj';
@@ -77,16 +72,14 @@ function detailsLoadObj() {
             type: 'GET',
             data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
             func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
                 div.innerHTML = data;
             }
         });
-
     }
-
-
-
 }
+
+
+
 function detailsLoadSimilar() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_similar';
@@ -102,17 +95,16 @@ function detailsLoadSimilar() {
             type: 'GET',
             data: { id: document.getElementById('inputIdCurrentPhysEffect').value },
             func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
                 div.innerHTML = data;
             }
         });
-
     }
-
-
-
-
 }
+
+
+
+
+
 function detailsLoadLists() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_lists';
@@ -128,13 +120,10 @@ function detailsLoadLists() {
             type: 'GET',
             data: { idfe: document.getElementById('inputIdCurrentPhysEffect').value },
             func_success: function (data, status, jqXHR) {
-                // Заменяем часть представления, отвечающего за отображение значений характеристики
                 document.getElementById('DivListsFe_id').innerHTML = data;
             }
         });
-
     }
-
 }
 
 

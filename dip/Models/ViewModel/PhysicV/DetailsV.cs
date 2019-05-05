@@ -17,7 +17,7 @@ namespace dip.Models.ViewModel.PhysicV
         public bool? Favourited { get; set; }
         //public byte[] Lat { get; set; }
 
-        public List<ShowsFEImage> AllImages { get; set; }
+        public List<IShowsImage> AllImages { get; set; }
 
 
         public DetailsV()
@@ -27,7 +27,7 @@ namespace dip.Models.ViewModel.PhysicV
             //TechnicalFunctionId = null;
             Admin = false;
             Effect = null;
-            AllImages = new List<ShowsFEImage>();
+            AllImages = new List<IShowsImage>();
 
 
         }

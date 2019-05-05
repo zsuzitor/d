@@ -46,40 +46,28 @@ $(document).on('change', ':checkbox', function () {//$('input[type=radio][name=b
    '<div id="phaseChildsInner_"' + prId + '></div>' +
       '<button class="btn btn-default" onclick="addNewPhase(' + prId + ')">Добавить</button></div>';
 
-
                 }
-
             }
             else
                 document.getElementById('stateChilds_' + valSplit[3]).innerHTML = '';
-
-
             break;
 
         case 'change_phase_checbox':
-
 
             if (this.checked) {
                 goAjaxRequest({
                     url: "/Actions/GetPhaseObjectEdit",
                     data: formData,
                     func_success: function (req, status, jqXHR) {
-
                         document.getElementById('phaseChilds_' + valSplit[3]).innerHTML = req;
-
                     }, type: 'GET'
                 });
             }
             else
                 document.getElementById('phaseChilds_' + valSplit[3]).innerHTML = '';
 
-
             break;
-
     }
-
-
-
 });
 
 
@@ -88,12 +76,8 @@ $(document).on('change', ':checkbox', function () {//$('input[type=radio][name=b
 function addNewPhase(id) {
     var div = document.getElementById('phaseChildsInner_' + id);
 
-
-
     let elem = '<div><input id="inputPhaseCheckbox_NEW' + mainObjEdit.maxNewPhase + '" class="checkBoxClass" type="checkbox" name="change_phase_checbox" value="change_phase_checbox_NEW' + mainObjEdit.maxNewPhase + '"/>' +
             '<button class="btn btn-default" id="NEW' + mainObjEdit.maxNewPhase + '_delbut" onclick="deletePhase(\'NEW' + mainObjEdit.maxNewPhase + '\')">Удалить</button>' +
-            //'<button class="btn btn-default" onclick="changePhase(\''+mainObjEdit.maxNewPhase+'\')">Изменить</button>'+
-            //'<button id="'+restoreInput_but_mainObjEdit.maxNewPhase+'" class="btn btn-default" onclick="restorePhaseValue(\''+mainObjEdit.maxNewPhase+'\')" style="display:none;">Восстановить значение</button>'+
             '<input class="form-control" type="text" name="' + id + '" id="inputPhaseText_NEW' + mainObjEdit.maxNewPhase + '" value=""/>' +
             '<div><div id="phaseChilds_NEW' + mainObjEdit.maxNewPhase + '"></div></div></div>'
     $(div).append(elem);
@@ -116,8 +100,6 @@ function changeState(id) {
             mainObjEdit.massEditState.push(id);
 
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -129,7 +111,6 @@ function changeState(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInputState_but_' + id).style.display = 'inline';
 }
@@ -146,10 +127,7 @@ function changePhase(id) {
                 val: inpVal
             });
             mainObjEdit.massEditPhase.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -161,7 +139,6 @@ function changePhase(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInputPhase_but_' + id).style.display = 'inline';
 }
@@ -171,7 +148,6 @@ function changePhase(id) {
 
 
 function deletePhase(id) {
-    // <div id="div_(pro.Id)_all">
     var delbut = document.getElementById(id + '_delbut');
     var checkboxChilds = $('#inputPhaseCheckbox_' + id);
     var inp = $('#inputPhaseText_' + id);
@@ -185,7 +161,7 @@ function deletePhase(id) {
         delbut.innerHTML = 'Восстановить';
         var divChilds = document.getElementById('phaseChilds_' + id);
         divChilds.innerHTML = '';
-        $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
+        $(checkboxChilds).removeAttr("checked")
         $(checkboxChilds).css('display', 'none');
         $(inp).css('background-color', 'grey');
         $(inp).prop('readonly', true);
@@ -200,16 +176,13 @@ function deletePhase(id) {
                     break;
                 }
             }
-
         }
         else {
             $(inp).removeProp('readonly');
         }
         delbut.innerHTML = 'Удалить';
         $(checkboxChilds).css('display', 'inline');
-        //
         $(inp).css('background-color', 'white');
-
 
     }
 }
@@ -229,7 +202,6 @@ function restorePhaseValue(id) {
                     break;
                 }
             }
-
             break;
         }
 
@@ -254,7 +226,6 @@ function restoreStateValue(id) {
                     break;
                 }
             }
-
             break;
         }
 
@@ -271,7 +242,6 @@ function restoreStateValue(id) {
 function saveForm() {
     formData = {};
 
-
     let iterAdd = 0;
     for (let i = 1; i < mainObjEdit.maxNewPhase; ++i) {
         let inp = document.getElementById('inputPhaseText_NEW' + i);
@@ -279,7 +249,6 @@ function saveForm() {
             formData['obj.MassAddCharacteristic[' + iterAdd + '].Text'] = inp.value;
             formData['obj.MassAddCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
             formData['obj.MassAddCharacteristic[' + iterAdd + '].Id'] = 'NEW' + i;
-
             iterAdd++;
         }
     }
@@ -291,7 +260,6 @@ function saveForm() {
             formData['obj.MassEditCharacteristic[' + iterAdd + '].Text'] = inp.value;
             formData['obj.MassEditCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
             formData['obj.MassEditCharacteristic[' + iterAdd + '].Id'] = inp.id.split('_')[1];
-
             iterAdd++;
         }
     }
@@ -303,7 +271,6 @@ function saveForm() {
             formData['obj.MassEditState[' + iterAdd + '].Text'] = inp.value;
             formData['obj.MassEditState[' + iterAdd + '].ParentId'] = inp.name;
             formData['obj.MassEditState[' + iterAdd + '].Id'] = inp.id.split('_')[1];
-
             iterAdd++;
         }
     }
@@ -315,7 +282,6 @@ function saveForm() {
             formData['obj.MassDeleteCharacteristic[' + iterAdd + '].Text'] = inp.value;
             formData['obj.MassDeleteCharacteristic[' + iterAdd + '].ParentId'] = inp.name;
             formData['obj.MassDeleteCharacteristic[' + iterAdd + '].Id'] = inp.id.split('_')[1];
-
             iterAdd++;
         }
     }
@@ -326,19 +292,15 @@ function saveForm() {
         url: "/Physic/CreateDescriptionObject",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //var data = req;//.responseText
-            //var type = data[0].trim();
             var erdiv = document.getElementById('errorShowDiv');
             if (req == '+') {
                 alert('Изменено, перезагрузите страницу');
                 erdiv.style.display = 'none';
-
             }
             else {
                 erdiv.innerHTML = req;
                 erdiv.style.display = 'block';
             }
-            //alert(req);
 
         }, type: 'POST'
     });
@@ -359,8 +321,6 @@ function showInfo() {
         div.style.display = 'block';
         but.innerHTML = 'Скрыть информацию';
     }
-
-
 }
 
 ;;;

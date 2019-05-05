@@ -62,10 +62,7 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
                     url: "/Actions/ChangeActionEdit",
                     data: formData,
                     func_success: function (req, status, jqXHR) {
-                        var data = req.split('<hr />');//.responseText
-                        //var type = data[0].trim();
-
-                        //$('#fizVel').replaceWith(data[1]);
+                        var data = req.split('<hr />');
                         document.getElementById('fizVel').innerHTML = data[1];
 
 
@@ -77,17 +74,12 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
 
                         document.getElementById('vremGroup').innerHTML = data[4];
 
-                        //document.getElementById('parametricFizVel').innerHTML = data[5];
 
                         document.getElementById('fizVelGroup_all').style.display = 'block';
-                        //document.getElementById('parametricFizVel_all').style.display = 'block';
 
                         document.getElementById('div_all_checkboxes').style.display = 'block';
-                        //$('#parametricFizVel').replaceWith(data[5]);
-                        //определить тип и спрятать лишнее  //из результата не вытаскивать
 
                         $("html, body").animate({ scrollTop: $("#ScrollChangeActionId").offset().top }, "slow");
-                        //fizVelGroup_np_label
                         if (checkParametricAction(value)) {
                             SetParametricalType(true);
                         }
@@ -101,7 +93,6 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
             }
             else {//voz0
                 document.getElementById('fizVelGroup_all').style.display = 'block';
-                //document.getElementById('parametricFizVel_all').style.display = 'block';
                 document.getElementById('div_all_checkboxes').style.display = 'block';
 
                 document.getElementById('changeTypeParamActionId').style.display = 'block';
@@ -136,7 +127,7 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
                     url: '/Actions/GetParametricFizVelsEdit/' + this.value,
                     func_success: function (data, status, jqXHR) {
                         // Заменяем часть представления, отвечающего за выбор физической величины
-                        //$('#parametricFizVel').replaceWith(data);
+                       
                         document.getElementById('parametricFizVel').innerHTML = data;
                         $("html, body").animate({ scrollTop: $("#ScrollChangeParamFizvelId").offset().top }, "slow");
 
@@ -269,7 +260,7 @@ function SetParametricalType(set) {
         document.getElementById('specGroup_all').style.display = 'block';
         document.getElementById('vremGroup_all').style.display = 'block';
         document.getElementById('parametricBlock_all').style.display = 'none';
-        $('#fizVel input:radio').each(function () {//[type=checkbox] 
+        $('#fizVel input:radio').each(function () {
             $(this).css('display', 'none');
         });
         mainObjEdit.parametricAction = false;
@@ -289,8 +280,6 @@ function checkParametricAction(id) {
             return true;
     }
     else {
-
-
         var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
         for (var i = 0; i < checkParametrics.length; ++i) {//todo вынести в фукнцию
 
@@ -308,7 +297,6 @@ function loadCheckBoxChild(ch, meth) {
 
     var div = document.getElementById((ch.value + "_childs"));
 
-
     goAjaxRequest({
         url: '/Actions/' + meth + '?id=' + ch.value,
         func_success: function (data, status, jqXHR) {
@@ -320,11 +308,8 @@ function loadCheckBoxChild(ch, meth) {
             else {
                 div.remove();
             }
-
         }
     });
-
-
 }
 
 
@@ -350,8 +335,6 @@ function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
 
 function addNewPro(id) {
 
-    //if (!id)
-    //    id = mainObjEdit.curentActionId;
     var div = document.getElementById(id + '_PROS');
     var strCur = id.split('_')[0] + '_PROS_NEW' + (mainObjEdit.maxNewProId++);
 
@@ -365,8 +348,6 @@ function addNewPro(id) {
 
 }
 function addNewSpec(id) {
-    //if (!id)
-    //    id = mainObjEdit.curentActionId;
     var div = document.getElementById(id + '_SPEC');
     var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
     $(div).append('<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
@@ -376,8 +357,6 @@ function addNewSpec(id) {
         + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
 }
 function addNewVrem(id) {
-    //if (!id)
-    //    id = mainObjEdit.curentActionId;
     var div = document.getElementById(id + '_VREM');
     var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
     $(div).append('<div class="one_check_line_edit"  id="div_' + div.id + '_all"><input value="' + strCur +
@@ -392,11 +371,7 @@ function addNewFizVelId() {
     var newMaxId = mainObjEdit.maxNewFizVelId++;
     var newMaxIdStr = "FizVelNameNEW" + newMaxId;
 
-    //div.innerHTML += '<input class="form-control" id="' +newMaxIdStr+
-    //    '_inp" name="FizVelName" type="text" value="">';
     var res = "";
-
-
     res += '<div class="padding_10_top">';
 
     res += '<input name="fizVelId" type="radio" value="' + newMaxIdStr +
@@ -415,16 +390,12 @@ function addNewFizVelId() {
         '" id="' + newMaxIdStr + '_inp" >' +
            ' </div>';
 
-
     $(div).append(res);
 
 }
 
 function addNewParametricFizVelId() {
     var div = document.getElementById('parametricFizVel');
-    //div.innerHTML += '<input class="form-control" id="ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId++ +
-    //    '_inp" name="ParamFizVelName" type="text" value="">';
-
 
     $(div).append(' <div class="padding_10_top">' +
                     '<button id="ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId + '_delbut" class="btn btn-default" onclick="deleteItemFizVels(\'ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId + '\')">Удалить</button>' +
@@ -450,9 +421,7 @@ function changeActionId(id) {
                 val: inpVal
             });
             mainObjEdit.massEditActionId.push(id);
-            // document.getElementById('restoreInput_but_' + id).style.display = 'block';
         }
-
 
     }
     else {
@@ -466,8 +435,6 @@ function changeActionId(id) {
                 }
                 break;
             }
-
-
 
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
@@ -485,10 +452,7 @@ function changeFizVels(id) {
                 val: inpVal
             });
             mainObjEdit.massEditFizVels.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -500,7 +464,6 @@ function changeFizVels(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
@@ -518,10 +481,7 @@ function changeParamFizVels(id) {
                 val: inpVal
             });
             mainObjEdit.massEditParamFizVels.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -533,7 +493,6 @@ function changeParamFizVels(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
@@ -550,10 +509,7 @@ function changePros(id) {
                 val: inpVal
             });
             mainObjEdit.massEditPros.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -565,7 +521,6 @@ function changePros(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
@@ -582,10 +537,7 @@ function changeSpecs(id) {
                 val: inpVal
             });
             mainObjEdit.massEditSpecs.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -597,7 +549,6 @@ function changeSpecs(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
@@ -616,10 +567,7 @@ function changeVrems(id) {
                 val: inpVal
             });
             mainObjEdit.massEditVrems.push(id);
-
         }
-
-
     }
     else {
         $(inp).prop('readonly', true);
@@ -631,14 +579,9 @@ function changeVrems(id) {
                 }
                 break;
             }
-
     }
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
-
-
-
-//-----------------------------------??????????????????
 
 
 
@@ -662,7 +605,6 @@ function deleteItemActionId(id) {
 
 //type: 1-pros 2-spec,3-vrem,4-fizvels
 function deleteItem(id, type) {
-    // <div id="div_(pro.Id)_all">
     var delbut = document.getElementById(id + '_delbut');
     var checkboxChilds = $('#' + id + '_chch');
     var inp = $('#' + id + '_inp');
@@ -690,10 +632,10 @@ function deleteItem(id, type) {
 
         delbut.innerHTML = 'Восстановить';
         var divChilds = document.getElementById(id + '_childs');
-        if ($("div").is('#' + id + '_childs'))//TODO $("div").is('#'+id + '_childs')
+        if ($("div").is('#' + id + '_childs'))
             divChilds.innerHTML = '';
-        if ($("input").is('#' + id + '_chch')) {//TODO $("div").is('#' + id + '_chch')
-            $(checkboxChilds).removeAttr("checked")//$(ch).prop("checked")
+        if ($("input").is('#' + id + '_chch')) {
+            $(checkboxChilds).removeAttr("checked")
             $(checkboxChilds).css('display', 'none');
         }
 
@@ -715,7 +657,6 @@ function deleteItem(id, type) {
 
                     break;
                 case 2:
-                    //mainObjEdit.massDeletedSpecs.push(id);
                     for (var i = 0; i < mainObjEdit.massDeletedSpecs.length; ++i) {
                         if (mainObjEdit.massDeletedSpecs[i] == id) {
                             mainObjEdit.massDeletedSpecs.splice(i, 1);
@@ -724,7 +665,6 @@ function deleteItem(id, type) {
                     }
                     break;
                 case 3:
-                    //mainObjEdit.massDeletedVrems.push(id);
                     for (var i = 0; i < mainObjEdit.massDeletedVrems.length; ++i) {
                         if (mainObjEdit.massDeletedVrems[i] == id) {
                             mainObjEdit.massDeletedVrems.splice(i, 1);
@@ -733,7 +673,6 @@ function deleteItem(id, type) {
                     }
                     break;
                 case 4:
-                    //mainObjEdit.massDeletedVrems.push(id);
                     for (var i = 0; i < mainObjEdit.massDeletedFizVels.length; ++i) {
                         if (mainObjEdit.massDeletedFizVels[i] == id) {
                             mainObjEdit.massDeletedFizVels.splice(i, 1);
@@ -742,7 +681,6 @@ function deleteItem(id, type) {
                     }
                     break;
                 case 5:
-                    //mainObjEdit.massDeletedVrems.push(id);
                     for (var i = 0; i < mainObjEdit.massDeletedActionId.length; ++i) {
                         if (mainObjEdit.massDeletedActionId[i] == id) {
                             mainObjEdit.massDeletedActionId.splice(i, 1);
@@ -759,7 +697,6 @@ function deleteItem(id, type) {
         $(checkboxChilds).css('display', 'inline');
         //
         $(inp).css('background-color', '');
-
 
     }
 }
@@ -823,18 +760,14 @@ function restoreValue(type, id) {
                         }
                     }
                     break;
-
             }
 
             break;
         }
-
-
     }
     var inp = $('#' + id + '_inp');
     $(inp).prop('readonly', true);
     document.getElementById('restoreInput_but_' + id).style.display = 'none';
-    // document.getElementById('restoreInput_but_' + id).style.display = 'none';
 }
 
 
@@ -844,7 +777,6 @@ function saveForm() {
 
 
     var formData = {
-        //json: JSON.stringify(resMass)
         currentActionId: mainObjEdit.curentActionId
 
     };
@@ -856,14 +788,7 @@ function saveForm() {
     //type: 1-actionid ,2-fizvell,3-paramfizvell,4-pros,5-spec,6-vrem
     //TypeAction: 1-добавление ,2-редактирование, 3- удаление
     function construct_(iter, prop, id, parentId, text, parametric) {
-        //return struct = {
-        //    Id: id,
-        //    ParentId: parentId,
-        //    //Type: type,
-        //    Text: text,
-        //    Parametric: parametric,
-        //    //TypeAction: typeAction
-        //};
+
         formData['obj.' + prop + '[' + iter + '].Id'] = id;
         formData['obj.' + prop + '[' + iter + '].ParentId'] = parentId;
         formData['obj.' + prop + '[' + iter + '].Text'] = text;
@@ -872,21 +797,12 @@ function saveForm() {
 
 
 
-
-    //var resMass = [];
-
-    //var curentActionId;
     var curentFizVel = null;
 
 
-    //$('#actionId_all input:radio:checked').each(function () {//[type=checkbox] 
-    //    curentActionId= this.val();
-    //});
-    $('#fizVel input:radio:checked').each(function () {//[type=checkbox] 
-        //curentFizVel = this.val();
+    $('#fizVel input:radio:checked').each(function () {
         curentFizVel = this.value;
     });
-    //struct.Parametric = mainObjEdit.parametricAction;
 
     var iteration = 0;
     //отредактированные actionId
@@ -895,19 +811,13 @@ function saveForm() {
         var strId = '#' + mainObjEdit.massEditActionId[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId)) {
-            //formData['obj.massEditActionId[' + i + '].Id'] = mainObjEdit.massEditActionId[i];
-            //formData['obj.massEditActionId[' + i + '].ParentId'] = null;
-            //formData['obj.massEditActionId[' + i + '].Text'] = $(checkObj).val();
-            //formData['obj.massEditActionId[' + i + '].Parametric'] = false;
             construct_(iteration++, 'MassEditActionId', mainObjEdit.massEditActionId[i], null, $(checkObj).val(), false);
         }
 
-        //resMass.push(construct_(mainObjEdit.massEditActionId[i], null,  $(checkObj).val(), false));
     }
     iteration = 0;
     //отредактированные FizVels
     for (var i = 0; i < mainObjEdit.massEditFizVels.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massEditFizVels[i] + '_inp');
         var strId = '#' + mainObjEdit.massEditFizVels[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -916,7 +826,6 @@ function saveForm() {
     iteration = 0;
     //отредактированные ParamFizVels
     for (var i = 0; i < mainObjEdit.massEditParamFizVels.length; ++i) {
-        // var checkObj = $('#' + mainObjEdit.massEditParamFizVels[i] + '_inp');
         var strId = '#' + mainObjEdit.massEditParamFizVels[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -925,7 +834,6 @@ function saveForm() {
     iteration = 0;
     //отредактированные pro
     for (var i = 0; i < mainObjEdit.massEditPros.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massEditPros[i] + '_inp');
         var strId = '#' + mainObjEdit.massEditPros[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -934,7 +842,6 @@ function saveForm() {
     iteration = 0;
     //отредактированные spec
     for (var i = 0; i < mainObjEdit.massEditSpecs.length; ++i) {
-        // var checkObj = $('#' + mainObjEdit.massEditSpecs[i] + '_inp');
         var strId = '#' + mainObjEdit.massEditSpecs[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -943,7 +850,6 @@ function saveForm() {
     iteration = 0;
     //отредактированные vrem
     for (var i = 0; i < mainObjEdit.massEditVrems.length; ++i) {
-        // var checkObj = $('#' + mainObjEdit.massEditVrems[i] + '_inp');
         var strId = '#' + mainObjEdit.massEditVrems[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -952,7 +858,6 @@ function saveForm() {
     iteration = 0;
     //удаленные pro
     for (var i = 0; i < mainObjEdit.massDeletedPros.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massDeletedPros[i] + '_inp');
         var strId = '#' + mainObjEdit.massDeletedPros[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -961,7 +866,6 @@ function saveForm() {
     iteration = 0;
     //удаленные spec
     for (var i = 0; i < mainObjEdit.massDeletedSpecs.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massDeletedSpecs[i] + '_inp');
         var strId = '#' + mainObjEdit.massDeletedSpecs[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -970,7 +874,6 @@ function saveForm() {
     iteration = 0;
     //удаленные vrem
     for (var i = 0; i < mainObjEdit.massDeletedVrems.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
         var strId = '#' + mainObjEdit.massDeletedVrems[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -979,7 +882,6 @@ function saveForm() {
     iteration = 0;
     //удаленные fizvels
     for (var i = 0; i < mainObjEdit.massDeletedFizVels.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
         var strId = '#' + mainObjEdit.massDeletedFizVels[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -988,7 +890,6 @@ function saveForm() {
     iteration = 0;
     //удаленные actionid
     for (var i = 0; i < mainObjEdit.massDeletedActionId.length; ++i) {
-        //var checkObj = $('#' + mainObjEdit.massDeletedVrems[i] + '_inp');
         var strId = '#' + mainObjEdit.massDeletedActionId[i] + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -999,7 +900,6 @@ function saveForm() {
     //добавление actionId
     if (mainObjEdit.curentActionId == 'VOZ0') {
 
-        //var checkObj = $('#VOZ0_inp');
         var strId = '#VOZ0_inp';
         var checkObj = $(strId);
         if ($("input").is(strId))
@@ -1008,10 +908,8 @@ function saveForm() {
     iteration = 0;
     //добавление FizVel
     for (var i = 1; i < mainObjEdit.maxNewFizVelId; ++i) {
-        // var checkObj = $('#FizVelNameNEW' + mainObjEdit.maxNewFizVelId[i] + '_inp');
         var strId = '#FizVelNameNEW' + i + '_inp';
         var checkObj = $(strId);
-        // var asd = $(checkObj).css('background-color');
         if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
             construct_(iteration++, 'MassAddFizVels', 'FizVelNameNEW' + i, checkObj.prop('name'), $(checkObj).val(), false);
     }
@@ -1019,7 +917,6 @@ function saveForm() {
     if (curentFizVel && $('#' + curentFizVel + '_inp').css('background-color') != 'rgb(128, 128, 128)')
         //добавление ParamFizVel
         for (var i = 1; i < mainObjEdit.maxNewParamFizVelId; ++i) {
-            //var checkObj = $('#ParamFizVelNameNEW' + mainObjEdit.maxNewParamFizVelId[i] + '_inp');
             var strId = '#ParamFizVelNameNEW' + i + '_inp';
             var checkObj = $(strId);
             if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
@@ -1029,7 +926,6 @@ function saveForm() {
     iteration = 0;
     //добавление pro
     for (var i = 1; i < mainObjEdit.maxNewProId; ++i) {
-        //var checkObj = $('#' + mainObjEdit.curentActionId + "_PROS_NEW" + mainObjEdit.maxNewProId[i] + '_inp');//VOZ8_PROS_NEW2_inp
         var strId = '#' + mainObjEdit.curentActionId + "_PROS_NEW" + i + '_inp';
         var checkObj = $(strId);
         if ($("input").is(strId) && $(checkObj).css('background-color') != 'rgb(128, 128, 128)')
@@ -1066,20 +962,16 @@ function saveForm() {
         url: "/Physic/CreateDescription",
         data: formData,
         func_success: function (req, status, jqXHR) {
-            //var data = req;//.responseText
-            //var type = data[0].trim();
             var erdiv = document.getElementById('errorShowDiv');
             if (req == '+') {
                 alert('Изменено, перезагрузите страницу');
                 erdiv.style.display = 'none';
-
             }
             else {
                 erdiv.innerHTML = req;
                 erdiv.style.display = 'block';
             }
 
-            // alert();
         }, type: 'POST'
     });
 

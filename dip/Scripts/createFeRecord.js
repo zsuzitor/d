@@ -65,24 +65,15 @@ function CreatePhysFunc() {
 
         }
 
-
-        //--
-        ////TODO
-        //changedobject
-        //countinput ?
-        //return;
         $.ajax({
             url: '/Physic/Create',
             type: 'POST',
             data: data,
             cache: false,
             dataType: 'html',
-            processData: false, // Не обрабатываем файлы (Don't process the files)
+            processData: false, // Не обрабатываем файлы 
             contentType: false, // Так jQuery скажет серверу что это строковой запрос
-            //success: function (respond, textStatus, jqXHR) {
 
-            //    alert("Запись создана успешно, ссылка- " + respond);
-            //},
             complete: function (respond, textStatus, jqXHR) {
                 if (respond.status == 201)
                     alert("Запись создана успешно, ссылка- " + window.location.origin + respond.responseText);
@@ -106,8 +97,6 @@ function CreatePhysFunc() {
                 alert("ошибка загрузки");
             }
         });
-
-
 
     };
     Go_next_step();

@@ -8,7 +8,7 @@ namespace dip.Models.ViewModel.HelpersV
 {
     public class ImageV
     {
-        public ShowsImage Image { get; set; }
+        public IShowsImage Image { get; set; }
         public bool? ShowEmptyImage { get; set; }
 
 

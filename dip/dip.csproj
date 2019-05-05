@@ -344,10 +344,6 @@
     <Content Include="Scripts\usersData.js" />
     <Content Include="Scripts\_changeAction.js" />
     <Content Include="Scripts\_changeParametricFizVel.js" />
-    <Content Include="Scripts\_changePros.js" />
-    <Content Include="Scripts\_changeRank.js" />
-    <Content Include="Scripts\_changeSpec.js" />
-    <Content Include="Scripts\_changeVrem.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

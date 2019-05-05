@@ -97,8 +97,19 @@ namespace dip.Controllers
                 return Content("Пользователь не найден", "text/html");
             using (var db = new ApplicationDbContext())
             {
+                string roleStr = role.ToString();//что бы точно быть уверенным что будем сравнивать с правильным значением
+                if (role== RolesProject.admin)
+                {
+                    
+                    string idAdminRole=db.Roles.FirstOrDefault(x1 => x1.Name == roleStr)?.Id;
+                   int adminsCount= db.Users.Where(x1 => x1.Roles.FirstOrDefault(x2 => x2.RoleId== idAdminRole)!=null).Count();
+                    if(adminsCount<2)
+                        return Content("это последний администратор,удаление отменено", "text/html");
+                    //var allusers = db.Users.ToList();
+                    //var users = allusers.Where(x => x.Roles.Select(x1 => x1.Name).Contains("User")).ToList();
+                }
                 var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-                userManager.RemoveFromRole(user.Id, role.ToString());
+                userManager.RemoveFromRole(user.Id, roleStr);
 
             }
             return Content("Роль успешно удалена", "text/html");

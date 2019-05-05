@@ -15,7 +15,6 @@ $(document).on('change', ':radio', function () {
                 strInfo = 'Полнотекстовый поиск lucene';
                 break;
 
-
             case 'fullTextSearchF':
                 strInfo = 'Обычный полнотекстовый поиск fullTextSearch';
                 break;
@@ -46,13 +45,9 @@ $(document).on('change', ':radio', function () {
                 strInfo = 'В каждой записи ФЭ семантически выбираются главные слова  результат сопостовляется с запросом' +
                     'Наименее точный поиск. Поиск происходит не по всем записям(зависит от текста)';
                 break;
-
-
         }
         infodiv.innerHTML = strInfo
-
     }
-
 });
 
 
@@ -60,8 +55,7 @@ $(document).on('change', ':radio', function () {
 function loadNewFT() {
     TextSearchObj.curTextS = document.getElementById('TextForSearch_id').value;
 
-    $('#divTypesSearch_id input:radio:checked').each(function () {//[type=checkbox] 
-        //curListId = this.id.split('ListPhysExistItem_')[1];
+    $('#divTypesSearch_id input:radio:checked').each(function () {
         TextSearchObj.curTypeS = this.value;
     });
 
@@ -80,7 +74,6 @@ function loadNewFT() {
 
 
 var block_load = false;
-// var NumLoad = 2;
 function loadMoreFT() {
 
     //если вернулся пустой список то возвращать статус серва с ошибкой, блокировать множественное нажатие кнопки
@@ -90,17 +83,8 @@ function loadMoreFT() {
 
         var formData = {
             str: TextSearchObj.curTextS
-            // str: document.getElementById('TextForSearch_id').value
         };
-        //$('#divTypesSearch_id input:radio:checked').each(function () {//[type=checkbox] 
-        //    //curListId = this.id.split('ListPhysExistItem_')[1];
-        //    formData.type = this.value;
-        //}); 
 
-        //if (!formData.type) {
-        //    alert('Выберите тип поиска');
-        //    return;
-        //}
         formData.type = TextSearchObj.curTypeS;
 
         var div_last_load_c = document.getElementById('div_search_ft_result_id').children;
@@ -117,7 +101,6 @@ function loadMoreFT() {
             data: formData,
             func_complete: function (req, status, jqXHR) {
                 block_load = false;
-                //document.getElementById('div_search_ft_but_id').style.display = 'none';
 
             },
             func_error: function (req, status, jqXHR) {
@@ -125,9 +108,7 @@ function loadMoreFT() {
             },
             func_success: function (req, status, jqXHR) {
                 if (jqXHR.status == 204) {
-                    //document.getElementById('div_search_ft_but_id').innerHTML = '';
                     document.getElementById('div_search_ft_but_id').style.display = 'none';
-                    //block_load = false;
                 }
                 else if (jqXHR.status == 207) {
                     alert('Попробуйте позже, запись занята');
@@ -136,20 +117,13 @@ function loadMoreFT() {
                     document.getElementById('div_search_ft_but_id').style.display = 'inline';
                     var div = document.getElementById('div_search_ft_result_id');
                     div.innerHTML += req;
-                    //NumLoad++;
-                    //block_load = false;
                 }
-
-
             }, type: 'POST',
             beforeSend: function () {
 
             }
-
         });
     }
-
-
 }
 
 
@@ -165,10 +139,9 @@ function ReloadSemantic() {
         beforeSend: function () {
 
         }
-
     });
 }
 
-;
+
 
 ;;;

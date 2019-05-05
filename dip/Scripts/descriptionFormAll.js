@@ -56,9 +56,7 @@ function Go_next_step() {
     i = 0;
     inpdiv = document.getElementById('actionO' + i);
 
-    //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
-
-
+    
     while (inpdiv) {
         let valActionId = $('#actionO' + i).val();
         data_descr_search['forms[' + startOutput + '].ActionId'] = UndefinedToStr(valActionId);
@@ -102,8 +100,6 @@ function Go_next_step() {
     i = 0;
     inpdiv = document.getElementById('PhaseObject_data_S_' + i);
 
-    //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
-
 
     //состояния
     {
@@ -118,9 +114,6 @@ function Go_next_step() {
 
                 }
                 if (!searchFlag) {
-                    //resBeginState = massStatesS[iter];
-                    //data_descr_search.stateBegin = mass[iter].id.split('_')[1];
-                    //break;
                     return mass[iter].id.split('_')[1];
                 }
             }
@@ -132,9 +125,7 @@ function Go_next_step() {
         $('#mainBlockStates_S input:radio:checked').each(function () {//[type=checkbox] 
             massStatesS.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_')[1] });//(this.id.split('change_state_radio_id_')[1]);
         });
-        //let resBeginState = null;
         data_descr_search.stateBegin = funcGetState(massStatesS);
-
 
 
         if (twoObject) {
@@ -142,7 +133,6 @@ function Go_next_step() {
             $('#mainBlockStates_E input:radio:checked').each(function () {//[type=checkbox] 
                 massStatesE.push({ id: this.id.split('change_state_radio_id_')[1], name: this.name.split('change_state_radio_')[1] });//(this.id.split('change_state_radio_id_')[1]);
             });
-            //let resEndState = null;
             data_descr_search.stateEnd = funcGetState(massStatesE);
 
         }
@@ -154,13 +144,12 @@ function Go_next_step() {
     //начальное
     //по фазам
     data_descr_search['objForms[' + 0 + '].Begin'] = true;
-    //data_descr_search['objForms[' + 0 + '].NumPhase'] = i;
 
     while (inpdiv && inpdiv.innerHTML.trim()) {
         let valPhase = 'objForms[' + 0 + '].ListSelectedPhase' + (i + 1) + '.';
         data_descr_search[valPhase + 'NumPhase'] = (i + 1);
+        data_descr_search[valPhase + 'Begin'] = 1;
         $('#PhaseObject_data_S_' + i + ' input:checkbox:checked').each(function () {//[type=checkbox]
-
 
             let thisId = this.value.split('_')[4];
             let mainParentId = thisId[0];
@@ -244,9 +233,6 @@ function Go_next_step() {
     i = 0;
     inpdiv = document.getElementById('PhaseObject_data_E_' + i);
 
-    //var massParamAction = document.getElementById('parametric_action_or_not').value.split(' ');
-
-
     //конечное
     //по фазам
     if (twoObject) {
@@ -254,6 +240,7 @@ function Go_next_step() {
 
         while (inpdiv && inpdiv.innerHTML.trim()) {
             let valPhase = 'objForms[' + 1 + '].ListSelectedPhase' + (i + 1) + '.';
+            data_descr_search[valPhase + 'Begin'] = 0;
             $('#PhaseObject_data_E_' + i + ' input:checkbox:checked').each(function () {//[type=checkbox]
 
                 data_descr_search[valPhase + 'NumPhase'] = (i + 1);
@@ -338,17 +325,8 @@ function Go_next_step() {
     }
 
 
-
-
-    //location.href = "xuz";
     if (data_descr_search.function_trigger != null)
         data_descr_search.function_trigger();
-
-
-
-
-
-
 
 }
 

@@ -24,16 +24,12 @@ function goSave() {
     goAjaxRequest({
         url: "/Search/DescriptionSearch",
         data: data_descr_search,
-        func_complete: function (data, status, jqXHR) {//func_success
-
-            //alert(data);
+        func_complete: function (data, status, jqXHR) {
             if (status == 'error')
                 console.log('error partial search');
             else {
-                document.getElementById('search_content_div_id').innerHTML = data.responseText;//responseText убрать если будет success
-                //data_descr_search.function_trigger = goSave;
+                document.getElementById('search_content_div_id').innerHTML = data.responseText;
                 document.getElementById('div_search_ft_but_id').style.display = 'block';
-
             }
             data_descr_search = {
                 search: data_descr_search.search,
@@ -44,9 +40,6 @@ function goSave() {
         type: 'POST'
     });
 
-
-
-    //xhr.send(data_descr_search);//formData
 }
 
 
@@ -94,31 +87,17 @@ function showHideDescrForm(action) {
 //------------------------------------------------------
 
 function clearForm() {
-    //$("#actionI option[value='VOZ1']").prop("selected", true);
-    //$("#actionO option[value='VOZ1']").prop("selected", true);
-    //$("#actionTypeI option[value='NO_ACTIONS']").prop("selected", true);
-    //$("#actionTypeO option[value='NO_ACTIONS']").prop("selected", true);
-
-
     var i = 0;
     var inpdiv = document.getElementById('actionI' + i);
     while (inpdiv) {
-        //var valFirstAction = $("#actionI" + i)[0].value;
-        //var valFirstActionType = $("#actionTypeI" + i)[0].value;
-        //$("#actionI" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
         $("#actionI" + i).val($("#actionI" + i + " option:first").val());
         $("#actionTypeI" + i).val($("#actionTypeI" + i + " option:first").val());
-        //$("#actionTypeI" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
         changeParams('I' + i);
         inpdiv = document.getElementById('actionI' + ++i);
     }
     i = 0;
     inpdiv = document.getElementById('actionO' + i);
     while (inpdiv) {
-        //var valFirstAction = $("#actionO" + i)[0].value;
-        //var valFirstActionType = $("#actionTypeO" + i)[0].value;
-        //$("#actionO" + i + " option[value='" + valFirstAction + "']").prop("selected", true);
-        //$("#actionTypeO" + i + " option[value='" + valFirstActionType + "']").prop("selected", true);
         $("#actionO" + i).val($("#actionO" + i + " option:first").val());
         $("#actionTypeO" + i).val($("#actionTypeO" + i + " option:first").val());
         changeParams('O' + i);
@@ -162,11 +141,7 @@ function clearForm() {
             dv.innerHTML = '';
     });
 
-
-
 }
-
-
 
 
 
@@ -188,15 +163,11 @@ function loadMoreFT() {
         block_load = true;
 
 
-
-
         var div_last_load_c = document.getElementById('search_content_div_id').children;
         if (div_last_load_c.length > 0) {
             var div_last_load = div_last_load_c[div_last_load_c.length - 1];
-            //formData.countLoad = +div_last_load.id.split('_')[6] + 1;
             var div_last_fe_c = div_last_load.children;
             var div_last_fe = div_last_fe_c[div_last_fe_c.length - 1];
-            //formData.lastId = div_last_fe.id.split('_')[5];
             if (!div_last_fe) {
                 document.getElementById('div_search_ft_but_id').style.display = 'none';
                 return;
@@ -218,9 +189,8 @@ function loadMoreFT() {
         goAjaxRequest({
             url: "/Search/DescriptionSearch",
             data: data_descr_search,
-            func_complete: function (data, status, jqXHR) {//func_success
+            func_complete: function (data, status, jqXHR) {
                 block_load = false;
-                //alert(data);
                 if (status == 'error')
                     console.log('error partial search');
                 else {
@@ -240,13 +210,7 @@ function loadMoreFT() {
             },
             type: 'POST'
         });
-
-
-
-
     }
-
-
 }
 
 ;;;;

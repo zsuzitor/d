@@ -17,8 +17,6 @@ function editPersonalRecordSave() {
 
         }, type: 'POST'
     });
-
-
 }
 
 ;;
