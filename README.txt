@@ -62,6 +62,14 @@ latex: https://github.com/ForNeVeR/wpf-math
 
 
 
+если не обновляется индекс
+--ALTER FULLTEXT INDEX on FETexts START UPDATE POPULATION; 
+ALTER FULLTEXT INDEX ON FETexts START FULL POPULATION; 
+--отключить автоматическое отслеживание 
+--ALTER FULLTEXT INDEX ON FETexts SET CHANGE_TRACKING MANUAL;
+
+
+
 
 
 

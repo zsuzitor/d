@@ -129,6 +129,13 @@ namespace dip.Models
         public static List<int> fullTextSearchF(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    var TODO = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
+            //        }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").ToList();
+
+            //}
+
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
                     }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").ToList(), HttpContext).
@@ -147,6 +154,9 @@ namespace dip.Models
         public static List<int> fullTextSearchCf(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
+            //if (str.Length > 1000)
+            //    str = str.Take(1000).ToString();
+            
             string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'ISABOUT (";
             foreach (var i in str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -162,6 +172,15 @@ namespace dip.Models
             }
             strquery = strquery.Substring(0, strquery.Length - 1);
             strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
+
+            if (strquery.Length > 4000)
+                return res;
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
+
+            //}
+
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                        SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
@@ -181,6 +200,8 @@ namespace dip.Models
         {
             List<int> res = new List<int>();
             str = Lucene_.ChangeForMap(str);
+            if (str.Length > 2000)
+                str = str.Take(2000).ToString();
             string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'ISABOUT (";
             foreach (var i in str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -193,6 +214,15 @@ namespace dip.Models
             }
             strquery = strquery.Substring(0, strquery.Length - 1);
             strquery += ")')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;";
+
+            if (strquery.Length > 4000)
+                return res;
+
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
+            //}
+
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                            SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
@@ -215,6 +245,8 @@ namespace dip.Models
             var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (massWords.Length < 2)
                 return res;
+            if (massWords.Length > 60)
+                massWords=massWords.Take(60).ToArray();
             string strquery = "select [KEY] from CONTAINSTABLE(dbo.FeTexts,*,'NEAR(";
             for (int i = 0; i < massWords.Length; ++i)
             {
@@ -223,6 +255,13 @@ namespace dip.Models
                     strquery += ",";
             }
             strquery += ")')order by RANK desc;";
+
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
+
+            //}
+
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
                            SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
@@ -265,6 +304,17 @@ namespace dip.Models
                     order by data.score desc";
 
                     Thread.Sleep(1000);
+                    
+                    //ждем обновления записи
+                    for(int i = 0; i < 5; ++i)
+                    {
+                        var tmp = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
+                        if (tmp.Text != Constants.FeSemanticNullText)
+                            break;
+                        else
+                            Thread.Sleep(500);
+                    }
+                    //ждем обновления индекса
                     res = db.Database.SqlQuery<int>(strquery).ToList();
                     for (int i = 0; i < 5 && res.Count == 0; ++i)
                     {
@@ -304,6 +354,9 @@ namespace dip.Models
                 Dictionary<int, string> dictGrammReg = new Dictionary<int, string>();
                 str = Lucene_.ChangeForMap(str);
                 var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (massWords.Length > 20)
+                    massWords = massWords.Take(20).ToArray();
+                
                 for (int i = 1; i <= massWords.Length; ++i)//количество
                 {
                     string gr = "(";
@@ -341,7 +394,7 @@ namespace dip.Models
                         }
                     }
                 }
-
+                //var TODO = dictWeight.Where(x1 => x1.Value > 0).OrderByDescending(x1 => x1.Value).Select(x1 => x1.Key).ToList();
                 res = user.CheckAccessPhys(dictWeight.Where(x1 => x1.Value > 0).OrderByDescending(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
                     SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
             }
@@ -393,6 +446,7 @@ FROM SEMANTICKEYPHRASETABLE
                 var coll = regex.Matches(i.Value);
                 dictSearch[i.Key] = coll.Count;
             }
+            //var TODO = dictSearch.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).Select(x1 => x1.Key).ToList();
             res = user.CheckAccessPhys(dictSearch.Where(x1 => x1.Value > 0).OrderBy(x1 => x1.Value).Select(x1 => x1.Key).ToList(), HttpContext).
                        SkipWhile(x1 => lastId > 0 ? (x1 != lastId) : false).Skip(lastId > 0 ? 1 : 0).Take(Constants.CountForLoad).ToList();
             return res;
