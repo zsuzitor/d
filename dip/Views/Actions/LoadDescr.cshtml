@@ -21,18 +21,40 @@
                     <label>Название физической величины:</label>
                     <span class="breakWord">@(Model.DictDescrData["FizVelIdI" + i])</span>
                 </p>
-                <p>
+                <div>
                     <label>Пространственные характеристики:</label>
-                    <span class="breakWord">@(Model.DictDescrData["ProsI" + i])</span>
-                </p>
-                <p>
+                    @*<p class="breakWord">*@
+                        @foreach (var i2 in (Model.DictDescrData["ProsI" + i]).Split(new string[] { "-> " }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                        <p  class="breakWord">
+                            @i2
+                        </p>
+                        }
+
+
+                        @*</p>*@
+                    </div>
+                <div>
                     <label>Специальные характеристики:</label>
-                    <span class="breakWord">@(Model.DictDescrData["SpecsI" + i])</span>
-                </p>
-                <p>
+                    @*<span class="breakWord">@(Model.DictDescrData["SpecsI" + i])</span>*@
+                @foreach (var i2 in (Model.DictDescrData["SpecsI" + i]).Split(new string[] { "-> " }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <p class="breakWord">
+                        @i2
+                    </p>
+                }
+                
+                </div>
+                <div>
                     <label>Временные характеристики:</label>
-                    <span class="breakWord">@(Model.DictDescrData["VremsI" + i])</span>
-                </p>
+                    @*<span class="breakWord">@(Model.DictDescrData["VremsI" + i])</span>*@
+                    @foreach (var i2 in (Model.DictDescrData["VremsI" + i]).Split(new string[] { "-> " }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <p class="breakWord">
+                            @i2
+                        </p>
+                    }
+                </div>
             }
             if (!string.IsNullOrWhiteSpace(Model.DictDescrData["FizVelparamI" + i]))
             {
