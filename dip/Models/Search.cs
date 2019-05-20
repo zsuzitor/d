@@ -29,6 +29,9 @@ namespace dip.Models
         {
             var res = new List<int>();
             var user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
+
+            str=Lucene_.DeleteEngl(str);
+
             switch (type)
             {
                 case "lucene":

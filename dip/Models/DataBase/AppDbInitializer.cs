@@ -12,8 +12,9 @@ namespace dip.Models.DataBase
     /// <summary>
     /// Класс для инициализации бд
     /// </summary>
-    public class AppDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class AppDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>//DropCreateDatabaseIfModelChanges
     {
+        
         /// <summary>
         /// Метод для инициализации
         /// </summary>

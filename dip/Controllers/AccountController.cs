@@ -195,28 +195,25 @@ namespace dip.Controllers
         {
             if (ModelState.IsValid)
             {
-                //if ()
-                //{
-                //    ModelState.AddModelError("Name","Пользователь с таким никнеймом уже существует");
-                //}
 
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                //UserName должен совподать с почтой, иначе работать не будет
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,LockoutEnabled=false };//,EmailConfirmed=true };//EmailConfirmed=true убрать если откатывать до подтверждения почты
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
 
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Подтверждение электронной почты", "Для завершения регистрации перейдите по ссылке:: <a href=\"" + callbackUrl + "\">завершить регистрацию</a>");
+                    ////// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    ///// Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                     //await UserManager.SendEmailAsync(user.Id, "Подтверждение электронной почты", "Для завершения регистрации перейдите по ссылке:: <a href=\"" + callbackUrl + "\">завершить регистрацию</a>");
 
 
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     await UserManager.AddToRoleAsync(user.Id, RolesProject.NotApproveUser.ToString());
-                    return View("DisplayEmail");
-                    //return RedirectToAction("Index", "Home");
+                    //return View("DisplayEmail");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }

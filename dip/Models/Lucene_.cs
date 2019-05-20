@@ -124,8 +124,8 @@ namespace dip.Models
 @"\s+тоже\s+|\s+той\s+|\s+только\s+|\s+том\s+|\s+ты\s+|\s+у\s+|\s+уже\s+|\s+хотя\s+|" +
 @"\s+чего\s+|\s+чей\s+|\s+чем\s+|\s+что\s+|\s+чтобы\s+|\s+чье\s+|\s+чья\s+|\s+эта\s+|" +
 @"\s+эти\s+|\s+это\s+|\s+я\s+|\s+этом\s+|\s+этого\s+";
-            pattern += @"|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
-
+            //pattern += @"|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
+            s=Lucene_.DeletePunctuations(s);
             RegexOptions options = RegexOptions.IgnoreCase;
             string target = " ";
             Regex regex = new Regex(pattern, options);
@@ -145,7 +145,41 @@ namespace dip.Models
         }
 
 
+        /// <summary>
+        /// Метод для удаления пунктуации
+        /// </summary>
+        /// <param name="s">строка в которой необходимо удаление</param>
+        /// <returns></returns>
+        public static string DeletePunctuations(string s)
+        {
+            string pattern = @";|:|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
+            RegexOptions options = RegexOptions.IgnoreCase;
+            string target = " ";
+            Regex regex = new Regex(pattern, options);
+            string res= regex.Replace(s, target);
+            regex = new Regex(@"\s+", options);
+            res = regex.Replace(res, target);
+            return res;
+        }
 
+        /// <summary>
+        /// Метод для удаления букв английского алфавита
+        /// </summary>
+        /// <param name="s">строка в которой необходимо удаление</param>
+        /// <returns></returns>
+        public static string DeleteEngl(string s)
+        {
+            string pattern = @"[A-Za-zÀ-ÿ]+";
+            RegexOptions options = RegexOptions.IgnoreCase;
+            string target = " ";
+            Regex regex = new Regex(pattern, options);
+            string res = regex.Replace(s, target);
+            regex = new Regex(@"\s+", options);
+            res = regex.Replace(res, target);
+            return res;
+
+
+        }
 
 
         /// <summary>
