@@ -6,10 +6,11 @@ using System.Web;
 
 namespace dip.Models.ViewModel.PersonV
 {
+    //класс-ViewModel
     public class PersonalRecordV
     {
         public string CurrenUserId { get; set; }
-        public ApplicationUser User { get; set;}
+        public ApplicationUser User { get; set; }
         RolesProject[] RoleMax { get; set; }
 
         public bool Admin { get; set; }

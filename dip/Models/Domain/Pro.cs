@@ -27,8 +27,8 @@ namespace dip.Models.Domain
         /// <summary>
         /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
         /// </summary>
-        /// <param name="db_"></param>
-        /// <returns></returns>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список pro от родителя к ребенку</returns>
         public override List<Pro> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<Pro> res = new List<Pro>();
@@ -52,7 +52,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
         /// <param name="db"></param>
-        /// <returns></returns>
+        /// <returns>список id всех родителей</returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -73,7 +73,7 @@ namespace dip.Models.Domain
         /// метод который из строки только детей формирует строку со всеми(дети+родители) 
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка дети+родители</returns>
         public static string GetAllIdsFor(string str)
         {
             List<Pro> mainLst = new List<Pro>();
@@ -91,13 +91,11 @@ namespace dip.Models.Domain
         }
 
 
-        //TODO вынести в обстрактный класс?? сейчас придумал только костыльный способ через объект из за метода Pro.GetChild
-
         /// <summary>
         /// метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
         /// </summary>
         /// <param name="strIds">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка без прямых родителей(строка содержащуя только id записей у которых нет детей)</returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
             string res = "";
@@ -126,9 +124,9 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db">контекст</param>
+        /// <param name="db">контекст бд</param>
         /// <param name="list"> список для удаления</param>
-        /// <returns></returns>
+        /// <returns>список id которые блокируют удаление</returns>
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Pro> list)//TODO вынести
         {
             if (list.Count == 0)
@@ -148,9 +146,9 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db">контекст</param>
+        /// <param name="db">контекст бд</param>
         /// <param name="list">записи для удаления</param>
-        /// <returns></returns>
+        /// <returns>список id которые блокируют удаление</returns>
         public static List<int> TryDelete(ApplicationDbContext db, List<Pro> list)//TODO вынести
         {
 
@@ -173,7 +171,7 @@ namespace dip.Models.Domain
         /// метод для получения детей записи
         /// </summary>
         /// <param name="id">id записи</param>
-        /// <returns></returns>
+        /// <returns>список pro-детей записи id которой передано в параметре</returns>
         public static List<Pro> GetChild(string id)
         {
             List<Pro> res = new List<Pro>();
@@ -182,14 +180,7 @@ namespace dip.Models.Domain
             return res;
         }
 
-        /// <summary>
-        /// метод для загрузки детей записи, если список пуст
-        /// </summary>
-        //public override void LoadChild()
-        //{
-        //    if (this.Childs.Count < 1)
-        //        this.ReLoadChild();
-        //}
+
 
         /// <summary>
         /// метод для загрузки детей записи

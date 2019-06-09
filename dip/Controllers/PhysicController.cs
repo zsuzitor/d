@@ -1,4 +1,4 @@
-﻿#define debug
+﻿//#define debug
 
 
 using dip.Models;
@@ -47,23 +47,23 @@ namespace dip.Controllers
         /// Отрисовывает страницу для просмотра ФЭ
         /// </summary>
         /// <param name="id">id ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult Details(int? id)//, string technicalFunctionId
         {
             //TODO проверять есть ли доступ
-            if(id== Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
+            if (id == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
                 return new HttpStatusCodeResult(404);
             DetailsV res = new DetailsV();
             try
             {
-                 res.Data(id, HttpContext);
+                res.Data(id, HttpContext);
             }
             catch
             {
                 return new HttpStatusCodeResult(404);
             }
 
-           
+
 
 
 
@@ -75,11 +75,11 @@ namespace dip.Controllers
         /// Отрисовывает список семантически похожих записей
         /// </summary>
         /// <param name="id"> id ФЭ для которого необходимо найти схожие</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult ShowSimilar(int id)//, string technicalFunctionId
         {
             ShowSimilarV res = new ShowSimilarV();
-            res.ListSimilarIds = FEText.GetListSimilar(id, HttpContext,5);
+            res.ListSimilarIds = FEText.GetListSimilar(id, HttpContext, 5);
 
 
             return PartialView(res);
@@ -91,8 +91,8 @@ namespace dip.Controllers
         /// <param name="listId">Список id ФЭ</param>
         /// <param name="numLoad">Номер загрузки</param>
         /// <param name="emptyResult">При true и пустом списке вернет emptyresult</param>
-        /// <returns></returns>
-        public ActionResult ListFeText(int[] listId = null, int numLoad = 1,bool emptyResult=false)
+        /// <returns>результат действия ActionResult</returns>
+        public ActionResult ListFeText(int[] listId = null, int numLoad = 1, bool emptyResult = false)
         {
             ListFeTextV res = new ListFeTextV();
 
@@ -101,9 +101,9 @@ namespace dip.Controllers
                 listId = (int[])TempData["list_fe_id"];
             }
             listId = listId ?? new int[0];
-            if (emptyResult&&listId.Length == 0)
+            if (emptyResult && listId.Length == 0)
                 return new EmptyResult();
-            res.FeTexts = FEText.GetListIfAccess(HttpContext,listId);
+            res.FeTexts = FEText.GetListIfAccess(HttpContext, listId);
             res.NumLoad = numLoad;
 
 
@@ -114,7 +114,7 @@ namespace dip.Controllers
         /// Отрисовывает страницу для редактирования ФЭ
         /// </summary>
         /// <param name="id">id ФЭ который нужно отредактировать</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
@@ -125,7 +125,7 @@ namespace dip.Controllers
 
             if (res.Obj == null)
                 return new HttpStatusCodeResult(404);
-            
+
             res.Data(id);
 
 
@@ -141,11 +141,11 @@ namespace dip.Controllers
         /// <param name="deleteImg_">Удаленные изображения</param>
         /// <param name="forms">Входные\выходные дескрипторы</param>
         /// <param name="objForms">Начальные\конечные характеристики объекта</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult Edit(FEText obj, HttpPostedFileBase[] uploadImage, int[] deleteImg_, DescrSearchI[] forms = null,
-            DescrObjectI[] objForms = null, ChangeLatex[] latexformulas=null)//string[] latexformulasAdd = null, int[] latexformulasDel = null)
+            DescrObjectI[] objForms = null, ChangeLatex[] latexformulas = null)//string[] latexformulasAdd = null, int[] latexformulasDel = null)
         {
             bool commited = false;
             if (obj.IDFE == Models.Constants.FEIDFORSEMANTICSEARCH)//id временной записи для сематического поиска у нее нет дескрипторов и text=="---"
@@ -154,9 +154,9 @@ namespace dip.Controllers
                 return new HttpStatusCodeResult(220);
             if (!obj.Validation())
                 return new HttpStatusCodeResult(220);
-            if((obj.CountInput != 1 && forms.Length != 3)||(obj.CountInput == 1 && forms.Length != 2))
+            if ((obj.CountInput != 1 && forms.Length != 3) || (obj.CountInput == 1 && forms.Length != 2))
                 return new HttpStatusCodeResult(221);
-            if ((obj.ChangedObject&& objForms.Length!=2)||(!obj.ChangedObject && objForms.Length != 1))
+            if ((obj.ChangedObject && objForms.Length != 2) || (!obj.ChangedObject && objForms.Length != 1))
                 return new HttpStatusCodeResult(222);
             FEText oldObj = FEText.Get(obj.IDFE);
             if (oldObj == null)
@@ -175,7 +175,7 @@ namespace dip.Controllers
                 if (i?.Valide == false)
                     return new HttpStatusCodeResult(222);
             }
-            
+
 
             var list_img_byte = Get_photo_post(uploadImage);
 
@@ -187,7 +187,7 @@ namespace dip.Controllers
             //TODO валидация
 
 
-            commited = oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList(),latexformulas);
+            commited = oldObj.ChangeDb(obj, deleteImg, list_img_byte, forms.ToList(), objForms.ToList(), latexformulas);
             if (commited)
             {
                 //return new HttpStatusCodeResult(404);
@@ -197,7 +197,7 @@ namespace dip.Controllers
             else
                 return new HttpStatusCodeResult(225);
 
-            
+
         }
 
 
@@ -208,7 +208,7 @@ namespace dip.Controllers
         /// <summary>
         /// Отрисовывает страницу создания нового ФЭ
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
@@ -227,15 +227,12 @@ namespace dip.Controllers
         /// <param name="forms">Входные\выходные дескрипторы </param>
         /// <param name="objForms">Начальные\конечные характеристики объекта</param>
         /// <param name="latexformulas">Формулы latex</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null,string[]latexformulas=null)
+        public ActionResult Create(FEText obj, HttpPostedFileBase[] uploadImage, DescrSearchI[] forms = null, DescrObjectI[] objForms = null, string[] latexformulas = null)
         {
 
-            //Response.StatusCode = 201;
-            //return Content("+", "text/html");
-           // return new HttpStatusCodeResult(221);
 #if debug
             if (!ModelState.IsValid)
             {
@@ -250,8 +247,8 @@ namespace dip.Controllers
                 int stop = 0;
             }
 #endif
-            
-                if (!ModelState.IsValid)
+
+            if (!ModelState.IsValid)
                 return new HttpStatusCodeResult(220);
 
             if (!obj.Validation())
@@ -272,7 +269,7 @@ namespace dip.Controllers
                     return new HttpStatusCodeResult(221);
                 //i.DeleteNotChildCheckbox();
             }
-            
+
             foreach (var i in objForms)
             {
                 DescrObjectI.Validation(i);
@@ -281,14 +278,14 @@ namespace dip.Controllers
             }
 
 
-            
+
             var list_img_byte = Get_photo_post(uploadImage);
 
 
             //новая
-            bool success=obj.AddToDb(forms, objForms, list_img_byte, latexformulas);
+            bool success = obj.AddToDb(forms, objForms, list_img_byte, latexformulas);
 
-            
+
             if (success && obj != null && obj.IDFE > 0)
             {
                 Response.StatusCode = 201;
@@ -304,7 +301,7 @@ namespace dip.Controllers
         /// Отрисовывает списки к которым относится ФЭ
         /// </summary>
         /// <param name="idfe">id ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         public ActionResult LoadLists(int idfe)//, string technicalFunctionId
         {
@@ -320,7 +317,7 @@ namespace dip.Controllers
         /// <summary>
         /// Отрисовывает страницу для редактирования входных\выходных дескрипторов
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription()//, string technicalFunctionId
@@ -342,32 +339,28 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="obj">Изменные данные</param>
         /// <param name="currentActionId">id Action для которого нужно применить изменения</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescription(SaveDescription obj, string currentActionId)//, string technicalFunctionId
         {
-           
+
             obj.SetNotNullArray();
             if (string.IsNullOrEmpty(currentActionId))
                 //throw new Exception();
                 return new HttpStatusCodeResult(404);
-           // bool notValide = false;
+            // bool notValide = false;
             bool commited = false;
             List<int> blockFe = new List<int>();
 
-            //TODO надо найти то к чему все будет относиться, это может вернуть null
-            //string currentActionId = obj.TryGetCurrentActionId();// massData.FirstOrDefault(x1 => x1.Type == 1);
             bool? currentActionParametric = null;
 
             //TODO throw new Exception(); убрать
 
-            if (obj.MassAddActionId.Length > 1)//TODO
-                                               //throw new Exception("добавлено слишком много ActionId, это не предусмотрено");
+            if (obj.MassAddActionId.Length > 1)
+
                 return new HttpStatusCodeResult(404);//"добавлено слишком много ActionId, это не предусмотрено"
 
-            //if (notValide)//TODO
-            //    return new HttpStatusCodeResult(404);
             using (var db = new ApplicationDbContext())
             {
                 using (var transaction = db.Database.BeginTransaction())
@@ -381,8 +374,7 @@ namespace dip.Controllers
                             var allAction = db.AllActions.Select(x1 => x1.Id).ToList();
                             if (allAction.Count > 0)
                                 lastAllActionId = allAction.Max(x1 => int.Parse(x1.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]));
-                            //.OrderBy(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0]))
-                            //.Select(x1 => int.Parse(x1.Id.Split(new string[] { "VOZ" }, StringSplitOptions.RemoveEmptyEntries)[0])).Last();
+
                         }
 
                         currentActionParametric = obj.AddActionId(lastAllActionId, ref currentActionId, db);
@@ -409,23 +401,17 @@ namespace dip.Controllers
                             obj.EditParamFizVels(db);
                         }
 
-                        
+
                         if (currentActionParametric == false)
                         {
                             //add checkbox
-
                             obj.AddPro(currentActionId, db);
-
-
                             obj.AddVrem(currentActionId, db);
-
-
                             obj.AddSpec(currentActionId, db);
 
                             obj.EditPro(db);
                             obj.EditVrem(db);
                             obj.EditSpec(db);
-
 
                             blockFe.AddRange(obj.DeletePros(db));
                             blockFe.AddRange(obj.DeleteSpec(db));
@@ -435,12 +421,9 @@ namespace dip.Controllers
                         blockFe.AddRange(obj.DeleteFizVels(db));
                         blockFe.AddRange(obj.DeleteActionId(db));
 
-
-                        
                         db.SaveChanges();
                         transaction.Commit();
                         commited = true;
-                        //TODO удаление всего в самом конце начиная с детей
                     }
                     catch
                     {
@@ -452,32 +435,28 @@ namespace dip.Controllers
                 return Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(", ", blockFe.Distinct()), "text/html");
 
 
-            if (commited )
+            if (commited)
                 return Content("+", "text/html");
             else
                 return new HttpStatusCodeResult(404);
 
-            //return RedirectToAction("CreateDescription");
-            //return View();
         }
 
         /// <summary>
         /// Отрисовывает страницу для изменения начальных\конечных характеристик объекта и состояний объекта
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescriptionObject()//, string technicalFunctionId
         {
 
             CreateDescriptionObjectV res = new CreateDescriptionObjectV();
-           
-           
-                // Получаем список всех воздействий 
-                res.Characteristic = PhaseCharacteristicObject.GetBase();// db.PhaseCharacteristicObjects.ToList();
-                res.States = StateObject.GetBase(); //db.StateObjects.ToList();
-           
-            
+
+            // Получаем список всех воздействий 
+            res.Characteristic = PhaseCharacteristicObject.GetBase();// db.PhaseCharacteristicObjects.ToList();
+            res.States = StateObject.GetBase(); //db.StateObjects.ToList();
+
             return View(res);
         }
 
@@ -485,17 +464,17 @@ namespace dip.Controllers
         /// post -сохраняет изменения начальных\конечных характеристик объекта и состояний объекта
         /// </summary>
         /// <param name="obj">Изменные данные</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult CreateDescriptionObject(SaveDescriptionObject obj)//, string technicalFunctionId
         {
             bool commited = false;
             obj.SetNotNullArray();
-            List<int>blockFe= obj.Save(out commited);
-            
-            if (blockFe.Count>0)
-                return  Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(", ",blockFe.Distinct()), "text/html");
+            List<int> blockFe = obj.Save(out commited);
+
+            if (blockFe.Count > 0)
+                return Content("Изменения сохранены(кроме удаления). Записи которые блокируют удаление:" + string.Join(", ", blockFe.Distinct()), "text/html");
 
             if (commited)
                 return Content("+", "text/html");
@@ -510,11 +489,11 @@ namespace dip.Controllers
         /// Отрисовывает страницу с следующим ФЭ(по бд)
         /// </summary>
         /// <param name="id">id тукущего ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult GoNextPhysics(int id)
         {
-            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
-            FEText phys= FEText.GetNextAccessPhysic(id,HttpContext);
+            //проверять есть ли доступ, и? загружать ту к которой доступ есть
+            FEText phys = FEText.GetNextAccessPhysic(id, HttpContext);
             DetailsV res = new DetailsV();
             try
             {
@@ -524,14 +503,14 @@ namespace dip.Controllers
             {
                 return new HttpStatusCodeResult(404);
             }
-            return View("Details",res);
+            return View("Details", res);
         }
 
         /// <summary>
         /// Отрисовывает страницу с предыдущим ФЭ(по бд)
         /// </summary>
         /// <param name="id">id тукущего ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult GoPrevPhysics(int id)
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -551,7 +530,7 @@ namespace dip.Controllers
         /// <summary>
         /// Отрисовывает страницу с последним ФЭ(по бд)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult GoLastPhysics()
         {
             //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
@@ -571,10 +550,10 @@ namespace dip.Controllers
         /// <summary>
         /// Отрисовывает страницу с первым ФЭ(по бд)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult GoFirstPhysics()
         {
-            //TODO проверять есть ли доступ, и мб загружать ту к которой доступ есть
+            //проверять есть ли доступ, и? мб загружать ту к которой доступ есть
             FEText phys = FEText.GetFirstAccessPhysic(HttpContext);
             DetailsV res = new DetailsV();
             try
@@ -592,7 +571,7 @@ namespace dip.Controllers
         /// <summary>
         /// post- насильное обнуление записи ФЭ которая служит для семантического поиска
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult ReloadSemanticRecord()
@@ -602,21 +581,7 @@ namespace dip.Controllers
             return Content("", "text/html");//Emty
         }
 
-            //-------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-        }
-
-
+    }
 
 }

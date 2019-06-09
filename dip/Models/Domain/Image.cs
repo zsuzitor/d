@@ -37,7 +37,7 @@ namespace dip.Models.Domain
         /// метод для получения изображения из latex формулы
         /// </summary>
         /// <param name="formula">объект FELatexFormula</param>
-        /// <returns></returns>
+        /// <returns>запись изображения</returns>
         public static Image GetFromLatex(FELatexFormula formula)
         {
             return GetFromLatex(formula.Formula);
@@ -47,7 +47,7 @@ namespace dip.Models.Domain
         /// метод для получения изображения из latex формулы
         /// </summary>
         /// <param name="formula">текст формулы</param>
-        /// <returns></returns>
+        /// <returns>запись изображения</returns>
         public static Image GetFromLatex(string formula)
         {
             try

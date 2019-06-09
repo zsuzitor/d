@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.SearchV
 {
+    //класс-ViewModel
     public class DescriptionSearchV
     {
 
@@ -16,12 +17,6 @@ namespace dip.Models.ViewModel.SearchV
         public DescrObjectI FormObjectBegin { get; set; }
         public DescrObjectI FormObjectEnd { get; set; }
 
-        //TODO не нужно?
-        //public bool? ItsSearch { get; set; }
-        //TODO не нужно?
-        //public bool? Search { get; set; }
-
-
         public DescriptionSearchV()
         {
             SearchList = null;
@@ -29,8 +24,6 @@ namespace dip.Models.ViewModel.SearchV
             FormOutput = null;
             FormObjectBegin = null;
             FormObjectEnd = null;
-            //ItsSearch = null;
-            //Search = null;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для получения базовых харектеристик(1 уровень)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>список базовых характеристик</returns>
         public static List<PhaseCharacteristicObject> GetBase()
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
@@ -33,7 +33,7 @@ namespace dip.Models.Domain
         /// метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
         /// </summary>
         /// <param name="strIds">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка с id через пробел состоящая из strIds но без родительских чекбоксов</returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
             string res = "";
@@ -65,7 +65,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
         /// <param name="db">контекст</param>
-        /// <returns></returns>
+        /// <returns>список id</returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -84,7 +84,7 @@ namespace dip.Models.Domain
         /// метод возвращает ближайших детей
         /// </summary>
         /// <param name="id">id записи для которой нужно вернуть детей</param>
-        /// <returns></returns>
+        /// <returns>список детей</returns>
         public static List<PhaseCharacteristicObject> GetChild(string id)
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
@@ -96,7 +96,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// клонирование объекта без ссылок
         /// </summary>
-        /// <returns></returns>
+        /// <returns>новая скопированная запись</returns>
         public PhaseCharacteristicObject CloneWithOutRef()
         {
             return new PhaseCharacteristicObject()
@@ -111,7 +111,7 @@ namespace dip.Models.Domain
         /// получение записи по id
         /// </summary>
         /// <param name="id">id записи</param>
-        /// <returns></returns>
+        /// <returns>запись найденная по id</returns>
         public static PhaseCharacteristicObject Get(string id)
         {
             PhaseCharacteristicObject res = null;
@@ -138,8 +138,8 @@ namespace dip.Models.Domain
         /// <summary>
         /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель this)
         /// </summary>
-        /// <param name="db_"></param>
-        /// <returns></returns>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список от родителя к ребенку</returns>
         public override List<PhaseCharacteristicObject> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<PhaseCharacteristicObject> res = new List<PhaseCharacteristicObject>();
@@ -163,7 +163,7 @@ namespace dip.Models.Domain
         /// метод который из строки только детей формирует строку со всеми(дети+родители) 
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка дети-родители через ' '</returns>
         public static string GetAllIdsFor(string str)
         {
             if (string.IsNullOrWhiteSpace(str))

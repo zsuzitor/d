@@ -18,13 +18,6 @@ using System.Web;
 using System.Web.Hosting;
 
 
-//http://www.waveaccess.ru/blog/2014/september/02/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-apache-lucene.aspx
-
-
-//ru analizer//tok//norm  https://github.com/apache/lucenenet/tree/master/src/Lucene.Net.Analysis.Common/Analysis/Ru
-//тоже самое но с ридером https://lucenenet.apache.org/docs/3.0.3/d1/d8f/_russian_analyzer_8cs_source.html
-
-// https://github.com/apache/lucenenet
 
 namespace dip.Models
 {
@@ -125,7 +118,7 @@ namespace dip.Models
 @"\s+чего\s+|\s+чей\s+|\s+чем\s+|\s+что\s+|\s+чтобы\s+|\s+чье\s+|\s+чья\s+|\s+эта\s+|" +
 @"\s+эти\s+|\s+это\s+|\s+я\s+|\s+этом\s+|\s+этого\s+";
             //pattern += @"|~|`|!|@|#|\$|%|\^|&|\*|\(|\)|_|\+|=|-|<|>|\?|,|\.|\/|\\|\{|\}|\[|\]|\|";
-            s=Lucene_.DeletePunctuations(s);
+            s = Lucene_.DeletePunctuations(s);
             RegexOptions options = RegexOptions.IgnoreCase;
             string target = " ";
             Regex regex = new Regex(pattern, options);
@@ -156,7 +149,7 @@ namespace dip.Models
             RegexOptions options = RegexOptions.IgnoreCase;
             string target = " ";
             Regex regex = new Regex(pattern, options);
-            string res= regex.Replace(s, target);
+            string res = regex.Replace(s, target);
             regex = new Regex(@"\s+", options);
             res = regex.Replace(res, target);
             return res;
@@ -238,15 +231,6 @@ namespace dip.Models
                 }
 
 
-
-                //Term - 1парам - поле в котором ищем
-                // var termQuery = new TermQuery(new Term("Brand", "Fender"));
-                //var phraseQuery = new PhraseQuery();
-                //phraseQuery.Add(new Term("Name", "electric"));
-                //phraseQuery.Add(new Term("Name", "guitar"));
-                //query.Add(keywordsQuery, Occur.MUST);//обязательно
-                //query.Add(termQuery, Occur.MUST_NOT);//исключаем
-                //query.Add(phraseQuery, Occur.SHOULD);//не обязательно, но влияет на релевантность
                 return query; // +Name:ibanez -Brand:Fender Name:"electric guitar"    
             }
         }

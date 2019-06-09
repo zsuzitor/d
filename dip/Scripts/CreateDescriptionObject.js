@@ -17,7 +17,7 @@ var mainObjEdit = {
 
 
 
-
+//событие изменения чекбоксов
 $(document).on('change', ':checkbox', function () {//$('input[type=radio][name=bedStatus]')
     var valSplit = this.value.split('_');
     var formData = {
@@ -72,7 +72,7 @@ $(document).on('change', ':checkbox', function () {//$('input[type=radio][name=b
 
 
 
-
+//мето добавления новой фазы
 function addNewPhase(id) {
     var div = document.getElementById('phaseChildsInner_' + id);
 
@@ -85,7 +85,8 @@ function addNewPhase(id) {
     mainObjEdit.maxNewPhase++;
 }
 
-
+//метод для изменения состояния редактируемости состояния объекта
+//id-id состояния
 function changeState(id) {
 
     var inp = $('#inputStateText_' + id);
@@ -115,6 +116,8 @@ function changeState(id) {
     document.getElementById('restoreInputState_but_' + id).style.display = 'inline';
 }
 
+//метод для изменения состояния редактируемости характеристики объекта
+//id-id состояния
 function changePhase(id) {
 
     var inp = $('#inputPhaseText_' + id);
@@ -146,7 +149,8 @@ function changePhase(id) {
 
 
 
-
+//мето для удаления характеристики объекта
+//id-id характеристики
 function deletePhase(id) {
     var delbut = document.getElementById(id + '_delbut');
     var checkboxChilds = $('#inputPhaseCheckbox_' + id);
@@ -188,7 +192,8 @@ function deletePhase(id) {
 }
 
 
-
+//метод для восстановления значения характеристики
+//id характеристики значение которой нужно восстановить
 function restorePhaseValue(id) {
 
     for (var i = 0; i < mainObjEdit.massOldValue.length; ++i) {
@@ -213,6 +218,9 @@ function restorePhaseValue(id) {
 
 }
 
+
+//метод для восстановления значения состояния
+//id состояния значение которого нужно восстановить
 function restoreStateValue(id) {
 
     for (var i = 0; i < mainObjEdit.massOldValue.length; ++i) {
@@ -238,7 +246,7 @@ function restoreStateValue(id) {
 }
 
 
-
+//метод сохранения формы
 function saveForm() {
     formData = {};
 
@@ -310,6 +318,7 @@ function saveForm() {
 
 
 
+//функция для отображения информации о странице
 function showInfo() {
     var div = document.getElementById('divInfoBlockId');
     var but = document.getElementById('butInfoBlockId');

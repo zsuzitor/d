@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.PhysicV
 {
+    //класс-ViewModel
     public class EditV
     {
         public FEText Obj { get; set; }
@@ -17,10 +18,6 @@ namespace dip.Models.ViewModel.PhysicV
 
         public DescrObjectI FormObjectEnd { get; set; }
         public int CountPhaseEnd { get; set; }
-
-        //public bool ChangedObject { get; set; }
-        //public string StateIdStart { get; set; }
-        //public string StateIdEnd { get; set; }
 
 
         public EditV()
@@ -36,7 +33,10 @@ namespace dip.Models.ViewModel.PhysicV
         }
 
 
-
+        /// <summary>
+        /// метод для подготовки записи ФЭ к редактированию
+        /// </summary>
+        /// <param name="id">id ФЭ</param>
         public void Data(int? id)
         {
             List<FEAction> inp = null;
@@ -46,20 +46,16 @@ namespace dip.Models.ViewModel.PhysicV
             List<FEObject> outpObj = null;
             FEObject.Get((int)id, ref inpObj, ref outpObj);
 
-            this.FormsInput = inp.Select(x1 => {
+            this.FormsInput = inp.Select(x1 =>
+            {
                 var rs = new DescrSearchI(x1);
-                //rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                //rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                //rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
                 return rs;
             }).ToList();
-            this.FormsOutput = outp.Select(x1 => {
+            this.FormsOutput = outp.Select(x1 =>
+            {
                 var rs = new DescrSearchI(x1);
-                //rs.ListSelectedPros = Pro.GetAllIdsFor(rs.ListSelectedPros);
-                //rs.ListSelectedVrem = Vrem.GetAllIdsFor(rs.ListSelectedVrem);
-                //rs.ListSelectedSpec = Spec.GetAllIdsFor(rs.ListSelectedSpec);
                 return rs;
-            }).ToList();// new DescrSearchI(outp);
+            }).ToList();
 
             if (inpObj != null)
             {
@@ -82,10 +78,10 @@ namespace dip.Models.ViewModel.PhysicV
                     this.FormObjectEnd.ListSelectedPhase1 = new DescrPhaseI(objTmp);
                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 2);
                 if (objTmp != null)
-                    this.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(objTmp);// outpObj.FirstOrDefault(x1 => x1.NumPhase == 2));
+                    this.FormObjectEnd.ListSelectedPhase2 = new DescrPhaseI(objTmp);
                 objTmp = outpObj.FirstOrDefault(x1 => x1.NumPhase == 3);
                 if (objTmp != null)
-                    this.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(objTmp);//outpObj.FirstOrDefault(x1 => x1.NumPhase == 3));
+                    this.FormObjectEnd.ListSelectedPhase3 = new DescrPhaseI(objTmp);
                 this.CountPhaseEnd = this.FormObjectEnd.GetCountPhase();
             }
 

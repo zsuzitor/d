@@ -36,14 +36,14 @@ namespace dip.Controllers
         /// <param name="forms">Входные\Выходные параметры дескрипторной формы</param>
         /// <param name="objForms">Характеристики объекта дескрипторной формы</param>
         /// <param name="lastId">id последней загруженной записи</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         //TODO search- переименовать+ в js тоже поменять на partial
-        public ActionResult DescriptionSearch(string search = null,string stateBegin=null, string stateEnd = null, DescrSearchI[] forms= null, DescrObjectI[] objForms=null, int lastId = 0,bool emptyResult=false)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
+        public ActionResult DescriptionSearch(string search = null, string stateBegin = null, string stateEnd = null, DescrSearchI[] forms = null, DescrObjectI[] objForms = null, int lastId = 0, bool emptyResult = false)//, DescrSearchIInput inp_ = null, DescrSearchIOut outp_ = null
         {
-            
+
             DescriptionSearchV res = new DescriptionSearchV();
-            
-            if (forms!=null&& objForms!=null)
+
+            if (forms != null && objForms != null)
             {
                 foreach (var i in forms)
                 {
@@ -59,36 +59,34 @@ namespace dip.Controllers
                 }
 
 
-                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms, lastId,HttpContext);
+                res.SearchList = FEText.GetByDescr(stateBegin, stateEnd, forms, objForms, lastId, HttpContext);
 
-                res.FormInput = forms.Where(x1=>x1.InputForm).ToList();
-                res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList(); 
-                res.FormObjectBegin = objForms.FirstOrDefault(x1=>x1.Begin) ;
+                res.FormInput = forms.Where(x1 => x1.InputForm).ToList();
+                res.FormOutput = forms.Where(x1 => !x1.InputForm).ToList();
+                res.FormObjectBegin = objForms.FirstOrDefault(x1 => x1.Begin);
                 res.FormObjectEnd = objForms.FirstOrDefault(x1 => !x1.Begin);
             }
 
-           // else
-                //res.ItsSearch = true;
+            // else
+            //res.ItsSearch = true;
 
-            
+
             if (search != null)
             {
 
                 //res.Search = true;
                 TempData["list_fe_id"] = res.SearchList;
-                
-                //var dict = new RouteValueDictionary();
-                //dict.Add("listId", list_id);
+
 
                 Log log = new Log((String)RouteData.Values["action"], (String)RouteData.Values["controller"],
                 ApplicationUser.GetUserId(), true);
-                log.SetDescrParam(stateBegin, stateEnd,forms, objForms);
+                log.SetDescrParam(stateBegin, stateEnd, forms, objForms);
                 log.AddLogDb();
 
 
-                return RedirectToAction("ListFeText", "Physic",new { emptyResult= emptyResult });
+                return RedirectToAction("ListFeText", "Physic", new { emptyResult = emptyResult });
             }
-            
+
             return View(res);
         }
 
@@ -100,14 +98,10 @@ namespace dip.Controllers
         /// <param name="str">Строка поиска</param>
         /// <param name="lastId">id последней загруженной записи(для пагинации)</param>
         /// <param name="countLoad">Номер последней загрузки (для пагинации)</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult TextSearchPartial(string type, string str, int lastId = 0, int countLoad = 1)
         {
-            //TODO валидация строки от sql иньекций и тд
-            //TODO полнотекстовый поиск
-            //str = "газ";
             TextSearchPartialV res = new TextSearchPartialV();
-            
 
             res.ListPhysId = Search.GetListPhys(type, str, HttpContext, lastId, countLoad);
             if (res.ListPhysId == null)
@@ -135,17 +129,12 @@ namespace dip.Controllers
 
 
 
-        //[HttpPost]
-        //type - тип запроса lucene и др
-
         /// <summary>
         /// Отрисовывает страницу с формой для полнотекстового поиска
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult TextSearch()//string type, string str,bool semanticParse=false
         {
-           
-
             TextSearchV res = new TextSearchV();//TODO возможно класс не используется
 
             IList<string> roles = HttpContext.GetOwinContext()
@@ -155,10 +144,8 @@ namespace dip.Controllers
                 res.Admin = true;
             }
 
-
-         
             return View(res);//.Select(x1=>x1.IDFE)
         }
-        
+
     }
 }

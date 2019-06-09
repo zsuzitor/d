@@ -5,6 +5,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class GetListSomethingV<T>
     {
         public List<T> List { get; set; }

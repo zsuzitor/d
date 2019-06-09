@@ -6,10 +6,10 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class GetStateObjectV
     {
         public List<StateObject> List { get; set; }
-        
         public string Type { get; set; }
 
 

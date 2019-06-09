@@ -34,7 +34,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для получения всех списков
         /// </summary>
-        /// <returns></returns>
+        /// <returns>список списков</returns>
         public static List<ListPhysics> GetAll()
         {
             using (var db = new ApplicationDbContext())
@@ -42,11 +42,11 @@ namespace dip.Models.Domain
         }
 
         /// <summary>
-        /// мето для получения списка по id
+        /// метод для получения списка по id
         /// </summary>
         /// <param name="id">id списка</param>
         /// <param name="db_">контекст</param>
-        /// <returns></returns>
+        /// <returns>запись списка</returns>
         public static ListPhysics Get(int? id, ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -62,7 +62,7 @@ namespace dip.Models.Domain
         /// метод для создания нового списка
         /// </summary>
         /// <param name="name"> название списка</param>
-        /// <returns></returns>
+        /// <returns>созданный список</returns>
         public static ListPhysics Create(string name)
         {
             ListPhysics res = new ListPhysics(name);
@@ -81,7 +81,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="id">id списка</param>
         /// <param name="name">новое название списка</param>
-        /// <returns></returns>
+        /// <returns>запись измененного списка</returns>
         public static ListPhysics Edit(int? id, string name)
         {
             ListPhysics res = ListPhysics.Get(id);
@@ -100,7 +100,7 @@ namespace dip.Models.Domain
         /// метод для удаления списка
         /// </summary>
         /// <param name="id">id списка</param>
-        /// <returns></returns>
+        /// <returns>запись удаленного списка</returns>
         public static ListPhysics Delete(int? id)
         {
             ListPhysics res = ListPhysics.Get(id);
@@ -120,7 +120,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="idphys">id фэ</param>
         /// <param name="idlist">id списка</param>
-        /// <returns></returns>
+        /// <returns>запись списка</returns>
         public static ListPhysics AddPhys(int idphys, int idlist)
         {
             ListPhysics res = ListPhysics.Get(idlist);
@@ -160,7 +160,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="idphys">id фэ</param>
         /// <param name="idlist">id списка</param>
-        /// <returns></returns>
+        /// <returns>запись списка из которого удаляли</returns>
         public static ListPhysics DeletePhys(int idphys, int idlist)
         {
             ListPhysics res = ListPhysics.Get(idlist);
@@ -187,7 +187,7 @@ namespace dip.Models.Domain
         /// метод для загрузки всех фэ находящихся в списке
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>запись списка id которого передали параметром</returns>
         public static ListPhysics LoadPhysics(int id)
         {
             var obj = ListPhysics.Get(id);
@@ -198,7 +198,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для загрузки всех фэ находящихся в списке
         /// </summary>
-        /// <param name="db_">контекст</param>
+        /// <param name="db_">контекст бд</param>
         public void LoadPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -214,9 +214,9 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для загрузки всех пользователей которым выдан список
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="db_"></param>
-        /// <returns></returns>
+        /// <param name="id">id списка</param>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список id которого передали параметром</returns>
         public static ListPhysics LoadUsers(int id, ApplicationDbContext db_ = null)
         {
             var obj = ListPhysics.Get(id);
@@ -227,7 +227,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для загрузки всех пользователей которым выдан список
         /// </summary>
-        /// <param name="db_">контекст</param>
+        /// <param name="db_">контекст бд</param>
         public void LoadUsers(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();

@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class ImageV
     {
         public IShowsImage Image { get; set; }

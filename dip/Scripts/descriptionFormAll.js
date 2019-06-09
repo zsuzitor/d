@@ -1,7 +1,9 @@
 ﻿;;;
 
+
+//метод для заполнения объекта дескрипторной формы по данным на экране
 function Go_next_step() {
-    //TODO
+  
     var i = 0;
     var inpdiv = document.getElementById('actionI' + i);
     var twoInput = document.getElementById('changeTwoInputFormDescr_id').checked;

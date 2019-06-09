@@ -34,7 +34,11 @@ namespace dip.Models
             Valide = false;
         }
 
-
+        /// <summary>
+        /// индексатор
+        /// </summary>
+        /// <param name="index">индекс</param>
+        /// <returns></returns>
         public DescrPhaseI this[int index]
         {
             get
@@ -43,13 +47,10 @@ namespace dip.Models
                 {
                     case 0:
                         return ListSelectedPhase1;
-                        break;
                     case 1:
                         return ListSelectedPhase2;
-                        break;
                     case 2:
                         return ListSelectedPhase3;
-                        break;
                     default:
                         return null;
                 }
@@ -71,6 +72,10 @@ namespace dip.Models
             }
         }
 
+        /// <summary>
+        /// метод для перебора foreach
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<DescrPhaseI> GetEnumerator()
         {
 
@@ -79,6 +84,10 @@ namespace dip.Models
             yield return ListSelectedPhase3;
         }
 
+        /// <summary>
+        /// метод для определения количества фаз
+        /// </summary>
+        /// <returns>количество фаз</returns>
         public int GetCountPhase()
         {
             int res = 0;
@@ -98,7 +107,7 @@ namespace dip.Models
         /// <summary>
         /// метод для получения всех фаз списком без null
         /// </summary>
-        /// <returns></returns>
+        /// <returns>список фаз</returns>
         public List<DescrPhaseI> GetActualPhases()
         {
             List<DescrPhaseI> res = new List<DescrPhaseI>();
@@ -119,10 +128,10 @@ namespace dip.Models
 
 
         /// <summary>
-        /// 
+        /// метод для получения списка строк(каждая для каждой фазы) содержащих id всех чекбоксов в фазе
         /// </summary>
-        /// <returns></returns>
-        public List<string> GetList_()//TODO
+        /// <returns>список строк</returns>
+        public List<string> GetList_()
         {
             List<string> res = new List<string>()
             {
@@ -139,19 +148,17 @@ namespace dip.Models
         /// </summary>
         public void DeleteNotChildCheckbox()
         {
-
             ListSelectedPhase1?.DeleteNotChildCheckbox();
             ListSelectedPhase2?.DeleteNotChildCheckbox();
             ListSelectedPhase3?.DeleteNotChildCheckbox();
-
 
         }
 
         /// <summary>
         /// метод для валидации
         /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+        /// <param name="a">объект валидации</param>
+        /// <returns>флаг успеха</returns>
         public static bool Validation(DescrObjectI a)
         {
             bool res = true;

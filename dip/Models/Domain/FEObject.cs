@@ -5,7 +5,7 @@ using System.Web;
 
 namespace dip.Models.Domain
 {
-    
+
     /// <summary>
     /// 1 фаза объекта, данные
     /// </summary>
@@ -65,7 +65,7 @@ namespace dip.Models.Domain
         /// <param name="id">id фэ</param>
         /// <param name="inp">начальные характеристики</param>
         /// <param name="outp">конечные характеристики</param>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public static bool Get(int id, ref List<FEObject> inp, ref List<FEObject> outp)
         {
             using (var db = new ApplicationDbContext())

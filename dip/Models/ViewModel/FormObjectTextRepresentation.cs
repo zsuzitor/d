@@ -6,15 +6,15 @@ using System.Web;
 
 namespace dip.Models.ViewModel
 {
+    /// <summary>
+    /// класс для текстового представления дескрипторов объекта
+    /// </summary>
     public class FormObjectTextRepresentation
     {
         public string StateBegin { get; set; }
         public string StateEnd { get; set; }
 
-        //public Dictionary<string, string> StateBegin { get; set; }
-        //public Dictionary<string, string> StateEnd { get; set; }
-
-        public List<List<string>> PhaseBegin1 { get; set; }//PhaseCharacteristicObject
+        public List<List<string>> PhaseBegin1 { get; set; }
         public List<List<string>> PhaseBegin2 { get; set; }
         public List<List<string>> PhaseBegin3 { get; set; }
 
@@ -22,15 +22,11 @@ namespace dip.Models.ViewModel
         public List<List<string>> PhaseEnd2 { get; set; }
         public List<List<string>> PhaseEnd3 { get; set; }
 
-        
-
 
         public FormObjectTextRepresentation()
         {
             StateBegin = "";
             StateEnd = "";
-            //StateBegin = new Dictionary<string, string>();
-            //StateEnd = new Dictionary<string, string>();
 
             PhaseBegin1 = new List<List<string>>();
             PhaseBegin2 = new List<List<string>>();
@@ -42,6 +38,11 @@ namespace dip.Models.ViewModel
         }
 
 
+        /// <summary>
+        /// метод который возвращает все id состояний которые нужно выделить(всех родителей)
+        /// </summary>
+        /// <param name="stateId">id выбранного состояния</param>
+        /// <returns>строка id состояний для выделения разделенных ' '</returns>
         public static string DataState(string stateId)
         {
             if (string.IsNullOrWhiteSpace(stateId))
@@ -51,25 +52,22 @@ namespace dip.Models.ViewModel
             List<StateObject> list;
             using (var db = new ApplicationDbContext())
             {
-                 st = db.StateObjects.FirstOrDefault(x1 => x1.Id == stateId);
+                st = db.StateObjects.FirstOrDefault(x1 => x1.Id == stateId);
                 if (st == null)
                     return null;
-             list = st.GetParentsList(db);
+                list = st.GetParentsList(db);
             }
             list.Add(st);
             states.Add(list);
             return string.Join(" ", StateObject.GetQueueParentString(states));//["StateBegin"]
-            
+
         }
-        //public static string DataPhase(FEObject obj)
-        //{
 
-        //}
-
-
-
-
-        //возвращает только данные для отображения(список полей и чему равны) (текстовое представление)
+        /// <summary>
+        /// метод возвращает только данные(дескрипторы объекта) для отображения(список полей и чему равны) (текстовое представление)
+        /// </summary>
+        /// <param name="idfe"></param>
+        /// <returns></returns>
         public static FormObjectTextRepresentation GetFormShow(int idfe)
         {
             FormObjectTextRepresentation res = new FormObjectTextRepresentation();
@@ -77,8 +75,6 @@ namespace dip.Models.ViewModel
             FEText fet = FEText.Get(idfe);
             if (fet == null)
                 return null;
-            //List<List<StateObject>> prosBegin = new List<List<StateObject>>();
-            //List<List<StateObject>> prosEnd = new List<List<StateObject>>();
 
             using (var db = new ApplicationDbContext())
             {
@@ -91,46 +87,36 @@ namespace dip.Models.ViewModel
                 foreach (var i in objs)
                 {
 
-                    //string[] PhaseStateObj = i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    res.SetOnePhaseText(i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);//, res
+                    res.SetOnePhaseText(i.PhaseState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
                     res.SetOnePhaseText(i.Composition.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
                     res.SetOnePhaseText(i.Conductivity.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
-                    res.SetOnePhaseText(i.MagneticStructure.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db,  i);
-                    res.SetOnePhaseText(i.MechanicalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db,  i);
-                    res.SetOnePhaseText(i.OpticalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db,  i);
-                    res.SetOnePhaseText(i.Special.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db,  i);
+                    res.SetOnePhaseText(i.MagneticStructure.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
+                    res.SetOnePhaseText(i.MechanicalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
+                    res.SetOnePhaseText(i.OpticalState.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
+                    res.SetOnePhaseText(i.Special.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries), db, i);
                 }
 
-
-
             }
-
-
-
 
 
             return res;
         }
 
 
-        //устанавливает текстовое представление для 1й фазы в res, mass-список id выбранных в фазе
-        public  void SetOnePhaseText(string[] mass, ApplicationDbContext db, FEObject feobj)//,int numPhase,bool begin //, FormObjectTextRepresentation res
+        /// <summary>
+        /// метод устанавливает текстовое представление для 1й фазы в res, 
+        /// </summary>
+        /// <param name="mass">список id выбранных в фазе</param>
+        /// <param name="db">контекст бд</param>
+        /// <param name="feobj">объект фазы</param>
+        public void SetOnePhaseText(string[] mass, ApplicationDbContext db, FEObject feobj)
         {
             List<List<PhaseCharacteristicObject>> d = new List<List<PhaseCharacteristicObject>>();
-            List<PhaseCharacteristicObject> listForMass = db.PhaseCharacteristicObjects.Where(x1=>mass.Contains(x1.Id)).ToList();
+            List<PhaseCharacteristicObject> listForMass = db.PhaseCharacteristicObjects.Where(x1 => mass.Contains(x1.Id)).ToList();
 
             d = PhaseCharacteristicObject.GetQueueParent(listForMass);
 
-            //TODO тут везде цикл в цикле
-            //foreach (var i2 in listForMass)
-            //{
-            //    //PhaseCharacteristicObject pr = db.PhaseCharacteristicObjects.First(x1 => x1.Id == i2);
-            //    var list = i2.GetParentsList(db);
-            //    list.Add(i2);
-            //    d.Add(list);
-
-            //}
-            var strRes =PhaseCharacteristicObject.GetQueueParentString(d);
+            var strRes = PhaseCharacteristicObject.GetQueueParentString(d);
             if (feobj.Begin == 1)
             {
                 switch (feobj.NumPhase)
@@ -167,8 +153,5 @@ namespace dip.Models.ViewModel
             }
         }
 
-    
-
-
-}
+    }
 }

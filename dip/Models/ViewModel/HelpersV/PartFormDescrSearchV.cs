@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class PartFormDescrSearchV
     {
         public DescriptionForm Form { get; set; }
@@ -19,7 +20,6 @@ namespace dip.Models.ViewModel.HelpersV
             Type = null;
 
         }
-
 
     }
 }

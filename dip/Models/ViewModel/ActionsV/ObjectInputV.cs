@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class ObjectInputV
     {
         public List<StateObject> StatesBegin { get; set; }
@@ -17,10 +18,10 @@ namespace dip.Models.ViewModel.ActionsV
         public string StateEndSelected { get; set; }
 
         public CharacteristicObject CharacteristicsBegin { get; set; }
-        
+
 
         public CharacteristicObject CharacteristicsEnd { get; set; }
-        
+
 
 
         public ObjectInputV()
@@ -33,9 +34,16 @@ namespace dip.Models.ViewModel.ActionsV
         }
 
 
-
+        /// <summary>
+        /// метод для определения списка состояний которые необходимо выделить, и для загрузки первого уровня характеристик для выделенного состояния
+        /// </summary>
+        /// <param name="stateIdBegin">id состояния текущего</param>
+        /// <param name="basePhase">список базовых состояний</param>
+        /// <param name="States">состояния с которыми будем взаимодействовать</param>
+        /// <param name="Characteristics">характеристики</param>
+        /// <param name="StateSelected">id состояний которые надо выделить на форме разделенные ' '</param>
         public void StatesBeginFirstLvlPhase(string stateIdBegin, List<PhaseCharacteristicObject> basePhase,
-            List<StateObject> States,CharacteristicObject Characteristics, ref string StateSelected)
+            List<StateObject> States, CharacteristicObject Characteristics, ref string StateSelected)
         {
             StateObject state = StateObject.Get(stateIdBegin);
             if (state != null)
@@ -62,7 +70,5 @@ namespace dip.Models.ViewModel.ActionsV
 
             }
         }
-
-
     }
 }

@@ -5,6 +5,7 @@ var ListActMainObject = {
     ListId: null
 };
 
+//событие загрузки страницы
 $(document).ready(function () {
     $('#ListAct_ExistList_id input:radio:checked').each(function () {
         ListActMainObject.ListId = this.id.split('ListPhysExistItem_')[1];
@@ -14,7 +15,7 @@ $(document).ready(function () {
     
 });
 
-
+//метод для добавления нового списка
 function AddNewList() {
     var formData = { name: document.getElementById('NewListName_id').value };
     if (formData.name.length < 5) {
@@ -29,12 +30,10 @@ function AddNewList() {
         }, type: 'POST'
     });
 
-
-
 }
 
 
-
+//событие изменения радиокнопок
 $(document).on('change', ':radio', function () {
 
     if (this.name == 'ListPhysExistItem') {
@@ -51,6 +50,7 @@ $(document).on('change', ':radio', function () {
 });
 
 
+//метод загрузки данных одного списка
 function LoadOneListData(id) {
 
     var formData = { id: id };
@@ -68,7 +68,7 @@ function LoadOneListData(id) {
 }
 
 
-
+//метод для добавления записи ФЭ в текущий список
 function AddNewPhysInCurList() {
     var formData = { idphys: document.getElementById('AddNewPhysInCurListInput').value };
     formData.idlist = ListActMainObject.ListId;
@@ -96,7 +96,7 @@ function AddNewPhysInCurList() {
 }
 
 
-
+//метод для сохранения изменений текущего списка
 function SaveChangesCurrentList() {
     var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
     var blockList;
@@ -117,7 +117,7 @@ function SaveChangesCurrentList() {
 }
 
 
-
+//метод удаления текущего списка
 function DeleteCurrentList() {
     var formData = { name: document.getElementById('inputNameEditCurrentList_id').value };
 
@@ -146,7 +146,7 @@ function DeleteCurrentList() {
 }
 
 
-
+//метод удаления записи ФЭ из текущего списка
 function DeleteFromCurrentList(id) {
 
     var formData = { idphys: id };
@@ -166,7 +166,7 @@ function DeleteFromCurrentList(id) {
 }
 
 
-
+//метод для отображения ссылки на список
 function ShowLinkFetext() {
     let link = '/Physic/Details/';
     let idfe = document.getElementById("AddNewPhysInCurListInput").value;
@@ -181,7 +181,7 @@ function clearFeLink() {
 
 
 
-
+//метод для загрузки пользователей которым выдан список
 function LoadUsersForCurrentList() {
     var formData = { id: ListActMainObject.ListId };
     var div = document.getElementById('UsersHasCurrentList_id');

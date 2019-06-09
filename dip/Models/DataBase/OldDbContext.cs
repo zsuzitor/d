@@ -1,4 +1,4 @@
-﻿#define debug
+﻿//#define debug
 
 using dip.Models.Domain;
 using System;
@@ -36,16 +36,14 @@ namespace dip.Models.DataBase
         /// <summary>
         /// Общий Метод для выгрузки данных из старых бд и  перенос их  в текущую бд
         /// </summary>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public static bool ReloadDataBase()
         {
 
             bool returnvalue = false;
 
-
             {
                 connection.Open();
-
 
                 //Pros
                 try
@@ -242,13 +240,10 @@ namespace dip.Models.DataBase
                             obj.FizVelSection = tmp;
                         }
                         obj.Pros = i["pros"].ToString().Trim();
-                        //obj.Pros = Pro.SortIds(obj.Pros);
 
                         obj.Spec = i["spec"].ToString().Trim();
-                        //obj.Spec = Spec.SortIds(obj.Spec);
 
                         obj.Vrem = i["vrem"].ToString().Trim();
-                        //obj.Vrem = Vrem.SortIds(obj.Vrem);
 
 
                         //
@@ -278,7 +273,6 @@ namespace dip.Models.DataBase
                             IDFE = Convert.ToInt32(i["IDFE"].ToString().Trim()),
                             Index = i["Index"].ToString().Trim().Replace("\u0002\u0003\u0004", "\n")
                         });
-
 
                     }
 
@@ -314,8 +308,6 @@ namespace dip.Models.DataBase
                 LoadStateObject("POLYFAZ");
 
                 LoadCharacteristicObject(Constants.FeObjectBaseCharacteristic);
-
-
 
 
 
@@ -626,8 +618,6 @@ namespace dip.Models.DataBase
                 connection.Close();
                 command.Dispose();
 
-
-
             }
 
             return returnvalue;
@@ -640,7 +630,7 @@ namespace dip.Models.DataBase
         /// <summary>
         /// Метод для загрузки состояний объекта
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">id состояния для которого нужно найти детей</param>
         public static void LoadStateObject(string id)
         {
             try
@@ -677,7 +667,7 @@ namespace dip.Models.DataBase
         /// <summary>
         /// Метод для загрузки характеристик объекта
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">id характеристики для которого нужно найти детей</param>
         public static void LoadCharacteristicObject(string id)
         {
             try
@@ -821,7 +811,7 @@ namespace dip.Models.DataBase
         /// <summary>
         /// Метод для добавления базовых дескрипторов для записей у которых их нет
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public static void FixOldFeRecord(ApplicationDbContext db)
         {
             command.CommandText = @"select FEObject_.IDFE as idfe1,FEAction_.IDFE as idfe2 from (select FEText.IDFE from dbo.FEText

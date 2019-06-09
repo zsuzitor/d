@@ -1,4 +1,4 @@
-
+;;;
 // ‘ункци€, обновл€ющий физические величины
 function changeFizVel(type)
 {
@@ -25,7 +25,7 @@ function changeFizVel(type)
 
 
 
-
+//функци€ при загрузке страницы
 $(document).ready(function () {
 
     var i = 0;
@@ -48,3 +48,5 @@ $(document).ready(function () {
     }
 });
 
+
+;;;;

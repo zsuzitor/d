@@ -27,7 +27,7 @@ namespace dip.Models.Domain
         /// <summary>
         ///  метод для получения базовых состояний(1 уровень)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>список базовых состояний</returns>
         public static List<StateObject> GetBase()
         {
             List<StateObject> res = new List<StateObject>();
@@ -39,7 +39,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// клонирование объекта без ссылок
         /// </summary>
-        /// <returns></returns>
+        /// <returns>новый объект-копия</returns>
         public StateObject CloneWithOutRef()
         {
             return new StateObject()
@@ -55,7 +55,7 @@ namespace dip.Models.Domain
         /// метод возвращает ближайших детей
         /// </summary>
         /// <param name="id">id записи для которой нужно вернуть детей</param>
-        /// <returns></returns>
+        /// <returns>список состояний</returns>
         public static List<StateObject> GetChild(string id)
         {
             List<StateObject> res = new List<StateObject>();
@@ -68,7 +68,7 @@ namespace dip.Models.Domain
         /// получение записи по id
         /// </summary>
         /// <param name="id">id записи</param>
-        /// <returns></returns>
+        /// <returns>запись найденная по id</returns>
         public static StateObject Get(string id)
         {
             StateObject res = null;
@@ -84,7 +84,6 @@ namespace dip.Models.Domain
         /// </summary>
         public override void ReLoadChild()
         {
-
             using (var db = new ApplicationDbContext())
                 this.Childs = db.StateObjects.Where(x1 => x1.Parent == this.Id).ToList();
         }
@@ -93,8 +92,8 @@ namespace dip.Models.Domain
         /// <summary>
         /// возвращает список родителей и их родителей от корня до ребенка, где ребенок ближайший родитель this
         /// </summary>
-        /// <param name="db_"></param>
-        /// <returns></returns>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список состояний</returns>
         public override List<StateObject> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<StateObject> res = new List<StateObject>();

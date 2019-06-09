@@ -6,11 +6,12 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class ListPhysInItemV
     {
         public ListPhysics Item { get; set; }
         public int Idlist { get; set; }
-        
+
         public ListPhysInItemV()
         {
 

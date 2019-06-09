@@ -6,11 +6,11 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class OnePhysInListsItemV
     {
         public FEText Item { get; set; }
         public int Idlist { get; set; }
-        
 
     }
 }

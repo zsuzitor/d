@@ -54,7 +54,7 @@ namespace dip.Models
         /// <summary>
         /// метод для получения id текущего пользователя
         /// </summary>
-        /// <returns></returns>
+        /// <returns>id пользователя</returns>
         public static string GetUserId()
         {
             return System.Web.HttpContext.Current.User.Identity.GetUserId();
@@ -64,7 +64,7 @@ namespace dip.Models
         /// метод для получения записи пользователя по id
         /// </summary>
         /// <param name="id">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>запись пользователя</returns>
         public static ApplicationUser GetUser(string id)
         {
             ApplicationUser res = null;
@@ -77,8 +77,8 @@ namespace dip.Models
         /// метод для получения записи пользователя по id
         /// </summary>
         /// <param name="id">id пользователя</param>
-        /// <param name="db">контекст</param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд </param>
+        /// <returns>запись пользователя</returns>
         public static ApplicationUser GetUser(string id, ApplicationDbContext db)
         {
             ApplicationUser res = null;
@@ -91,8 +91,8 @@ namespace dip.Models
         /// <summary>
         /// метод для получения всех пользователей системы
         /// </summary>
-        /// <param name="db_">контекст</param>
-        /// <returns></returns>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список пользователей</returns>
         public static List<ApplicationUser> GetAllUsers(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -106,7 +106,7 @@ namespace dip.Models
         /// <summary>
         /// метод для изменение записи пользователя
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user"> запись пользователя которую нужно изменить</param>
         public static void Edit(ApplicationUser user)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -138,7 +138,7 @@ namespace dip.Models
         /// <summary>
         /// метод для загрузки списков пользователя
         /// </summary>
-        /// <param name="db_"></param>
+        /// <param name="db_"> контекст бд</param>
         public void LoadListPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -153,7 +153,7 @@ namespace dip.Models
         /// <summary>
         ///метод для загрузки разрешенных ФЭ пользователя 
         /// </summary>
-        /// <param name="db_"></param>
+        /// <param name="db_">контекст бд</param>
         public void LoadPhysics(ApplicationDbContext db_ = null)
         {
             var db = db_ ?? new ApplicationDbContext();
@@ -171,7 +171,7 @@ namespace dip.Models
         /// <param name="iduser">id пользователя</param>
         /// <param name="idlist">id списка</param>
         /// <param name="hadList">был ли список у пользователя до вызова этого метода</param>
-        /// <returns></returns>
+        /// <returns>добавленный список</returns>
         //genered exception: NotFoundException
         public static ListPhysics AddList(string iduser, int idlist, out bool? hadList)
         {
@@ -188,7 +188,7 @@ namespace dip.Models
         /// </summary>
         /// <param name="idlist">id списка</param>
         /// <param name="hadList">был ли список у пользователя до вызова этого метода</param>
-        /// <returns></returns>
+        /// <returns>добавленный список</returns>
         //genered exception: NotFoundException
         public ListPhysics AddList(int idlist, out bool? hadList)
         {
@@ -279,7 +279,7 @@ namespace dip.Models
         /// <param name="iduser">id пользователя</param>
         /// <param name="idphys">id ФЭ</param>
         /// <param name="hadPhys">имел ли пользователь этот ФЭ до вызова этого метода</param>
-        /// <returns></returns>
+        /// <returns>добавленная запись ФЭ</returns>
         public static FEText AddPhysics(string iduser, int idphys, out bool? hadPhys)
         {
             hadPhys = null;
@@ -294,7 +294,7 @@ namespace dip.Models
         /// </summary>
         /// <param name="idphys">id ФЭ</param>
         /// <param name="hadPhys">имел ли пользователь этот ФЭ до вызова этого метода</param>
-        /// <returns></returns>
+        /// <returns>добавленная запись ФЭ</returns>
         public FEText AddPhysics(int idphys, out bool? hadPhys)
         {
             FEText phys = null;
@@ -359,8 +359,8 @@ namespace dip.Models
         /// метод для проверки записей которые разрешены для отображения для текущего пользователя
         /// </summary>
         /// <param name="idphys">список id фэ которые нужно проверить</param>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext">контекст http</param>
+        /// <returns>список выданных ФЭ из списка idphys</returns>
         public List<int> CheckAccessPhys(List<int> idphys, HttpContextBase HttpContext)
         {
             List<int> res = new List<int>();
@@ -402,8 +402,8 @@ namespace dip.Models
         /// метод для получения следующего разрешенного ФЭ
         /// </summary>
         /// <param name="id">id текущего ФЭ</param>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext">контекст http</param>
+        /// <returns>следующая выданныя запись ФЭ</returns>
         public FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -432,8 +432,8 @@ namespace dip.Models
         ///  метод для получения предыдущего разрешенного ФЭ
         /// </summary>
         /// <param name="id">id текущего ФЭ</param>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext">контекст http</param>
+        /// <returns>предыдущая выданныя запись ФЭ</returns>
         public FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -461,8 +461,8 @@ namespace dip.Models
         /// <summary>
         /// метод для получения первого разрешенного ФЭ
         /// </summary>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext">контекст http</param>
+        /// <returns>первая выданныя запись ФЭ</returns>
         public FEText GetFirstAccessPhysic(HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -486,8 +486,8 @@ namespace dip.Models
         /// <summary>
         /// метод для получения последнего разрешенного ФЭ
         /// </summary>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext">контекст http</param>
+        /// <returns>последняя выданныя запись ФЭ</returns>
         public FEText GetLastAccessPhysic(HttpContextBase HttpContext)
         {
             FEText res = null;
@@ -607,12 +607,6 @@ namespace dip.Models
 
             base.OnModelCreating(modelBuilder);//инициализация что бы роли и все остальное добавилось нормально
         }
-
-
-
-
-
-
 
     }
 }

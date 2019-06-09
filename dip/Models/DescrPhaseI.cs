@@ -39,8 +39,8 @@ namespace dip.Models
         /// <summary>
         /// метод для получения строки, содержащей id всех чекбоксов в фазе
         /// </summary>
-        /// <returns></returns>
-        public string GetListStr_()//TODO
+        /// <returns>строка со всеми чекбоксами в фазе</returns>
+        public string GetListStr_()
         {
             string res = "";
             if (!string.IsNullOrWhiteSpace(PhaseState))
@@ -80,7 +80,7 @@ namespace dip.Models
         /// метод для валидации
         /// </summary>
         /// <param name="a"></param>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public static bool Validation(DescrPhaseI a)
         {
             if (a != null)
@@ -99,10 +99,10 @@ namespace dip.Models
 
 
         /// <summary>
-        /// сортирует все id в фазе
+        /// метод сортирует все id в фазе
         /// </summary>
         /// <returns></returns>
-        public bool SortIds()//TODO
+        public bool SortIds()
         {
             bool res = true;
             this.PhaseState = PhaseCharacteristicObject.SortIds(this.PhaseState);

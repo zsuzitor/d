@@ -21,34 +21,36 @@ namespace dip.Controllers
     [RequireHttps]
     public class HomeController : Controller
     {
-        
+
         public ActionResult Index()
         {
-            
-            
-
-
-
             return View();
         }
 
 
-      
+
         public ActionResult About()
         {
             return View();
         }
 
+        /// <summary>
+        /// возаращает header веб-приложения
+        /// </summary>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult MainHeader()
         {
-             
 
             MainHeaderV res = new MainHeaderV();
-            res.SearchList= new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
+            res.SearchList = new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
 
             return PartialView(res);
         }
 
+        /// <summary>
+        /// возаращает footer веб-приложения
+        /// </summary>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult MainFooter()
         {
 

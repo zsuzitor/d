@@ -1,6 +1,6 @@
 ﻿;;;
 
-
+//событие изменения радио кнопок
 $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedStatus]')
 
     if (this.name.indexOf('change_state_radio') >= 0) {
@@ -44,6 +44,7 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
     }
 });
 
+//событие изменения чекбоксов
 $(document).on('change', ':checkbox', function () {
     if (this.name == 'change_phase_checbox') {
         loadCheckBoxChildObject(this);
@@ -65,7 +66,8 @@ $(document).on('change', ':checkbox', function () {
 
 
 
-
+//метод для загрузки детей чекбоксов
+//ch-чекбокс
 function loadCheckBoxChildObject(ch) {
     var valArr = ch.value.split('_');
     var type = valArr[3]

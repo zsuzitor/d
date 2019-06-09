@@ -1,7 +1,7 @@
 ﻿;;;
 
 
-
+//метод для загрузки списка избранного
 function loadFavouritePhysic(id) {
 
     document.getElementById('FavouritePhysic_div_but_id').innerHTML = '';
@@ -16,6 +16,7 @@ function loadFavouritePhysic(id) {
     });
 }
 
+//метод для загрузки ролей пользователя
 function loadRolesUser(id) {
     var div = document.getElementById('divRolesUser_id');
     var but = document.getElementById('butRolesUser_id');

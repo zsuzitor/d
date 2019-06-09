@@ -100,7 +100,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод для добавления лога в бд
         /// </summary>
-        /// <returns></returns>
+        /// <returns>список id параметров логов</returns>
         public List<int> AddLogDb()
         {
             List<int> res = new List<int>();

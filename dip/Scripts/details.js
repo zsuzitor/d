@@ -4,6 +4,7 @@
 
 var detailsCurrentLiMenuId = 'detailsUl_text';
 
+//событие загрузки страницы
 $(document).ready(function () {
     let newhref = '/Physic/Details/' + document.getElementById('inputIdCurrentPhysEffect').value;
     if (document.location.pathname != newhref)
@@ -12,7 +13,7 @@ $(document).ready(function () {
 });
 
 
-
+//метод для изменения границ элемента
 function hidenLastOnLiMenu() {
     var li = document.getElementById(detailsCurrentLiMenuId);
     li.style.borderBottom = '';
@@ -22,7 +23,7 @@ function hidenLastOnLiMenu() {
 
 }
 
-
+//метод для загрузки текстового описания записи ФЭ
 function detailsLoadText() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_text';
@@ -35,6 +36,7 @@ function detailsLoadText() {
 
 }
 
+//метод для загрузки дескрипторного(вход\выход) описания записи ФЭ
 function detailsLoadDescr() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_descr';
@@ -57,6 +59,7 @@ function detailsLoadDescr() {
 }
 
 
+//метод для загрузки дескрипторного(объект) описания записи ФЭ
 function detailsLoadObj() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_obj';
@@ -79,7 +82,7 @@ function detailsLoadObj() {
 }
 
 
-
+//метод для загрузки похожих записей
 function detailsLoadSimilar() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_similar';
@@ -104,7 +107,7 @@ function detailsLoadSimilar() {
 
 
 
-
+//метод для загрузки списков
 function detailsLoadLists() {
     hidenLastOnLiMenu();
     detailsCurrentLiMenuId = 'detailsUl_lists';
@@ -129,7 +132,7 @@ function detailsLoadLists() {
 
 
 
-
+//метод для изменения адреса страницы
 function GoPhysicId() {
     var newid = document.getElementById('inputForGoPhysic').value;
     if (newid) {

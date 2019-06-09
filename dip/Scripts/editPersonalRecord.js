@@ -1,6 +1,6 @@
 ﻿;;
 
-
+//метод для сохранения изменений учетной записи
 function editPersonalRecordSave() {
     var formData = {
         'user.Name': document.getElementById('NameUser').value,

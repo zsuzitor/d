@@ -119,7 +119,7 @@ namespace dip.Models.Domain
         /// Метод эквивалент "=" для datatype, но не включает id
         /// </summary>
         /// <param name="a">объект с новыми свойствами</param>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public bool Equal(FEText a)
         {
             this.Name = a.Name;
@@ -144,7 +144,7 @@ namespace dip.Models.Domain
         /// Метод эквивалент "=" для datatype,  включает id
         /// </summary>
         /// <param name="a">объект с новыми свойствами</param>
-        /// <returns></returns>
+        /// <returns>флаг равенства</returns>
         public bool EqualWithId(FEText a)
         {
             this.Equal(a);
@@ -178,7 +178,7 @@ namespace dip.Models.Domain
         /// <summary>
         /// получение Document для lucene - для добавления в индекс
         /// </summary>
-        /// <returns></returns>
+        /// <returns>объект документа</returns>
         public Document GetDocumentForLucene()
         {
             var document = new Document();
@@ -191,7 +191,7 @@ namespace dip.Models.Domain
         /// получение записи по id
         /// </summary>
         /// <param name="id">id записи</param>
-        /// <returns></returns>
+        /// <returns>запись FEText найденная по id</returns>
         public static FEText Get(int? id)
         {
             FEText res = null;
@@ -206,7 +206,7 @@ namespace dip.Models.Domain
         /// Метод для получения записи фэ если у текущего пользователю есть к нему доступ
         /// </summary>
         /// <param name="id">id фэ</param>
-        /// <param name="HttpContext"></param>
+        /// <param name="HttpContext">контекст http</param>
         /// <returns>запись ФЭ</returns>
         public static FEText GetIfAccess(int? id, HttpContextBase HttpContext)
         {
@@ -283,7 +283,7 @@ namespace dip.Models.Domain
                             //predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros.Contains(i));
                             predicateInscheCkbox = predicateInscheCkbox.And(x1 => x1.Pros == i || x1.Pros.StartsWith(i + " ")
                                         || x1.Pros.EndsWith(" " + i) || x1.Pros.Contains(" " + i + " "));
-                            
+
                         }
                         predicateIns = predicateIns.And(predicateInscheCkbox);
                     }
@@ -504,27 +504,10 @@ namespace dip.Models.Domain
         /// <param name="id">id записи фэ для которой ищем похожие</param>
         /// <param name="HttpContext"></param>
         /// <param name="count">количество схожих</param>
-        /// <returns></returns>
+        /// <returns>список схожих записей</returns>
         public static List<int> GetListSimilar(int id, HttpContextBase HttpContext, int count = -1)
         {
             List<int> res = new List<int>();
-
-            //этот запрос может возвращать дублирующиеся id тк сравниват не записи в целом а отдельно столбцы
-            //            var quer=$@"select top({count})IDFE
-            //from
-            //       semanticsimilaritytable (FETexts, *, {id} ) data
-            //            inner join dbo.FETexts
-            //            txt on data.matched_document_key = txt.IDFE
-            //order by data.score desc";
-
-            //            var quer = $@"
-            //select   [txt].IDFE
-            //from
-            //       semanticsimilaritytable (FETexts, *, {id}  ) as data
-            //            inner join dbo.FETexts as
-            //            txt on data.matched_document_key = [txt].IDFE
-            //order by [data].score desc
-            //";
 
 
 
@@ -559,7 +542,7 @@ order by data.score desc";
         /// </summary>
         /// <param name="userId">id пользователя</param>
         /// <param name="id">массив id фэ которые нужно получить</param>
-        /// <returns></returns>
+        /// <returns>список записей FEText найденных по id</returns>
         public static List<FEText> GetList(string userId, params int[] id)
         {
             var res = new List<FEText>();
@@ -582,7 +565,7 @@ order by data.score desc";
         /// </summary>
         /// <param name="HttpContext"></param>
         /// <param name="id">массив id фэ которые нужно получить</param>
-        /// <returns></returns>
+        /// <returns>список выданных записей FEText найденных по id</returns>
         public static List<FEText> GetListIfAccess(HttpContextBase HttpContext, params int[] id)
         {
             var res = new List<FEText>();
@@ -600,7 +583,7 @@ order by data.score desc";
         /// <summary>
         /// Метод валидации
         /// </summary>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public bool Validation()
         {
             if (string.IsNullOrWhiteSpace(Name) ||
@@ -636,7 +619,7 @@ order by data.score desc";
         /// <param name="objForms">начальные\конечные характеристики объекта</param>
         /// <param name="addImgs">байты для изображений</param>
         /// <param name="latexformulas">latex формулы</param>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public bool AddToDb(DescrSearchI[] forms, DescrObjectI[] objForms, List<byte[]> addImgs = null, string[] latexformulas = null)
         {
 
@@ -704,7 +687,7 @@ order by data.score desc";
         /// <param name="forms">входные\выходные дескрипторы</param>
         /// <param name="objForms">начальные\конечные характеристики объекта</param>
         /// <param name="latexformulas">latex формулы</param>
-        /// <returns></returns>
+        /// <returns>флаг успеха</returns>
         public bool ChangeDb(FEText newObj, List<int> deleteImg = null, List<byte[]> addImgs = null, List<DescrSearchI> forms = null,
             List<DescrObjectI> objForms = null, ChangeLatex[] latexformulas = null)
         {
@@ -821,7 +804,7 @@ order by data.score desc";
         ///  Добавляет новые изображения в бд,не загружает картинки, только добавляет в бд
         /// </summary>
         /// <param name="imgs">изображения</param>
-        /// <param name="db">контекст</param>
+        /// <param name="db">контекст бд</param>
         public void AddImages(List<byte[]> imgs, ApplicationDbContext db)
         {
             foreach (var i in imgs)
@@ -838,7 +821,7 @@ order by data.score desc";
         /// </summary>
         /// <param name="personId">id пользователя</param>
         /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <returns>true- если теперь зафоловлена пользователем</returns>
         public bool? ChangeFavourite(string personId, HttpContextBase HttpContext)
         {
             bool? res = null;
@@ -876,7 +859,7 @@ order by data.score desc";
         /// проверка на то добавил ли пользователь в избранное этот ФЭ
         /// </summary>
         /// <param name="personId">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>true-если зафоловлена пользователем</returns>
         public bool Favourited(string personId)
         {
             bool res = false;
@@ -891,8 +874,8 @@ order by data.score desc";
         /// проверка на то добавил ли пользователь в избранное этот ФЭ
         /// </summary>
         /// <param name="personId">id пользователя</param>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>true-если зафоловлена пользователем</returns>
         public bool Favourited(string personId, ApplicationDbContext db)
         {
             bool res = false;
@@ -914,7 +897,7 @@ order by data.score desc";
         /// </summary>
         /// <param name="id">id текущей записи</param>
         /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <returns>следующая разрешенная запись</returns>
         public static FEText GetNextAccessPhysic(int id, HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
@@ -927,7 +910,7 @@ order by data.score desc";
         /// </summary>
         /// <param name="id">id текущей записи</param>
         /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <returns>предыдущая разрешенная запись</returns>
         public static FEText GetPrevAccessPhysic(int id, HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
@@ -937,8 +920,8 @@ order by data.score desc";
         /// <summary>
         /// метод для получения первой разрешенной записи ФЭ
         /// </summary>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext"> контекст http</param>
+        /// <returns>первая разрешенная запись</returns>
         public static FEText GetFirstAccessPhysic(HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
@@ -948,8 +931,8 @@ order by data.score desc";
         /// <summary>
         /// метод для получения последней разрешенной записи ФЭ
         /// </summary>
-        /// <param name="HttpContext"></param>
-        /// <returns></returns>
+        /// <param name="HttpContext"> контекст http</param>
+        /// <returns>последняя разрешенная запись</returns>
         public static FEText GetLastAccessPhysic(HttpContextBase HttpContext)
         {
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());

@@ -40,7 +40,7 @@ namespace dip.Models
         /// <summary>
         /// метод для проверки является ли ActionId - параметрическим
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true-если параметрическая</returns>
         public bool? CheckParametric()
         {
             this.Parametric = AllAction.CheckParametric(this.ActionId);
@@ -63,7 +63,7 @@ namespace dip.Models
         /// метод для проверки на null
         /// </summary>
         /// <param name="a"></param>
-        /// <returns></returns>
+        /// <returns>true-если что то в объекте имеет значение null</returns>
         public static bool IsNull(DescrSearchI a)
         {
             if (a == null)
@@ -91,8 +91,8 @@ namespace dip.Models
         /// <summary>
         /// валидация если флаг валидации==false
         /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+        /// <param name="a">объект валидации</param>
+        /// <returns>флаг успеха</returns>
         public static bool ValidationIfNeed(DescrSearchI a)
         {
             return a?.Valide ?? DescrSearchI.Validation(a);
@@ -101,8 +101,8 @@ namespace dip.Models
         /// <summary>
         /// валидация
         /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
+        /// <param name="a">объект валидации</param>
+        /// <returns>флаг успеха</returns>
         public static bool Validation(DescrSearchI a)
         {
             bool res = true;
@@ -124,7 +124,7 @@ namespace dip.Models
                 a.ListSelectedPros = NullToEmpryStr(a?.ListSelectedPros);
                 a.ListSelectedSpec = NullToEmpryStr(a?.ListSelectedSpec);
                 a.ListSelectedVrem = NullToEmpryStr(a?.ListSelectedVrem);
-                
+
                 a.ListSelectedPros = Pro.SortIds(a?.ListSelectedPros);
                 a.ListSelectedSpec = Spec.SortIds(a?.ListSelectedSpec);
                 a.ListSelectedVrem = Vrem.SortIds(a?.ListSelectedVrem);

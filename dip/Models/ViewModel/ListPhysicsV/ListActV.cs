@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ListPhysicsV
 {
+    //класс-ViewModel
     public class ListActV
     {
         public List<ListPhysics> Lists { get; set; }

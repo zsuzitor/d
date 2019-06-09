@@ -1,13 +1,15 @@
 ﻿;;;
+////функция удаления ссылки на пользователя
 function changeUserId() {
     document.getElementById('idCurrentUser_id').innerHTML = '';
 }
 
-
+//функция удаления ссылки на пользователя
 function clearLinkUser() {
     document.getElementById('idCurrentUser_id').innerHTML = '';
 }
 
+//функция для вывода на экран ссылки на пользователя
 function showLinkCurUser() {
     let id = document.getElementById('userIdInput_id').value;
     if (id) {
@@ -20,7 +22,7 @@ function showLinkCurUser() {
 }
 
 
-
+//функция для добавления роли пользователю
 function AddRole() {
     var formData = {
         userId: document.getElementById('userIdInput_id').value,
@@ -37,6 +39,7 @@ function AddRole() {
 }
 
 
+//функция для удаления роли у пользователя
 function RemoveRole() {
     var formData = {
         userId: document.getElementById('userIdInput_id').value,

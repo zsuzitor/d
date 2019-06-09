@@ -38,6 +38,10 @@ namespace dip.Models
         {
 
         }
+
+        /// <summary>
+        /// метод установки пустых вместо null массивов
+        /// </summary>
         public void SetNotNullArray()
         {
             MassAddActionId = MassAddActionId ?? new SaveDescriptionEntry[0];
@@ -67,7 +71,7 @@ namespace dip.Models
         /// </summary>
         /// <param name="currentActionId"> текущее ActionId</param>
         /// <param name="currentActionParametric"> выбрано ли параметрическое Action</param>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddFizVels(string currentActionId, bool? currentActionParametric, ApplicationDbContext db)
         {
             if (string.IsNullOrWhiteSpace(currentActionId) || currentActionId.Contains("VOZ0"))
@@ -110,8 +114,6 @@ namespace dip.Models
                         i2.ParentId = fizVelId;
                 }
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
@@ -119,10 +121,9 @@ namespace dip.Models
         /// <summary>
         /// метод для редактирования FizVels
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditFizVels(ApplicationDbContext db)
         {
-            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditFizVels)
             {
                 var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -133,15 +134,13 @@ namespace dip.Models
 
                 db.SaveChanges();
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
         /// <summary>
         /// метод для добавления параметрических FizVels
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddParamFizVels(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -175,11 +174,9 @@ namespace dip.Models
         /// <summary>
         /// метод для редактирования параметрических FizVels
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditParamFizVels(ApplicationDbContext db)
         {
-            //var db = db_ ?? new ApplicationDbContext();
-
             foreach (var i in MassEditParamFizVels)
             {
                 var fizVel = db.FizVels.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -190,8 +187,6 @@ namespace dip.Models
                 db.SaveChanges();
             }
 
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
@@ -199,7 +194,7 @@ namespace dip.Models
         /// метод для добавления Pro
         /// </summary>
         /// <param name="currentActionId">текущее ActionId </param>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddPro(string currentActionId, ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -247,7 +242,7 @@ namespace dip.Models
         /// <summary>
         /// метод для редактирования Pro
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditPro(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -260,8 +255,6 @@ namespace dip.Models
                     i.Id = null;
                 db.SaveChanges();
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
@@ -269,11 +262,9 @@ namespace dip.Models
         /// метод для добавления Spec
         /// </summary>
         /// <param name="currentActionId">текущее ActionId</param>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddSpec(string currentActionId, ApplicationDbContext db)
         {
-            // var db = db_ ?? new ApplicationDbContext();
-
             int last = 0;
             var specs = db.Specs.Where(x1 => x1.Id.Contains(currentActionId + "_SPEC")).ToList();
             if (specs.Count > 0)
@@ -330,8 +321,6 @@ namespace dip.Models
                     i.Id = null;
                 db.SaveChanges();
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
@@ -339,10 +328,9 @@ namespace dip.Models
         /// метод для добавления Vrem
         /// </summary>
         /// <param name="currentActionId">текущее ActionId</param>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddVrem(string currentActionId, ApplicationDbContext db)//db_ = null
         {
-            //var db = db_ ?? new ApplicationDbContext();
 
             int last = 0;
             var vrems = db.Vrems.Where(x1 => x1.Id.Contains(currentActionId + "_VREM")).ToList();
@@ -381,17 +369,14 @@ namespace dip.Models
                     }
                 }
             }
-            //if (db_ == null)
-            // db.Dispose();
         }
 
         /// <summary>
         /// метод для редактирования Vrem
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditVrem(ApplicationDbContext db)//db_ = null
         {
-            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditVrems)
             {
                 var act = db.Vrems.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -401,18 +386,15 @@ namespace dip.Models
                     i.Id = null;
                 db.SaveChanges();
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
         /// <summary>
         /// метод для редактирования ActionId
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditActionId(ApplicationDbContext db)//db_ = null
         {
-            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassEditActionId)
             {
                 var act = db.AllActions.FirstOrDefault(x1 => x1.Id == i.Id);
@@ -422,8 +404,6 @@ namespace dip.Models
                     i.Id = null;
                 db.SaveChanges();
             }
-            //if (db_ == null)
-            //db.Dispose();
         }
 
 
@@ -432,12 +412,11 @@ namespace dip.Models
         /// </summary>
         /// <param name="lastAllActionId">последнее добавленное</param>
         /// <param name="currentActionId">текущее ActionId</param>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>true- если action параметрический</returns>
         public bool? AddActionId(int lastAllActionId, ref string currentActionId, ApplicationDbContext db)//db_ = null
         {
             bool? currentActionParametric = null;
-            //var db = db_ ?? new ApplicationDbContext();
             foreach (var i in MassAddActionId)//возможно вытащить из цикла тк сейчас нельзя добавить больше 1
             {
                 var allAction = new Models.Domain.AllAction() { Name = i.Text, Parent = "ALLACTIONS", Parametric = i.Parametric, Id = ("VOZ" + ++lastAllActionId) };
@@ -464,8 +443,6 @@ namespace dip.Models
                     i2.Id = i2.Id.Replace("VOZ0", currentActionId);
                 }
             }
-            //if (db_ == null)
-            // db.Dispose();
             return currentActionParametric;
         }
 
@@ -474,8 +451,8 @@ namespace dip.Models
         /// <summary>
         /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список записей блокирующих удаление</returns>
         public List<int> DeleteFizVels(ApplicationDbContext db)//db_ = null
         {
             if (this.MassDeletedFizVels.Length == 0)
@@ -484,14 +461,13 @@ namespace dip.Models
             var list = db.FizVels.Where(x1 => fizstr.FirstOrDefault(x2 => x2 == x1.Id || x2 == x1.Parent) != null).ToList();
             return FizVel.TryDelete(db, list);
 
-
         }
 
         /// <summary>
         /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список  записей блокирующих удаление</returns>
         public List<int> DeleteActionId(ApplicationDbContext db)//db_ = null
         {
             List<int> blockFe = new List<int>();
@@ -505,8 +481,8 @@ namespace dip.Models
         /// <summary>
         /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список  записей блокирующих удаление</returns>
         public List<int> DeleteVrem(ApplicationDbContext db)//db_ = null
         {
             List<string> MassDeletedVremsS = MassDeletedVrems.Select(x1 => x1.Id).ToList();
@@ -518,8 +494,8 @@ namespace dip.Models
         /// <summary>
         /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список  записей блокирующих удаление</returns>
 
         public List<int> DeleteSpec(ApplicationDbContext db)//db_ = null
         {
@@ -533,8 +509,8 @@ namespace dip.Models
         /// <summary>
         /// метод который проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список  записей блокирующих удаление</returns>
         public List<int> DeletePros(ApplicationDbContext db)//db_ = null
         {
             List<string> MassDeletedProsS = MassDeletedPros.Select(x1 => x1.Id).ToList();

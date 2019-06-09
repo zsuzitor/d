@@ -2,7 +2,7 @@
 
 
 
-
+//метод для отображения присвоенных списков
 function ShowAssignList() {
     document.getElementById('AssignsList_id').style.display = 'block';
 
@@ -22,9 +22,9 @@ function ShowAssignList() {
     });
 
 
-
 }
 
+//метод для отображения присвоенных записей ФЭ
 function ShowAssignPhys() {
     document.getElementById('AssignsList_id').style.display = 'none';
 
@@ -44,6 +44,9 @@ function ShowAssignPhys() {
 }
 
 
+//метод для изменения визуального отображения кнопки
+//idna-id кнопки списка
+//ida-id кнопки ФЭ
 function changeTypeButton(idna, ida) {
     var butlist = document.getElementById(idna);
     butlist.classList.remove('btn-default');
@@ -54,7 +57,7 @@ function changeTypeButton(idna, ida) {
     butphys.classList.remove('btn-primary');
 }
 
-
+//метод для того что бы сделать видимым блок для присвоения списков
 function ShowNotAssignList() {
     changeTypeButton('buttonChangeViewNHList', 'buttonChangeViewNHPhys');
     var butlist = document.getElementById('ForAssignsList_id');
@@ -64,6 +67,7 @@ function ShowNotAssignList() {
 
 }
 
+//метод для того что бы сделать видимым блок для присвоения записей ФЭ
 function ShowNotAssignPhys() {
     changeTypeButton('buttonChangeViewNHPhys', 'buttonChangeViewNHList');
     var butlist = document.getElementById('ForAssignsPhys_id');
@@ -74,7 +78,7 @@ function ShowNotAssignPhys() {
 
 }
 
-
+//метод для присвоения списка пользователю
 function AssignListToUser() {
 
     var formData = { iduser: document.getElementById('currentUserId_id').value, idlist: document.getElementById('newAssignList').value };
@@ -97,6 +101,7 @@ function AssignListToUser() {
     });
 }
 
+//метод для присвоения записи ФЭ пользователю
 function AssignPhysicToUser() {
     var formData = { iduser: document.getElementById('currentUserId_id').value, idphys: document.getElementById('newAssignPhys').value };
     if (!formData.idphys) {
@@ -119,6 +124,7 @@ function AssignPhysicToUser() {
 }
 
 
+//метод для отображения ссылки на запись ФЭ
 function ShowLinkFetext() {
     let link = '/Physic/Details/';
     let idfe = document.getElementById("newAssignPhys").value;
@@ -127,10 +133,13 @@ function ShowLinkFetext() {
     if (idfe)
         document.getElementById('divLinkCurrFetext_id').innerHTML = tegA;
 }
+
+//метод для удаления ссылки на запись ФЭ
 function clearFeLink() {
     document.getElementById('divLinkCurrFetext_id').innerHTML = '';
 }
 
+//метод для отображения ссылки на список ФЭ
 function ShowLinkListFe() {
     let link = '/ListPhysics/ListAct?currentListId=';
     let idfe = document.getElementById("newAssignList").value;
@@ -140,11 +149,12 @@ function ShowLinkListFe() {
         document.getElementById('divLinkCurrListFe_id').innerHTML = tegA;
 }
 
+//метод для удаления ссылки на список
 function clearListFeLink() {
     document.getElementById('divLinkCurrListFe_id').innerHTML = '';
 }
 
-
+//метод для отображения ссылки на страницу ФЭ
 function ShowLinkFetextExist() {
     let link = '/Physic/Details/';
     let idfe = document.getElementById("AssignPhysForDel").value;
@@ -153,10 +163,13 @@ function ShowLinkFetextExist() {
     if (idfe)
         document.getElementById('divLinkCurrFetextExist_id').innerHTML = tegA;
 }
+
+//метод для удаления ссылки на ФЭ
 function clearFeExistLink() {
     document.getElementById('divLinkCurrFetextExist_id').innerHTML = '';
 }
 
+//метод для отображения ссылки на список 
 function ShowLinkListFeExist() {
     let link = '/ListPhysics/ListAct?currentListId=';
     let idfe = document.getElementById("AssignListForDel").value;
@@ -166,11 +179,12 @@ function ShowLinkListFeExist() {
         document.getElementById('divLinkCurrListFeExist_id').innerHTML = tegA;
 }
 
+//метод для очистки ссылки на список
 function clearListFeLinkExist() {
     document.getElementById('divLinkCurrListFeExist_id').innerHTML = '';
 }
 
-
+//метод для удаления списка у пользователя
 function removeListFromUser(id) {
     if (!id)
         id = document.getElementById('AssignListForDel').value;
@@ -194,6 +208,7 @@ function removeListFromUser(id) {
 
 }
 
+//метод для удаления записи ФЭ у пользователя
 function removePhysFromUser(id) {
     if (!id)
         id = document.getElementById('AssignPhysForDel').value;
@@ -217,12 +232,12 @@ function removePhysFromUser(id) {
 }
 
 
-
+//метод для изменения id текущего пользователя
 function ListUsersShortDataButton(id) {
     document.getElementById('currentUserId_id').value = id;
 }
 
-
+//метод для загрузки всех пользователей
 function LoadAllUsers() {
     var formData = {};
     var div = document.getElementById('ListAllUsers_id');

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.SearchV
 {
+    //класс-ViewModel
     public class TextSearchV
     {
 
@@ -12,7 +13,6 @@ namespace dip.Models.ViewModel.SearchV
         public List<int> ListPhysId { get; set; }
         public bool? ShowBtLoad { get; set; }
         public bool Admin { get; set; }
-
 
 
         public TextSearchV()

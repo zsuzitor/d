@@ -4,6 +4,7 @@
 
 var TextSearchObj = {};
 
+//метод события изменения радио кнопки
 $(document).on('change', ':radio', function () {
 
     if (this.name == 'searchTypeRadio') {
@@ -59,7 +60,7 @@ $(document).on('change', ':radio', function () {
 });
 
 
-
+//метод загрузки дополнительных записей
 function loadNewFT() {
     TextSearchObj.curTextS = document.getElementById('TextForSearch_id').value;
 
@@ -82,6 +83,8 @@ function loadNewFT() {
 
 
 var block_load = false;
+
+//метод загрузки дополнительных записей
 function loadMoreFT() {
 
     //если вернулся пустой список то возвращать статус серва с ошибкой, блокировать множественное нажатие кнопки
@@ -134,7 +137,7 @@ function loadMoreFT() {
     }
 }
 
-
+//метод для перезагрузки семантической записи ФЭ
 function ReloadSemantic() {
     goAjaxRequest({
         url: '/Physic/ReloadSemanticRecord',

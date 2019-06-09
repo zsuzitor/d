@@ -6,10 +6,10 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class GetPhaseObjectV
     {
         public List<PhaseCharacteristicObject> List { get; set; }
-
         public string Type { get; set; }
 
 

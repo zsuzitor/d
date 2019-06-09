@@ -6,16 +6,10 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class DescriptionInputV
     {
-        //ActionId будет 1 и тоже
-        //public List<DescriptionForm> InputForm { get; set; }
-        //public List<DescriptionForm> OutpForm { get; set; }
-
-        //public DescrSearchI InputFormData { get; set; }
-        //public DescrSearchI OutputFormData { get; set; }
-
-            public List<DescriptionFormWithData> InputForms{ get; set; }
+        public List<DescriptionFormWithData> InputForms { get; set; }
         public List<DescriptionFormWithData> OutpForms { get; set; }
 
         public int CountInput { get; set; }
@@ -24,10 +18,8 @@ namespace dip.Models.ViewModel.ActionsV
 
         public DescriptionInputV()
         {
-            InputForms = new List<DescriptionFormWithData>() ;
+            InputForms = new List<DescriptionFormWithData>();
             OutpForms = new List<DescriptionFormWithData>();
-            //InputFormData = null;
-            //OutputFormData = null;
 
             ActionParametricIds = null;
         }
@@ -38,12 +30,11 @@ namespace dip.Models.ViewModel.ActionsV
         public void SetAllParametricAction()
         {
             //ActionId будет 1 и тоже, поэтому берем любое
-            if (InputForms != null&& InputForms.Count>0)
-                ActionParametricIds = InputForms[0].Form.GetAllParametricAction(); 
-            
-            else if (OutpForms != null && OutpForms.Count > 0)
-                ActionParametricIds =OutpForms[0].Form.GetAllParametricAction();
+            if (InputForms != null && InputForms.Count > 0)
+                ActionParametricIds = InputForms[0].Form.GetAllParametricAction();
 
+            else if (OutpForms != null && OutpForms.Count > 0)
+                ActionParametricIds = OutpForms[0].Form.GetAllParametricAction();
 
         }
 

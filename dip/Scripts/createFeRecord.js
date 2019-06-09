@@ -4,6 +4,7 @@
 
 var countLatex = 0;
 
+//метод для добавления нового поля latex
 function addLatex() {
     var strappend = '<div id="latexImgIdDiv_' + countLatex + '"><input class="form-control" id="latexImgId_' + countLatex
         + '" type="text"/><button class="btn btn-default" onclick="deleteLatex(' + countLatex + ')">Удалить</button></div>';
@@ -13,11 +14,13 @@ function addLatex() {
 
 }
 
-
+//метод для удаления latex
 function deleteLatex(num) {
     $('#latexImgIdDiv_' + num).remove();
 }
 
+
+//метод для сохранения изменения записи ФЭ
 function CreatePhysFunc() {
 
     data_descr_search.function_trigger = function () {

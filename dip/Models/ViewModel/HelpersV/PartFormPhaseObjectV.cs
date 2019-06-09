@@ -6,9 +6,9 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class ListPhaseObjectV
     {
-
         public List<PhaseCharacteristicObject> Phases { get; set; }
         public string Type { get; set; }
         public string Param { get; set; }
@@ -19,7 +19,5 @@ namespace dip.Models.ViewModel.HelpersV
             Type = "";
             Param = "";
         }
-
-
     }
 }

@@ -27,8 +27,8 @@ namespace dip.Models
         /// <summary>
         /// метод для сохранения
         /// </summary>
-        /// <param name="commited"></param>
-        /// <returns></returns>
+        /// <param name="commited">true-если изменения сохранены</param>
+        /// <returns>список  записей блокирующих удаление</returns>
         public List<int> Save(out bool commited)
         {
             commited = false;
@@ -65,8 +65,8 @@ namespace dip.Models
         /// <summary>
         /// метод для получения детей характеристик
         /// </summary>
-        /// <param name="mass"></param>
-        /// <param name="id"></param>
+        /// <param name="mass">массив характеристик из которых выберутся все дети и для них загрузится древо</param>
+        /// <param name="id">id характеристики для которой нужно древо</param>
         /// <returns></returns>
         public static List<SaveDescriptionObjectEntry> AllChildsCharacObj(List<SaveDescriptionObjectEntry> mass, string id)
         {
@@ -84,7 +84,7 @@ namespace dip.Models
         /// <summary>
         /// метод для добавления характеристик
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void AddCharacteristic(ApplicationDbContext db)
         {
             Dictionary<string, List<SaveDescriptionObjectEntry>> MainTree = new Dictionary<string, List<SaveDescriptionObjectEntry>>();
@@ -142,7 +142,7 @@ namespace dip.Models
         /// <summary>
         /// метод для редактирования характеристик
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditCharacteristic(ApplicationDbContext db)
         {
             foreach (var i in this.MassEditCharacteristic)
@@ -160,7 +160,7 @@ namespace dip.Models
         /// <summary>
         /// метод для редактирования состояний
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         public void EditState(ApplicationDbContext db)
         {
             //var db = db_ ?? new ApplicationDbContext();
@@ -174,16 +174,14 @@ namespace dip.Models
                     db.SaveChanges();
                 }
             }
-            //if (db_ == null)
-            //    db.Dispose();
         }
 
 
         /// <summary>
         /// метод для удаления характеристик
         /// </summary>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список записей блокирующих удаление</returns>
         public List<int> DeleteCharacteristic(ApplicationDbContext db)
         {
             List<PhaseCharacteristicObject> fordel = new List<PhaseCharacteristicObject>();

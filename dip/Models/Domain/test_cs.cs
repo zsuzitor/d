@@ -30,64 +30,9 @@ namespace dip.Models.Domain
 {
     enum RolesProject { NotApproveUser, user,subscriber, admin };//vip
     //var a = (RolesProject)Enum.Parse(typeof(RolesProject), "", true);
-
-
-
-    public class test
-    {
-        //[Index("PK_FeTexts_cons", IsClustered = true, IsUnique = true)]//,IsClustered =true
-        public int Id { get; set; }
-
-        public string levName { get; set; }
-        public string levText { get; set; }
-        public string levTextInp { get; set; }
-        public string levTextOut { get; set; }
-        public string levTextObj { get; set; }
-        public string levTextApp { get; set; }
-        public string levTextLit { get; set; }
-
-
-        public test()
-        {
-
-        }
-    }
-
-
-   
-    
-
-
-
-    //аналог pro\spec\vrem но для объекта(чекбоксы)
-    //public class PhaseCharacteristicObject : ItemFormCheckbox<PhaseCharacteristicObject>
-    //{
-       
-    //}
-
-
-    
-
-
-    
-
-    //хранит только данные для заполнения в дескрипторной форме, саму форму не хранит
-   
-
-
-
-
     
 
    
 
    
-
-
-
-
-   
-
-    
-
 }

@@ -26,8 +26,8 @@ namespace dip.Models.Domain
         /// <summary>
         /// возвращает список от родителя к ребенку (последний элемент -ближайший родитель того к  которому применили)
         /// </summary>
-        /// <param name="db_"></param>
-        /// <returns></returns>
+        /// <param name="db_">контекст бд</param>
+        /// <returns>список от родителя к ребенку</returns>
         public override List<Vrem> GetParentsList(ApplicationDbContext db_ = null)
         {
             List<Vrem> res = new List<Vrem>();
@@ -49,8 +49,8 @@ namespace dip.Models.Domain
         ///  метод возвращает список ВСЕХ родителей(и их родителей) для id содержащихся в str
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <param name="db">контекст бд</param>
+        /// <returns>список id всех родителей</returns>
         public static List<string> GetParentListForIds(string str, ApplicationDbContext db)
         {
             var lstId = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -69,7 +69,7 @@ namespace dip.Models.Domain
         ///  метод который из строки только детей формирует строку со всеми(дети+родители) 
         /// </summary>
         /// <param name="str">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка дети+родители</returns>
         public static string GetAllIdsFor(string str)
         {
             List<Vrem> mainLst = new List<Vrem>();
@@ -91,7 +91,7 @@ namespace dip.Models.Domain
         /// метод для получения детей записи
         /// </summary>
         /// <param name="id">id записи</param>
-        /// <returns></returns>
+        /// <returns>список vrem-детей записи id которой передано в параметре</returns>
         public static List<Vrem> GetChild(string id)
         {
             List<Vrem> res = new List<Vrem>();
@@ -114,9 +114,9 @@ namespace dip.Models.Domain
         /// <summary>
         ///  метод проверяет есть ли фэ которые используют что то из списка(грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         /// <param name="list">список для удаления</param>
-        /// <returns></returns>
+        /// <returns>список id которые блокируют удаление</returns>
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<Vrem> list)//TODO вынести
         {
             if (list.Count == 0)
@@ -135,9 +135,9 @@ namespace dip.Models.Domain
         /// <summary>
         /// метод проверяет есть ли фэ которые используют что то из списка(не грузит детей и тд) и если хотя бы 1 итем блокируется не удаляет ничего
         /// </summary>
-        /// <param name="db"></param>
+        /// <param name="db">контекст бд</param>
         /// <param name="list">записи для удаления</param>
-        /// <returns></returns>
+        /// <returns>список id которые блокируют удаление</returns>
         public static List<int> TryDelete(ApplicationDbContext db, List<Vrem> list)//TODO вынести
         {
 
@@ -165,7 +165,7 @@ namespace dip.Models.Domain
         ///  метод для удаления прямых родителей если и родитель и ребенок есть в строке. вернет строку содержащую только id записей у которых нет детей
         /// </summary>
         /// <param name="strIds">строка с id, где id разделенны ' '</param>
-        /// <returns></returns>
+        /// <returns>строка без прямых родителей(строка содержащуя только id записей у которых нет детей)</returns>
         public static string DeleteNotChildCheckbox(string strIds)
         {
             string res = "";

@@ -4,7 +4,7 @@
 var block_load = false;
 
 
-
+//метод для первоначальных настроек формы перед отправкой
 function GoFirstDescrSearch() {
     document.getElementById('div_search_ft_but_id').style.display = 'none';
     data_descr_search.function_trigger = goSave;
@@ -13,7 +13,7 @@ function GoFirstDescrSearch() {
 
 
 
-
+//метод для отправки формы сохранения дескрипторного  поиска
 function goSave() {
     var twoObject = document.getElementById('changeObjectCheckbox').checked;
 
@@ -46,9 +46,7 @@ function goSave() {
 
 
 
-
-
-//------------------------------------------------------
+//метод для отображения\сокрытия дескрипторной формы
 //action:true- показать
 function showHideDescrForm(action) {
     var form = document.getElementById('DescriptionFormMainAll');
@@ -72,11 +70,13 @@ function showHideDescrForm(action) {
     }
 
 
-
+    //метод для отображения дескрипторной формы
     function showForm() {
         form.style.display = 'block';
         but.innerHTML = 'Скрыть форму';
     }
+
+    //метод длясокрытия дескрипторной формы
     function hideForm() {
         form.style.display = 'none';
         but.innerHTML = 'Показать форму';
@@ -84,8 +84,7 @@ function showHideDescrForm(action) {
 }
 
 
-//------------------------------------------------------
-
+//метод для очистки формы
 function clearForm() {
     var i = 0;
     var inpdiv = document.getElementById('actionI' + i);
@@ -146,7 +145,7 @@ function clearForm() {
 
 
 
-
+//метод для предварительной настройки перед дополнительной загрузкой записей ФЭ
 function loadMoreFTBut() {
     data_descr_search.function_trigger = loadMoreFT;
     Go_next_step();
@@ -154,7 +153,7 @@ function loadMoreFTBut() {
 
 
 
-
+//метод для дополнительной загрузки записей ФЭ
 function loadMoreFT() {
 
     //если вернулся пустой список то возвращать статус серва с ошибкой, блокировать множественное нажатие кнопки

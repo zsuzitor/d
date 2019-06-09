@@ -17,9 +17,9 @@ namespace dip.Models
         /// <summary>
         /// метод для преобразования HttpPostedFileBase в байты
         /// </summary>
-        /// <param name="uploadImage"></param>
-        /// <returns></returns>
-        public static List<byte[]> Get_photo_post( HttpPostedFileBase[] uploadImage)//this Image a,
+        /// <param name="uploadImage">изображения</param>
+        /// <returns>список массивов байтов</returns>
+        public static List<byte[]> Get_photo_post(HttpPostedFileBase[] uploadImage)//this Image a,
         {
             List<byte[]> res = new List<byte[]>();
             if (uploadImage != null)

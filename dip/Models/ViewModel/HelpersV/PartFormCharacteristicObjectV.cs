@@ -6,19 +6,16 @@ using System.Web;
 
 namespace dip.Models.ViewModel.HelpersV
 {
+    //класс-ViewModel
     public class PartFormCharacteristicObjectV
     {
-
         public CharacteristicObject Characteristic { get; set; }
         public string Type { get; set; }
-       // public string Param { get; set; }
 
 
         public PartFormCharacteristicObjectV()
         {
 
         }
-
-
     }
 }

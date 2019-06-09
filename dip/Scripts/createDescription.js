@@ -1,13 +1,10 @@
 ﻿;;;
 //mainObjEdit.massOldValue
 var mainObjEdit = {
-    //newAction: false,
-    //newFizVel: false,
-    //newParamFizVel: false,
+    
     curentActionId: '',
     curentFizVelId: '',
     parametricAction: false,
-    //parametricActionNew: false,
 
     maxNewFizVelId: 1,
     maxNewParamFizVelId: 1,
@@ -39,7 +36,7 @@ var mainObjEdit = {
 
 
 
-
+//событие изменения радиобаттонов
 $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedStatus]')
 
     switch (this.name) {
@@ -65,15 +62,11 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
                         var data = req.split('<hr />');
                         document.getElementById('fizVel').innerHTML = data[1];
 
-
                         document.getElementById('prosGroup').innerHTML = data[2];
-
 
                         document.getElementById('specGroup').innerHTML = data[3];
 
-
                         document.getElementById('vremGroup').innerHTML = data[4];
-
 
                         document.getElementById('fizVelGroup_all').style.display = 'block';
 
@@ -113,7 +106,6 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
                     SetParametricalType(false);
 
                 }
-
             }
             document.getElementById('parametricFizVel_all').style.display = 'none';
 
@@ -145,7 +137,7 @@ $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedS
 
 });
 
-
+//событие изменения чекбоксов
 $(document).on('change', ':checkbox', function () {
 
     switch (this.name) {
@@ -181,11 +173,9 @@ $(document).on('change', ':checkbox', function () {
         case 'changeTypeParamActionName':
             if (this.checked) {
                 SetParametricalType(true);
-
             }
             else {
                 SetParametricalType(false);
-
             }
             break;
 
@@ -241,7 +231,8 @@ $(document).on('change', ':checkbox', function () {
 
 
 
-
+//функция изменения создаваемого воздействия на параметрическое или непараметрическое
+//set-если true то установить параметрическим
 function SetParametricalType(set) {
     if (set) {
         document.getElementById('prosGroup_all').style.display = 'none';
@@ -273,7 +264,8 @@ function SetParametricalType(set) {
 
 
 
-
+//функция для проверки является ли id- id параметрического воздействия
+//return-bool-true-если параметрическое
 function checkParametricAction(id) {
     if (id == 'VOZ0') {
         if (document.getElementById('changeTypeParamActionId').checked)
@@ -281,7 +273,7 @@ function checkParametricAction(id) {
     }
     else {
         var checkParametrics = document.getElementById('parametric_action_or_not').value.split(' ');
-        for (var i = 0; i < checkParametrics.length; ++i) {//todo вынести в фукнцию
+        for (var i = 0; i < checkParametrics.length; ++i) {
 
             if (checkParametrics[i] == id) {
                 return true;
@@ -292,7 +284,9 @@ function checkParametricAction(id) {
 }
 
 
-
+//метод для загрузки детей чекбокса
+//ch-нажатый чекбокс
+//meth-метод контроллера
 function loadCheckBoxChild(ch, meth) {
 
     var div = document.getElementById((ch.value + "_childs"));
@@ -317,7 +311,10 @@ function loadCheckBoxChild(ch, meth) {
 
 
 
-//прячем
+//метод который скрывает newdiv и показывает oldDiv, устанавливает текст блока (changeBut)
+//newdiv-блок
+//oldDiv-блок
+//changeBut-блок для текста
 function ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut) {
     newdiv.style.display = 'none';
     oldDiv.style.display = 'block';
@@ -325,6 +322,10 @@ function ReplaceDisplayNoneNew(newdiv, oldDiv, changeBut) {
         changeBut.innerHTML = 'Добавить новый';
 }
 
+//метод который показывает newdiv и скрывает oldDiv, устанавливает текст блока (changeBut)
+//newdiv-блок
+//oldDiv-блок
+//changeBut-блок для текста
 function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
     newdiv.style.display = 'block';
     oldDiv.style.display = 'none';
@@ -333,12 +334,12 @@ function ReplaceDisplayNoneOld(newdiv, oldDiv, changeBut) {
 }
 
 
+//метод для добавления нового элемента Pro
+//id-id родителя
 function addNewPro(id) {
 
     var div = document.getElementById(id + '_PROS');
     var strCur = id.split('_')[0] + '_PROS_NEW' + (mainObjEdit.maxNewProId++);
-
-
 
     $(div).append('<div class="one_check_line_edit" id="div_' + div.id + '_all"><input value="' + strCur +
         '" id="' + strCur + '_chch" class="checkBoxClass" name="listSelectedProsNew" type="checkbox"/>' +
@@ -347,6 +348,10 @@ function addNewPro(id) {
         + strCur + '_inp" type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
 
 }
+
+
+//метод для добавления нового элемента Spec
+//id-id родителя
 function addNewSpec(id) {
     var div = document.getElementById(id + '_SPEC');
     var strCur = id.split('_')[0] + '_SPEC_NEW' + (mainObjEdit.maxNewSpecId++);
@@ -356,6 +361,9 @@ function addNewSpec(id) {
         '<input class="form-control" id="'
         + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
 }
+
+//метод для добавления нового элемента Vrem
+//id-id родителя
 function addNewVrem(id) {
     var div = document.getElementById(id + '_VREM');
     var strCur = id.split('_')[0] + '_VREM_NEW' + (mainObjEdit.maxNewVremId++);
@@ -366,6 +374,7 @@ function addNewVrem(id) {
         + strCur + '_inp"  type="text" name="' + id + '" /><div id="' + strCur + '_childs"></div></div>');
 }
 
+//метод для добавления нового элемента FizVel
 function addNewFizVelId() {
     var div = document.getElementById('fizVel');
     var newMaxId = mainObjEdit.maxNewFizVelId++;
@@ -394,6 +403,7 @@ function addNewFizVelId() {
 
 }
 
+////метод для добавления нового параметрического элемента FizVel
 function addNewParametricFizVelId() {
     var div = document.getElementById('parametricFizVel');
 
@@ -408,7 +418,8 @@ function addNewParametricFizVelId() {
 
 
 
-
+//метод для изменения состояния редактируемости воздействия
+//id-id воздействия
 function changeActionId(id) {
 
     var inp = $('#' + id + '_inp');
@@ -440,6 +451,8 @@ function changeActionId(id) {
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
 
+//метод для изменения состояния редактируемости физической величины
+//id-id физической величины
 function changeFizVels(id) {
 
     var inp = $('#' + id + '_inp');
@@ -468,7 +481,8 @@ function changeFizVels(id) {
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
 
-
+//метод для изменения состояния редактируемости параметрической физической величины
+//id-id параметрической физической величины
 function changeParamFizVels(id) {
 
     var inp = $('#' + id + '_inp');
@@ -497,6 +511,9 @@ function changeParamFizVels(id) {
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
 
+
+//метод для изменения состояния редактируемости Pro
+//id-id Pro
 function changePros(id) {
 
     var inp = $('#' + id + '_inp');
@@ -525,6 +542,8 @@ function changePros(id) {
     document.getElementById('restoreInput_but_' + id).style.display = 'inline';
 }
 
+//метод для изменения состояния редактируемости Spec
+//id-id Spec
 function changeSpecs(id) {
 
     var inp = $('#' + id + '_inp');
@@ -555,6 +574,8 @@ function changeSpecs(id) {
 
 
 
+//метод для изменения состояния редактируемости Vrem
+//id-id Vrem
 function changeVrems(id) {
 
     var inp = $('#' + id + '_inp');
@@ -587,23 +608,36 @@ function changeVrems(id) {
 
 
 //type: 1-pros 2-spec,3-vrem
+
+//метод для удаления Pro
+//id-id Pro
 function deleteItemPro(id) {
     deleteItem(id, 1);
 }
+//метод для удаления Spec
+//id-id Spec
 function deleteItemSpec(id) {
     deleteItem(id, 2);
 }
+//метод для удаления Vrem
+//id-id Vrem
 function deleteItemVrem(id) {
     deleteItem(id, 3);
 }
+//метод для удаления FizVel
+//id-id FizVel
 function deleteItemFizVels(id) {
     deleteItem(id, 4);
 }
+//метод для удаления воздействия
+//id-id воздействия
 function deleteItemActionId(id) {
     deleteItem(id, 5);
 }
 
-//type: 1-pros 2-spec,3-vrem,4-fizvels
+//метод для удаления элемента
+//type-тип элемента: 1-pros 2-spec,3-vrem,4-fizvels
+//id-id элемента
 function deleteItem(id, type) {
     var delbut = document.getElementById(id + '_delbut');
     var checkboxChilds = $('#' + id + '_chch');
@@ -703,7 +737,9 @@ function deleteItem(id, type) {
 
 
 
-
+//метод для восстановления значения
+//type-тип элемента: 1-pros 2-spec,3-vrem,4-fizvels
+//id-id элемента
 function restoreValue(type, id) {
 
     for (var i = 0; i < mainObjEdit.massOldValue.length; ++i) {
@@ -771,7 +807,7 @@ function restoreValue(type, id) {
 }
 
 
-
+//функция для сохранения формы
 function saveForm() {
     //TODO валидация
 
@@ -978,7 +1014,7 @@ function saveForm() {
 
 }
 
-
+//функция для отображения информации о странице
 function showInfo() {
     var div = document.getElementById('divInfoBlockId');
     var but = document.getElementById('butInfoBlockId');

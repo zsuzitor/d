@@ -5,6 +5,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.PhysicV
 {
+    //класс-ViewModel
     public class ShowSimilarV
     {
         public List<int> ListSimilarIds { get; set; }
@@ -14,6 +15,5 @@ namespace dip.Models.ViewModel.PhysicV
         {
             ListSimilarIds = null;
         }
-
     }
 }

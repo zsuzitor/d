@@ -30,7 +30,7 @@ namespace dip.Models.Domain
         /// Метод для получения FizVel которые зависят от FizVel с id==id
         /// </summary>
         /// <param name="id">id записи для которой нужно найти зависимых</param>
-        /// <returns></returns>
+        /// <returns>список зависимых FizVel</returns>
         public static List<FizVel> GetParametricFizVels(string id)
         {
             List<FizVel> res = new List<FizVel>();
@@ -57,7 +57,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="db"></param>
         /// <param name="list">список для удаления</param>
-        /// <returns></returns>
+        /// <returns>список id fizvel которые блокируют удаление</returns>
         public static List<int> TryDelete(ApplicationDbContext db, List<FizVel> list)//db_ = null
         {
             List<string> listId = list.Select(x1 => x1.Id).ToList();

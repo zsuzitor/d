@@ -8,14 +8,13 @@ using System.Web;
 
 namespace dip.Models.ViewModel.PhysicV
 {
+    //класс-ViewModel
     public class DetailsV
     {
         public string EffectName { get; set; }
-        //public string TechnicalFunctionId { get; set; }
         public bool Admin { get; set; }
         public FEText Effect { get; set; }
         public bool? Favourited { get; set; }
-        //public byte[] Lat { get; set; }
 
         public List<IShowsImage> AllImages { get; set; }
 
@@ -24,7 +23,6 @@ namespace dip.Models.ViewModel.PhysicV
         {
             Favourited = null;
             EffectName = null;
-            //TechnicalFunctionId = null;
             Admin = false;
             Effect = null;
             AllImages = new List<IShowsImage>();
@@ -32,7 +30,12 @@ namespace dip.Models.ViewModel.PhysicV
 
         }
 
-        public void Data(int?id,HttpContextBase HttpContext)//bool go
+        /// <summary>
+        ///  метод для подготовки записи ФЭ к отображению
+        /// </summary>
+        /// <param name="id">id ФЭ</param>
+        /// <param name="HttpContext">контекст http</param>
+        public void Data(int? id, HttpContextBase HttpContext)//bool go
         {
 
             FEText phys = FEText.GetIfAccess(id, HttpContext);
@@ -40,11 +43,11 @@ namespace dip.Models.ViewModel.PhysicV
         }
 
         /// <summary>
-        /// без проверок
+        /// метод для подготовки записи ФЭ к отображению без проверок
         /// </summary>
-        /// <param name="phys"></param>
-        /// <param name="HttpContext"></param>
-        public void Data(FEText phys, HttpContextBase HttpContext) 
+        /// <param name="phys">записи ФЭ</param>
+        /// <param name="HttpContext">контекст http</param>
+        public void Data(FEText phys, HttpContextBase HttpContext)
         {
             if (phys == null)
                 throw new Exception("Запись с данным id не найдена");
@@ -55,7 +58,7 @@ namespace dip.Models.ViewModel.PhysicV
             Effect.AddByteToLatexImages();
             this.SetListAllImages();
             EffectName = Effect.Name;
-           
+
 
             if (check_id != null)
             {
@@ -69,17 +72,16 @@ namespace dip.Models.ViewModel.PhysicV
             }
         }
 
+        /// <summary>
+        /// устанавливает лист со всеми изображениями+latex изображениями
+        /// </summary>
         public void SetListAllImages()
         {
-            if(this.Effect?.Images!=null)
-            this.AllImages.AddRange(this.Effect.Images);
+            if (this.Effect?.Images != null)
+                this.AllImages.AddRange(this.Effect.Images);
             if (this.Effect?.LatexFormulas != null)
                 this.AllImages.AddRange(this.Effect.LatexFormulas);
         }
 
-        //public void GetModel(FEText phys)
-        //{
-
-        //}
     }
 }

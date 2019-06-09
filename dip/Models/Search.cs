@@ -30,7 +30,7 @@ namespace dip.Models
             var res = new List<int>();
             var user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
 
-            str=Lucene_.DeleteEngl(str);
+            str = Lucene_.DeleteEngl(str);
 
             switch (type)
             {
@@ -72,31 +72,6 @@ namespace dip.Models
 
 
 
-        /// <summary>
-        /// вернуть только наиболее значимые слова
-        /// </summary>
-        /// <param name="logParamId"></param>
-        /// <returns></returns>
-        //        public static string StringSemanticParse(int logParamId)
-        //        {
-
-
-        //            var res = "";
-        //            var q = $@"SELECT TOP(10) KEYP_TBL.keyphrase  
-        //FROM SEMANTICKEYPHRASETABLE  
-        //    (  
-        //    LogParams,  
-        //    Param,  
-        //    {logParamId}  
-        //    ) AS KEYP_TBL  
-        //ORDER BY KEYP_TBL.score DESC;";
-        //            var ldr = DataBase.DataBase.ExecuteQuery(q, null, "keyphrase");
-        //            foreach (var i in ldr)
-        //                res += i["keyphrase"].ToString() + " ";
-
-        //            return res.Trim();
-        //        }
-
 
         /// <summary>
         /// метод для поиска lucene
@@ -132,12 +107,7 @@ namespace dip.Models
         public static List<int> fullTextSearchF(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    var TODO = db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
-            //        }')as t join dbo.FeTexts as y on t.[KEY] = y.IDFE order by RANK desc;").ToList();
 
-            //}
 
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>($@"select IDFE from freetexttable(dbo.FeTexts,*,'{str
@@ -157,9 +127,7 @@ namespace dip.Models
         public static List<int> fullTextSearchCf(ApplicationUser user, string str, HttpContextBase HttpContext, int lastId = 0)
         {
             List<int> res = new List<int>();
-            //if (str.Length > 1000)
-            //    str = str.Take(1000).ToString();
-            
+
             string strquery = "select IDFE from CONTAINSTABLE(dbo.FeTexts,*,'ISABOUT (";
             foreach (var i in str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -178,11 +146,7 @@ namespace dip.Models
 
             if (strquery.Length > 4000)
                 return res;
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
 
-            //}
 
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
@@ -221,10 +185,6 @@ namespace dip.Models
             if (strquery.Length > 4000)
                 return res;
 
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
-            //}
 
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
@@ -249,7 +209,7 @@ namespace dip.Models
             if (massWords.Length < 2)
                 return res;
             if (massWords.Length > 60)
-                massWords=massWords.Take(60).ToArray();
+                massWords = massWords.Take(60).ToArray();
             string strquery = "select [KEY] from CONTAINSTABLE(dbo.FeTexts,*,'NEAR(";
             for (int i = 0; i < massWords.Length; ++i)
             {
@@ -259,11 +219,6 @@ namespace dip.Models
             }
             strquery += ")')order by RANK desc;";
 
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    var TODO = db.Database.SqlQuery<int>(strquery).ToList();
-
-            //}
 
             using (var db = new ApplicationDbContext())
                 res = user.CheckAccessPhys(db.Database.SqlQuery<int>(strquery).ToList(), HttpContext).
@@ -307,9 +262,9 @@ namespace dip.Models
                     order by data.score desc";
 
                     Thread.Sleep(1000);
-                    
+
                     //ждем обновления записи
-                    for(int i = 0; i < 5; ++i)
+                    for (int i = 0; i < 5; ++i)
                     {
                         var tmp = db.FEText.FirstOrDefault(x1 => x1.IDFE == Constants.FEIDFORSEMANTICSEARCH);
                         if (tmp.Text != Constants.FeSemanticNullText)
@@ -359,7 +314,7 @@ namespace dip.Models
                 var massWords = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (massWords.Length > 20)
                     massWords = massWords.Take(20).ToArray();
-                
+
                 for (int i = 1; i <= massWords.Length; ++i)//количество
                 {
                     string gr = "(";

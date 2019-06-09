@@ -4,6 +4,7 @@ var time_for_page_up;// for up()
 
 ///--------------------------------------------------------------------------------------
 
+//метод для скроло страницы вверх
 function up() {
     var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
     if (top > 0) {
@@ -13,7 +14,7 @@ function up() {
     return false;
 }
 
-
+//метод для проверки находится ли элемент в зоне экрана
 function isVisible(tag) {
     var t = $(tag);
     var w = $(window);
@@ -24,7 +25,7 @@ function isVisible(tag) {
     return ((bot_tag >= top_window && bot_tag <= bot_window) || (top_tag >= top_window && top_tag <= bot_window) || (bot_tag >= bot_window && top_tag <= top_window));
 }
 
-
+//событие при скроле
 $(function () {
     $(window).scroll(function () {
         Change_main_header();
@@ -32,7 +33,7 @@ $(function () {
 });
 
 
-//------------------------------------------------------------
+//метод изменения отображения header
 function Change_main_header() {
     var b = $("#Main_header_check_small_or_big_header");
     if (!b.prop("shown") && !isVisible(b)) {

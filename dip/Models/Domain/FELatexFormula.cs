@@ -20,7 +20,7 @@ namespace dip.Models.Domain
 
         [NotMapped]
         public byte[] Data { get; set; }
-        
+
         [NotMapped]
         public string IdForShow
         {

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.AdminV
 {
+    //класс-ViewModel
     public class ChangeRoleV
     {
         public List<string> Roles { get; set; }

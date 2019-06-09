@@ -3,6 +3,7 @@
 
 ;;;;;;
 
+//метод для удаления изображения
 function delete_img(but) {
     var id=but.id.split("_")[1];
 
@@ -13,6 +14,8 @@ function delete_img(but) {
     document.getElementById("div_img_reset_block_" + id).style.display = 'block';
 }
 
+//метод для восстановления изображения
+//but-кнопка
 function reset_img(but) {
     var id = but.id.split("_")[1];
         
@@ -28,6 +31,9 @@ function reset_img(but) {
         
 }
 
+//методдля восстановления latex изображения
+//id-id latex
+//num
 function restoreLatexImg(id,num){
     var div=document.getElementById('oneLatexExist_'+id);
     if(div){
@@ -46,6 +52,7 @@ function restoreLatexImg(id,num){
 }
 
 
+//метод для удаления latex
 function deleteLatexImg(id,num){
     var div=document.getElementById('oneLatexExist_'+id);
     if(div){
@@ -62,6 +69,8 @@ function deleteLatexImg(id,num){
     }
        
 }
+
+//метод для добавления latex
 function addLatex(){
     var strappend = '<div id="latexImgIdDiv_new_' + countLatex + '"><input id="latexImgId_new_' + countLatex 
         + '" type="text"/><button class="btn btn-default" onclick="deleteLatexImg(\'new_'+countLatex+'\')">Удалить</button></div>';
@@ -69,7 +78,7 @@ function addLatex(){
     $('#physCreateFormLatexImagesImg').append(strappend);
 }
 
-
+//метод для сохранения изменений записи ФЭ
 function EditPhysFunc() {
 
     data_descr_search.function_trigger = function () {

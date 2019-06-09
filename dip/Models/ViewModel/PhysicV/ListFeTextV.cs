@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.PhysicV
 {
+    //класс-ViewModel
     public class ListFeTextV
     {
         public List<FEText> FeTexts { get; set; }

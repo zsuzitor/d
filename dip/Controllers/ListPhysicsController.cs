@@ -23,7 +23,7 @@ namespace dip.Controllers
         /// <summary>
         /// Отрисовывает страницу для присвоения\удаления у пользователей списков фэ
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult ListUserAct()
         {
             //ListActV res = new ListActV();
@@ -36,10 +36,10 @@ namespace dip.Controllers
         /// Отрисовывает страницу для создания\редактирования списков ФЭ
         /// </summary>
         /// <param name="currentListId"> Выбранный id списка</param>
-        /// <returns></returns>
-        public ActionResult ListAct(int? currentListId=null)
+        /// <returns>результат действия ActionResult</returns>
+        public ActionResult ListAct(int? currentListId = null)
         {
-            ListActV res = new ListActV() {CurrentListId= currentListId };
+            ListActV res = new ListActV() { CurrentListId = currentListId };
             res.Lists = ListPhysics.GetAll();
 
             return View(res);
@@ -49,11 +49,11 @@ namespace dip.Controllers
         /// post-создание нового списка ФЭ
         /// </summary>
         /// <param name="name">имя нового списка</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult CreateList(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)|| name.Length<5)//TODO в метод валидации
+            if (string.IsNullOrWhiteSpace(name) || name.Length < 5)//TODO в метод валидации
                 return new HttpStatusCodeResult(404);//TODO сообщение об ошибке
             ListPhysics res = ListPhysics.Create(name);
 
@@ -64,7 +64,7 @@ namespace dip.Controllers
         /// Отрисовывает список всех ФЭ включенных в список
         /// </summary>
         /// <param name="id">id списка</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult LoadPhysInList(int id)
         {
             ListPhysics res = ListPhysics.LoadPhysics(id);
@@ -76,7 +76,7 @@ namespace dip.Controllers
         /// Отрисовывает пользователей которым выдан список
         /// </summary>
         /// <param name="id">id списка</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult LoadUsersForList(int id)
         {
             ListPhysics res = ListPhysics.LoadUsers(id);
@@ -89,11 +89,11 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="id">id списка</param>
         /// <param name="name">Имя списка</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult EditList(int id, string name)
         {
-            ListPhysics res=ListPhysics.Edit(id, name);
+            ListPhysics res = ListPhysics.Edit(id, name);
 
             return PartialView(res);
         }
@@ -102,7 +102,7 @@ namespace dip.Controllers
         /// post-удаление списка
         /// </summary>
         /// <param name="id">id списка</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult DeleteList(int id)
         {
@@ -116,28 +116,28 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="idphys">id ФЭ</param>
         /// <param name="idlist">id списка ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
-        public ActionResult AddToList(int idphys,int idlist)
+        public ActionResult AddToList(int idphys, int idlist)
         {
-            ListPhysics res =ListPhysics.AddPhys(idphys, idlist);
+            ListPhysics res = ListPhysics.AddPhys(idphys, idlist);
             if (res == null)
                 // return Content("-что то пошло не так(возможно запись была добавлена ранее)", "text/html");
                 return new HttpStatusCodeResult(230);//, "что то пошло не так(возможно запись была добавлена ранее)");
 
-            return PartialView(res?.Physics.FirstOrDefault(x1=>x1.IDFE== idphys));
+            return PartialView(res?.Physics.FirstOrDefault(x1 => x1.IDFE == idphys));
         }
         /// <summary>
         /// post-удаление ФЭ из списка ФЭ
         /// </summary>
         /// <param name="idphys">id ФЭ</param>
         /// <param name="idlist">id списка ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult DeleteFromList(int idphys, int idlist)
         {
 
-            ListPhysics res =ListPhysics.DeletePhys(idphys, idlist);
+            ListPhysics res = ListPhysics.DeletePhys(idphys, idlist);
 
             return PartialView(res);
         }
@@ -148,22 +148,16 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="iduser">id пользователя</param>
         /// <param name="idlist">id списка ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult AssignListToUser(string iduser, int idlist)
         {
-            //try
-            //{
             bool? hadList;
-               var res= ApplicationUser.AddList(iduser, idlist, out  hadList);
-            //}
-            //catch (NotFoundException e)
-            //{
-            //    //TODO
-            //}
+            var res = ApplicationUser.AddList(iduser, idlist, out hadList);
+
             if (hadList == true)//TODO
                 res = null;
-            if(res==null)
+            if (res == null)
                 return new EmptyResult();
             return PartialView(res);
         }
@@ -173,12 +167,12 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="iduser">id пользователя</param>
         /// <param name="idlist">id списка ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult RemoveListFromUser(string iduser, int idlist)
         {
             ApplicationUser.RemoveList(iduser, idlist);
-           
+
 
             return PartialView();
         }
@@ -188,13 +182,13 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="iduser">id пользователя</param>
         /// <param name="idphys">id ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult AssignPhysicToUser(string iduser, int idphys)
         {
             bool? had;
-            var res=ApplicationUser.AddPhysics(iduser, idphys,out had);
-            if (had!=false)//TODO //had == true|| had == null
+            var res = ApplicationUser.AddPhysics(iduser, idphys, out had);
+            if (had != false)//TODO //had == true|| had == null
                 res = null;
             if (res == null)
                 return new EmptyResult();
@@ -206,7 +200,7 @@ namespace dip.Controllers
         /// </summary>
         /// <param name="iduser">id пользователя</param>
         /// <param name="idphys">id ФЭ</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         public ActionResult RemovePhysicFromUser(string iduser, int idphys)
         {
@@ -221,12 +215,12 @@ namespace dip.Controllers
         /// Отрисовывает списки присвоенные пользователю
         /// </summary>
         /// <param name="iduser">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult AssignsUsersList(string iduser)
         {
             var user = ApplicationUser.GetUser(iduser);
             user?.LoadListPhysics();
-            
+
             return PartialView(user?.ListPhysics);
         }
 
@@ -234,12 +228,12 @@ namespace dip.Controllers
         /// Отрисовывает ФЭ присвоенные пользователю
         /// </summary>
         /// <param name="iduser">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         public ActionResult AssignsUsersPhysics(string iduser)
         {
             var user = ApplicationUser.GetUser(iduser);
             user?.LoadPhysics();
-            
+
             return PartialView(user?.Physics);
         }
 

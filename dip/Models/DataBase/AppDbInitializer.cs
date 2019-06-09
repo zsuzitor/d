@@ -14,7 +14,7 @@ namespace dip.Models.DataBase
     /// </summary>
     public class AppDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>//DropCreateDatabaseIfModelChanges
     {
-        
+
         /// <summary>
         /// Метод для инициализации
         /// </summary>
@@ -35,11 +35,11 @@ namespace dip.Models.DataBase
                 var role = new IdentityRole { Name = roleName.ToString() };
                 roleManager.Create(role);
             }
-            
+
 
             // создаем пользователей
             //TODO ,EmailConfirmed=true  для пользователей убрать
-            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin@mail.ru", Name = "zsuz", Surname = "zsuzSUR", Birthday = DateTime.Now,EmailConfirmed=true };
+            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin@mail.ru", Name = "zsuz", Surname = "zsuzSUR", Birthday = DateTime.Now, EmailConfirmed = true };
             string password = "Admin1!";
             var result = userManager.Create(admin, password);
             //
@@ -66,7 +66,7 @@ namespace dip.Models.DataBase
 
 
             //load old db 
-            
+
             OldData.ReloadDataBase();
             //строим индексы lucene
             Lucene_.BuildIndex();

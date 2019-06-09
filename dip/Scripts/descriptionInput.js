@@ -5,7 +5,9 @@ var data_descr_search = {
     function_trigger: null,
     search: 'yes'
 };
-//var dict = {};
+
+
+//событие изменения чекбоксов
 $(document).on('change', ':checkbox', function () {
 
 
@@ -42,7 +44,10 @@ $(document).on('change', ':checkbox', function () {
 
 
 
-
+//метод для загрузки детей чекбоксов в дескрипторной форме
+//ch-объект чекбокса
+//meth-метод контроллера 
+//key-название чекбокса: Pros Spec Vrem
 function loadCheckBoxChildDescr(ch, meth, key) {
     var type = ch.name.split(key)[1];//[0]
     var div = document.getElementById((ch.value + type));
@@ -87,6 +92,9 @@ function loadCheckBoxChildDescr(ch, meth, key) {
 
 
 //flag- true->param, false->not param
+///метод изменения отображения блоков формы для формы с параметрическим или не параметрическим воздействием
+//type-тип формы: I0 I1 O0 O2
+//flag - true-воздействие параметричесое
 function changeTypeActionId(type, flag) {
 
     var fizNp = document.getElementById("fizVelGroup" + type + "_np_label");

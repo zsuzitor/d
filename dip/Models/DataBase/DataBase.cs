@@ -35,7 +35,7 @@ namespace dip.Models.DataBase
                 command.Connection.Close();
                 command.Dispose();
             }
-            
+
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace dip.Models.DataBase
         /// <param name="query">- будет использоваться только если command_==null</param>
         /// <param name="command_"> - если не null то не закрывается</param>
         /// <param name="props"> - список свойств</param>
-        /// <returns></returns>
+        /// <returns>словарь с результатами, которые возвращаются из бд</returns>
         public static List<Dictionary<string, object>> ExecuteQuery(string query, SqlCommand command_, params string[] props)
         {
             List<Dictionary<string, object>> res = new List<Dictionary<string, object>>();
@@ -77,37 +77,32 @@ namespace dip.Models.DataBase
         }
 
 
-        //public class FullTextSearch_
-        //{
+        /// <summary>
+        /// метод для создания полнотекстового семантического индекса и каталога
+        /// </summary>
+        /// <returns>флаг успеха</returns>
+        public static bool CreateAllForFullTextSearch()
+        {
 
+            //1-создать каталог
+            //2- добавить индекс
+            //3- апнуть индекс до семантического
+            List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
 
-            public static bool CreateAllForFullTextSearch()
+            var connection = new SqlConnection();
+            connection.ConnectionString = Constants.sql_0;
+            connection.Open();
+            foreach (var i in files)
             {
+                string script = File.ReadAllText(HostingEnvironment.MapPath($"~/tsqlscripts/{i}.txt"));
 
-
-
-                //1-создать каталог
-                //2- добавить индекс
-                //3- апнуть индекс до семантического
-                List<string> files = new List<string>() { "create_catalog", "create_index", "alter_index_semantic" };
-
-                var connection = new SqlConnection();
-                connection.ConnectionString = Constants.sql_0;
-                connection.Open();
-                foreach (var i in files)
+                using (var command = new SqlCommand(script, connection))
                 {
-                    string script = File.ReadAllText(HostingEnvironment.MapPath($"~/tsqlscripts/{i}.txt"));
-
-                    using (var command = new SqlCommand(script, connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
+                    command.ExecuteNonQuery();
                 }
-                connection.Close();
-                return true;
             }
-        //}
-
-
+            connection.Close();
+            return true;
+        }
     }
 }

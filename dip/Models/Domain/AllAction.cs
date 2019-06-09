@@ -28,7 +28,7 @@ namespace dip.Models.Domain
         /// Получить запись по id
         /// </summary>
         /// <param name="id">id</param>
-        /// <returns></returns>
+        /// <returns>воздействие</returns>
         public static AllAction Get(string id)
         {
             AllAction res = null;
@@ -44,7 +44,7 @@ namespace dip.Models.Domain
         /// Проверить является ли запись параметрической
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>true-если параметрическое</returns>
         public static bool? CheckParametric(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -60,7 +60,7 @@ namespace dip.Models.Domain
         /// </summary>
         /// <param name="db">контекст</param>
         /// <param name="list">список записей для удаления</param>
-        /// <returns></returns>
+        /// <returns>id записей которые блокируют удаление</returns>
         public static List<int> TryDeleteWithChilds(ApplicationDbContext db, List<AllAction> list)//TODO вынести
         {
             List<int> blockFe = new List<int>();

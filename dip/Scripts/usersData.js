@@ -1,14 +1,16 @@
 ﻿;;;
 
-
+//метод для удаления id текущего пользователя
 function changeUserId() {
     document.getElementById('idCurrentUser_id').innerHTML = '';
 }
 
+//метод для изменения id
 function ListUsersShortDataButton(id) {
     document.getElementById('userIdInput_id').value = id;
 }
 
+//метод для получения id пользователя по uname
 function GetIdByUsername() {
 
     goAjaxRequest({
@@ -28,6 +30,7 @@ function GetIdByUsername() {
 }
 
 
+//метод для получения id по фамилии
 function GetIdByNameSurname() {
     goAjaxRequest({
         url: "/Admin/GetUserIdByFI",
@@ -50,7 +53,7 @@ function GetIdByNameSurname() {
 
 
 
-
+//метод для отображения ссылки на пользователя
 function showLinkCurUser() {
     let id = document.getElementById('userIdInput_id').value;
     if (id) {
@@ -63,7 +66,7 @@ function showLinkCurUser() {
 
 
 
-
+//метод для загрузки всех пользователей
 function LoadAllUsers() {
     var formData = {};
     var div = document.getElementById('ListAllUsers_id');

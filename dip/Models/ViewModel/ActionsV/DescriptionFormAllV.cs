@@ -6,6 +6,7 @@ using System.Web;
 
 namespace dip.Models.ViewModel.ActionsV
 {
+    //класс-ViewModel
     public class DescriptionFormAllV
     {
         public List<DescrSearchI> DescrInp { get; set; }

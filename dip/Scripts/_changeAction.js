@@ -1,4 +1,4 @@
-
+;;
 // Функция, обновляющая характеристики воздействия
 // type: I -input , O-output
 function changeParams(type)
@@ -53,6 +53,7 @@ goAjaxRequest({
 
 };
 
+//функция при загрузке страницы
 $(document).ready(function () {
     var i = 0;
     var inpdiv = document.getElementById('actionI' + i);
@@ -64,8 +65,8 @@ $(document).ready(function () {
         });
         inpdiv = document.getElementById('actionI' + ++i);
     }
-     i = 0;
-     inpdiv = document.getElementById('actionO' + i);
+    i = 0;
+    inpdiv = document.getElementById('actionO' + i);
     while (inpdiv) {
         $('#actionO' + i).on('change', function () {
             var type = this.id.split('action')[1];
@@ -78,3 +79,4 @@ $(document).ready(function () {
 
 });
 
+;;;

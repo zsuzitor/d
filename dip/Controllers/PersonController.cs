@@ -26,27 +26,27 @@ namespace dip.Controllers
         /// Отрисовывает страницу пользователя
         /// </summary>
         /// <param name="personId">id пользователя чью страницу запрашивают для отображения</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize]
         public ActionResult PersonalRecord(string personId)
         {
             PersonalRecordV res = new PersonalRecordV();
             res.CurrenUserId = ApplicationUser.GetUserId();
-            
+
 
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(res.CurrenUserId);
-           
-                res.Admin = roles.Contains("admin");
+
+            res.Admin = roles.Contains("admin");
             if (string.IsNullOrWhiteSpace(personId))
                 personId = res.CurrenUserId;
 
-            
-            if (!res.Admin&&personId != res.CurrenUserId)
-                return RedirectToAction("PersonalRecord",new { personId= res.CurrenUserId });
+
+            if (!res.Admin && personId != res.CurrenUserId)
+                return RedirectToAction("PersonalRecord", new { personId = res.CurrenUserId });
             //res.User = ApplicationUser.GetUser(res.CurrenUserId);
             res.User = ApplicationUser.GetUser(personId);
-            if(res.User==null)
+            if (res.User == null)
                 return new HttpStatusCodeResult(404);
 
             return View(res);
@@ -55,11 +55,11 @@ namespace dip.Controllers
         /// <summary>
         ///  Отрисовывает страницу пользователя для редактирования
         /// </summary>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize]
         public ActionResult EditPersonalRecord()
         {
-            var res=ApplicationUser.GetUser(ApplicationUser.GetUserId());
+            var res = ApplicationUser.GetUser(ApplicationUser.GetUserId());
 
             return View(res);
         }
@@ -68,7 +68,7 @@ namespace dip.Controllers
         /// post- сохраняет изменения пользователя
         /// </summary>
         /// <param name="user"></param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [HttpPost]
         [Authorize]
         public ActionResult EditPersonalRecord(ApplicationUser user)
@@ -83,7 +83,7 @@ namespace dip.Controllers
         /// Отрисовывает список ролей пользователя
         /// </summary>
         /// <param name="personId">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize(Roles = "admin")]
         public ActionResult GetRoles(string personId)
         {
@@ -99,7 +99,7 @@ namespace dip.Controllers
         /// post-добавление в избранное ФЭ
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize]
         [HttpPost]
         public ActionResult FavouritePhysics(int id)
@@ -111,15 +111,15 @@ namespace dip.Controllers
             ApplicationUser user = ApplicationUser.GetUser(ApplicationUser.GetUserId());
             if (user != null)
             {
-                List<int> accessList= user.CheckAccessPhys(new List<int>() {id },HttpContext);
-                if(accessList.Count==0)
+                List<int> accessList = user.CheckAccessPhys(new List<int>() { id }, HttpContext);
+                if (accessList.Count == 0)
                     return PartialView(null);
                 //return PartialView(res);
                 var fetext = FEText.Get(id);
                 if (fetext == null)
                     return PartialView(null);
                 //return new HttpStatusCodeResult(404);
-                res = fetext.ChangeFavourite(user.Id,HttpContext);
+                res = fetext.ChangeFavourite(user.Id, HttpContext);
             }
 
 
@@ -131,7 +131,7 @@ namespace dip.Controllers
         /// Отрисовывает список фэ пользователя добавленных в избранное 
         /// </summary>
         /// <param name="personId">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>результат действия ActionResult</returns>
         [Authorize]
         public ActionResult ListFavouritePhysics(string personId)
         {
@@ -141,7 +141,7 @@ namespace dip.Controllers
             IList<string> roles = HttpContext.GetOwinContext()
                                          .GetUserManager<ApplicationUserManager>()?.GetRoles(currenUserId);
 
-            
+
             if (string.IsNullOrWhiteSpace(personId))
                 personId = currenUserId;
 
@@ -152,20 +152,10 @@ namespace dip.Controllers
                     return RedirectToAction("ListFavouritePhysics", new { personId = currenUserId });
 
 
-
-            //string personId_ = personId ?? ;
-
             var user = ApplicationUser.GetUser(personId);
             user.LoadFavouritedList();
             res.FeTexts = user.FavouritedPhysics;//.ToList();
-           
-            //TODO отрисовать кнопки в нужном состоянии, работает не правильно сейчас просто закомментил
 
-                //foreach (var i in res.FeTexts)
-                //{
-                //    i.FavouritedCurrentUser = true;
-                //}
-            
             return PartialView(res);
         }
     }
