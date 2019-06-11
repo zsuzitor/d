@@ -1,4 +1,8 @@
-﻿;;
+﻿/*файл скриптов для изменения и просмотра списков
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+;;
 
 
 var ListActMainObject = {

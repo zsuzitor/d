@@ -1,4 +1,8 @@
-﻿using dip.Models.Domain;
+﻿/*файл класса для определения интерфейсов и вспомогательных сущностей, добавлены методы для взаимодействия с сущностями
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -311,5 +315,7 @@ namespace dip.Models
     {
 
     }
+
+    enum RolesProject { NotApproveUser, user, subscriber, admin };//vip
 
 }

@@ -1,4 +1,8 @@
-﻿;;;
+﻿/*файл скриптов для изменения дескрипторной формы (объект)
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+;;;
 
 //событие изменения радио кнопок
 $(document).on('change', ':radio', function () {//$('input[type=radio][name=bedStatus]')

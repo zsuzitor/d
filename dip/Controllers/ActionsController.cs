@@ -1,4 +1,10 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за подгрузку дескрипторной формы
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel;
 using dip.Models.ViewModel.ActionsV;

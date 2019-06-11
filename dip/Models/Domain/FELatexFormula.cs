@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*файл класса модели БД предназначенного для хранения формул в формате latex
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;

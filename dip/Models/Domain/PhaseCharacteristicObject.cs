@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*файл класса модели БД предназначенного для хранения одного дескриптора характеристики объекта, добавлены методы для взаимодействия с сущностью
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

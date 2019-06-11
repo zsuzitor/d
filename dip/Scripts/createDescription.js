@@ -1,4 +1,8 @@
-﻿;;;
+﻿/*файл скриптов для изменения дескрипторов (вход\выход)
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+;;;
 //mainObjEdit.massOldValue
 var mainObjEdit = {
     

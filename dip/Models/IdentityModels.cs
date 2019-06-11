@@ -1,4 +1,8 @@
-﻿using System.Data.Entity;
+﻿/*файл класса для хранения пользователя, добавлены методы для взаимодействия с сущностью
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;

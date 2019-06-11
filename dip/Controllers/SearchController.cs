@@ -1,4 +1,8 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за действия связанные с поиском записей ФЭ
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel.SearchV;
 using Lucene.Net.Analysis.Ru;

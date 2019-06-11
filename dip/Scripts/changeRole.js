@@ -1,4 +1,8 @@
-﻿;;;
+﻿/*файл скриптов для изменения ролей пользователей
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+;;;
 ////функция удаления ссылки на пользователя
 function changeUserId() {
     document.getElementById('idCurrentUser_id').innerHTML = '';

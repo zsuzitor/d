@@ -1,4 +1,9 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за действия связанные с списком записей ФЭ
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+using dip.Models;
 using dip.Models.CustomException;
 using dip.Models.Domain;
 using dip.Models.ViewModel.ListPhysicsV;

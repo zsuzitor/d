@@ -238,7 +238,6 @@
     <Compile Include="Models\Domain\Pro.cs" />
     <Compile Include="Models\Domain\Spec.cs" />
     <Compile Include="Models\Domain\StateObject.cs" />
-    <Compile Include="Models\Domain\test_cs.cs" />
     <Compile Include="Models\Domain\Vrem.cs" />
     <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -404,7 +403,6 @@
     <Content Include="Views\Helpers\DescrFormVrem.cshtml" />
     <Content Include="Views\Helpers\DescrFormSpec.cshtml" />
     <Content Include="Views\Helpers\DescrFormPros.cshtml" />
-    <Content Include="Views\Helpers\selectList.cshtml" />
     <Content Include="Views\Helpers\ImageLink.cshtml" />
     <Content Include="Views\Helpers\Image.cshtml" />
     <Content Include="Views\Person\PersonalRecord.cshtml" />

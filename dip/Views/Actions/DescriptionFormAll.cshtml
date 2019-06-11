@@ -1,6 +1,8 @@
-﻿@model dip.Models.ViewModel.ActionsV.DescriptionFormAllV
+﻿@*файл представления для отображения полной дескрипторной формы
+    Авдосев Станислав Алексеевич (zsuzitor) © 2019
+    E-mail: avdosevstas@mail.ru*@
 
-
+@model dip.Models.ViewModel.ActionsV.DescriptionFormAllV
 
 
 <div id="DescriptionFormMainAll" style="display:block;">
@@ -8,8 +10,6 @@
     <div>
 
         @Html.Action("DescriptionInput", "Actions", new { inp = Model.DescrInp, outp = Model.DescrOutp })
-
-
 
     </div>
 
@@ -24,9 +24,6 @@
 
 
 </div>
-
-
-
 
 
 

@@ -1,4 +1,8 @@
-﻿using dip.Models.ViewModel;
+﻿/*файл класса для хранения дескрипторной формы (вход и выход)
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,8 @@
-﻿@model IEnumerable<dip.Models.Domain.StateObject>
+﻿@*файл представления для отображения редактируемых состояний объекта
+    Авдосев Станислав Алексеевич (zsuzitor) © 2019
+    E-mail: avdosevstas@mail.ru*@
 
+@model IEnumerable<dip.Models.Domain.StateObject>
 
 
 @Html.Action("ListStateObjectEdit", "Helpers", new { list = Model })

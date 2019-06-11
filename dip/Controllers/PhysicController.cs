@@ -1,5 +1,9 @@
-﻿//#define debug
+﻿/*файл контроллера, отвечающий за действия связанные с записями ФЭ
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
 
+
+//#define debug
 
 using dip.Models;
 using dip.Models.Domain;

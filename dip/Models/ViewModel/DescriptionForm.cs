@@ -1,4 +1,8 @@
-﻿using dip.Models.Domain;
+﻿/*файл класса для отображения входных и выходных дескрипторов
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

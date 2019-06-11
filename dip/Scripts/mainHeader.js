@@ -1,4 +1,8 @@
-﻿;;;
+﻿/*файл скриптов для всех страниц приложения
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+;;;
 
 var time_for_page_up;// for up()
 

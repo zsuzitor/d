@@ -1,4 +1,8 @@
-﻿using dip.Models.Domain;
+﻿/*файл класса модели представления DescriptionSearch
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

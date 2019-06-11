@@ -1,4 +1,9 @@
-﻿using dip.Models.DataBase;
+﻿/*файл контроллера, отвечающий за отрисовку общих частичных представлений
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+using dip.Models.DataBase;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,8 @@
-﻿using dip.Models.Domain;
+﻿/*файл класса модели представления Details
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;

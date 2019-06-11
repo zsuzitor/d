@@ -1,4 +1,8 @@
-﻿using dip.Models.Domain;
+﻿/*файл класса для взаимодействия(построение индексов поисковых запросов и тд) с поиском lucene
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models.Domain;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Ru;
 using Lucene.Net.Analysis.Standard;

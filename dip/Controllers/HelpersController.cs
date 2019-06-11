@@ -1,4 +1,10 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за отрисовку определенных частичных представлений
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel.HelpersV;
 using dip.Models.ViewModel.PhysicV;

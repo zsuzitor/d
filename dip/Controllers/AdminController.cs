@@ -1,4 +1,8 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за действия(которые не относятся к определенным контроллерам) доступные только для администратора
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel.AdminV;
 using Microsoft.AspNet.Identity;

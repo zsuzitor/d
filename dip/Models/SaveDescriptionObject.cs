@@ -1,4 +1,8 @@
-﻿using Binbin.Linq;
+﻿/*файл класса для хранения измененных дескрипторов объекта
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using Binbin.Linq;
 using dip.Models.Domain;
 using System;
 using System.Collections.Generic;

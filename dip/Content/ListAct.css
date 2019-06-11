@@ -1,4 +1,8 @@
-﻿div.ListAct_OneColumn{
+﻿/*файл стилей css, отвечающий за стили для страницы изменения списков
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/ 
+
+div.ListAct_OneColumn{
     width:50%;
     box-sizing:border-box;
     overflow:hidden;

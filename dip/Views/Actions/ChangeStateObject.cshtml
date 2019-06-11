@@ -1,4 +1,8 @@
-﻿@model dip.Models.ViewModel.ActionsV.ChangeStateObjectV
+﻿@*файл представления для отображения состояний объекта изменяемых
+    Авдосев Станислав Алексеевич (zsuzitor) © 2019
+    E-mail: avdosevstas@mail.ru*@
+
+@model dip.Models.ViewModel.ActionsV.ChangeStateObjectV
 
 @Html.Action("ListStateObject", "Helpers", new { a = Model.States, type = Model.Type})
 

@@ -1,4 +1,9 @@
-﻿//#define debug
+﻿/*файл класса предназначенного для выгрузки данных из старых БД, форматирования данных и загрузки данных в актуальную БД
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+//#define debug
 
 using dip.Models.Domain;
 using System;

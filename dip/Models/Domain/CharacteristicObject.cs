@@ -1,4 +1,9 @@
-﻿using dip.Models.ViewModel;
+﻿/*файл класса предназначенного для хранения характеристик объекта(3 фазы)
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+using dip.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

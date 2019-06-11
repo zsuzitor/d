@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*файл исключения, выбрасываемого при ненайденном контенте
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;

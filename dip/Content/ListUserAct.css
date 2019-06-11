@@ -1,4 +1,8 @@
-﻿div.ListUserAct_MainDiv{
+﻿/*файл стилей css, отвечающий за стили для страницы выдачи списков и ФЭ пользователям
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/ 
+
+div.ListUserAct_MainDiv{
      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     background-color:antiquewhite;
 }

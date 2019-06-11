@@ -1,4 +1,9 @@
-﻿using dip.Models;
+﻿/*файл контроллера, отвечающий за действия связанные с учетной записью пользователя
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+
+using dip.Models;
 using dip.Models.Domain;
 using dip.Models.ViewModel.PersonV;
 using dip.Models.ViewModel.PhysicV;

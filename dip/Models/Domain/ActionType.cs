@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*файл класса модели БД предназначенного для хранения типа входа 
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

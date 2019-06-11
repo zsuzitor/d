@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*файл класса предназначенного взаимодействия с БД, если взаимодействие не относится к моделям БД
+Авдосев Станислав Алексеевич (zsuzitor) © 2019
+E-mail: avdosevstas@mail.ru*/
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
