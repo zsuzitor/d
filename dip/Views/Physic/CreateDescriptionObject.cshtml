@@ -1,16 +1,15 @@
-﻿@model dip.Models.ViewModel.PhysicV.CreateDescriptionObjectV
+﻿@*файл представления для изменения дейскрипторов объекта
+    Авдосев Станислав Алексеевич (zsuzitor) © 2019
+    E-mail: avdosevstas@mail.ru*@
 
+@model dip.Models.ViewModel.PhysicV.CreateDescriptionObjectV
 
 
 <button class="btn btn-default" id="butInfoBlockId" onclick="showInfo()">Показать информацию</button>
 <div style="display:none;" id="divInfoBlockId">
     <h2>Сохранятся только изменения тех элементов которые отображаются на экране на момент нажатия кнопки "сохранить"</h2>
     <h2>при удалении родителя, будут удалены(не будут добавлены новые ) все дети</h2>
-
-
 </div>
-
-
 
 
 @Html.Action("ListStateObjectEdit","Helpers",new { list = Model.States })
