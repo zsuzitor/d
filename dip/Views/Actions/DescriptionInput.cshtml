@@ -10,14 +10,15 @@
     @*<hr />*@
     @*@Html.DropDownList("nn", @Model.actionId)*@
     <hr />
-    @Html.Label("2 входа?")
+    @*@Html.Label("2 входа?")*@
+    <h3>2 входа?</h3>
     @if (Model.CountInput > 1)
     {
-        <input type="checkbox" checked name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id"/>
+        <input type="checkbox" class="checkBoxClass" checked name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id"/>
     }
     else
     {
-        <input type="checkbox" name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id" />
+        <input type="checkbox" class="checkBoxClass" name="changeTwoInputFormDescr" id="changeTwoInputFormDescr_id" />
     }
     @*@Html.CheckBox("changeTwoInputFormDescr")*@
     

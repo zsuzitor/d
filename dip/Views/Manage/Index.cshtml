@@ -1,6 +1,6 @@
 ﻿@model dip.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Учетная запись";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -10,16 +10,16 @@
     @*<h4>Change your account settings</h4>*@
     <hr />
     <dl class="dl-horizontal">
-        <dt>Password:</dt>
+        <dt>Пароль:</dt>
         <dd>
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Change your password", "ChangePassword")
+                @Html.ActionLink("Изменить пароль", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Create", "SetPassword")
+                @Html.ActionLink("Указать пароль", "SetPassword")
             }
             ]
         </dd>

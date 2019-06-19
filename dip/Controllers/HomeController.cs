@@ -20,6 +20,8 @@ using dip.Models.ViewModel.HomeV;
 using System.Reflection;
 using System.Data;
 using WpfMath;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace dip.Controllers
 {
@@ -48,6 +50,18 @@ namespace dip.Controllers
 
             MainHeaderV res = new MainHeaderV();
             res.SearchList = new List<string>() { "lucene", "fullTextSearchF", "fullTextSearchCf", "fullTextSearchCl" };
+            string id=ApplicationUser.GetUserId();
+            if (id != null)
+            {
+                IList<string> roles = HttpContext.GetOwinContext()
+                                         .GetUserManager<ApplicationUserManager>()?.GetRoles(ApplicationUser.GetUserId());
+                if (roles.Contains(RolesProject.admin.ToString()))
+                {
+                    res.Admin = true;
+                }
+            }
+            
+
 
             return PartialView(res);
         }

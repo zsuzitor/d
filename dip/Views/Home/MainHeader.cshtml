@@ -12,7 +12,11 @@
         <div class="">
             <div class="Main_header_link_block">
                 <ul class="Main_header_menu">
-                    <li>@Html.ActionLink("AdminsPage", "AdminsPage", "Admin",new { }, new {@class= "navbar-brand" })</li>
+                    @if (Model.Admin)
+                    {
+                        <li>@Html.ActionLink("Страница администратора", "AdminsPage", "Admin", new { }, new { @class = "navbar-brand" })</li>
+                    }
+                   
                     <li>@Html.ActionLink("О программе", "About", "Home", new { }, new { @class = "navbar-brand" })</li>
                     <li>@Html.ActionLink("Дескрипторный поиск", "DescriptionSearch", "Search", new { }, new { @class = "navbar-brand" })</li>
                     <li>@Html.ActionLink("Полнотекстовый поиск", "TextSearch", "Search", new { }, new { @class = "navbar-brand" })</li>

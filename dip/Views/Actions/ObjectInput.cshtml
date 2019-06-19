@@ -6,19 +6,21 @@
 
 
 <div>
-
+    @*@Html.Label("Объект изменяется")*@
+    <h3>Объект изменяется?</h3>
     @if (Model.changedObject)
     {
-        <input id="changeObjectCheckbox" name="changeObjectCheckbox" type="checkbox" checked>
+        <input id="changeObjectCheckbox" class="checkBoxClass" name="changeObjectCheckbox" type="checkbox" checked>
 
     }
     else
     {
-        <input id="changeObjectCheckbox" name="changeObjectCheckbox" type="checkbox">
+        <input id="changeObjectCheckbox" class="checkBoxClass" name="changeObjectCheckbox" type="checkbox">
 
     }
 
-    @Html.Label("Объект изменяется")
+    
+   
     @*<hr />*@
     <div id="formPartStartId">
         <h1>Начальное состояние объекта</h1>

@@ -5,10 +5,10 @@
 @model dip.Models.ApplicationUser
 
 @{
-    ViewBag.Title = "EditPersonalRecord";
+    ViewBag.Title = "Изменение данных учетной записи";
 }
 
-<h2>EditPersonalRecord</h2>
+<h2>Изменение данных учетной записи</h2>
 @Html.ActionLink("Вернуться к просмотру", "PersonalRecord", "Person")
 
 
@@ -27,12 +27,14 @@
 <label>Мужчина</label>
 <input class="checkBoxClass" type="checkbox" value="@Model.Male" id="MaleUser" />
 <br />
-
-
+@Html.ActionLink("Изменить пароль", "ChangePassword", "Manage")
+<br />
+<br />
+<br />
 <button  class="btn btn-default" onclick="editPersonalRecordSave()">Сохранить</button>
 
 
-@Html.Action("Index", "Manage", new { partial = true })
+@*@Html.Action("Index", "Manage", new { partial = true })*@
 
 @section scripts{
     <script src="~/Scripts/editPersonalRecord.js" type="text/javascript"></script>

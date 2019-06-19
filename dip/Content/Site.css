@@ -254,15 +254,16 @@ div.layout_active_panel{
 
 div.Main_header_big {
     position: relative;
-    background-color: white;
+    /*background-color: white;*/
     height: 300px;
     width: 96%;
     left: 2%;
-    background-image: url(/Content/images/main_header_back_big.jpg);
+    /*background-image: url(/Content/images/main_header_back_big.jpg);*/
     background-size: 100% 100%;
      box-shadow: 0 0 10px rgba(0,0,0,0.5);
      z-index:5;
-    
+    background-color:#DCDCDC;
+    color:black !important;
 }
 
 
@@ -315,12 +316,15 @@ position:absolute;
     bottom:0px;
     
 }
+ul.Main_header_menu{
+    margin-left:0;
+}
 ul.Main_header_menu li{
     display: inline; /* Отображать как строчный элемент */
     margin-right: 5px; /* Отступ слева */
- 
+  color:black !important;
     /*padding: 3px;*/ /* Поля вокруг текста */
-    margin-left:20px;
+    /*margin-left:20px;*/
     /*font-size: 18px;
         line-height: 20px;*/
 }
@@ -328,6 +332,17 @@ div.Main_header_link_block{
     /*margin-left:10%;*/
     /*display:inline-block;
     position:center;*/
+    padding-left:0;
+}
+
+ul.Main_header_menu li a{
+  color:black !important;
+ }
+.Main_header_home_link a{
+    color:black !important;
+}
+.login_partial_ul_li a{
+     color:black !important;
 }
 /*---------------------------------------------------------*/
 
@@ -352,7 +367,7 @@ div.main_footer_middle{
 }
 div.main_footer_down{
     color:white;
-    height:300px;
+    height:150px;
     background-color:rgba(60,60,60,1);
 }
   div.Main_preloader{
